@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "CRM": {
+    "crm": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -63,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "CRM:build:production"
+              "buildTarget": "crm:build:production"
             },
             "development": {
-              "buildTarget": "CRM:build:development"
+              "buildTarget": "crm:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -74,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "CRM:build"
+            "buildTarget": "crm:build"
           }
         },
         "test": {
@@ -96,6 +96,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "crm:build:production",
+              "serveTarget": "crm:serve:production"
+            },
+            "development": {
+              "buildTarget": "crm:build:development",
+              "serveTarget": "crm:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

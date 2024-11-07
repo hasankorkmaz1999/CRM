@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "crm",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}

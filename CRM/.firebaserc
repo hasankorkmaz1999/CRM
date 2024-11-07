@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "crm1-9fda4": {
+      "hosting": {
+        "crm": [
+          "crm1-9fda4"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "crm1-9fda4"
+  }
+}
