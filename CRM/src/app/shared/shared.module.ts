@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 import {MatCardModule} from '@angular/material/card'; 
 import { RouterModule } from '@angular/router';
+import {MatMenuModule} from '@angular/material/menu'; 
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { RouterModule } from '@angular/router';
     MatProgressBarModule,
     MatCardModule,
     RouterModule,
+    MatMenuModule,
 
   ],
   exports: [
@@ -50,6 +52,7 @@ import { RouterModule } from '@angular/router';
     MatProgressBarModule,
     MatCardModule,
     RouterModule,
+    MatMenuModule,
   ]
 })
 export class SharedModule {}

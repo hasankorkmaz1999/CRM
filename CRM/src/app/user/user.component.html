@@ -9,13 +9,13 @@
 
     </tr>
 
-    <a [routerLink]="['/user', user.id]" style="text-decoration: none; display: block;">
-    <tr *ngFor="let user of allUsers" >
+   
+    <tr *ngFor="let user of allUsers" [routerLink]="['/user', user.id]">
         <td>{{user.firstName}} {{user.lastName}}</td>
         <td>{{user.email}}</td>
         <td>{{user.city}}</td>
     </tr>
-    </a>
+ 
 
    </table>
   </mat-card>

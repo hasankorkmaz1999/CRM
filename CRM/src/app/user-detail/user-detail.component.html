@@ -1,1 +1,42 @@
-<p>user-detail works!</p>
+<mat-card class="user-detail-header" appearance="outlined">
+    <button  class="edit-icon" [matMenuTriggerFor]="userMenu" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="editUserDetails()">Edit</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+
+   <img src="/assets/img/user.png" alt="">
+
+   <div class="user-details">
+    <h2>{{user.firstName}} {{user.lastName}}</h2>
+    <span>{{user.email}}</span>
+   </div>
+  </mat-card>
+  
+
+  <mat-card class="user-detail-address" appearance="outlined">
+
+    <button class="edit-icon" [matMenuTriggerFor]="addressMenu" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+
+      <mat-menu #addressMenu="matMenu">
+        <button mat-menu-item (click)="editAddressDetails()">Edit</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+
+
+    <mat-card-header>
+        <mat-card-title>Address</mat-card-title>
+        <mat-card-subtitle></mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <span>{{user.street}}</span>
+        <span>{{user.zipCode}} {{user.city}}</span>
+      </mat-card-content>
+  </mat-card>
