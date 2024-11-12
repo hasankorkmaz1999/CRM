@@ -28,5 +28,5 @@ import {MatDialogModule} from '@angular/material/dialog';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'CRM';
+ 
 }

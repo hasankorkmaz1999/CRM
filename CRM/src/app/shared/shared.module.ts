@@ -34,6 +34,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MatCardModule,
     RouterModule,
     MatMenuModule,
+    
 
   ],
   exports: [
