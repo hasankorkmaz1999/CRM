@@ -113,11 +113,60 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "crm:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "crm:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          }
+        },
+        "ct": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "crm:serve",
+            "watch": true,
+            "headless": false,
+            "testingType": "component"
+          },
+          "configurations": {
+            "development": {
+              "devServerTarget": "crm:serve:development"
+            }
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "crm:serve",
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "crm:serve:production"
+            }
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": [
+      "@cypress/schematic",
+      "@schematics/angular"
+    ]
   }
 }
