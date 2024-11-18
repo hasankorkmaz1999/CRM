@@ -1,1 +1,16 @@
-<p>dialog-add-picture works!</p>
+<div>
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    <h2 mat-dialog-title>Upload Profile Picture</h2>
+    <input type="file" (change)="onFileSelected($event)" />
+    
+    <div *ngIf="previewUrl">
+      <h3>Preview:</h3>
+      <img [src]="previewUrl" alt="Preview" width="200" />
+    </div>
+  
+    <mat-dialog-actions>
+      <button [disabled]="loading" mat-button (click)="uploadPicture()">Upload</button>
+      <button mat-button mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+  </div>
+  

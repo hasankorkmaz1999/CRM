@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button'; 
 import {MatTooltipModule} from '@angular/material/tooltip'; 
 import {MatDialogModule} from '@angular/material/dialog'; 
+import { HttpClientModule } from '@angular/common/http';
 
 
 @Component({
@@ -22,6 +23,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatButtonModule,
     MatTooltipModule,
     MatDialogModule,
+    HttpClientModule
     
   ],
   templateUrl: './app.component.html',

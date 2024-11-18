@@ -10,13 +10,18 @@
 
 
 
-   <div class="profile-picture-container">
-
-   <img src="/assets/img/user.png" alt="">
-   <button (click)="addProfilePicture()"  class="add-picture-button" mat-fab color="primary"  matTooltip="Add profilpicture" matTooltipPosition="above">
-   <mat-icon>add</mat-icon>
-   </button>
-   </div>
+      <div class="profile-picture-container">
+        <img 
+          [src]="user.profilePicture || '/assets/img/user.png'" 
+          [ngClass]="{'default-picture': !user.profilePicture, 'uploaded-picture': user.profilePicture}" 
+          alt="Profile Picture"
+        />
+      
+        <button (click)="addProfilePicture()" class="add-picture-button" mat-fab color="primary" matTooltip="Add picture" matTooltipPosition="above">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      
 
    <div class="user-details">
     <h2>{{user.firstName}} {{user.lastName}}</h2>

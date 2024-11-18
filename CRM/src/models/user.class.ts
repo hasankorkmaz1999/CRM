@@ -18,5 +18,6 @@ export class User {
     this.city = obj ? obj.city: '';
     this.email = obj ? obj.email: '';
     this.id = obj ? obj.id: '';
+    this.profilePicture = obj ? obj.profilePicture : '';
   }
 }

@@ -67,7 +67,9 @@ export class UserDetailComponent implements OnInit {
 
 
   addProfilePicture() {
-    const dialog = this.dialog.open(DialogAddPictureComponent);
+    const dialog = this.dialog.open(DialogAddPictureComponent, {
+      data: { userId: this.userId }
+    });
 
   }
   
