@@ -8,6 +8,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
+import { DialogAddPictureComponent } from '../dialog-add-picture/dialog-add-picture.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -62,6 +63,12 @@ export class UserDetailComponent implements OnInit {
   
     dialog.componentInstance.user = new User(userForEdit);
     dialog.componentInstance.userId = this.userId;
+  }
+
+
+  addProfilePicture() {
+    const dialog = this.dialog.open(DialogAddPictureComponent);
+
   }
   
 

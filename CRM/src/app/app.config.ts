@@ -27,3 +27,4 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(provideFirestore(() => getFirestore())), // Hier wird MatNativeDateModule hinzugefügt
   ],
 };
+ 
