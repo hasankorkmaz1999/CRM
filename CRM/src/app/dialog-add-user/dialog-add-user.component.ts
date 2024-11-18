@@ -21,10 +21,13 @@ export class DialogAddUserComponent {
   }
 
   saveUser() {
-    this.user.birthDate = this.birthDate.getTime();
+    // Formatieren des Geburtsdatums als MM/DD/YYYY
+    const formattedDate = this.birthDate.toLocaleDateString('en-US');
+    this.user.birthDate = formattedDate;
+
     console.log('user', this.user);
     this.loading = true;
-    
+
     const userCollection = collection(this.firestore, 'users'); // Verweis auf die Collection
     addDoc(userCollection, { ...this.user }) // Dokument hinzufügen
       .then((result) => {
@@ -33,6 +36,7 @@ export class DialogAddUserComponent {
       })
       .catch((error) => {
         console.error('Error adding user:', error);
+        this.loading = false;
       });
   }
 }

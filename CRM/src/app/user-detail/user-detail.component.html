@@ -8,11 +8,20 @@
         <button mat-menu-item>Item 2</button>
       </mat-menu>
 
+
+
+   <div>
+
    <img src="/assets/img/user.png" alt="">
+   <button  class="add-user-button" mat-fab color="primary"  matTooltip="Add user" matTooltipPosition="above">
+    <mat-icon>add</mat-icon>
+  </button>
+   </div>
 
    <div class="user-details">
     <h2>{{user.firstName}} {{user.lastName}}</h2>
     <span>{{user.email}}</span>
+    <span>{{user.birthDate}}</span>
    </div>
   </mat-card>
   
@@ -35,7 +44,7 @@
         <mat-card-subtitle></mat-card-subtitle>
       </mat-card-header>
 
-      <mat-card-content>
+      <mat-card-content class="address-content">
         <span>{{user.street}}</span>
         <span>{{user.zipCode}} {{user.city}}</span>
       </mat-card-content>

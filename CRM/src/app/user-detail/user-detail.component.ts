@@ -52,10 +52,20 @@ export class UserDetailComponent implements OnInit {
   }
 
   editUserDetails() {
-   const dialog = this.dialog.open(DialogEditUserComponent);
-   dialog.componentInstance.user =  new User(this.user);
-   dialog.componentInstance.userId =  this.userId;
+    const dialog = this.dialog.open(DialogEditUserComponent);
+  
+    // Falls birthDate als String gespeichert ist, in ein Date-Objekt umwandeln
+    const userForEdit = { ...this.user };
+    if (userForEdit.birthDate) {
+      userForEdit.birthDate = new Date(userForEdit.birthDate);
+    }
+  
+    dialog.componentInstance.user = new User(userForEdit);
+    dialog.componentInstance.userId = this.userId;
   }
+  
+
+  
 
 
 }

@@ -1,12 +1,13 @@
 export class User {
   firstName: string;
   lastName: string;
-  birthDate: number;
+  birthDate: string | Date;
   street: string;
   zipCode: number;
   city: string;
   email: string;
   id: string;
+  profilePicture?: string;
 
   constructor(obj?: any) {
     this.firstName = obj ? obj.firstName: '';
