@@ -1,0 +1,16 @@
+<h2>User Calendar</h2>
+
+
+<full-calendar #calendar [options]="calendarOptions"></full-calendar>
+
+<mat-dialog-actions>
+    <div class="button-container">
+  <button color="primary" class="event-button" mat-flat-button (click)="addEvent()">Add Event</button>
+
+  <button  (click)="switchToMonthView()" color="secondary" class="event-button" mat-flat-button  *ngIf="showMonthViewButton">Month View</button>
+
+  </div>
+</mat-dialog-actions>
+
+
+

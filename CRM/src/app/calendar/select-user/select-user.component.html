@@ -1,0 +1,43 @@
+<ng-container *ngIf="!step2">
+    <h2 mat-dialog-title>Select User</h2>
+    <mat-dialog-content>
+      <mat-selection-list [(ngModel)]="selectedUsers">
+        <mat-list-option *ngFor="let user of users" [value]="user">
+          {{ user.firstName }} {{ user.lastName }}
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>No</button>
+      <button mat-button (click)="proceedToEventForm()" [disabled]="!selectedUsers.length" color="primary">Select</button>
+    </mat-dialog-actions>
+  </ng-container>
+
+  <ng-container *ngIf="step2">
+    <h2 mat-dialog-title>Create Event</h2>
+    <form [formGroup]="eventForm">
+      <mat-dialog-content>
+        <mat-form-field appearance="outline">
+          <mat-label>Event Title</mat-label>
+          <input matInput formControlName="title" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Time</mat-label>
+          <input matInput formControlName="time" type="time" />
+        </mat-form-field>
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
+        <button mat-button (click)="goBack()">Back</button>
+        <button mat-button [disabled]="!eventForm.valid" [mat-dialog-close]="prepareEventData()" color="primary">Create</button>
+      </mat-dialog-actions>
+    </form>
+  </ng-container>
