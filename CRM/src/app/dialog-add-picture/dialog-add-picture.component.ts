@@ -34,42 +34,41 @@ export class DialogAddPictureComponent {
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
+      this.selectedFile = file;
       this.selectedFileName = file.name;
+
       const reader = new FileReader();
       reader.onload = (e: any) => this.previewUrl = e.target.result;
       reader.readAsDataURL(file);
+   
     }
   }
 
+  resetSelection() {
+    this.selectedFile = null;
+    this.selectedFileName = null;
+    this.previewUrl = null;
+  }
+
   uploadPicture() {
-    if (!this.selectedFile) {
-      alert('Please select a file before uploading.');
-      return;
-    }
+    if (this.selectedFile) {
+      this.loading = true;
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+      formData.append('upload_preset', 'simple-crm');
 
-    this.loading = true; // Set loading to true when the upload starts
-
-    const formData = new FormData();
-    formData.append('file', this.selectedFile);
-    formData.append('upload_preset', 'simple-crm'); // Preset name
-
-    console.log('Uploading picture to Cloudinary...');
-    this.http
-      .post('https://api.cloudinary.com/v1_1/drzrzowgj/image/upload', formData)
-      .subscribe({
+      this.http.post('https://api.cloudinary.com/v1_1/drzrzowgj/image/upload', formData).subscribe({
         next: (response: any) => {
-          console.log('Image uploaded successfully:', response);
-          this.saveImageUrlToFirestore(response.secure_url);
+          console.log('Image uploaded successfully:', response.secure_url);
           this.dialogRef.close(response.secure_url);
+          this.loading = false;
         },
         error: (error) => {
           console.error('Error uploading image:', error);
-          alert('Image upload failed. Please try again.');
-        },
-        complete: () => {
-          this.loading = false; // Reset loading state after upload process
+          this.loading = false;
         }
       });
+    }
   }
 
 

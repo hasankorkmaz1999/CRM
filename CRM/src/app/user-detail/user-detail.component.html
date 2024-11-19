@@ -16,11 +16,14 @@
           [ngClass]="{'default-picture': !user.profilePicture, 'uploaded-picture': user.profilePicture}" 
           alt="Profile Picture"
         />
-      
-        <button (click)="addProfilePicture()" class="add-picture-button" mat-fab color="primary" matTooltip="Add picture" matTooltipPosition="above">
-          <mat-icon>add</mat-icon>
+        
+        <button (click)="addOrEditProfilePicture()" class="add-picture-button" mat-fab color="primary" matTooltip="Add/Edit picture" matTooltipPosition="above">
+          <mat-icon *ngIf="!user.profilePicture">add</mat-icon>
+          <mat-icon *ngIf="user.profilePicture">edit</mat-icon>
         </button>
       </div>
+      
+      
       
 
    <div class="user-details">

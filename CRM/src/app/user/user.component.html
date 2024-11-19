@@ -1,25 +1,24 @@
 <mat-card appearance="outlined">
-   <table class="user-table">
-
+  <table class="user-table">
     <tr>
-
-    <th>Name</th>
-    <th>E-mail</th>
-    <th>City</th>
-
+      <th>Name</th>
+      <th>E-mail</th>
+      <th>City</th>
+      <th>Actions</th>
     </tr>
-
-   
-    <tr *ngFor="let user of allUsers" [routerLink]="['/user', user.id]">
-        <td>{{user.firstName}} {{user.lastName}}</td>
-        <td>{{user.email}}</td>
-        <td>{{user.city}}</td>
+    <tr *ngFor="let user of allUsers">
+      <td [routerLink]="['/user', user.id]">{{ user.firstName }} {{ user.lastName }}</td>
+      <td [routerLink]="['/user', user.id]">{{ user.email }}</td>
+      <td [routerLink]="['/user', user.id]">{{ user.city }}</td>
+      <td>
+        <button mat-icon-button color="warn" (click)="openDeleteDialog(user)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
     </tr>
- 
+  </table>
+</mat-card>
 
-   </table>
-  </mat-card>
-  
-<button (click)="openDialog()" class="add-user-button" mat-fab color="primary"  matTooltip="Add user" matTooltipPosition="above">
-    <mat-icon>add</mat-icon>
-  </button>
+<button (click)="openDialog()" class="add-user-button" mat-fab color="primary" matTooltip="Add user" matTooltipPosition="above">
+  <mat-icon>add</mat-icon>
+</button>
