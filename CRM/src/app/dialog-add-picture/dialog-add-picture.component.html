@@ -1,16 +1,35 @@
-<div>
-    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+
+<mat-dialog-content>
+
+
+
+<div class="upload-container">
+
+
+
+
+   
     <h2 mat-dialog-title>Upload Profile Picture</h2>
-    <input type="file" (change)="onFileSelected($event)" />
+    <input class="input" type="file" (change)="onFileSelected($event)" #fileInput hidden />
+  
+    <!-- Benutzerdefinierte Schaltfläche -->
+    <button class="file-button" color="primary" mat-button (click)="fileInput.click()">Choose File</button>
+    <span *ngIf="selectedFileName">{{ selectedFileName }}</span>
     
     <div *ngIf="previewUrl">
       <h3>Preview:</h3>
-      <img [src]="previewUrl" alt="Preview" width="200" />
+      <img class="preview-image" [src]="previewUrl" alt="Preview" width="200" />
     </div>
   
     <mat-dialog-actions>
       <button [disabled]="loading" mat-button (click)="uploadPicture()">Upload</button>
-      <button mat-button mat-dialog-close>Cancel</button>
+      <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
     </mat-dialog-actions>
+
+
+
   </div>
   
+</mat-dialog-content>

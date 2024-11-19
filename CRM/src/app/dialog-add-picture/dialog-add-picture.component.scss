@@ -1,0 +1,46 @@
+.upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 200px;
+    min-width: 300px;
+}
+
+
+.mat-dialog-content {
+  min-height: 200px;
+  min-width: 300px;
+}
+
+
+.input {
+
+}
+
+.file-button {
+    margin-bottom: 10px;
+}
+
+
+.ng-star-inserted {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+
+
+.preview-image {
+  
+        max-height: 200px;
+        width: 100px;
+        object-fit: cover;
+        border-radius: 100px;
+       
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      
+}
+
+h3 {
+    text-align: center;
+}

@@ -19,6 +19,7 @@ export class DialogAddPictureComponent {
   previewUrl: string | null = null;
   userId: string = '';
   loading = false;
+  selectedFileName: string | null = null;
 
   constructor(
     private http: HttpClient,
@@ -33,17 +34,10 @@ export class DialogAddPictureComponent {
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      this.selectedFile = file;
-      console.log('Selected file:', file.name);
-
+      this.selectedFileName = file.name;
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.previewUrl = e.target.result;
-        console.log('Preview URL generated');
-      };
+      reader.onload = (e: any) => this.previewUrl = e.target.result;
       reader.readAsDataURL(file);
-    } else {
-      console.warn('No file selected');
     }
   }
 
