@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import * as bootstrap from 'bootstrap';
 import { EventDetailsComponent } from './event-details/event-details.component';
+import { Event } from '../../models/events.class';
+
 
 @Component({
   selector: 'app-calendar',
@@ -24,7 +26,8 @@ import { EventDetailsComponent } from './event-details/event-details.component';
   
 })
 export class CalendarComponent implements OnInit {
-  events: any[] = [];
+  events: Event[] = [];
+
 
   showMonthViewButton: boolean = false;
 
@@ -71,17 +74,19 @@ export class CalendarComponent implements OnInit {
   loadEvents() {
     const eventCollection = collection(this.firestore, 'events');
     collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
-      this.events = data.map((event: any) => ({
-        title: event.title, // Nur der Titel, ohne Benutzernamen
-        start: event.date.toDate(),
-        extendedProps: {
-          users: event.users, // Benutzernamen separat speichern
-        },
-      }));
-  
+      this.events = data.map((eventData) => new Event(eventData)); // Konvertierung zu Event-Objekten
+    
       this.calendarOptions = {
         ...this.calendarOptions,
-        events: this.events,
+        events: this.events.map((event) => ({
+          title: event.title,
+          start: event.date, // Date-Objekt aus der Klasse
+          extendedProps: {
+            users: event.users,
+            description: event.description,
+            location: event.location,
+          },
+        })),
       };
     });
   }
@@ -119,25 +124,39 @@ export class CalendarComponent implements OnInit {
 
   addEvent() {
     const dialogRef = this.dialog.open(SelectUserComponent);
-  
+    
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        const newEvent = {
-          title: result.title,
+        const newEvent = new Event({
+          title: result.title?.trim(),
           date: result.date,
           users: result.users.map((user: User) => `${user.firstName} ${user.lastName}`),
-        };
-
+        });
+  
+        // Validierung
+        if (!newEvent.title || !newEvent.date || newEvent.users.length === 0) {
+          console.error('Invalid event data:', newEvent);
+          return;
+        }
+  
         this.events.push(newEvent);
         this.saveEventToFirestore(newEvent);
       }
     });
   }
+  
+  
 
-  saveEventToFirestore(event: any) {
+  saveEventToFirestore(event: Event) {
     const eventCollection = collection(this.firestore, 'events');
-    addDoc(eventCollection, event)
-      .then(() => console.log('Event saved'))
+    const eventToSave = {
+      ...event,
+      date: event.date.toISOString(), // Firestore benötigt ein ISO-Format
+      createdAt: new Date().toISOString(),
+    };
+  
+    addDoc(eventCollection, eventToSave)
+      .then(() => console.log('Event saved successfully!'))
       .catch((error) => console.error('Error saving event:', error));
   }
-}
+}  
