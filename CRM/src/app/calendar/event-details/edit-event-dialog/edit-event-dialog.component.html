@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Edit Event</h2>
+<form [formGroup]="editForm">
+  <mat-dialog-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Event Title</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Time</mat-label>
+      <input matInput formControlName="time" type="time" />
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [disabled]="!editForm.valid" [mat-dialog-close]="prepareUpdatedEvent()" color="primary">
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>
+

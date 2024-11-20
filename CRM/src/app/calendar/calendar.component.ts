@@ -1,5 +1,5 @@
 import { Component,CUSTOM_ELEMENTS_SCHEMA,OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, updateDoc } from '@angular/fire/firestore';
 import { MatDialog, MatDialogActions } from '@angular/material/dialog';
 import { SelectUserComponent } from './select-user/select-user.component';
 
@@ -74,14 +74,16 @@ export class CalendarComponent implements OnInit {
   loadEvents() {
     const eventCollection = collection(this.firestore, 'events');
     collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
-      this.events = data.map((eventData) => new Event(eventData)); // Konvertierung zu Event-Objekten
-    
+      this.events = data.map((eventData) => new Event(eventData));
+  
       this.calendarOptions = {
         ...this.calendarOptions,
         events: this.events.map((event) => ({
+          id: event.id, // Firestore-ID hier hinzufügen
           title: event.title,
           start: event.date, // Date-Objekt aus der Klasse
           extendedProps: {
+            id: event.id, // Auch in extendedProps speichern
             users: event.users,
             description: event.description,
             location: event.location,
@@ -90,6 +92,7 @@ export class CalendarComponent implements OnInit {
       };
     });
   }
+  
   
 
   handleDateClick(event: any) {
@@ -111,14 +114,20 @@ export class CalendarComponent implements OnInit {
 
   handleEventClick(event: any) {
     console.log('Event clicked:', event.event);
-    
+  
+    // Überprüfe, ob die ID korrekt ist
+    console.log('Event ID:', event.event.extendedProps['id']);
+  
     const dialogRef = this.dialog.open(EventDetailsComponent, {
       data: {
-        title: event.event.title, // Nur der Event-Titel
+        id: event.event.extendedProps['id'], // Stelle sicher, dass die ID hier übergeben wird
+        title: event.event.title,
         date: event.event.start,
-        users: event.event.extendedProps['users'], // Benutzer separat
+        users: event.event.extendedProps['users'],
       },
+      autoFocus: false,
     });
+    
   }
   
 
@@ -156,7 +165,15 @@ export class CalendarComponent implements OnInit {
     };
   
     addDoc(eventCollection, eventToSave)
-      .then(() => console.log('Event saved successfully!'))
+      .then((docRef) => {
+        console.log('Event saved successfully with ID:', docRef.id);
+        
+        // Speichere die generierte ID im Dokument
+        updateDoc(docRef, { id: docRef.id })
+          .then(() => console.log('ID added to event document'))
+          .catch((error) => console.error('Error updating document with ID:', error));
+      })
       .catch((error) => console.error('Error saving event:', error));
   }
-}  
+  
+}

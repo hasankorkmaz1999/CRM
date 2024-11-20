@@ -6,3 +6,18 @@
 .event-container {
     padding: 20px;
 }
+
+
+::ng-deep .mat-icon-button.cdk-focused {
+    box-shadow: none; /* Entfernt die Hover-Umrandung */
+  }
+  
+  ::ng-deep .mat-icon-button.cdk-focused:focus {
+    outline: none; /* Entfernt die Standard-Outline */
+  }
+  
+
+
+  .delete {
+    box-shadow: none;
+  }
