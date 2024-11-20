@@ -1,0 +1,27 @@
+.user-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+.create-container {
+   
+  
+    flex-direction: column;
+   
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.inputfield {
+    display: flex;
+    flex-direction: column;
+}

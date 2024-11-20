@@ -11,3 +11,58 @@ border-radius: 30px;
     display: flex;
     justify-content: space-between;
 }
+
+
+.fc {
+    background-color: #f9f9f9; /* Hintergrundfarbe */
+    border-radius: 8px; /* Abgerundete Ecken */
+ 
+    
+  }
+  
+
+
+  .fc-event {
+    text-decoration: none;
+    color: #000000;
+  }
+
+
+ 
+
+  .fc-col-header-cell-cushion {
+    text-decoration: none;
+  }
+  
+
+
+  .fc-daygrid-day-number {
+    text-decoration: none;
+    
+    font-size: 16px;
+  }
+
+
+  .fc-daygrid-event-dot {
+    border-color: red;
+  }
+
+
+  .fc-event-time {
+    font-weight: bold;
+  }
+
+
+ 
+
+
+  .fc-daygrid-dot-event .fc-event-title {
+    font-weight: 100;
+  }
+
+
+  
+
+
+
+  

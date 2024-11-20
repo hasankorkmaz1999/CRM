@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -12,7 +12,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   standalone: true,
   imports: [SharedModule, MatListModule, ReactiveFormsModule ],
   templateUrl: './select-user.component.html',
-  styleUrl: './select-user.component.scss'
+  styleUrl: './select-user.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class SelectUserComponent implements OnInit {
   users: User[] = [];

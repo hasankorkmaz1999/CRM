@@ -1,0 +1,19 @@
+<div class="event-container">
+
+<h1>{{ data.title }}</h1>
+<p>Date: {{ data.date | date: 'short' }}</p>
+<p>Users: {{ data.users.join(', ') }}</p>
+
+
+<div class="buttons">
+<button mat-icon-button color="warn" >
+    <mat-icon>delete</mat-icon>
+  </button>
+
+  <button mat-icon-button color="primary">
+    <mat-icon>edit</mat-icon>
+  </button>
+  
+</div>
+
+</div>

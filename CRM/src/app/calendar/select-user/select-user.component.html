@@ -1,4 +1,7 @@
-<ng-container *ngIf="!step2">
+<div class="user-container">
+
+
+<ng-container  *ngIf="!step2">
     <h2 mat-dialog-title>Select User</h2>
     <mat-dialog-content>
       <mat-selection-list [(ngModel)]="selectedUsers">
@@ -8,15 +11,21 @@
       </mat-selection-list>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button mat-dialog-close>No</button>
+      <button mat-button mat-dialog-close>Cancel</button>
       <button mat-button (click)="proceedToEventForm()" [disabled]="!selectedUsers.length" color="primary">Select</button>
     </mat-dialog-actions>
   </ng-container>
 
+</div>
+
+
+
+<div class="create-container">
+
   <ng-container *ngIf="step2">
     <h2 mat-dialog-title>Create Event</h2>
     <form [formGroup]="eventForm">
-      <mat-dialog-content>
+      <mat-dialog-content class="inputfield">
         <mat-form-field appearance="outline">
           <mat-label>Event Title</mat-label>
           <input matInput formControlName="title" />
@@ -35,9 +44,16 @@
         </mat-form-field>
       </mat-dialog-content>
 
+
+      <div class="buttons">
       <mat-dialog-actions>
         <button mat-button (click)="goBack()">Back</button>
         <button mat-button [disabled]="!eventForm.valid" [mat-dialog-close]="prepareEventData()" color="primary">Create</button>
       </mat-dialog-actions>
+
+    </div>
+
     </form>
   </ng-container>
+
+</div>
