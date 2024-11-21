@@ -74,24 +74,39 @@ export class CalendarComponent implements OnInit {
   loadEvents() {
     const eventCollection = collection(this.firestore, 'events');
     collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
-      this.events = data.map((eventData) => new Event(eventData));
+      this.events = data.map((eventData) => new Event(eventData)); // Konvertierung zu Event-Objekten
+    
+      console.log('Loaded Events:', this.events); // Debug
   
-      this.calendarOptions = {
-        ...this.calendarOptions,
-        events: this.events.map((event) => ({
-          id: event.id, // Firestore-ID hier hinzufügen
-          title: event.title,
-          start: event.date, // Date-Objekt aus der Klasse
-          extendedProps: {
-            id: event.id, // Auch in extendedProps speichern
-            users: event.users,
-            description: event.description,
-            location: event.location,
-          },
-        })),
-      };
+      // Transformiere die Events für den Kalender
+      const calendarEvents = this.events.map((event) => ({
+        id: event.id, // Firestore-ID
+        title: event.title,
+        start: event.date,
+        extendedProps: {
+          id: event.id, // Firestore-ID
+          users: event.users,
+          description: event.description,
+          location: event.location,
+        },
+      }));
+  
+      console.log('Updated Calendar Events:', calendarEvents); // Debug
+  
+      // Aktualisiere die Kalenderoptionen
+      this.calendarOptions.events = calendarEvents;
+  
+      // Optional: Erzwinge eine manuelle Aktualisierung des Kalenders
+      if (this.calendarComponent) {
+        const calendarApi = this.calendarComponent.getApi();
+        calendarApi.removeAllEvents(); // Entferne alte Events
+        calendarEvents.forEach((event) => calendarApi.addEvent(event)); // Füge neue Events hinzu
+      }
     });
   }
+  
+  
+  
   
   
 
@@ -113,22 +128,26 @@ export class CalendarComponent implements OnInit {
 
 
   handleEventClick(event: any) {
-    console.log('Event clicked:', event.event);
-  
-    // Überprüfe, ob die ID korrekt ist
-    console.log('Event ID:', event.event.extendedProps['id']);
+    console.log('Clicked Event:', event.event);
+    console.log('Event ID in extendedProps:', event.event.extendedProps['id']);
   
     const dialogRef = this.dialog.open(EventDetailsComponent, {
       data: {
-        id: event.event.extendedProps['id'], // Stelle sicher, dass die ID hier übergeben wird
+        id: event.event.extendedProps['id'], // Übergabe der ID
         title: event.event.title,
         date: event.event.start,
         users: event.event.extendedProps['users'],
       },
       autoFocus: false,
     });
-    
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'reload') {
+        this.loadEvents(); // Events neu laden
+      }
+    });
   }
+  
   
 
   addEvent() {
@@ -167,10 +186,13 @@ export class CalendarComponent implements OnInit {
     addDoc(eventCollection, eventToSave)
       .then((docRef) => {
         console.log('Event saved successfully with ID:', docRef.id);
-        
+  
         // Speichere die generierte ID im Dokument
         updateDoc(docRef, { id: docRef.id })
-          .then(() => console.log('ID added to event document'))
+          .then(() => {
+            console.log('ID added to event document');
+            this.loadEvents(); // Events erneut laden, um Konsistenz zu gewährleisten
+          })
           .catch((error) => console.error('Error updating document with ID:', error));
       })
       .catch((error) => console.error('Error saving event:', error));

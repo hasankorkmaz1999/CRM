@@ -1,13 +1,15 @@
 <div class="event-container">
 
 <h1>{{ data.title }}</h1>
-<p *ngIf="data.users && data.users.length">Users: {{ data.users.join(', ') }}</p>
-<p *ngIf="!data.users || !data.users.length">No users selected</p>
-
+<p>Date: {{ data.date | date: 'short' }}</p>
+<p>Users: {{ data.users.join(', ') }}</p>
 
 
 <div class="buttons">
+    <button mat-button mat-dialog-close>Close</button>
 
+
+    <div class="two-buttons">
     <button  (click)="editEvent()" mat-icon-button color="primary" matTooltip="Edit" matTooltipPosition="above">
         <mat-icon>edit</mat-icon>
       </button>
@@ -16,6 +18,8 @@
     <button mat-icon-button color="warn" matTooltip="Delete" matTooltipPosition="above">
         <mat-icon>delete</mat-icon>
       </button>
+
+    </div>
 
 </div>
 

@@ -17,42 +17,32 @@ export class EventDetailsComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private firestore: Firestore,
-    private dialog: MatDialog // Richtig initialisieren
-  ) { this.data.users = this.data.users || []; }
+    private dialog: MatDialog
+  ) {}
 
   editEvent() {
     const dialogRef = this.dialog.open(EditEventDialogComponent, {
-      data: this.data, // Übergebe die aktuellen Event-Daten
+      data: this.data,
     });
   
-    dialogRef.afterClosed().subscribe((updatedEvent: any) => {
+    dialogRef.afterClosed().subscribe((updatedEvent) => {
       if (updatedEvent) {
-        if (!this.data.id) {
-          console.error('No ID found for the event.');
-          return;
-        }
-  
-        const eventRef = doc(this.firestore, `events/${this.data.id}`);
+        const eventRef = doc(this.firestore, `events/${updatedEvent.id}`);
         updateDoc(eventRef, updatedEvent)
           .then(() => {
-            console.log('Event updated successfully!');
+            console.log('Event updated successfully in Firestore!');
   
-            // Aktualisiere die Daten direkt im Dialog
+            // Aktualisiere die lokalen Daten
             this.data.title = updatedEvent.title;
             this.data.date = updatedEvent.date;
             this.data.users = updatedEvent.users;
   
-            console.log('Dialog data updated:', this.data);
+            console.log('Updated event details:', this.data);
+            dialogRef.close('reload'); 
           })
-          .catch((error) => console.error('Error updating event:', error));
+          .catch((error) => console.error('Error updating Firestore:', error));
       }
     });
   }
-  
-  
-
-
- 
-  
   
 }

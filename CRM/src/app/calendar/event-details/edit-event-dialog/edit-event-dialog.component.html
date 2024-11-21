@@ -1,4 +1,21 @@
 <h2 mat-dialog-title>Edit Event</h2>
+
+<!-- Benutzer-Auswahl -->
+<div>
+  <h3>Select Users</h3>
+  <mat-selection-list>
+    <mat-list-option
+      *ngFor="let user of users"
+      [value]="user.firstName + ' ' + user.lastName"
+      [selected]="isUserSelected(user.firstName + ' ' + user.lastName)"
+      (click)="toggleUserSelection(user.firstName + ' ' + user.lastName)"
+    >
+      {{ user.firstName }} {{ user.lastName }}
+    </mat-list-option>
+  </mat-selection-list>
+</div>
+
+<!-- Event-Daten bearbeiten -->
 <form [formGroup]="editForm">
   <mat-dialog-content>
     <mat-form-field appearance="outline">
@@ -21,9 +38,8 @@
 
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [disabled]="!editForm.valid" [mat-dialog-close]="prepareUpdatedEvent()" color="primary">
+    <button mat-button color="primary" (click)="saveChanges()">
       Save
     </button>
   </mat-dialog-actions>
 </form>
-
