@@ -36,22 +36,26 @@ export class UserComponent implements OnInit {
 
   openDeleteDialog(user: User) {
     const dialogRef = this.dialog.open(DialogContent, {
-      data: { user }, // Übergabe des Nutzers
+      data: { type: 'user', name: `${user.firstName} ${user.lastName}` }, // Übergabe von Namen und Typ
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleteUser(user.id);
+        this.deleteUser(user.id); // Hier nur die ID übergeben
       }
     });
   }
+  
 
   deleteUser(userId: string) {
     const userDocRef = doc(this.firestore, `users/${userId}`);
     deleteDoc(userDocRef)
-      .then(() => console.log(`User ${userId} deleted successfully`))
-      .catch((error) => console.error('Error deleting user:', error));
+      .then(() => {
+        console.log(`User ${userId} deleted successfully from Firestore!`);
+      })
+      .catch((error) => console.error('Error deleting user from Firestore:', error));
   }
+  
 }
 
 @Component({
@@ -59,29 +63,29 @@ export class UserComponent implements OnInit {
   standalone: true,
   imports: [MatDialogModule, MatButtonModule],
   template: `
-    <div class="delete-dialog">
-      <h2 mat-dialog-title>Confirm Deletion</h2>
-      <mat-dialog-content>
-        <p>Are you sure you want to delete this user?</p>
-        <p><strong>{{ data.user.firstName }} {{ data.user.lastName }}</strong></p>
-      </mat-dialog-content>
-      <mat-dialog-actions>
-        <button mat-button mat-dialog-close>No</button>
-        <button mat-button [mat-dialog-close]="true" color="warn">Yes</button>
-      </mat-dialog-actions>
-    </div>
-  `,
-  styles: [`
-    .delete-dialog {
+  <div class="delete-dialog">
+    <h2 mat-dialog-title>Confirm Deletion</h2>
+    <mat-dialog-content>
+      <p>Are you sure you want to delete this {{ data.type }}?</p>
+      <p><strong>{{ data.name }}</strong></p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>No</button>
+      <button mat-button [mat-dialog-close]="true" color="warn">Yes</button>
+    </mat-dialog-actions>
+  </div>
+`,
+styles: [`
+  .delete-dialog {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     text-align: center;
-}
-  `]
+  }
+`],
 })
 export class DialogContent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { user: User }) {}
+constructor(@Inject(MAT_DIALOG_DATA) public data: { type: string; name: string }) {}
 }
 
