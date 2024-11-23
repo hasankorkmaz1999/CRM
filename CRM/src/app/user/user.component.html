@@ -1,4 +1,26 @@
+
+<div class="search-container">
+  <label for="search-input" class="search-label">Search Users</label>
+  <input
+    id="search-input"
+    type="text"
+    class="search-input"
+    [(ngModel)]="searchQuery"
+    placeholder="Search by name"
+    (input)="filterUsers()"
+  />
+</div>
+
+
+
+
+
 <mat-card appearance="outlined">
+
+  <!-- Suchfeld -->
+ 
+
+  <!-- Benutzer-Tabelle -->
   <table class="user-table">
     <tr>
       <th>Name</th>
@@ -6,7 +28,7 @@
       <th>City</th>
       <th>Actions</th>
     </tr>
-    <tr *ngFor="let user of allUsers">
+    <tr *ngFor="let user of filteredUsers">
       <td [routerLink]="['/user', user.id]">{{ user.firstName }} {{ user.lastName }}</td>
       <td [routerLink]="['/user', user.id]">{{ user.email }}</td>
       <td [routerLink]="['/user', user.id]">{{ user.city }}</td>
@@ -19,6 +41,7 @@
   </table>
 </mat-card>
 
+<!-- Hinzufügen-Button -->
 <button (click)="openDialog()" class="add-user-button" mat-fab color="primary" matTooltip="Add user" matTooltipPosition="above">
   <mat-icon>add</mat-icon>
 </button>

@@ -14,10 +14,13 @@ import { User } from '../../models/user.class';
   imports: [MatIconModule, MatButtonModule, MatTooltipModule, SharedModule, MatDialogModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
+  
 })
 export class UserComponent implements OnInit {
   user = new User();
   allUsers: User[] = [];
+  searchQuery: string = '';
+  filteredUsers: User[] = [];
 
   constructor(public dialog: MatDialog, private firestore: Firestore) {}
 
@@ -27,6 +30,7 @@ export class UserComponent implements OnInit {
       .subscribe((changes) => {
         console.log('Received changes from database:', changes);
         this.allUsers = changes as User[];
+        this.filteredUsers = [...this.allUsers];
       });
   }
 
@@ -54,6 +58,17 @@ export class UserComponent implements OnInit {
         console.log(`User ${userId} deleted successfully from Firestore!`);
       })
       .catch((error) => console.error('Error deleting user from Firestore:', error));
+  }
+
+
+  filterUsers() {
+    // Filtern der Benutzer basierend auf der Eingabe
+    const query = this.searchQuery.toLowerCase();
+    this.filteredUsers = this.allUsers.filter(
+      (user) =>
+        user.firstName.toLowerCase().includes(query) ||
+        user.lastName.toLowerCase().includes(query)
+    );
   }
   
 }
