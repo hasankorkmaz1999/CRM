@@ -1,1 +1,35 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+    <!-- KPI Cards -->
+    <div class="kpi-cards">
+      <div class="kpi-card">
+        <h3>Total Events</h3>
+        <p>{{ totalEvents }}</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Events Today</h3>
+        <p>{{ eventsToday }}</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Events This Week</h3>
+        <p>{{ eventsThisWeek }}</p>
+      </div>
+    </div>
+  
+    <!-- Upcoming Events -->
+    <div class="upcoming-events">
+      <h3>Upcoming Events</h3>
+      <ul>
+        <li
+          *ngFor="let event of upcomingEvents"
+          [ngClass]="{ 'highlight-today': isEventToday(event.date) }"
+        >
+          <div class="event-item">
+            <h4>{{ event.title }}</h4>
+            <p>{{ event.date | date: 'short' }}</p>
+            <p>Organized by: {{ event.users.join(', ') }}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
