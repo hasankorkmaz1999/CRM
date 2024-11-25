@@ -28,28 +28,49 @@
   
     .upcoming-events {
         margin-top: 20px;
-    
+      
         ul {
           list-style: none;
           padding: 0;
-    
+      
           li {
+            cursor: pointer; // Zeigt den Pointer bei Hover an
             padding: 10px;
             margin: 5px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
-    
-            &.highlight-today {
-              background-color: rgba(255, 0, 0, 0.1); // Gelb für Hervorhebung
-              border-color: #ff0000;
+            background-color: #ffffff; // Standard Hintergrundfarbe
+      
+            &:hover {
+              background-color: #f4f4f4; // Leichte Hervorhebung bei Hover
+              border-color: #0078d7; // Blaue Umrandung
+              transition: background-color 0.3s ease, border-color 0.3s ease; // Weicher Übergang
             }
-    
-            .event-item h4 {
-              margin: 0;
-              font-weight: bold;
-              color: #0078d7;
+      
+            &.highlight-today {
+              background-color: rgba(255, 0, 0, 0.1); // Rot für heutige Events
+              border-color: #ff0000;
+      
+              &:hover {
+                background-color: rgba(255, 0, 0, 0.2); // Hellere Rot-Hervorhebung bei Hover
+                border-color: #ff3333; // Hellere Umrandung
+                transition: background-color 0.3s ease, border-color 0.3s ease; // Weicher Übergang
+              }
+            }
+      
+            .event-item {
+              h4 {
+                margin: 0;
+                font-weight: bold;
+                color: #0078d7;
+              }
+      
+              p {
+                margin: 5px 0;
+              }
             }
           }
         }
       }
+      
     }

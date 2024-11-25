@@ -19,7 +19,7 @@
     <div class="upcoming-events">
       <h3>Upcoming Events</h3>
       <ul>
-        <li
+        <li  (click)="openEventDetails(event)"
           *ngFor="let event of upcomingEvents"
           [ngClass]="{ 'highlight-today': isEventToday(event.date) }"
         >
@@ -27,6 +27,9 @@
             <h4>{{ event.title }}</h4>
             <p>{{ event.date | date: 'short' }}</p>
             <p>Organized by: {{ event.users.join(', ') }}</p>
+            <p *ngIf="isEventToday(event.date) && event.id">
+                Starts in: {{ countdowns[event.id] || 'Ended' }}
+              </p>
           </div>
         </li>
       </ul>
