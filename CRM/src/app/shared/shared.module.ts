@@ -10,7 +10,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field'; 
 import {MatDatepickerModule} from '@angular/material/datepicker'; 
 import { MatNativeDateModule } from '@angular/material/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 import {MatCardModule} from '@angular/material/card'; 
 import { RouterModule } from '@angular/router';
@@ -34,6 +34,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MatCardModule,
     RouterModule,
     MatMenuModule,
+    ReactiveFormsModule,
     
     
 
@@ -55,6 +56,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MatCardModule,
     RouterModule,
     MatMenuModule,
+    ReactiveFormsModule,
   ]
 })
 export class SharedModule {}

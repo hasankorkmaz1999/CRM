@@ -1,0 +1,52 @@
+<div class="search-container">
+    <label for="search-input" class="search-label">Search Customers</label>
+    <input
+      id="search-input"
+      type="text"
+      class="search-input"
+      [(ngModel)]="searchQuery"
+      placeholder="Search by name"
+      (input)="filterCustomers()"
+    />
+  </div>
+  
+  <mat-card appearance="outlined">
+    <table class="customer-table">
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>E-mail</th>
+        <th>Phone</th>
+        <th>City</th>
+        <th>Actions</th>
+      </tr>
+      <tr *ngFor="let customer of filteredCustomers">
+        <td [routerLink]="['/customer', customer.id]">{{ customer.firstName }}</td>
+        <td [routerLink]="['/customer', customer.id]">{{ customer.lastName }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.phone }}</td>
+        <td>{{ customer.address.city }}</td>
+        <td>
+          <button mat-icon-button color="primary" (click)="openEditDialog(customer)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="openDeleteDialog(customer)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </mat-card>
+  
+  <!-- Add Customer Button -->
+  <button
+    (click)="openAddDialog()"
+    class="add-customer-button"
+    mat-fab
+    color="primary"
+    matTooltip="Add customer"
+    matTooltipPosition="above"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+  
