@@ -11,7 +11,8 @@ export class Customer {
       country: string;
     }; // Adresse des Kunden
     createdAt: Date; // Datum, an dem der Kunde hinzugefügt wurde
-    notes?: string; // Zusätzliche Notizen oder Details
+    notes?: string;
+    profilePicture?: string; // Zusätzliche Notizen oder Details
   
     constructor(obj?: any) {
       this.id = obj?.id || '';
@@ -27,6 +28,7 @@ export class Customer {
       };
       this.createdAt = obj?.createdAt ? new Date(obj.createdAt) : new Date();
       this.notes = obj?.notes || '';
+      this.profilePicture = obj?.profilePicture || '';
     }
   }
   

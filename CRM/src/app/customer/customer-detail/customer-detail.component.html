@@ -1,0 +1,60 @@
+<mat-card class="user-detail-header" appearance="outlined">
+    <button  class="edit-icon" [matMenuTriggerFor]="userMenu" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="editCustomerDetails()">Edit</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+
+
+
+      <div class="profile-picture-container">
+        <img 
+          [src]="customer.profilePicture || '/assets/img/user.png'" 
+          [ngClass]="{'default-picture': !customer.profilePicture, 'uploaded-picture': customer.profilePicture}" 
+          alt="Profile Picture"
+        />
+        
+        <button (click)="addOrEditProfilePicture()" class="add-picture-button" mat-fab color="primary" matTooltip="Add/Edit picture" matTooltipPosition="above">
+          <mat-icon *ngIf="!customer.profilePicture">add</mat-icon>
+          <mat-icon *ngIf="customer.profilePicture">edit</mat-icon>
+        </button>
+      </div>
+      
+      
+      
+
+   <div class="user-details">
+    <h2>{{customer.firstName}} {{customer.lastName}}</h2>
+    <span>{{customer.email}}</span>
+    <span>{{customer.phone}}</span>
+   </div>
+  </mat-card>
+  
+
+  <mat-card class="user-detail-address" appearance="outlined">
+
+    <button class="edit-icon" [matMenuTriggerFor]="addressMenu" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+
+      <mat-menu #addressMenu="matMenu">
+        <button mat-menu-item (click)="editAddressDetails()">Edit</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+
+
+    <mat-card-header>
+        <mat-card-title>Address</mat-card-title>
+        <mat-card-subtitle></mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="address-content">
+        <span>{{customer.address.street}}</span>
+      
+      </mat-card-content>
+  </mat-card>
+

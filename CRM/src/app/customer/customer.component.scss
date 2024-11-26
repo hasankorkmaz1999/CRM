@@ -3,3 +3,42 @@
     right: 56px;
     bottom: 56px;
 }
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Passe die Breite nach Bedarf an */
+    max-width: 300px;
+    margin-bottom: 40px; /* Optional: Maximale Breite */
+  }
+  
+  .search-label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #153fb3; /* Label-Farbe */
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .search-input:focus {
+    border-color: #007bff; /* Farbe für den Fokuszustand */
+  }
+  
+  .single-customer {
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+
+  

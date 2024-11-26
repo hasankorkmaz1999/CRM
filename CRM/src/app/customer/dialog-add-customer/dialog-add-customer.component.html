@@ -1,6 +1,8 @@
+<div >
+
 <h2 mat-dialog-title>Add Customer</h2>
-<form [formGroup]="customerForm">
-  <mat-dialog-content>
+<form   [formGroup]="customerForm">
+  <mat-dialog-content class="add-customer-comtainer">
     <!-- First Name -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>First Name</mat-label>
@@ -57,8 +59,10 @@
     </mat-form-field>
   </mat-dialog-content>
 
-  <mat-dialog-actions>
+  <mat-dialog-actions class="buttons-customer-comtainer">
     <button mat-button mat-dialog-close>Cancel</button>
     <button mat-button color="primary" [disabled]="!customerForm.valid" (click)="saveCustomer()">Save</button>
   </mat-dialog-actions>
 </form>
+
+</div>

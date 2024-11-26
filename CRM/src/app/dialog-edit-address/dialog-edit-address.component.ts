@@ -14,6 +14,7 @@ export class DialogEditAddressComponent {
 loading = false;
 user: User = new User();
 userId: string = '';
+ 
 
 constructor(private firestore: Firestore) { }
 

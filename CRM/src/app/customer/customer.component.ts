@@ -4,7 +4,6 @@ import { DialogAddCustomerComponent } from './dialog-add-customer/dialog-add-cus
 import { MatDialog } from '@angular/material/dialog';
 import { Firestore, collection, collectionData, doc, deleteDoc } from '@angular/fire/firestore';
 import { Customer } from '../../models/customer.class';
-import { DialogEditCustomerComponent } from './dialog-edit-customer/dialog-edit-customer.component';
 import { DialogContent } from '../user/user.component';
 
 @Component({
@@ -50,16 +49,7 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  openEditDialog(customer: Customer) {
-    const dialogRef = this.dialog.open(DialogEditCustomerComponent, {
-      data: customer,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.loadCustomers(); // Aktualisiere die Liste nach der Bearbeitung
-      }
-    });
-  }
+ 
 
   openDeleteDialog(customer: Customer) {
     const dialogRef = this.dialog.open(DialogContent, {

@@ -20,16 +20,14 @@
         <th>City</th>
         <th>Actions</th>
       </tr>
-      <tr *ngFor="let customer of filteredCustomers">
+      <tr class="single-customer" *ngFor="let customer of filteredCustomers">
         <td [routerLink]="['/customer', customer.id]">{{ customer.firstName }}</td>
         <td [routerLink]="['/customer', customer.id]">{{ customer.lastName }}</td>
-        <td>{{ customer.email }}</td>
-        <td>{{ customer.phone }}</td>
-        <td>{{ customer.address.city }}</td>
+        <td  [routerLink]="['/customer', customer.id]">{{ customer.email }}</td>
+        <td  [routerLink]="['/customer', customer.id]">{{ customer.phone }}</td>
+        <td  [routerLink]="['/customer', customer.id]">{{ customer.address.city }}</td>
         <td>
-          <button mat-icon-button color="primary" (click)="openEditDialog(customer)">
-            <mat-icon>edit</mat-icon>
-          </button>
+         
           <button mat-icon-button color="warn" (click)="openDeleteDialog(customer)">
             <mat-icon>delete</mat-icon>
           </button>
