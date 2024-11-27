@@ -1,24 +1,22 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import {User} from '../../models/user.class'
+import { User } from '../../models/user.class';
 import { FormsModule } from '@angular/forms';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
-
 
 @Component({
   selector: 'app-dialog-add-user',
   standalone: true,
-  imports: [SharedModule,  FormsModule],
+  imports: [SharedModule, FormsModule],
   templateUrl: './dialog-add-user.component.html',
-  styleUrl: './dialog-add-user.component.scss'
+  styleUrl: './dialog-add-user.component.scss',
 })
 export class DialogAddUserComponent {
   user = new User();
   birthDate: Date = new Date();
   loading = false;
-  constructor(private firestore: Firestore) {
 
-  }
+  constructor(private firestore: Firestore) {}
 
   saveUser() {
     // Formatieren des Geburtsdatums als MM/DD/YYYY

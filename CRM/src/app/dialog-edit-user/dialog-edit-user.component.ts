@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { User } from '../../models/user.class';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dialog-edit-user',
@@ -11,34 +12,62 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './dialog-edit-user.component.html',
   styleUrl: './dialog-edit-user.component.scss'
 })
-export class DialogEditUserComponent {
-loading = false;
-user: User = new User();
-birthDate: Date = new Date();
-userId: string = '';
+export class DialogEditUserComponent implements OnInit {
+  userForm!: FormGroup;
 
-constructor(private firestore: Firestore) { }
+  constructor(
+    public dialogRef: MatDialogRef<DialogEditUserComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { user: User; userId: string },
+    private fb: FormBuilder,
+    private firestore: Firestore
+  ) {}
 
-saveUser() {
-  this.loading = true;
-
-  // Konvertiere birthDate zu einem String (z.B. MM/DD/YYYY)
-  if (this.user.birthDate instanceof Date) {
-    this.user.birthDate = this.user.birthDate.toLocaleDateString('en-US'); // Beispiel: 11/15/2024
+  ngOnInit(): void {
+    this.initForm();
   }
 
-  const userDocRef = doc(this.firestore, `users/${this.userId}`);
-  updateDoc(userDocRef, { ...this.user }) // Das User-Objekt wird mit String-Wert für birthDate gespeichert
-    .then(() => {
-      console.log('User successfully updated!');
-      this.loading = false;
-    })
-    .catch((error) => {
-      console.error('Error updating user:', error);
-      this.loading = false;
+  initForm() {
+    const user = this.data.user;
+
+    // Falls das Geburtsdatum als String gespeichert ist, in ein Date-Objekt umwandeln
+    let birthDate: Date | null = null;
+    if (user.birthDate) {
+      birthDate = new Date(user.birthDate); // Konvertieren
+      if (isNaN(birthDate.getTime())) {
+        birthDate = null; // Wenn ungültig, setze null
+      }
+    }
+
+    this.userForm = this.fb.group({
+      firstName: [user.firstName],
+      lastName: [user.lastName],
+      email: [user.email],
+      phone: [user.phone],
+      birthDate: [birthDate], // Hier wird ein `Date`-Objekt erwartet
+      street: [user.street],
+      city: [user.city],
+      zipCode: [user.zipCode],
     });
-}
+  }
 
-
-
-}
+  async saveUser() {
+    const updatedUser = this.userForm.value;
+  
+    // Formatieren des Geburtsdatums als MM/DD/YYYY
+    if (updatedUser.birthDate) {
+      const birthDate = new Date(updatedUser.birthDate);
+      updatedUser.birthDate = birthDate.toLocaleDateString('en-US'); // Formatieren in MM/DD/YYYY
+    } else {
+      updatedUser.birthDate = ''; // Fallback, falls kein Datum ausgewählt wurde
+    }
+  
+    try {
+      const userDocRef = doc(this.firestore, `users/${this.data.userId}`);
+      await updateDoc(userDocRef, updatedUser);
+      console.log('User updated successfully:', updatedUser);
+      this.dialogRef.close(true);
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  }
+}  

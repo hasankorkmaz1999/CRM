@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Customer } from '../../../models/customer.class';
 
 
-import { DialogEditAddressComponent } from '../../dialog-edit-address/dialog-edit-address.component';
 import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-picture.component';
 import { EditCustomerDetailsComponent } from '../edit-customer-details/edit-customer-details.component';
 

@@ -6,6 +6,7 @@ export class User {
   zipCode: number;
   city: string;
   email: string;
+  phone: number;
   id: string;
   profilePicture?: string;
 
@@ -19,5 +20,6 @@ export class User {
     this.email = obj ? obj.email: '';
     this.id = obj ? obj.id: '';
     this.profilePicture = obj ? obj.profilePicture : '';
+    this.phone = obj ? obj.phone: '';
   }
 }

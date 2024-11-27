@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { User } from '../../models/user.class';
 import {MatMenuModule} from '@angular/material/menu'; 
 import { MatDialog } from '@angular/material/dialog';
-import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 import { DialogAddPictureComponent } from '../dialog-add-picture/dialog-add-picture.component';
 
@@ -42,28 +41,26 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  openAddressDialog() {
+  
 
-  }
-
-  editAddressDetails() {
-   const dialog = this.dialog.open(DialogEditAddressComponent);
-   dialog.componentInstance.user = new User(this.user);
-   dialog.componentInstance.userId =  this.userId;
-  }
+ 
 
   editUserDetails() {
-    const dialog = this.dialog.open(DialogEditUserComponent);
+    const dialog = this.dialog.open(DialogEditUserComponent, {
+      data: {
+        user: { ...this.user }, // Kopiere die Benutzerdaten
+        userId: this.userId, // Benutzer-ID
+      },
+    });
   
-    // Falls birthDate als String gespeichert ist, in ein Date-Objekt umwandeln
-    const userForEdit = { ...this.user };
-    if (userForEdit.birthDate) {
-      userForEdit.birthDate = new Date(userForEdit.birthDate);
-    }
-  
-    dialog.componentInstance.user = new User(userForEdit);
-    dialog.componentInstance.userId = this.userId;
+    dialog.afterClosed().subscribe((updated) => {
+      if (updated) {
+        // Daten neu laden, wenn Änderungen vorgenommen wurden
+        this.getUser();
+      }
+    });
   }
+  
 
 
   addOrEditProfilePicture() {
