@@ -17,7 +17,8 @@ import { HttpClient } from '@angular/common/http';
 export class DialogAddPictureComponent {
   selectedFile: File | null = null;
   previewUrl: string | null = null;
-  userId: string = '';
+  id: string = ''; // User- oder Customer-ID
+  type: 'user' | 'customer' = 'user'; // Typ: entweder 'user' oder 'customer'
   loading = false;
   selectedFileName: string | null = null;
 
@@ -25,11 +26,11 @@ export class DialogAddPictureComponent {
     private http: HttpClient,
     private dialogRef: MatDialogRef<DialogAddPictureComponent>,
     private firestore: Firestore,
-    @Inject(MAT_DIALOG_DATA) public data: { userId: string }
+    @Inject(MAT_DIALOG_DATA) public data: { id: string; type: 'user' | 'customer' }
   ) {
-    this.userId = data.userId;
+    this.id = data.id;
+    this.type = data.type;
   }
-  
 
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -38,9 +39,8 @@ export class DialogAddPictureComponent {
       this.selectedFileName = file.name;
 
       const reader = new FileReader();
-      reader.onload = (e: any) => this.previewUrl = e.target.result;
+      reader.onload = (e: any) => (this.previewUrl = e.target.result);
       reader.readAsDataURL(file);
-   
     }
   }
 
@@ -60,7 +60,8 @@ export class DialogAddPictureComponent {
       this.http.post('https://api.cloudinary.com/v1_1/drzrzowgj/image/upload', formData).subscribe({
         next: (response: any) => {
           console.log('Image uploaded successfully:', response.secure_url);
-          this.dialogRef.close(response.secure_url);
+          this.saveImageUrlToFirestore(response.secure_url); // Speichere die URL in Firestore
+          this.dialogRef.close(response.secure_url); // Schließe den Dialog und sende die URL zurück
           this.loading = false;
         },
         error: (error) => {
@@ -71,18 +72,18 @@ export class DialogAddPictureComponent {
     }
   }
 
-
   saveImageUrlToFirestore(imageUrl: string) {
-    const userDocRef = doc(this.firestore, `users/${this.userId}`);
-    console.log('Saving image URL to Firestore for user:', this.userId);
+    const collectionName = this.type === 'user' ? 'users' : 'customers'; // Wähle die richtige Sammlung
+    const docRef = doc(this.firestore, `${collectionName}/${this.id}`);
+    console.log(`Saving image URL to Firestore for ${this.type}:`, this.id);
 
-    updateDoc(userDocRef, { profilePicture: imageUrl })
+    updateDoc(docRef, { profilePicture: imageUrl })
       .then(() => {
-        console.log('Profile picture URL successfully saved in Firestore!');
+        console.log(`${this.type} profile picture URL successfully saved in Firestore!`);
       })
       .catch((error) => {
-        console.error('Error saving profile picture URL in Firestore:', error);
-        alert('Failed to save profile picture URL. Please try again.');
+        console.error(`Error saving ${this.type} profile picture URL in Firestore:`, error);
+        alert(`Failed to save ${this.type} profile picture URL. Please try again.`);
       });
   }
 }

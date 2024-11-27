@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
-import { Firestore, doc, docData } from '@angular/fire/firestore';
+import { Firestore, doc, docData, updateDoc } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { Customer } from '../../../models/customer.class';
 
 
 import { DialogEditAddressComponent } from '../../dialog-edit-address/dialog-edit-address.component';
 import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-picture.component';
+import { EditCustomerDetailsComponent } from '../edit-customer-details/edit-customer-details.component';
 
 
 @Component({
@@ -44,26 +45,39 @@ export class CustomerDetailComponent implements OnInit {
   }
 
   editCustomerDetails() {
-   
+    const dialogRef = this.dialog.open(EditCustomerDetailsComponent, {
+      data: {
+        customer: this.customer,
+        customerId: this.customerId,
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Customer details updated.');
+        this.getCustomer(); // Aktualisiere die Anzeige
+      }
+    });
   }
+  
   
 
-  editAddressDetails() {
-  
-  }
+ 
 
   addOrEditProfilePicture() {
     const dialogRef = this.dialog.open(DialogAddPictureComponent, {
-      data: { customerId: this.customerId }
+      data: { id: this.customerId, type: 'customer' } // Typ ist 'customer'
     });
-
+  
     dialogRef.afterClosed().subscribe((imageUrl: string) => {
       if (imageUrl) {
-        this.customer.profilePicture = imageUrl;
+        this.customer.profilePicture = imageUrl; // Aktualisiere das lokale Kundenobjekt
         console.log('Customer profile picture updated:', imageUrl);
       }
     });
   }
+  
+  
 
   getProfilePictureButtonLabel(): string {
     return this.customer.profilePicture ? 'Edit picture' : 'Add picture';

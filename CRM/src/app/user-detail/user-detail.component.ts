@@ -68,16 +68,17 @@ export class UserDetailComponent implements OnInit {
 
   addOrEditProfilePicture() {
     const dialogRef = this.dialog.open(DialogAddPictureComponent, {
-      data: { userId: this.userId }
+      data: { id: this.userId, type: 'user' } // Typ ist 'user'
     });
-
+  
     dialogRef.afterClosed().subscribe((imageUrl: string) => {
       if (imageUrl) {
-        this.user.profilePicture = imageUrl;
-        console.log('Profile picture updated:', imageUrl);
+        this.user.profilePicture = imageUrl; // Aktualisiere das lokale Benutzerobjekt
+        console.log('User profile picture updated:', imageUrl);
       }
     });
   }
+  
 
   getProfilePictureButtonLabel(): string {
     return this.user.profilePicture ? 'Edit picture' : 'Add picture';

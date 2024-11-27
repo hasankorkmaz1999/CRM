@@ -1,0 +1,80 @@
+.user-detail-header {
+    min-height: 250px;
+    background-color: rgb(0, 0, 0, 0.2);
+    display: flex;
+   justify-content: flex-start;
+   align-items: flex-end;
+   flex-direction: row;
+   padding: 16px;
+
+   
+}
+
+
+.default-picture {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    border-radius: 100px;
+  }
+
+
+  .uploaded-picture {
+    max-height: 200px;
+    width: 100px;
+    object-fit: cover;
+    border-radius: 100px;
+   
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+
+  .add-picture-button {
+    mat-icon {
+    font-size: 16px;
+    height: 15px;
+    
+    }
+  }
+
+
+.user-details {
+    margin-left: 32px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    height: 100px;
+
+
+
+}
+
+
+.user-detail-address {
+    margin-top: 32px;
+}
+
+.edit-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.address-content {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.add-picture-button {
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+}
+
+
+.profile-picture-container {
+    position: relative;
+}
