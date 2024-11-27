@@ -31,10 +31,10 @@ export class EditCustomerDetailsComponent implements OnInit {
 
     // Initialisiere das Formular mit den Daten des Kunden
     this.customerForm = this.fb.group({
-      firstName: [customer.firstName, Validators.required],
-      lastName: [customer.lastName, Validators.required],
-      email: [customer.email, [Validators.required, Validators.email]],
-      phone: [customer.phone, Validators.required],
+      firstName: [customer.firstName],
+      lastName: [customer.lastName],
+      email: [customer.email],
+      phone: [customer.phone],
       street: [customer.address.street],
       city: [customer.address.city],
       zipCode: [customer.address.zipCode],

@@ -20,10 +20,10 @@ export class DialogAddCustomerComponent {
     private dialogRef: MatDialogRef<DialogAddCustomerComponent>
   ) {
     this.customerForm = this.fb.group({
-      firstName: ['', Validators.required], // Vorname
-      lastName: ['', Validators.required], // Nachname
-      email: ['', [Validators.required, Validators.email]], // E-Mail
-      phone: ['', Validators.required], // Telefonnummer
+      firstName: [''], // Vorname
+      lastName: [''], // Nachname
+      email: [''], // E-Mail
+      phone: [''], // Telefonnummer
       street: [''], // Adresse: Straße
       city: [''], // Adresse: Stadt
       zipCode: [''], // Adresse: Postleitzahl
