@@ -3,6 +3,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-dialog-add-customer',
@@ -17,7 +18,8 @@ export class DialogAddCustomerComponent {
   constructor(
     private fb: FormBuilder,
     private firestore: Firestore,
-    private dialogRef: MatDialogRef<DialogAddCustomerComponent>
+    private dialogRef: MatDialogRef<DialogAddCustomerComponent>,
+    private loggingService: LoggingService
   ) {
     this.customerForm = this.fb.group({
       firstName: [''], // Vorname
@@ -54,8 +56,11 @@ export class DialogAddCustomerComponent {
 
       try {
         const customerCollection = collection(this.firestore, 'customers');
-        await addDoc(customerCollection, customerData); // Kunde in Firestore speichern
+        const customerDocRef = await addDoc(customerCollection, customerData); // Kunde in Firestore speichern
         console.log('Customer successfully saved:', customerData);
+
+        // Logge die Aktion
+        this.logCustomerAction('add', customerDocRef.id, customerData);
 
         // Schließe den Dialog und signalisiere dem Aufrufer, dass der Kunde hinzugefügt wurde
         this.dialogRef.close(true);
@@ -65,5 +70,16 @@ export class DialogAddCustomerComponent {
     } else {
       console.warn('Customer form is invalid.');
     }
+  }
+
+
+
+  logCustomerAction(action: string, customerId: string, customerData: any) {
+    this.loggingService.log(action, 'customer', {
+      id: customerId,
+      firstName: customerData.firstName,
+      lastName: customerData.lastName,
+      email: customerData.email,
+    });
   }
 }

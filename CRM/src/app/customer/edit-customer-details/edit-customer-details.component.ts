@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { Customer } from '../../../models/customer.class';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-edit-customer-details',
@@ -19,7 +20,8 @@ export class EditCustomerDetailsComponent implements OnInit {
     public dialogRef: MatDialogRef<EditCustomerDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { customer: Customer; customerId: string },
     private fb: FormBuilder,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private loggingService: LoggingService
   ) {}
 
   ngOnInit(): void {
@@ -46,22 +48,10 @@ export class EditCustomerDetailsComponent implements OnInit {
   async save() {
     if (this.customerForm.valid) {
       const formValue = this.customerForm.value;
-  
-      // Überprüfe und konvertiere `createdAt` in ein gültiges Date-Objekt oder Timestamp
-      let createdAt = this.data.customer.createdAt;
-      if (typeof createdAt === 'string') {
-        createdAt = new Date(createdAt); // Konvertiere String zu Date
-      }
-  
-      if (isNaN(createdAt.getTime())) {
-        // Fallback: Wenn `createdAt` ungültig ist, setze es auf das aktuelle Datum
-        createdAt = new Date();
-      }
-  
+
       const updatedCustomer = {
         ...this.data.customer,
         ...formValue,
-        createdAt: createdAt.toISOString(), // In Firestore-kompatibles Format konvertieren
         address: {
           street: formValue.street,
           city: formValue.city,
@@ -69,16 +59,28 @@ export class EditCustomerDetailsComponent implements OnInit {
           country: formValue.country,
         },
       };
-  
+
       try {
         const customerDoc = doc(this.firestore, `customers/${this.data.customerId}`);
         await updateDoc(customerDoc, updatedCustomer); // Update in Firestore
         console.log('Customer updated:', updatedCustomer);
+
+        // Logge die Aktion
+        this.logCustomerAction('edit', this.data.customerId, updatedCustomer);
+
         this.dialogRef.close(true); // Schließe den Dialog
       } catch (error) {
         console.error('Error updating customer:', error);
       }
     }
   }
-  
+
+  logCustomerAction(action: string, customerId: string, updatedCustomer: any) {
+    this.loggingService.log(action, 'customer', {
+      id: customerId,
+      firstName: updatedCustomer.firstName,
+      lastName: updatedCustomer.lastName,
+      email: updatedCustomer.email,
+    });
+  }
 }
