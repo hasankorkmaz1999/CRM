@@ -74,3 +74,23 @@
       }
       
     }
+
+
+
+    .logs-section {
+      margin-top: 20px;
+    }
+    
+    .logs-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .logs-section li {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    

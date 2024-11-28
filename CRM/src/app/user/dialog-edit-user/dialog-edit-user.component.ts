@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
-import { User } from '../../models/user.class';
+import { SharedModule } from '../../shared/shared.module';
+import { User } from '../../../models/user.class';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-dialog-edit-user',
@@ -19,7 +20,8 @@ export class DialogEditUserComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogEditUserComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { user: User; userId: string },
     private fb: FormBuilder,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private loggingService: LoggingService
   ) {}
 
   ngOnInit(): void {
@@ -65,9 +67,20 @@ export class DialogEditUserComponent implements OnInit {
       const userDocRef = doc(this.firestore, `users/${this.data.userId}`);
       await updateDoc(userDocRef, updatedUser);
       console.log('User updated successfully:', updatedUser);
+      this.logUserAction('edit', this.data.userId);
       this.dialogRef.close(true);
     } catch (error) {
       console.error('Error updating user:', error);
     }
+  }
+
+
+  logUserAction(action: string, userId: string) {
+    this.loggingService.log(action, 'user', {
+      id: userId,
+      firstName: this.userForm.value.firstName,
+      lastName: this.userForm.value.lastName,
+      email: this.userForm.value.email,
+    });
   }
 }  

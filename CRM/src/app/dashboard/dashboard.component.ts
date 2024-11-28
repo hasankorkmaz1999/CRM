@@ -21,15 +21,71 @@ export class DashboardComponent implements OnInit {
   eventsThisWeek: number = 0;
   eventsToday: number = 0;
   countdowns: { [eventId: string]: string } = {}; 
+  logs: any[] = [];
 
   constructor (private firestore: Firestore
     ,  private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+   
     this.loadEvents();
     this.startLiveCountdown(); // Starte den Countdown
+    this.loadLogs(); // Logs laden
   }
+  
+
+  loadLogs() {
+    const logsCollection = collection(this.firestore, 'logs');
+    collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
+      this.logs = data.map((log: any) => {
+        // Prüfen, ob der `timestamp` direkt auf oberster Ebene vorhanden ist
+        if (log.timestamp) {
+          try {
+            log.timestamp = new Date(log.timestamp); // Konvertiere zu Date
+          } catch (error) {
+            console.warn('Invalid timestamp format:', log.timestamp);
+            log.timestamp = null; // Fallback bei Fehler
+          }
+        } else {
+          console.warn('Log has no timestamp:', log);
+          log.timestamp = null; // Kein `timestamp` vorhanden
+        }
+  
+        return log;
+      });
+  
+      // Sortiere die Logs nach `timestamp` absteigend (neueste zuerst)
+      this.logs.sort(
+        (a, b) =>
+          (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
+      );
+  
+      console.log('Processed logs:', this.logs); // Debugging
+    });
+  }
+  
+  
+  
+  generateLogMessage(log: any): string {
+    const entityType = log.entityType ? log.entityType.charAt(0).toUpperCase() + log.entityType.slice(1) : 'Entity'; // Erster Buchstabe groß
+    const action = log.action || 'updated'; // Standardwert, falls action fehlt
+    const firstName = log.details?.firstName || '';
+    const lastName = log.details?.lastName || '';
+    const fullName = [firstName, lastName].filter(Boolean).join(' '); // Kombiniert Vor- und Nachname
+    
+    switch (action) {
+      case 'add':
+        return `New ${entityType} (${fullName}) has been added.`;
+      case 'edit':
+        return `${entityType} (${fullName}) has been edited.`;
+      case 'delete':
+        return `${entityType} (${fullName}) has been deleted.`;
+      default:
+        return `${entityType} (${fullName}) has been updated.`;
+    }
+  }
+  
   
 
 

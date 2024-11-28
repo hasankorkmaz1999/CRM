@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
 import { Firestore, doc, docData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { User } from '../../models/user.class';
+import { User } from '../../../models/user.class';
 import {MatMenuModule} from '@angular/material/menu'; 
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
-import { DialogAddPictureComponent } from '../dialog-add-picture/dialog-add-picture.component';
+import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-picture.component';
 
 @Component({
   selector: 'app-user-detail',

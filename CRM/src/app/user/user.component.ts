@@ -3,10 +3,11 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/d
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button'; // Für den FAB Button
-import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
+import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.component';
 import { SharedModule } from '../shared/shared.module';
 import { Firestore, collection, collectionData, doc, deleteDoc } from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
+import { LoggingService } from '../shared/logging.service';
 
 @Component({
   selector: 'app-user',
@@ -14,15 +15,17 @@ import { User } from '../../models/user.class';
   imports: [MatIconModule, MatButtonModule, MatTooltipModule, SharedModule, MatDialogModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
-  
 })
 export class UserComponent implements OnInit {
-  user = new User();
   allUsers: User[] = [];
   searchQuery: string = '';
   filteredUsers: User[] = [];
 
-  constructor(public dialog: MatDialog, private firestore: Firestore) {}
+  constructor(
+    public dialog: MatDialog, 
+    private firestore: Firestore,
+    private loggingService: LoggingService // Logging-Service hinzufügen
+  ) {}
 
   ngOnInit(): void {
     const userCollection = collection(this.firestore, 'users'); // Firestore-Collection
@@ -42,24 +45,23 @@ export class UserComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogContent, {
       data: { type: 'user', name: `${user.firstName} ${user.lastName}` }, // Übergabe von Namen und Typ
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleteUser(user.id); // Hier nur die ID übergeben
+        this.deleteUser(user); // Benutzer-Objekt an deleteUser übergeben
       }
     });
   }
-  
 
-  deleteUser(userId: string) {
-    const userDocRef = doc(this.firestore, `users/${userId}`);
+  deleteUser(user: User) {
+    const userDocRef = doc(this.firestore, `users/${user.id}`);
     deleteDoc(userDocRef)
       .then(() => {
-        console.log(`User ${userId} deleted successfully from Firestore!`);
+        console.log(`User ${user.firstName} ${user.lastName} deleted successfully from Firestore!`);
+        this.logUserDeletion(user); // Log der Löschaktion
       })
       .catch((error) => console.error('Error deleting user from Firestore:', error));
   }
-
 
   filterUsers() {
     // Filtern der Benutzer basierend auf der Eingabe
@@ -70,7 +72,16 @@ export class UserComponent implements OnInit {
         user.lastName.toLowerCase().includes(query)
     );
   }
-  
+
+  logUserDeletion(user: User) {
+    // Logging der Löschaktion
+    this.loggingService.log('delete', 'user', {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    });
+  }
 }
 
 @Component({
@@ -101,6 +112,5 @@ styles: [`
 `],
 })
 export class DialogContent {
-constructor(@Inject(MAT_DIALOG_DATA) public data: { type: string; name: string }) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { type: string; name: string }) {}
 }
-
