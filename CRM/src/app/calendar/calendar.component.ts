@@ -1,4 +1,4 @@
-import { Component,CUSTOM_ELEMENTS_SCHEMA,OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component,CUSTOM_ELEMENTS_SCHEMA,OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, updateDoc } from '@angular/fire/firestore';
 import { MatDialog, MatDialogActions } from '@angular/material/dialog';
 import { SelectUserComponent } from './select-user/select-user.component';
@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import * as bootstrap from 'bootstrap';
 import { EventDetailsComponent } from './event-details/event-details.component';
 import { Event } from '../../models/events.class';
+import { LoggingService } from '../shared/logging.service';
 
 
 @Component({
@@ -25,7 +26,7 @@ import { Event } from '../../models/events.class';
   encapsulation: ViewEncapsulation.None,
   
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, AfterViewInit {
   events: Event[] = [];
 
 
@@ -65,42 +66,50 @@ export class CalendarComponent implements OnInit {
     
   };
 
-  constructor(private firestore: Firestore, public dialog: MatDialog) {}
+  constructor(
+    private firestore: Firestore,
+    public dialog: MatDialog,
+    private loggingService: LoggingService 
+  ) {}
 
   ngOnInit(): void {
-    this.loadEvents();
+    // Andere Initialisierungen
   }
+
+  ngAfterViewInit(): void {
+    this.loadEvents(); // Events erst nach der Initialisierung laden
+  }
+
 
   loadEvents() {
     const eventCollection = collection(this.firestore, 'events');
     collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
-      this.events = data.map((eventData) => new Event(eventData)); // Konvertierung zu Event-Objekten
-    
-      console.log('Loaded Events:', this.events); // Debug
-  
-      // Transformiere die Events für den Kalender
+      this.events = data.map((eventData) => new Event(eventData));
+
+      console.log('Loaded Events:', this.events);
+
       const calendarEvents = this.events.map((event) => ({
-        id: event.id, // Firestore-ID
+        id: event.id,
         title: event.title,
         start: event.date,
         extendedProps: {
-          id: event.id, // Firestore-ID
+          id: event.id,
           users: event.users,
           description: event.description,
           location: event.location,
         },
       }));
-  
-      console.log('Updated Calendar Events:', calendarEvents); // Debug
-  
-      // Aktualisiere die Kalenderoptionen
+
+      console.log('Updated Calendar Events:', calendarEvents);
+
       this.calendarOptions.events = calendarEvents;
-  
-      // Optional: Erzwinge eine manuelle Aktualisierung des Kalenders
-      if (this.calendarComponent) {
+
+      if (this.calendarComponent && this.calendarComponent.getApi()) {
         const calendarApi = this.calendarComponent.getApi();
-        calendarApi.removeAllEvents(); // Entferne alte Events
-        calendarEvents.forEach((event) => calendarApi.addEvent(event)); // Füge neue Events hinzu
+        calendarApi.removeAllEvents();
+        calendarEvents.forEach((event) => calendarApi.addEvent(event));
+      } else {
+        console.warn('calendarComponent is not initialized or not available.');
       }
     });
   }
@@ -191,11 +200,22 @@ export class CalendarComponent implements OnInit {
         updateDoc(docRef, { id: docRef.id })
           .then(() => {
             console.log('ID added to event document');
+            this.logEventAction('add', docRef.id, event.title, event.date.toISOString());
             this.loadEvents(); // Events erneut laden, um Konsistenz zu gewährleisten
           })
           .catch((error) => console.error('Error updating document with ID:', error));
       })
       .catch((error) => console.error('Error saving event:', error));
   }
+
+
+  logEventAction(action: string, eventId: string, title: string, timestamp: string) {
+    this.loggingService.log(action, 'event', {
+      id: eventId,
+      title: title,
+      timestamp: timestamp,
+    });
+  }
+  
   
 }

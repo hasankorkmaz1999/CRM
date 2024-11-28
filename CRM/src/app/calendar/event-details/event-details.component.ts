@@ -6,6 +6,7 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { EditEventDialogComponent } from './edit-event-dialog/edit-event-dialog.component';
 import { Firestore, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { DialogContent } from '../../user/user.component';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-event-details',
@@ -20,7 +21,8 @@ export class EventDetailsComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private firestore: Firestore,
     private dialog: MatDialog,
-    private dialogRef: MatDialogRef<EventDetailsComponent> 
+    private dialogRef: MatDialogRef<EventDetailsComponent> ,
+    private loggingService: LoggingService
   ) {}
 
   editEvent() {
@@ -41,29 +43,59 @@ export class EventDetailsComponent {
             this.data.users = updatedEvent.users;
   
             console.log('Updated event details:', this.data);
-            dialogRef.close('reload'); 
+  
+            // Logge die Aktion
+            this.logEventAction(
+              'edit',
+              updatedEvent.id,
+              updatedEvent.title,
+              new Date().toISOString()
+            );
+  
+            dialogRef.close('reload');
           })
           .catch((error) => console.error('Error updating Firestore:', error));
       }
     });
   }
+  
 
 
   deleteEvent() {
     const dialogRef = this.dialog.open(DialogContent, {
       data: { type: 'event', name: this.data.title }, // Dynamische Daten für den Dialog
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const eventRef = doc(this.firestore, `events/${this.data.id}`);
         deleteDoc(eventRef)
           .then(() => {
             console.log('Event deleted successfully from Firestore!');
+  
+            // Logge die Aktion
+            this.logEventAction(
+              'delete',
+              this.data.id,
+              this.data.title,
+              new Date().toISOString()
+            );
+  
             this.dialogRef.close('reload'); // Signalisiere die Elternkomponente, dass die Events neu geladen werden sollen
           })
           .catch((error) => console.error('Error deleting event from Firestore:', error));
       }
     });
   }
+  
+
+
+  logEventAction(action: string, eventId: string, title: string, timestamp: string) {
+    this.loggingService.log(action, 'event', {
+      id: eventId,
+      title: title,
+      timestamp: timestamp,
+    });
+  }
+  
 }

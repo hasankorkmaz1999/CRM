@@ -70,19 +70,23 @@ export class DashboardComponent implements OnInit {
   generateLogMessage(log: any): string {
     const entityType = log.entityType ? log.entityType.charAt(0).toUpperCase() + log.entityType.slice(1) : 'Entity'; // Erster Buchstabe groß
     const action = log.action || 'updated'; // Standardwert, falls action fehlt
+    const title = log.details?.title || ''; // Titel des Events oder leer, wenn nicht verfügbar
     const firstName = log.details?.firstName || '';
     const lastName = log.details?.lastName || '';
-    const fullName = [firstName, lastName].filter(Boolean).join(' '); // Kombiniert Vor- und Nachname
-    
+    const fullName = [firstName, lastName].filter(Boolean).join(' '); // Kombiniert Vor- und Nachname oder Titel
+  
+    // Wähle aus, ob `title` oder `fullName` verwendet wird
+    const displayName = title || fullName || 'Unknown';
+  
     switch (action) {
       case 'add':
-        return `New ${entityType} (${fullName}) has been added.`;
+        return `New ${entityType} (${displayName}) has been added.`;
       case 'edit':
-        return `${entityType} (${fullName}) has been edited.`;
+        return `${entityType} (${displayName}) has been edited.`;
       case 'delete':
-        return `${entityType} (${fullName}) has been deleted.`;
+        return `${entityType} (${displayName}) has been deleted.`;
       default:
-        return `${entityType} (${fullName}) has been updated.`;
+        return `${entityType} (${displayName}) has been updated.`;
     }
   }
   
