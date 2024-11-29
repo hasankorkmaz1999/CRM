@@ -6,6 +6,7 @@ import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CustomerComponent } from './customer/customer.component';
 import { CustomerDetailComponent } from './customer/customer-detail/customer-detail.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 export const routes: Routes = [
     {path: '', component: DashboardComponent},
@@ -15,5 +16,6 @@ export const routes: Routes = [
     { path: 'calendar', component: CalendarComponent },
     { path: 'customer', component: CustomerComponent },
     {path: 'customer/:id', component: CustomerDetailComponent},
+    { path: 'statistics', component: StatisticsComponent },
 
 ];

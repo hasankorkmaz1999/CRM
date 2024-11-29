@@ -5,12 +5,17 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {MatListModule} from '@angular/material/list'; 
 import { User } from '../../../models/user.class';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @Component({
   selector: 'app-select-user',
   standalone: true,
-  imports: [SharedModule, MatListModule, ReactiveFormsModule ],
+  imports: [SharedModule, MatListModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    MatNativeDateModule ],
   templateUrl: './select-user.component.html',
   styleUrl: './select-user.component.scss',
   encapsulation: ViewEncapsulation.None,
