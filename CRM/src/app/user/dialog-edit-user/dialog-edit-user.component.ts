@@ -49,6 +49,7 @@ export class DialogEditUserComponent implements OnInit {
       street: [user.street],
       city: [user.city],
       zipCode: [user.zipCode],
+      role: [user.role] // Neue Rolle hinzugefügt
     });
   }
 
@@ -81,6 +82,7 @@ export class DialogEditUserComponent implements OnInit {
       firstName: this.userForm.value.firstName,
       lastName: this.userForm.value.lastName,
       email: this.userForm.value.email,
+      role: this.userForm.value.role ,
     });
   }
 }  

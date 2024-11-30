@@ -40,6 +40,16 @@
       <mat-label>ZIP Code</mat-label>
       <input matInput formControlName="zipCode" />
     </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>User Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-option value="Admin">Admin</mat-option>
+        <mat-option value="Employee">Employee</mat-option>
+        <mat-option value="Guest">Guest</mat-option>
+      </mat-select>
+    </mat-form-field>
+    
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>

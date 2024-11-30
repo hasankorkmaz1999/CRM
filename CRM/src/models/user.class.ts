@@ -9,6 +9,7 @@ export class User {
   phone: number;
   id: string;
   profilePicture?: string;
+  role?: string; 
 
   constructor(obj?: any) {
     this.firstName = obj ? obj.firstName: '';
@@ -21,5 +22,6 @@ export class User {
     this.id = obj ? obj.id: '';
     this.profilePicture = obj ? obj.profilePicture : '';
     this.phone = obj ? obj.phone: '';
+    this.role = obj ? obj.role : '';
   }
 }

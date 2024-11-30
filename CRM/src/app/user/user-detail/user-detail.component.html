@@ -1,4 +1,6 @@
 <mat-card class="user-detail-header" appearance="outlined">
+ 
+
   <button
     class="edit-icon"
     [matMenuTriggerFor]="userMenu"
@@ -13,6 +15,16 @@
     <button mat-menu-item>Item 2</button>
   </mat-menu>
 
+<div class="left-section">
+
+  <div class="user-role">
+    {{user.role}}
+  </div>
+
+
+
+ 
+<div class="leftundersection">
   <div class="profile-picture-container">
     <img
       [src]="user.profilePicture || '/assets/img/user.png'"
@@ -41,6 +53,13 @@
    
     <span>{{ user.birthDate }}</span>
   </div>
+</div>
+
+
+
+
+</div>
+
 </mat-card>
 
 <mat-card class="user-detail-address" appearance="outlined">

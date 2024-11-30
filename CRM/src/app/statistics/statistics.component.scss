@@ -1,0 +1,53 @@
+.chart-container {
+    display: flex;
+    justify-content: center; /* Zentriere das Diagramm */
+    align-items: center;
+    padding: 20px; /* Platz um das Diagramm herum */
+    overflow: visible; /* Erlaube, dass Inhalte über den Container hinausgehen */
+    max-width: 100%; /* Container ist responsiv */
+    box-sizing: border-box;
+    width: 100%; /* Volle Breite */
+    height: auto; /* Automatische Höhe */
+  }
+
+
+  ngx-charts-advanced-pie-chart {
+    max-width: 100%; /* Passe die Breite des Diagramms an */
+    height: auto; /* Höhe proportional zur Breite */
+  }
+
+
+  .advanced-pie-legend {
+    overflow: visible;
+    height: 200px;
+  }
+
+
+  ::ng-deep .item-label{
+    padding-top: 10px;
+    padding-bottom: 10px;
+   
+   
+  }
+  
+
+  ::ng-deep .total-value{
+    padding-bottom: 20px;
+   
+   
+  }
+
+
+
+ 
+
+
+  ::ng-deep .advanced-pie-legend .legend-items-container .legend-items .legend-item .item-value {
+    font-size: 24px;
+    margin-top: 6px;
+    margin-left: 11px;
+    padding-top: 10px;
+
+   
+
+}
