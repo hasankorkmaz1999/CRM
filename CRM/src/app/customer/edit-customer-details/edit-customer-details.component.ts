@@ -48,9 +48,9 @@ export class EditCustomerDetailsComponent implements OnInit {
   async save() {
     if (this.customerForm.valid) {
       const formValue = this.customerForm.value;
-
+  
+      // Nur die veränderbaren Felder aktualisieren, `createdAt` bleibt unverändert
       const updatedCustomer = {
-        ...this.data.customer,
         ...formValue,
         address: {
           street: formValue.street,
@@ -59,21 +59,22 @@ export class EditCustomerDetailsComponent implements OnInit {
           country: formValue.country,
         },
       };
-
+  
       try {
         const customerDoc = doc(this.firestore, `customers/${this.data.customerId}`);
         await updateDoc(customerDoc, updatedCustomer); // Update in Firestore
         console.log('Customer updated:', updatedCustomer);
-
+  
         // Logge die Aktion
         this.logCustomerAction('edit', this.data.customerId, updatedCustomer);
-
+  
         this.dialogRef.close(true); // Schließe den Dialog
       } catch (error) {
         console.error('Error updating customer:', error);
       }
     }
   }
+  
 
   logCustomerAction(action: string, customerId: string, updatedCustomer: any) {
     this.loggingService.log(action, 'customer', {

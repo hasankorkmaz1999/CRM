@@ -2,24 +2,30 @@
     display: flex;
     justify-content: center; /* Zentriere das Diagramm */
     align-items: center;
+
     padding: 20px; /* Platz um das Diagramm herum */
     overflow: visible; /* Erlaube, dass Inhalte über den Container hinausgehen */
     max-width: 100%; /* Container ist responsiv */
-    box-sizing: border-box;
+   
     width: 100%; /* Volle Breite */
-    height: auto; /* Automatische Höhe */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+   
   }
 
 
-  ngx-charts-advanced-pie-chart {
-    max-width: 100%; /* Passe die Breite des Diagramms an */
-    height: auto; /* Höhe proportional zur Breite */
+  .ngx-charts {
+    display: flex;
+    justify-content: center;
+
   }
+
+
+  
 
 
   .advanced-pie-legend {
     overflow: visible;
-    height: 200px;
+  
   }
 
 
@@ -50,4 +56,12 @@
 
    
 
+}
+
+
+.user-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

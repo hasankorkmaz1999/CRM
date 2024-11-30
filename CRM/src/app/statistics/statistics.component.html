@@ -1,3 +1,7 @@
+<div class="user-container">
+
+<h1>User Roles Overview</h1>
+
 <div class="chart-container">
     <ngx-charts-advanced-pie-chart
       [view]="view"
@@ -6,5 +10,27 @@
       [results]="userChartData"
       [gradient]="true">
     </ngx-charts-advanced-pie-chart>
+  </div>
+  
+
+</div>
+
+
+<div class="customer-container">
+    <h1>Customer Overview</h1>
+    <div class="chart-container">
+      <ngx-charts-line-chart
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="customerGrowthData"
+        [xAxis]="xAxis"
+        [yAxis]="yAxis"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [timeline]="timeline">
+      </ngx-charts-line-chart>
+    </div>
   </div>
   
