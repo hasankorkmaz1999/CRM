@@ -24,11 +24,26 @@
 
   <ng-container *ngIf="step2">
     <h2 mat-dialog-title>Create Event</h2>
+
+
+
     <form [formGroup]="eventForm">
+
       <mat-dialog-content class="inputfield">
+
         <mat-form-field appearance="outline">
-          <mat-label>Event Title</mat-label>
-          <input matInput formControlName="title" />
+          <mat-label>Event Type</mat-label>
+          <mat-select formControlName="type">
+            <mat-option *ngFor="let type of eventTypes" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
 
         <mat-form-field appearance="outline">

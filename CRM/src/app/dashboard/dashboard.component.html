@@ -24,7 +24,7 @@
           [ngClass]="{ 'highlight-today': isEventToday(event.date) }"
         >
           <div class="event-item">
-            <h4>{{ event.title }}</h4>
+            <h4>{{ event.type }}</h4>
             <p>{{ event.date | date: 'short' }}</p>
             <p>Organized by: {{ event.users.join(', ') }}</p>
             <p *ngIf="isEventToday(event.date) && event.id">

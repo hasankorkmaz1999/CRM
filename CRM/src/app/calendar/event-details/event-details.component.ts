@@ -38,7 +38,8 @@ export class EventDetailsComponent {
             console.log('Event updated successfully in Firestore!');
   
             // Aktualisiere die lokalen Daten
-            this.data.title = updatedEvent.title;
+            this.data.type = updatedEvent.type; // Event Type aktualisieren
+            this.data.description = updatedEvent.description; // Beschreibung aktualisieren
             this.data.date = updatedEvent.date;
             this.data.users = updatedEvent.users;
   
@@ -48,7 +49,7 @@ export class EventDetailsComponent {
             this.logEventAction(
               'edit',
               updatedEvent.id,
-              updatedEvent.title,
+              updatedEvent.type, // Type anstelle von title loggen
               new Date().toISOString()
             );
   
@@ -59,11 +60,12 @@ export class EventDetailsComponent {
     });
   }
   
+  
 
 
   deleteEvent() {
     const dialogRef = this.dialog.open(DialogContent, {
-      data: { type: 'event', name: this.data.title }, // Dynamische Daten für den Dialog
+      data: { type: 'event', name: this.data.type }, // Verwende `type` anstelle von `title`
     });
   
     dialogRef.afterClosed().subscribe((result) => {
@@ -77,7 +79,7 @@ export class EventDetailsComponent {
             this.logEventAction(
               'delete',
               this.data.id,
-              this.data.title,
+              this.data.type, // Type anstelle von title loggen
               new Date().toISOString()
             );
   
@@ -88,12 +90,13 @@ export class EventDetailsComponent {
     });
   }
   
+  
 
 
-  logEventAction(action: string, eventId: string, title: string, timestamp: string) {
+  logEventAction(action: string, eventId: string, type: string, timestamp: string) {
     this.loggingService.log(action, 'event', {
       id: eventId,
-      title: title,
+      type: type, // Event Type loggen
       timestamp: timestamp,
     });
   }

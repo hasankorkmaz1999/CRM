@@ -25,6 +25,8 @@ export class SelectUserComponent implements OnInit {
   selectedUsers: User[] = [];
   step2 = false;
   eventForm: FormGroup;
+  eventTypes: string[] = ['Meeting', 'Webinar', 'Workshop', 'Other'];
+
 
   constructor(
     private firestore: Firestore,
@@ -33,9 +35,10 @@ export class SelectUserComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.eventForm = this.fb.group({
-      title: ['', Validators.required],
-      date: ['', Validators.required],
-      time: ['', Validators.required],
+      type: ['', Validators.required], // Event Type
+      description: [''], // Event Description
+      date: ['', Validators.required], // Event Date
+      time: ['', Validators.required], // Event Time
     });
   }
 
@@ -59,11 +62,14 @@ export class SelectUserComponent implements OnInit {
     const eventDateTime = new Date(formValue.date);
     const [hours, minutes] = formValue.time.split(':');
     eventDateTime.setHours(+hours, +minutes);
-
+  
     return {
-      title: formValue.title,
+      type: formValue.type || 'Other', // Standardwert, falls nichts ausgewählt wurde
+      description: formValue.description || '',
       date: eventDateTime,
       users: this.selectedUsers,
     };
   }
+  
+  
 }

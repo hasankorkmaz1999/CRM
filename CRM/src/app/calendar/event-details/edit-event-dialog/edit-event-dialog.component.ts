@@ -16,7 +16,8 @@ import { MatListModule, MatListOption } from '@angular/material/list';
 export class EditEventDialogComponent implements OnInit {
   editForm: FormGroup;
   users: User[] = []; // Alle Benutzer aus Firestore
-  selectedUsers: string[] = []; // Benutzer, die bereits im Event ausgewählt sind
+  selectedUsers: string[] = [];
+  eventTypes: string[] = ['Meeting', 'Webinar', 'Workshop', 'Other']; // Liste der Event-Typen // Benutzer, die bereits im Event ausgewählt sind
 
   constructor(
     private fb: FormBuilder,
@@ -26,17 +27,19 @@ export class EditEventDialogComponent implements OnInit {
   ) {
     // Erstelle das Formular und befülle die Werte
     this.editForm = this.fb.group({
-      title: [this.data.title, Validators.required],
-      date: [new Date(this.data.date), Validators.required],
+      type: [this.data.type || 'Other', Validators.required], // Event-Typ
+      description: [this.data.description || '', Validators.maxLength(200)], // Event-Beschreibung
+      date: [new Date(this.data.date), Validators.required], // Event-Datum
       time: [
-        new Date(this.data.date).toTimeString().slice(0, 5), // Zeit extrahieren
+        new Date(this.data.date).toTimeString().slice(0, 5), // Event-Zeit
         Validators.required,
       ],
     });
-
+  
     // Übernehme die bereits ausgewählten Benutzer
     this.selectedUsers = this.data.users || [];
   }
+  
 
   ngOnInit(): void {
     // Lade Benutzer aus Firestore
@@ -68,13 +71,15 @@ export class EditEventDialogComponent implements OnInit {
   
     const updatedEvent = {
       id: this.data.id, // Behalte die ID
-      title: formValue.title,
-      date: updatedDate.toISOString(),
-      users: this.selectedUsers, // Hier wird die aktualisierte Liste der Benutzer verwendet
+      type: formValue.type, // Event-Typ
+      description: formValue.description, // Event-Beschreibung
+      date: updatedDate.toISOString(), // Event-Datum
+      users: this.selectedUsers, // Ausgewählte Benutzer
     };
   
     this.dialogRef.close(updatedEvent); // Rückgabe der aktualisierten Daten
   }
+  
   
 
   cancel() {

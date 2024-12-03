@@ -1,26 +1,22 @@
 <div class="event-container">
 
-<h1>{{ data.title }}</h1>
-<p>Date: {{ data.date | date: 'short' }}</p>
-<p>Users: {{ data.users.join(', ') }}</p>
+  <h1>{{ data.type }}</h1> <!-- Event Type anzeigen -->
+  <p>Date: {{ data.date | date: 'short' }}</p>
+  <p>Description: {{ data.description }}</p> <!-- Beschreibung hinzufügen -->
+  <p>Users: {{ data.users.join(', ') }}</p>
 
-
-<div class="buttons">
+  <div class="buttons">
     <button mat-button mat-dialog-close>Close</button>
 
-
     <div class="two-buttons">
-    <button  (click)="editEvent()" mat-icon-button color="primary" matTooltip="Edit" matTooltipPosition="above">
+      <button (click)="editEvent()" mat-icon-button color="primary" matTooltip="Edit" matTooltipPosition="above">
         <mat-icon>edit</mat-icon>
       </button>
 
-      
-    <button (click)="deleteEvent()" mat-icon-button color="warn" matTooltip="Delete" matTooltipPosition="above">
+      <button (click)="deleteEvent()" mat-icon-button color="warn" matTooltip="Delete" matTooltipPosition="above">
         <mat-icon>delete</mat-icon>
       </button>
-
     </div>
-
-</div>
+  </div>
 
 </div>

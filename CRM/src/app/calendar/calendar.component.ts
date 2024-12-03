@@ -50,20 +50,13 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     },
     eventDidMount: (info) => {
       const userNames = info.event.extendedProps['users'].join(', ');
-      let tooltipTitle = info.event.title;
-    
-      // Prüfen, ob die Benutzernamen bereits im Titel enthalten sind
-      if (!tooltipTitle.includes(userNames)) {
-        tooltipTitle = `${userNames} - ${tooltipTitle}`;
-      }
-    
+      const tooltipTitle = `${info.event.extendedProps['type']} - Users: ${userNames}`;
       const tooltip = new bootstrap.Tooltip(info.el, {
-        title: tooltipTitle, // Verhindert doppelte Benutzernamen
+        title: tooltipTitle,
         placement: 'top',
         trigger: 'hover',
       });
     },
-    
   };
 
   constructor(
@@ -85,25 +78,25 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     const eventCollection = collection(this.firestore, 'events');
     collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
       this.events = data.map((eventData) => new Event(eventData));
-
+  
       console.log('Loaded Events:', this.events);
-
+  
       const calendarEvents = this.events.map((event) => ({
         id: event.id,
-        title: event.title,
+        title: event.type, // Nur der Typ des Events wird als Titel gesetzt
         start: event.date,
         extendedProps: {
           id: event.id,
           users: event.users,
-          description: event.description,
-          location: event.location,
+          type: event.type, // Event-Typ
+          description: event.description, // Event-Beschreibung
         },
       }));
-
+  
       console.log('Updated Calendar Events:', calendarEvents);
-
+  
       this.calendarOptions.events = calendarEvents;
-
+  
       if (this.calendarComponent && this.calendarComponent.getApi()) {
         const calendarApi = this.calendarComponent.getApi();
         calendarApi.removeAllEvents();
@@ -138,12 +131,12 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   handleEventClick(event: any) {
     console.log('Clicked Event:', event.event);
-    console.log('Event ID in extendedProps:', event.event.extendedProps['id']);
   
     const dialogRef = this.dialog.open(EventDetailsComponent, {
       data: {
-        id: event.event.extendedProps['id'], // Übergabe der ID
-        title: event.event.title,
+        id: event.event.extendedProps['id'],
+        type: event.event.extendedProps['type'], // Nur der Typ des Events
+        description: event.event.extendedProps['description'], // Beschreibung
         date: event.event.start,
         users: event.event.extendedProps['users'],
       },
@@ -158,20 +151,22 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   }
   
   
+  
 
   addEvent() {
     const dialogRef = this.dialog.open(SelectUserComponent);
-    
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const newEvent = new Event({
-          title: result.title?.trim(),
+          type: result.type || 'Other', // Standardwert 'Other' verwenden
+          description: result.description?.trim() || '',
           date: result.date,
           users: result.users.map((user: User) => `${user.firstName} ${user.lastName}`),
         });
   
         // Validierung
-        if (!newEvent.title || !newEvent.date || newEvent.users.length === 0) {
+        if (!newEvent.type || !newEvent.date || newEvent.users.length === 0) {
           console.error('Invalid event data:', newEvent);
           return;
         }
@@ -183,39 +178,36 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   }
   
   
+  
 
   saveEventToFirestore(event: Event) {
     const eventCollection = collection(this.firestore, 'events');
     const eventToSave = {
       ...event,
-      date: event.date.toISOString(), // Firestore benötigt ein ISO-Format
+      date: event.date.toISOString(),
       createdAt: new Date().toISOString(),
     };
-  
+
     addDoc(eventCollection, eventToSave)
       .then((docRef) => {
         console.log('Event saved successfully with ID:', docRef.id);
-  
-        // Speichere die generierte ID im Dokument
+
         updateDoc(docRef, { id: docRef.id })
           .then(() => {
             console.log('ID added to event document');
-            this.logEventAction('add', docRef.id, event.title, event.date.toISOString());
-            this.loadEvents(); // Events erneut laden, um Konsistenz zu gewährleisten
+            this.logEventAction('add', docRef.id, event.type, event.date.toISOString());
+            this.loadEvents();
           })
           .catch((error) => console.error('Error updating document with ID:', error));
       })
       .catch((error) => console.error('Error saving event:', error));
   }
 
-
-  logEventAction(action: string, eventId: string, title: string, timestamp: string) {
+  logEventAction(action: string, eventId: string, type: string, timestamp: string) {
     this.loggingService.log(action, 'event', {
       id: eventId,
-      title: title,
+      type: type,
       timestamp: timestamp,
     });
   }
-  
-  
 }
