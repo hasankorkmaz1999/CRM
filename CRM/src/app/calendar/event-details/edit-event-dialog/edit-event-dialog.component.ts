@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Firestore, doc, updateDoc, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, doc, updateDoc, collection, collectionData, addDoc } from '@angular/fire/firestore';
 import { User } from '../../../../models/user.class';
 import { MatListModule, MatListOption } from '@angular/material/list';
 
@@ -42,26 +42,35 @@ export class EditEventDialogComponent implements OnInit {
   
 
   ngOnInit(): void {
-    // Lade Benutzer aus Firestore
+    console.log('Original data.users:', this.data.users); // Debugging
+    this.selectedUsers = [...(this.data.users || [])];
+    console.log('Initialized selectedUsers:', this.selectedUsers);
+  
     const userCollection = collection(this.firestore, 'users');
     collectionData(userCollection, { idField: 'id' }).subscribe((data) => {
       this.users = data as User[];
+      console.log('Loaded users from Firestore:', this.users);
     });
-  }
-
-  toggleUserSelection(user: string): void {
-    if (this.selectedUsers.includes(user)) {
-      this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
-    } else {
-      this.selectedUsers.push(user);
-    }
-    console.log('Updated selectedUsers:', this.selectedUsers);
   }
   
 
+  toggleUserSelection(user: string): void {
+    console.log('Toggle user:', user); // Debugging: Welcher Benutzer wird bearbeitet?
+  
+    if (this.selectedUsers.includes(user)) {
+      this.selectedUsers = this.selectedUsers.filter((u: string) => u !== user);
+      console.log('User removed. Updated selectedUsers:', this.selectedUsers); // Debugging: Benutzer entfernt
+    } else {
+      this.selectedUsers.push(user);
+      console.log('User added. Updated selectedUsers:', this.selectedUsers); // Debugging: Benutzer hinzugefügt
+    }
+  }
+  
+  
   isUserSelected(user: string): boolean {
     return this.selectedUsers.includes(user);
   }
+  
 
   saveChanges() {
     const formValue = this.editForm.value;
@@ -70,15 +79,101 @@ export class EditEventDialogComponent implements OnInit {
     updatedDate.setHours(+hours, +minutes);
   
     const updatedEvent = {
-      id: this.data.id, // Behalte die ID
-      type: formValue.type, // Event-Typ
-      description: formValue.description, // Event-Beschreibung
-      date: updatedDate.toISOString(), // Event-Datum
-      users: this.selectedUsers, // Ausgewählte Benutzer
+      id: this.data.id,
+      type: formValue.type,
+      description: formValue.description,
+      date: updatedDate.toISOString(),
+      users: [...this.selectedUsers],
     };
   
-    this.dialogRef.close(updatedEvent); // Rückgabe der aktualisierten Daten
+    console.log('--- Updated Event ---', updatedEvent);
+  
+    const changes: any = {};
+    const originalEvent = this.data;
+  
+    // Vergleich von Typ, Beschreibung und Datum
+    if (originalEvent.type !== updatedEvent.type) {
+      changes.type = { old: originalEvent.type, new: updatedEvent.type };
+    }
+  
+    if (originalEvent.description !== updatedEvent.description) {
+      changes.description = { old: originalEvent.description, new: updatedEvent.description };
+    }
+  
+    if (originalEvent.date !== updatedEvent.date) {
+      changes.date = { old: originalEvent.date, new: updatedEvent.date };
+    }
+  
+    // Normalisiere Benutzerlisten
+    const normalizedOriginalUsers = [...(originalEvent.users || [])].map((u: string) =>
+      u.trim().toLowerCase()
+    );
+    const normalizedUpdatedUsers = [...(updatedEvent.users || [])].map((u: string) =>
+      u.trim().toLowerCase()
+    );
+  
+    // Vergleich der Benutzerlisten
+    const removedUsers = normalizedOriginalUsers.filter(
+      (user) => !normalizedUpdatedUsers.includes(user)
+    );
+    const addedUsers = normalizedUpdatedUsers.filter(
+      (user) => !normalizedOriginalUsers.includes(user)
+    );
+  
+    console.log('Removed Users:', removedUsers);
+    console.log('Added Users:', addedUsers);
+  
+    if (removedUsers.length > 0 || addedUsers.length > 0) {
+      changes.users = {
+        old: originalEvent.users || [],
+        new: updatedEvent.users || [],
+        added: addedUsers,
+        removed: removedUsers,
+      };
+    }
+  
+    console.log('--- Final Changes ---', changes);
+  
+    // Dialog schließen und Änderungen übergeben
+    this.dialogRef.close({ updatedEvent, changes });
   }
+  
+  
+  
+  
+  
+
+  
+  
+
+  logChanges(eventId: string, changes: any) {
+    // Formatierung der alten und neuen Datumswerte
+    if (changes.date) {
+      changes.date.old = new Date(changes.date.old).toISOString();
+      changes.date.new = new Date(changes.date.new).toISOString();
+    }
+  
+    const log = {
+      timestamp: new Date().toISOString(),
+      action: 'edit',
+      entityType: 'event',
+      details: {
+        id: eventId,
+        changes: changes,
+      },
+    };
+  
+    const logsCollection = collection(this.firestore, 'logs');
+    addDoc(logsCollection, log)
+      .then(() => {
+        console.log('Changes successfully logged:', log);
+      })
+      .catch((error) => {
+        console.error('Error logging changes:', error);
+      });
+  }
+  
+  
   
   
 

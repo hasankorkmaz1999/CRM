@@ -6,6 +6,7 @@ import { EventDetailsComponent } from '../calendar/event-details/event-details.c
 import { MatDialog } from '@angular/material/dialog';
 import { interval } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LogDetailsComponent } from './log-details/log-details.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,6 +23,7 @@ export class DashboardComponent implements OnInit {
   eventsToday: number = 0;
   countdowns: { [eventId: string]: string } = {};
   logs: any[] = [];
+  selectedLog: string | null = null;
 
   constructor(private firestore: Firestore, private dialog: MatDialog) {}
 
@@ -29,6 +31,14 @@ export class DashboardComponent implements OnInit {
     this.loadEvents();
     this.startLiveCountdown();
     this.loadLogs();
+  }
+
+  openLogDetails(log: any) {
+    this.dialog.open(LogDetailsComponent, {
+      data: log,
+      width: '500px',
+      autoFocus: false,
+    });
   }
 
   loadLogs() {

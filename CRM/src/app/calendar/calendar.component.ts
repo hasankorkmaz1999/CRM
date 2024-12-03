@@ -70,42 +70,53 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.loadEvents(); // Events erst nach der Initialisierung laden
+    setTimeout(() => {
+      if (!this.calendarComponent || !this.calendarComponent.getApi()) {
+        console.error('Calendar component is not initialized.');
+        return;
+      }
+      this.loadEvents(); // Events laden
+    }, 0);
   }
+  
 
 
   loadEvents() {
-    const eventCollection = collection(this.firestore, 'events');
-    collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
-      this.events = data.map((eventData) => new Event(eventData));
-  
-      console.log('Loaded Events:', this.events);
-  
-      const calendarEvents = this.events.map((event) => ({
-        id: event.id,
-        title: event.type, // Nur der Typ des Events wird als Titel gesetzt
-        start: event.date,
-        extendedProps: {
-          id: event.id,
-          users: event.users,
-          type: event.type, // Event-Typ
-          description: event.description, // Event-Beschreibung
-        },
-      }));
-  
-      console.log('Updated Calendar Events:', calendarEvents);
-  
-      this.calendarOptions.events = calendarEvents;
-  
-      if (this.calendarComponent && this.calendarComponent.getApi()) {
-        const calendarApi = this.calendarComponent.getApi();
-        calendarApi.removeAllEvents();
-        calendarEvents.forEach((event) => calendarApi.addEvent(event));
-      } else {
-        console.warn('calendarComponent is not initialized or not available.');
+    setTimeout(() => {
+      if (!this.calendarComponent || !this.calendarComponent.getApi()) {
+        console.warn('Calendar component is not initialized or available.');
+        return;
       }
-    });
+  
+      const eventCollection = collection(this.firestore, 'events');
+      collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
+        this.events = data.map((eventData) => new Event(eventData));
+  
+      
+  
+        const calendarEvents = this.events.map((event) => ({
+          id: event.id,
+          title: event.type,
+          start: event.date,
+          extendedProps: {
+            id: event.id,
+            users: event.users,
+            type: event.type,
+            description: event.description,
+          },
+        }));
+  
+       
+  
+        const calendarApi = this.calendarComponent.getApi();
+        if (calendarApi) {
+          calendarApi.removeAllEvents();
+          calendarEvents.forEach((event) => calendarApi.addEvent(event));
+        }
+      });
+    }, 0);
   }
+  
   
   
   
@@ -113,7 +124,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   
 
   handleDateClick(event: any) {
-    console.log('Date clicked:', event.dateStr);
+   
     
     // Verwende die FullCalendar API, um die Ansicht zu wechseln
     const calendarApi = this.calendarComponent.getApi();
@@ -130,7 +141,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
 
   handleEventClick(event: any) {
-    console.log('Clicked Event:', event.event);
+   
   
     const dialogRef = this.dialog.open(EventDetailsComponent, {
       data: {

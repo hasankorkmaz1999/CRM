@@ -41,7 +41,7 @@
   <div class="logs-section">
     <h3>Activity Logs</h3>
     <ul>
-      <li *ngFor="let log of logs">
+      <li *ngFor="let log of logs" (click)="openLogDetails(log)" style="cursor: pointer;">
         <div>
           <strong>
             {{ generateLogMessage(log) }}
@@ -49,11 +49,9 @@
           <small *ngIf="log.timestamp">
             ({{ log.timestamp | date: 'short' }})
           </small>
-          <small *ngIf="!log.timestamp">
-            (No timestamp available)
-          </small>
         </div>
       </li>
     </ul>
   </div>
+  
   

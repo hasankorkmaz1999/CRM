@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef  } from '@angular/material/dia
 import { SharedModule } from '../../shared/shared.module';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { EditEventDialogComponent } from './edit-event-dialog/edit-event-dialog.component';
-import { Firestore, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, doc, updateDoc, deleteDoc, collection, addDoc } from '@angular/fire/firestore';
 import { DialogContent } from '../../user/user.component';
 import { LoggingService } from '../../shared/logging.service';
 
@@ -30,27 +30,30 @@ export class EventDetailsComponent {
       data: this.data,
     });
   
-    dialogRef.afterClosed().subscribe((updatedEvent) => {
-      if (updatedEvent) {
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const { updatedEvent, changes } = result; // Änderungen und Event-Daten
         const eventRef = doc(this.firestore, `events/${updatedEvent.id}`);
+  
         updateDoc(eventRef, updatedEvent)
           .then(() => {
             console.log('Event updated successfully in Firestore!');
   
             // Aktualisiere die lokalen Daten
-            this.data.type = updatedEvent.type; // Event Type aktualisieren
-            this.data.description = updatedEvent.description; // Beschreibung aktualisieren
+            this.data.type = updatedEvent.type;
+            this.data.description = updatedEvent.description;
             this.data.date = updatedEvent.date;
             this.data.users = updatedEvent.users;
   
             console.log('Updated event details:', this.data);
   
-            // Logge die Aktion
+            // Logge die Aktion mit den Änderungen
             this.logEventAction(
               'edit',
               updatedEvent.id,
-              updatedEvent.type, // Type anstelle von title loggen
-              new Date().toISOString()
+              updatedEvent.type,
+              new Date().toISOString(),
+              changes // Übergib die Änderungen an die Log-Funktion
             );
   
             dialogRef.close('reload');
@@ -59,6 +62,8 @@ export class EventDetailsComponent {
       }
     });
   }
+  
+  
   
   
 
@@ -93,12 +98,24 @@ export class EventDetailsComponent {
   
 
 
-  logEventAction(action: string, eventId: string, type: string, timestamp: string) {
-    this.loggingService.log(action, 'event', {
-      id: eventId,
-      type: type, // Event Type loggen
-      timestamp: timestamp,
-    });
+  logEventAction(action: string, eventId: string, type: string, timestamp: string, changes?: any) {
+    const log = {
+      action,
+      entityType: 'event',
+      timestamp,
+      details: {
+        id: eventId,
+        type,
+        changes: changes || {}, // Zusätzliche Änderungen
+      },
+    };
+  
+    const logsCollection = collection(this.firestore, 'logs');
+    addDoc(logsCollection, log)
+      .then(() => console.log('Log saved successfully:', log))
+      .catch((error) => console.error('Error saving log:', error));
   }
+  
+  
   
 }
