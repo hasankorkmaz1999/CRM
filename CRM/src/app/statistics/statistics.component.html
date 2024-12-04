@@ -37,19 +37,27 @@
 
 
 
-  <div class="chart-container">
+  <div class="event-container">
+    <h1>Weekly Distribution of Events by Type</h1>
+
+   <div class="chart-container">
     <ngx-charts-bar-vertical
-      [scheme]="colorScheme"
-      [results]="chartData"
-      [gradient]="true"
-      [xAxis]="true"
-      [yAxis]="true"
-      [legend]="false"
-      [showXAxisLabel]="true"
-      [showYAxisLabel]="true"
-      xAxisLabel="Event Types"
-      yAxisLabel="Event Count"
+    [scheme]="colorSchemeEvents"
+  [results]="chartData"
+  [gradient]="true"
+  [xAxis]="true"
+  [yAxis]="true"
+  [legend]="false"
+  [showXAxisLabel]="true"
+  [showYAxisLabel]="true"
+  xAxisLabel="Event Types"
+  yAxisLabel="Event Count"
+  [yAxisTickFormatting]="formatYAxisTicks"
     >
+
+    
+    
     </ngx-charts-bar-vertical>
+    </div>
   </div>
   

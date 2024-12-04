@@ -17,10 +17,10 @@ export class StatisticsComponent implements OnInit {
 
   // Korrektes Farbschema mit ScaleType
   colorScheme = {
-    name: 'vivid',
+    name: 'cool',
     selectable: true,
-    group: ScaleType.Ordinal, // Korrektur hier
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    group: ScaleType.Ordinal,
+    domain: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728'] 
   };
 
   constructor(private firestore: Firestore) {}
@@ -126,7 +126,12 @@ export class StatisticsComponent implements OnInit {
   
 
   chartData: { name: string; value: number }[] = [];
-  
+  colorSchemeEvents = {
+    name: 'fire',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#FF6384', '#36A2EB', '#FFCE56', '#8E44AD'] // Farbschema für das Event Bar Chart
+  };
 
 
   loadEventData(): void {
@@ -154,6 +159,11 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+
+  formatYAxisTicks(value: number): string {
+    return Number.isInteger(value) ? value.toString() : ''; // Zeigt nur ganze Zahlen an
+  }
+  
 
 
 
