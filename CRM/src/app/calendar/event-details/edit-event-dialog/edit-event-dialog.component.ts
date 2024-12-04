@@ -100,8 +100,9 @@ export class EditEventDialogComponent implements OnInit {
       changes.description = { old: originalEvent.description, new: updatedEvent.description };
     }
   
-    if (originalEvent.date !== updatedEvent.date) {
-      changes.date = { old: originalEvent.date, new: updatedEvent.date };
+    // Vergleiche die Datumswerte als ISO-Strings
+    if (new Date(originalEvent.date).toISOString() !== updatedDate.toISOString()) {
+      changes.date = { old: new Date(originalEvent.date).toISOString(), new: updatedDate.toISOString() };
     }
   
     // Normalisiere Benutzerlisten
@@ -137,6 +138,7 @@ export class EditEventDialogComponent implements OnInit {
     // Dialog schließen und Änderungen übergeben
     this.dialogRef.close({ updatedEvent, changes });
   }
+  
   
   
   

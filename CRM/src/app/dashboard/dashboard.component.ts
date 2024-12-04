@@ -7,11 +7,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LogDetailsComponent } from './log-details/log-details.component';
+import { UserDetailComponent } from '../user/user-detail/user-detail.component';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SharedModule, EventDetailsComponent],
+  imports: [SharedModule, EventDetailsComponent, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -25,7 +27,7 @@ export class DashboardComponent implements OnInit {
   logs: any[] = [];
   selectedLog: string | null = null;
 
-  constructor(private firestore: Firestore, private dialog: MatDialog) {}
+  constructor(private firestore: Firestore, private dialog: MatDialog, private router: Router) {}
 
   ngOnInit(): void {
     this.loadEvents();
@@ -170,4 +172,32 @@ export class DashboardComponent implements OnInit {
       autoFocus: false,
     });
   }
+
+
+  isEventEditLog(log: any): boolean {
+    return log.action === 'edit' && log.entityType === 'event';
+  }
+
+  navigateToUserDetails(log: any) {
+    if (log.entityType === 'user' && log.details?.id) {
+      // Navigiere zur Benutzer-Detailansicht
+      this.router.navigate(['/user-details', log.details.id]);
+    } else {
+      console.warn('Log does not contain valid user details or ID.');
+    }
+  }
+
+
+  navigateToCustomerDetails(log: any) {
+    if (log.entityType === 'customer' && log.details?.id) {
+      // Navigiere zur Kunden-Detailansicht
+      this.router.navigate(['/customer-details', log.details.id]);
+    } else {
+      console.warn('Log does not contain valid customer details or ID.');
+    }
+  }
+  
+  
+  
+  
 }

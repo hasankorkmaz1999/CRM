@@ -34,3 +34,22 @@
     </div>
   </div>
   
+
+
+
+  <div class="chart-container">
+    <ngx-charts-bar-vertical
+      [scheme]="colorScheme"
+      [results]="chartData"
+      [gradient]="true"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      xAxisLabel="Event Types"
+      yAxisLabel="Event Count"
+    >
+    </ngx-charts-bar-vertical>
+  </div>
+  

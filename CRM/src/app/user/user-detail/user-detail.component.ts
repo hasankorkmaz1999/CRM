@@ -9,6 +9,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-picture.component';
 
+
+
+
 @Component({
   selector: 'app-user-detail',
   standalone: true,

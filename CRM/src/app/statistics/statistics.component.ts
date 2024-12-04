@@ -28,6 +28,7 @@ export class StatisticsComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserData();
     this.loadCustomerGrowthData();
+    this.loadEventData();
   }
 
   loadUserData() {
@@ -50,6 +51,22 @@ export class StatisticsComponent implements OnInit {
       return acc;
     }, {});
   }
+
+
+
+
+
+
+
+  showLabels: boolean = true;
+  animations: boolean = false;
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showYAxisLabel: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Month';
+  yAxisLabel: string = 'Customer Count';
+  timeline: boolean = true;
 
 
   loadCustomerGrowthData() {
@@ -104,17 +121,42 @@ export class StatisticsComponent implements OnInit {
 
 
   
-  showLabels: boolean = true;
-  animations: boolean = false;
-  xAxis: boolean = true;
-  yAxis: boolean = true;
-  showYAxisLabel: boolean = true;
-  showXAxisLabel: boolean = true;
-  xAxisLabel: string = 'Month';
-  yAxisLabel: string = 'Customer Count';
-  timeline: boolean = true;
+ 
 
   
+
+  chartData: { name: string; value: number }[] = [];
+  
+
+
+  loadEventData(): void {
+    const today = new Date();
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay() + 1); // Montag
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // Sonntag
+
+    const eventCollection = collection(this.firestore, 'events');
+    collectionData(eventCollection, { idField: 'id' }).subscribe((events: any[]) => {
+      const filteredEvents = events.filter(event => {
+        const eventDate = new Date(event.date);
+        return eventDate >= startOfWeek && eventDate <= endOfWeek;
+      });
+
+      const eventTypes = ['Meeting', 'Webinar', 'Workshop', 'Other'];
+      const eventCounts = eventTypes.map(type => ({
+        name: type,
+        value: filteredEvents.filter(event => event.type === type).length,
+      }));
+
+      this.chartData = eventCounts;
+      console.log('Chart Data:', this.chartData);
+    });
+  }
+
+
+
+
 
  
 }

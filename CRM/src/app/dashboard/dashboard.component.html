@@ -41,17 +41,57 @@
   <div class="logs-section">
     <h3>Activity Logs</h3>
     <ul>
-      <li *ngFor="let log of logs" (click)="openLogDetails(log)" style="cursor: pointer;">
-        <div>
+      <li class="list-elements" *ngFor="let log of logs" >
+
+
+        <div class="log-message">
           <strong>
             {{ generateLogMessage(log) }}
           </strong>
+         
+        </div>
+
+
+        <div class="buttons-comtainer">
+
           <small *ngIf="log.timestamp">
             ({{ log.timestamp | date: 'short' }})
           </small>
-        </div>
+
+          <a
+          *ngIf="log.entityType === 'customer' && log.action === 'edit'"
+          (click)="navigateToCustomerDetails(log)"
+          class="see-details-link"
+          href="javascript:void(0)"
+        >
+          View Customer Details
+        </a>
+
+        <!-- Link für Benutzer-Details -->
+        <a
+          *ngIf="log.entityType === 'user' && log.action === 'edit'"
+          (click)="navigateToUserDetails(log)"
+          class="see-details-link"
+          href="javascript:void(0)"
+        >
+          View User Details
+        </a>
+
+        <!-- Link für Event-Details -->
+        <a
+          *ngIf="isEventEditLog(log)"
+          (click)="openLogDetails(log)"
+          class="see-details-link"
+          href="javascript:void(0)"
+        >
+          See Details
+        </a>
+
+      </div>
+      
       </li>
     </ul>
   </div>
+  
   
   
