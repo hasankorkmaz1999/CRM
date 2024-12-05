@@ -32,17 +32,25 @@ export class CustomerComponent implements OnInit {
   loadCustomers() {
     const customerCollection = collection(this.firestore, 'customers');
     collectionData(customerCollection, { idField: 'id' }).subscribe((data) => {
+      // Konvertiere die Daten in Customer-Objekte
       this.customers = data.map((customerData) => new Customer(customerData));
-      this.filteredCustomers = [...this.customers]; // Standardmäßig alle anzeigen
+
+      // Sortiere alphabetisch nach Nachname (oder Vorname, falls gewünscht)
+      this.customers.sort((a, b) => a.lastName.localeCompare(b.lastName));
+
+      // Aktualisiere die gefilterten Kunden
+      this.filteredCustomers = [...this.customers];
     });
   }
 
   filterCustomers() {
     const query = this.searchQuery.toLowerCase();
-    this.filteredCustomers = this.customers.filter((customer) =>
-      customer.firstName.toLowerCase().includes(query) ||
-      customer.lastName.toLowerCase().includes(query)
-    );
+    this.filteredCustomers = this.customers
+      .filter((customer) =>
+        customer.firstName.toLowerCase().includes(query) ||
+        customer.lastName.toLowerCase().includes(query)
+      )
+      .sort((a, b) => a.lastName.localeCompare(b.lastName)); // Alphabetisch sortieren
   }
 
   openAddDialog() {

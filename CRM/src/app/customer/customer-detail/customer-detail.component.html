@@ -76,8 +76,17 @@
     </mat-card-header>
   
     <mat-card-content class="address-content">
-      <span>E-mail: {{ customer.email }}</span>
-      <span>Tel.:  {{ customer.phone }}</span>
+      <span>E-mail:  <a 
+        href="mailto:{{ customer.email }}" 
+        class="email-link">
+        {{ customer.email }}
+      </a></span>
+      <span>Phone: <a 
+        href="tel:{{ customer.phone.toString() }}" 
+        class="phone-link">
+        {{ customer.phone }}
+      </a>
+  </span>
     </mat-card-content>
   </mat-card>
 

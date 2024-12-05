@@ -28,15 +28,22 @@ export class UserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const userCollection = collection(this.firestore, 'users'); // Firestore-Collection
-    collectionData(userCollection, { idField: 'id' }) // Abonnieren der Daten
+    const userCollection = collection(this.firestore, 'users');
+    collectionData(userCollection, { idField: 'id' })
       .subscribe((changes) => {
         console.log('Received changes from database:', changes);
         this.allUsers = changes as User[];
+  
+        // Sortiere alphabetisch nach Vorname
+        this.allUsers.sort((a, b) => a.firstName.localeCompare(b.firstName));
+  
+        // Alternativ: Sortiere nach Nachname
+        // this.allUsers.sort((a, b) => a.lastName.localeCompare(b.lastName));
+  
         this.filteredUsers = [...this.allUsers];
       });
   }
-
+  
   openDialog() {
     this.dialog.open(DialogAddUserComponent);
   }
@@ -64,14 +71,16 @@ export class UserComponent implements OnInit {
   }
 
   filterUsers() {
-    // Filtern der Benutzer basierend auf der Eingabe
     const query = this.searchQuery.toLowerCase();
-    this.filteredUsers = this.allUsers.filter(
-      (user) =>
-        user.firstName.toLowerCase().includes(query) ||
-        user.lastName.toLowerCase().includes(query)
-    );
+    this.filteredUsers = this.allUsers
+      .filter(
+        (user) =>
+          user.firstName.toLowerCase().includes(query) ||
+          user.lastName.toLowerCase().includes(query)
+      )
+      .sort((a, b) => a.firstName.localeCompare(b.firstName)); // Alphabetische Sortierung
   }
+  
 
   logUserDeletion(user: User) {
     // Logging der Löschaktion
