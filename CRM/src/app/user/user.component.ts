@@ -61,7 +61,7 @@ export class UserComponent implements OnInit {
   }
 
   deleteUser(user: User) {
-    const userDocRef = doc(this.firestore, `users/${user.id}`);
+    const userDocRef = doc(this.firestore, `users/${user.uid}`);
     deleteDoc(userDocRef)
       .then(() => {
         console.log(`User ${user.firstName} ${user.lastName} deleted successfully from Firestore!`);
@@ -85,7 +85,7 @@ export class UserComponent implements OnInit {
   logUserDeletion(user: User) {
     // Logging der Löschaktion
     this.loggingService.log('delete', 'user', {
-      id: user.id,
+      id: user.uid,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,

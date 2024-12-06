@@ -29,9 +29,9 @@
       <th>Actions</th>
     </tr>
     <tr *ngFor="let user of filteredUsers">
-      <td [routerLink]="['/user', user.id]">{{ user.firstName }} {{ user.lastName }}</td>
-      <td [routerLink]="['/user', user.id]">{{ user.email }}</td>
-      <td [routerLink]="['/user', user.id]">{{ user.city }}</td>
+      <td [routerLink]="['/user', user.uid]">{{ user.firstName }} {{ user.lastName }}</td>
+      <td [routerLink]="['/user', user.uid]">{{ user.email }}</td>
+      <td [routerLink]="['/user', user.uid]">{{ user.city }}</td>
       <td>
         <button mat-icon-button color="warn" (click)="openDeleteDialog(user)">
           <mat-icon>delete</mat-icon>

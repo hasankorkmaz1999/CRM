@@ -27,6 +27,21 @@
         <mat-toolbar-row>
           <mat-icon (click)="drawer.toggle()" class="menu">menu</mat-icon>
           <span>Simple CRM</span>
+
+
+          
+          <div class="user-status">
+            <p>Welcome, {{ userName }}!</p>
+            <p>Your role: {{ userRole }}</p>
+
+
+            <span class="spacer"></span>
+            <button mat-button (click)="logout()" *ngIf="!isLoginRoute">
+              <mat-icon>logout</mat-icon> Logout
+            </button>
+
+          </div>
+          
         </mat-toolbar-row>
       </mat-toolbar>
       <div class="router-container">

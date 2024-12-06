@@ -72,6 +72,16 @@
 
 
 
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" [(ngModel)]="password" />
+    </mat-form-field>
+    
+  </div>
+
+
+
   <mat-dialog-actions>
     <button [disabled]="loading" mat-button [mat-dialog-close]>Cancel</button>
     <button [disabled]="loading" mat-button (click)="saveUser()" [mat-dialog-close] cdkFocusInitial>Save</button>

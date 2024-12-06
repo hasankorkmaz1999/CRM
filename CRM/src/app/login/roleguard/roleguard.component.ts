@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
@@ -11,16 +11,20 @@ export class RoleGuard implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     const user = this.auth.currentUser;
-  
+
     if (user) {
       const userRef = doc(this.firestore, `users/${user.uid}`);
       const docSnap = await getDoc(userRef);
+
       if (docSnap.exists()) {
-        return true; // Zugang gewährt
+        const userRole = docSnap.data()['role'];
+        if (userRole === 'admin') {
+          return true; // Admins haben vollen Zugang
+        }
       }
     }
-  
-    this.router.navigate(['/login']); // Zugang verweigert -> Zur Login-Seite
+
+    this.router.navigate(['/dashboard']); // Weiterleitung bei fehlendem Zugriff
     return false;
   }
 }
