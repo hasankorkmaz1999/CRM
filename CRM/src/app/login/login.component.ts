@@ -27,31 +27,31 @@ export class LoginComponent {
 
   onLogin() {
     signInWithEmailAndPassword(this.auth, this.email, this.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        this.checkUserRoleAndRedirect(user.uid); // Redirect after login
-      })
-      .catch((error) => {
-        this.errorMessage = 'Invalid login credentials.';
-      });
+    .then((userCredential) => {
+      const user = userCredential.user;
+      this.checkUserRoleAndRedirect(user.uid); // Weiterleitung nach erfolgreicher Anmeldung
+    })
+    .catch((error) => {
+      this.errorMessage = 'Invalid login credentials.';
+    });
+  
   }
+
+
 
   private checkUserRoleAndRedirect(uid: string) {
     const userRef = doc(this.firestore, `users/${uid}`);
     getDoc(userRef).then((docSnap) => {
       if (docSnap.exists()) {
         const role = docSnap.data()['role'];
-        if (role === 'admin') {
-          this.router.navigate(['/admin-dashboard']);
-        } else if (role === 'employee') {
-          this.router.navigate(['/employee-dashboard']);
-        } else if (role === 'guest') {
-          this.router.navigate(['/guest-dashboard']);
-        }
+        localStorage.setItem('userRole', role); // Rolle speichern
+  
+        this.router.navigate(['/dashboard']); // Leite immer zum Haupt-Dashboard
       } else {
         this.errorMessage = 'User role not found.';
         this.router.navigate(['/login']); // Fallback bei fehlender Rolle
       }
     });
   }
+  
 }

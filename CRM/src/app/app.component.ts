@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,5 +30,11 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
- 
+  isLoginRoute: boolean = false;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(() => {
+      this.isLoginRoute = this.router.url === '/login';
+    });
+  }
 }

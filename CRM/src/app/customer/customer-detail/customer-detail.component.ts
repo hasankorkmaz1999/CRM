@@ -81,4 +81,16 @@ export class CustomerDetailComponent implements OnInit {
   getProfilePictureButtonLabel(): string {
     return this.customer.profilePicture ? 'Edit picture' : 'Add picture';
   }
+
+
+  formatToEnglishDate(date: string | Date): string {
+    const formattedDate = typeof date === 'string' ? new Date(date) : date;
+    const month = (formattedDate.getMonth() + 1).toString().padStart(2, '0'); // Monat mit führender Null
+    const day = formattedDate.getDate().toString().padStart(2, '0'); // Tag mit führender Null
+    const year = formattedDate.getFullYear();
+    return `${month}/${day}/${year}`; // MM/DD/YYYY Format
+  }
+  
+  
+  
 }
