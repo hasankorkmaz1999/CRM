@@ -24,23 +24,31 @@
     </mat-drawer>
     <div class="example-sidenav-content">
       <mat-toolbar color="primary">
-        <mat-toolbar-row>
+        <mat-toolbar-row class="mat-toolbar-div">
+
+          <div class="left-section">
           <mat-icon (click)="drawer.toggle()" class="menu">menu</mat-icon>
           <span>Simple CRM</span>
+        </div>
 
 
-          
+
+        <div class="right-section">
           <div class="user-status">
             <p>Welcome, {{ userName }}!</p>
             <p>Your role: {{ userRole }}</p>
 
+          </div>
 
+
+
+          <div>
             <span class="spacer"></span>
             <button mat-button (click)="logout()" *ngIf="!isLoginRoute">
               <mat-icon>logout</mat-icon> Logout
             </button>
-
           </div>
+        </div>
           
         </mat-toolbar-row>
       </mat-toolbar>

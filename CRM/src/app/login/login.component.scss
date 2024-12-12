@@ -1,22 +1,110 @@
 .login-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
     background-color: #f5f5f5;
   }
   
   .login-card {
+    margin-top: 100px;
     width: 300px;
+   
   }
   
   .full-width {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
   
+
+
   .error-message {
     color: red;
     margin: 10px 0;
     text-align: center;
   }
+
+  .title {
+    text-align: center;
+   padding: 30px;
+   font-size: 36px;
+  }
+  
+
+  .login-button {
+    width: 50%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .loading-spinner {
+    position: fixed; /* Fixiert den Spinner relativ zum gesamten Fenster */
+    top: 50%; /* Zentriert vertikal */
+    left: 50%; /* Zentriert horizontal */
+    transform: translate(-50%, -50%); /* Verschiebt den Spinner, um ihn genau in die Mitte zu setzen */
+    display: flex; /* Flexbox zum Zentrieren des Inhalts */
+    justify-content: center; /* Zentriert horizontal */
+    align-items: center; /* Zentriert vertikal */
+    z-index: 1000; /* Stellt sicher, dass der Spinner über allem anderen liegt */
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: Hintergrundüberlagerung */
+    width: 100vw; /* Bedeckt die gesamte Breite */
+    height: 100vh; /* Bedeckt die gesamte Höhe */
+  }
+  
+ /* Stellt sicher, dass die login-container den gesamten Bildschirm einnimmt */
+
+  
+  /* Styling für die Logo-Container */
+  .logo-container {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    /* Animation hinzufügen */
+    animation: logoAnimation 1.5s ease-out forwards;
+  }
+  
+  /* Größe des Logos anpassen */
+  .logo-container img {
+    width: 400px; /* Passe die Größe nach Bedarf an */
+  }
+  
+  /* Definition der Animation */
+  @keyframes logoAnimation {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px) scale(0.8); /* Startposition oberhalb und verkleinert */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1); /* Endposition in der Mitte und normale Größe */
+    }
+  }
+
+
+  .privacy-container {
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+
+    >p {
+        color: blue;
+    }
+  }
+  
+
   

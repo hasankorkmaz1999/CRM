@@ -17,7 +17,7 @@
     padding-left: 16px;
     padding-right: 16px;
 
-    min-height: 56px;
+    min-height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,14 +29,14 @@
 
 
 .mat-toolbar {
-    min-height: 76px;
-    height: 76px;
+    min-height: 100px;
+    height: 100px;
 }
 
 
 .mat-toolbar-row {
-    min-height: 76px;
-    height: 76px;
+    min-height: 100px;
+    height: 100px;
 }
 
 .menu-items {
@@ -47,10 +47,12 @@
     >li {
         padding-left: 26px;
         padding-right: 16px;
-        height: 48px;
+        height: 58px;
         display: flex;
         align-items: center;
        cursor: pointer;
+       font-size: 20px;
+       border-bottom: 1px solid lightgrey;
 
        mat-icon {
         margin-right: 16px;
@@ -71,16 +73,44 @@
 
 
 .mat-drawer-container {
-    background-color: lightgray;
+   
 }
 
 .mat-drawer-side {
-    background-color: lightgray;
+   
 }
 
 
 
 .user-status {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    >p {
+        margin-bottom: 0;
+    }
+}
+
+.mat-toolbar-div {
+    display: flex;
     justify-content: space-between;
+}
+
+.left-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.sidenav {
+    width: 250px;
 }

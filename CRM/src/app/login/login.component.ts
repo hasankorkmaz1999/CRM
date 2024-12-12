@@ -18,7 +18,8 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
-  isLoading: boolean = true; // Neu: Zustand zum Laden der Seite
+  isLoading: boolean = true;
+  hidePassword: boolean = true; // Neu: Zustand zum Laden der Seite
 
   constructor(
     private auth: Auth,
