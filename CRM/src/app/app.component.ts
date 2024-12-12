@@ -9,6 +9,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDialogModule} from '@angular/material/dialog'; 
 import { HttpClientModule } from '@angular/common/http';
 import { Auth, signInWithEmailAndPassword, onAuthStateChanged } from '@angular/fire/auth';
+import { UserService } from './shared/user.service';
 
 
 
@@ -25,7 +26,8 @@ import { Auth, signInWithEmailAndPassword, onAuthStateChanged } from '@angular/f
     MatButtonModule,
     MatTooltipModule,
     MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    
     
   ],
   templateUrl: './app.component.html',
@@ -36,21 +38,26 @@ export class AppComponent  implements OnInit {
   userRole: string | null = '';
   userName: string | null = '';
 
-  constructor(private router: Router, private auth: Auth) {
+  constructor(
+    private router: Router,
+     private auth: Auth,
+     private userService: UserService
+    ) {
     this.router.events.subscribe(() => {
       this.isLoginRoute = this.router.url === '/login';
     });
   }
 
   ngOnInit(): void {
-    const isLoggedIn = !!localStorage.getItem('userRole'); // Prüfen, ob userRole vorhanden ist
-    if (isLoggedIn) {
-      // Benutzer ist eingeloggt, Rolle und Name laden
-      this.userRole = localStorage.getItem('userRole');
-      this.userName = localStorage.getItem('userName');
-      this.router.navigate(['/dashboard']); // Weiterleitung zum Dashboard
-    } else {
-      // Benutzer ist nicht eingeloggt, zur Login-Seite weiterleiten
+    this.userService.userRole$.subscribe((role) => {
+      this.userRole = role;
+    });
+    this.userService.userName$.subscribe((name) => {
+      this.userName = name;
+    });
+
+    const isLoggedIn = !!localStorage.getItem('userRole');
+    if (!isLoggedIn) {
       this.router.navigate(['/login']);
     }
   }
@@ -58,8 +65,9 @@ export class AppComponent  implements OnInit {
   logout() {
     this.auth.signOut()
       .then(() => {
-        localStorage.clear(); // Lokale Sitzungsdaten löschen
-        this.router.navigate(['/login']); // Weiterleitung zur Login-Seite
+        this.userService.setUserName(null);
+        this.userService.setUserRole(null);
+        this.router.navigate(['/login']);
         console.log('User logged out successfully');
       })
       .catch((error) => {

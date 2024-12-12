@@ -4,6 +4,7 @@ import { Firestore, doc, getDoc, collection, query, where, getDocs } from '@angu
 import { Router } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import {MatProgressSpinner, MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
+import { UserService } from '../shared/user.service';
 
 
 @Component({
@@ -19,7 +20,12 @@ export class LoginComponent {
   errorMessage: string = '';
   isLoading: boolean = true; // Neu: Zustand zum Laden der Seite
 
-  constructor(private auth: Auth, private firestore: Firestore, private router: Router) {
+  constructor(
+    private auth: Auth,
+     private firestore: Firestore,
+      private router: Router,
+      private userService: UserService
+    ) {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         // Benutzer ist authentifiziert
@@ -34,60 +40,48 @@ export class LoginComponent {
   
 
   onLogin() {
-    console.log('Login attempt with email:', this.email); // Debugging: Login-Daten
-    this.isLoading = true; // Start des Ladens
-
+    this.isLoading = true;
     signInWithEmailAndPassword(this.auth, this.email, this.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log('Login successful. UID:', user.uid); // Debugging: Erfolgreicher Login
-        this.checkUserRoleAndRedirect(user.uid); // Weiterleitung nach erfolgreicher Anmeldung
+        this.checkUserRoleAndRedirect(user.uid);
       })
       .catch((error) => {
-        console.error('Login error:', error); // Debugging: Fehler bei Login
         this.errorMessage = 'Invalid login credentials.';
-        this.isLoading = false; // Laden beenden bei Fehler
+        this.isLoading = false;
       });
   }
 
   private checkUserRoleAndRedirect(uid: string) {
-    console.log('Checking user role for UID:', uid); // Debugging: UID prüfen
     const userCollection = collection(this.firestore, 'users');
     const q = query(userCollection, where('uid', '==', uid));
-    
     getDocs(q)
       .then((querySnapshot) => {
-        console.log('Query result:', querySnapshot.docs.map(doc => doc.data())); // Debugging: Query-Ergebnisse
         if (!querySnapshot.empty) {
           const docSnap = querySnapshot.docs[0];
           const userData = docSnap.data();
-          console.log('User data from Firestore:', userData); // Debugging: Benutzer-Daten
-
           const role = userData['role'];
           const name = `${userData['firstName']} ${userData['lastName']}`;
-  
+
           if (role) {
-            console.log('User role:', role); // Debugging: Rolle des Benutzers
-            localStorage.setItem('userRole', role);
-            localStorage.setItem('userName', name);
+            this.userService.setUserRole(role);
+            this.userService.setUserName(name);
             this.router.navigate(['/dashboard']);
           } else {
-            console.error('User role not found for UID:', uid); // Debugging: Keine Rolle gefunden
             this.errorMessage = 'User role not found.';
-            this.auth.signOut(); // Benutzer abmelden
+            this.auth.signOut();
           }
         } else {
-          console.error('No user found in Firestore for UID:', uid); // Debugging: Kein Benutzer gefunden
           this.errorMessage = 'User not found in database.';
-          this.auth.signOut(); // Benutzer abmelden
+          this.auth.signOut();
         }
       })
       .catch((error) => {
-        console.error('Error fetching user data:', error); // Debugging: Fehler bei Firestore-Abfrage
+        console.error('Error fetching user data:', error);
         this.errorMessage = 'An error occurred while fetching user data.';
       })
       .finally(() => {
-        this.isLoading = false; // Ladezustand beenden
+        this.isLoading = false;
       });
   }
 }
