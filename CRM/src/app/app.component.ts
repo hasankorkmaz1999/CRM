@@ -10,6 +10,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { HttpClientModule } from '@angular/common/http';
 import { Auth, signInWithEmailAndPassword, onAuthStateChanged } from '@angular/fire/auth';
 import { UserService } from './shared/user.service';
+import { SharedModule } from './shared/shared.module';
 
 
 
@@ -27,6 +28,7 @@ import { UserService } from './shared/user.service';
     MatTooltipModule,
     MatDialogModule,
     HttpClientModule,
+    SharedModule
     
     
   ],

@@ -9,6 +9,7 @@ import { CustomerComponent } from './customer/customer.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { CustomerDetailComponent } from './customer/customer-detail/customer-detail.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
+import { AllLogsComponent } from './all-logs/all-logs.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Standardroute zur Login-Seite
@@ -23,5 +24,6 @@ export const routes: Routes = [
   { path: 'customer-details/:id', component: CustomerDetailComponent },
   {path: 'customer/:id', component: CustomerDetailComponent},
   { path: 'user-details/:id', component: UserDetailComponent },
+  { path: 'logs', component: AllLogsComponent },
 
 ];

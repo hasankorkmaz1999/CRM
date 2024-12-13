@@ -43,6 +43,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  navigateToAllLogs() {
+    this.router.navigate(['/logs']); 
+  }
+  
+
+
   loadLogs() {
     const logsCollection = collection(this.firestore, 'logs');
     collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {

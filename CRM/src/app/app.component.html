@@ -33,20 +33,25 @@
 
           <div class="left-section">
           <mat-icon (click)="drawer.toggle()" class="menu">menu</mat-icon>
-          <span>Simple CRM</span>
+         
         </div>
 
 
+        <div class="user-status">
+        <div class="user-name"><mat-icon>person</mat-icon> <span>{{ userName }}</span></div>
+        <mat-chip color="primary" selected>{{ userRole }}</mat-chip>
+        </div>
+
+
+        
+           
+           
+         
+        
+
 
         <div class="right-section">
-          <div class="user-status">
-            <p>Welcome, {{ userName }}!</p>
-            <p>Your role: {{ userRole }}</p>
-
-          </div>
-
-
-
+        
           <div>
             <span class="spacer"></span>
             <button mat-button (click)="logout()" *ngIf="!isLoginRoute">

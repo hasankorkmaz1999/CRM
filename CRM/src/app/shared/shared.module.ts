@@ -16,6 +16,7 @@ import {MatCardModule} from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import {MatMenuModule} from '@angular/material/menu'; 
 import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatMenuModule,
     ReactiveFormsModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule, 
+    MatChipsModule,
     
     
 
@@ -61,7 +63,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatMenuModule,
     ReactiveFormsModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    MatChipsModule,
   ]
 })
 export class SharedModule {}

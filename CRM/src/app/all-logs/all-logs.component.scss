@@ -1,0 +1,60 @@
+.logs-section {
+    margin-top: 20px;
+  }
+  
+  .logs-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .logs-section li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
+
+  .log-message {
+    display: flex;
+    align-items: center;
+  }
+
+
+
+
+  
+.logs-section {
+
+  .list-elements {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    height: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+  }
+
+}
+
+  .buttons-comtainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  
+
+
+  .see-details-link {
+    color: blue;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .see-details-link:hover {
+    text-decoration: underline;
+  }
+  
