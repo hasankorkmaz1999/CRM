@@ -1,10 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UserDetailComponent } from './user-detail.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Firestore, getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { importProvidersFrom } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Firestore } from '@angular/fire/firestore';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('UserDetailComponent', () => {
   let component: UserDetailComponent;
@@ -12,24 +10,21 @@ describe('UserDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserDetailComponent, RouterModule.forRoot([])] ,
+      imports: [
+        RouterTestingModule, // Verwende RouterTestingModule für Router-bezogene Tests
+      ],
+      declarations: [UserDetailComponent],
       providers: [
-        importProvidersFrom(
-          provideFirebaseApp(() =>
-            initializeApp({
-              apiKey: 'AIzaSyBE4L3ciJ2mae2bplSv_oJEz5lfucAABFs',
-              authDomain: 'crm1-9fda4.firebaseapp.com',
-              projectId: 'crm1-9fda4',
-              storageBucket: 'crm1-9fda4.appspot.com',
-              messagingSenderId: '352496201349',
-              appId: '1:352496201349:web:9219d8671f3db1c3e003ec',
-            })
-          ),
-          provideFirestore(() => getFirestore())
-        ),
+        { provide: Firestore, useValue: {} }, // Mock Firestore
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: { id: '123' }, // Beispielparameter für Routen
+          },
+        },
       ],
     }).compileComponents();
-    
+
     fixture = TestBed.createComponent(UserDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
