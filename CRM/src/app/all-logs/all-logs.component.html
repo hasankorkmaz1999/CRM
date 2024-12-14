@@ -1,44 +1,47 @@
 <div class="logs-section">
     <h3>All Activity Logs</h3>
-    <ul>
-      <li class="list-elements" *ngFor="let log of logs">
-        <div class="log-message">
-          <strong>
-            {{ generateLogMessage(log) }}
-          </strong>
-        </div>
-        <div class="buttons-comtainer">
-          <small *ngIf="log.timestamp">
-            ({{ log.timestamp | date: 'short' }})
-          </small>
-          <a
-            *ngIf="log.entityType === 'customer' && log.action === 'edit'"
-            (click)="navigateToCustomerDetails(log)"
-            class="see-details-link"
-            href="javascript:void(0)"
-          >
-            View Customer Details
-          </a>
-          <a
-            *ngIf="log.entityType === 'user' && log.action === 'edit'"
-            (click)="navigateToUserDetails(log)"
-            class="see-details-link"
-            href="javascript:void(0)"
-          >
-            View User Details
-          </a>
-          <a
-            *ngIf="isEventEditLog(log)"
-            (click)="openLogDetails(log)"
-            class="see-details-link"
-            href="javascript:void(0)"
-          >
-            See Details
-          </a>
-        </div>
-      </li>
-    </ul>
-    
-  </div>
   
+    <ul>
+        <li
+          class="list-elements"
+          *ngFor="let log of logs"
+          [style.animationDelay]="log.animationDelay"
+        >
+          <div class="log-message">
+            <strong>{{ generateLogMessage(log) }}</strong>
+          </div>
+          <div class="buttons-comtainer">
+            <small *ngIf="log.timestamp">
+              ({{ log.timestamp | date: 'short' }})
+            </small>
+            <a
+              *ngIf="log.entityType === 'customer' && log.action === 'edit'"
+              (click)="navigateToCustomerDetails(log)"
+              class="see-details-link"
+              href="javascript:void(0)"
+            >
+              View Customer Details
+            </a>
+            <a
+              *ngIf="log.entityType === 'user' && log.action === 'edit'"
+              (click)="navigateToUserDetails(log)"
+              class="see-details-link"
+              href="javascript:void(0)"
+            >
+              View User Details
+            </a>
+            <a
+              *ngIf="isEventEditLog(log)"
+              (click)="openLogDetails(log)"
+              class="see-details-link"
+              href="javascript:void(0)"
+            >
+              See Details
+            </a>
+          </div>
+        </li>
+      </ul>
+      
+      
+  </div>
   

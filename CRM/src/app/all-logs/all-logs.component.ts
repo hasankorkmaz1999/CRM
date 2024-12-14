@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Router, RouterModule } from '@angular/router';
@@ -8,18 +8,21 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-all-logs',
   standalone: true,
-  imports: [SharedModule, RouterModule,],
+  imports: [SharedModule, RouterModule],
   templateUrl: './all-logs.component.html',
-  styleUrl: './all-logs.component.scss'
+  styleUrl: './all-logs.component.scss',
+  
+  
+  
 })
-export class AllLogsComponent  implements OnInit {
-
+export class AllLogsComponent implements OnInit {
   logs: any[] = [];
 
   constructor(
     private firestore: Firestore,
     private router: Router,
     private dialog: MatDialog,
+    private cdr: ChangeDetectorRef, 
   ) {}
 
   ngOnInit(): void {
@@ -29,27 +32,28 @@ export class AllLogsComponent  implements OnInit {
   loadAllLogs() {
     const logsCollection = collection(this.firestore, 'logs');
     collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
-      this.logs = data.map((log: any) => {
-        if (log.timestamp) {
-          try {
-            log.timestamp = new Date(log.timestamp);
-          } catch (error) {
-            console.warn('Invalid timestamp format:', log.timestamp);
-            log.timestamp = null;
-          }
-        } else {
-          log.timestamp = null;
-        }
-
-        return log;
-      });
-
-      this.logs.sort(
-        (a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
-      );
+      const sortedLogs = data
+        .map((log: any) => ({
+          ...log,
+          timestamp: log.timestamp ? new Date(log.timestamp) : null,
+        }))
+        .sort(
+          (a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
+        ); // Sortiere von neusten zu ältesten
+  
+      this.logs = sortedLogs.map((log, index) => ({
+        ...log,
+        animationDelay: `${index * 150}ms`, // Animation-Delays nach der Sortierung berechnen
+      }));
+  
+      this.cdr.detectChanges(); // Erzwingt Ansichtserneuerung
     });
   }
-
+  
+  
+  
+  
+  
 
   generateLogMessage(log: any): string {
     const entityType = log.entityType
@@ -99,4 +103,3 @@ export class AllLogsComponent  implements OnInit {
     });
   }
 }
-

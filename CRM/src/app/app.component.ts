@@ -28,7 +28,7 @@ import { SharedModule } from './shared/shared.module';
     MatTooltipModule,
     MatDialogModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
     
     
   ],
