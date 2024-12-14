@@ -26,13 +26,15 @@ export class DashboardComponent implements OnInit {
   countdowns: { [eventId: string]: string } = {};
   logs: any[] = [];
   selectedLog: string | null = null;
+  filteredLogs: any[] = []; // Begrenzte Logs mit Animation
+  maxLogs: number = 5; // Begrenze auf 5 Logs
 
   constructor(private firestore: Firestore, private dialog: MatDialog, private router: Router) {}
 
   ngOnInit(): void {
     this.loadEvents();
     this.startLiveCountdown();
-    this.loadLogs();
+    this. loadRecentLogs();
   }
 
   openLogDetails(log: any) {
@@ -49,29 +51,26 @@ export class DashboardComponent implements OnInit {
   
 
 
-  loadLogs() {
+  loadRecentLogs() {
     const logsCollection = collection(this.firestore, 'logs');
     collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
-      this.logs = data.map((log: any) => {
-        if (log.timestamp) {
-          try {
-            log.timestamp = new Date(log.timestamp);
-          } catch (error) {
-            console.warn('Invalid timestamp format:', log.timestamp);
-            log.timestamp = null;
-          }
-        } else {
-          log.timestamp = null;
-        }
+      const allLogs = data.map((log: any) => ({
+        ...log,
+        timestamp: log.timestamp ? new Date(log.timestamp) : null,
+      }));
 
-        return log;
-      });
-
-      this.logs.sort(
+      // Sortiere nach Timestamp (neueste zuerst)
+      const sortedLogs = allLogs.sort(
         (a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
       );
+
+      // Begrenze auf die letzten 5 Logs
+      this.filteredLogs = sortedLogs.slice(0, this.maxLogs).map((log, index) => ({
+        ...log,
+      }));
     });
   }
+
 
   generateLogMessage(log: any): string {
     const entityType = log.entityType
@@ -87,13 +86,13 @@ export class DashboardComponent implements OnInit {
 
     switch (action) {
       case 'add':
-        return `New ${entityType} (${displayName}) has been added.`;
+        return `New ${entityType} ${displayName} has been added.`;
       case 'edit':
-        return `${entityType} (${displayName}) has been edited.`;
+        return `${entityType} ${displayName} has been edited.`;
       case 'delete':
-        return `${entityType} (${displayName}) has been deleted.`;
+        return `${entityType} ${displayName} has been deleted.`;
       default:
-        return `${entityType} (${displayName}) has been updated.`;
+        return `${entityType} ${displayName} has been updated.`;
     }
   }
 

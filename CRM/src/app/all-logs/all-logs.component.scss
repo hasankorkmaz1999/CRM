@@ -26,7 +26,7 @@
 
   
 .logs-section {
-
+margin-top: 0;
   .list-elements {
     display: flex;
     justify-content: space-between;
@@ -85,4 +85,11 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+  }
+
+  .back-button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
   }
