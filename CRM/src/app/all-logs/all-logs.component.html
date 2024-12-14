@@ -1,47 +1,70 @@
 <div class="logs-section">
+
+
+    <button mat-icon-button class="back-button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+
+
+<div class="header-top">
+
     <h3>All Activity Logs</h3>
-  
+
+    <div class="sort-options">
+      <mat-form-field appearance="outline">
+        <mat-label>Sort by</mat-label>
+        <mat-select [(value)]="selectedSort" (selectionChange)="onSortChange()">
+          <mat-option value="newest">Newest</mat-option>
+          <mat-option value="oldest">Oldest</mat-option>
+          <mat-option value="users">Users</mat-option>
+          <mat-option value="customers">Customers</mat-option>
+          <mat-option value="events">Events</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+</div>
+
+
     <ul>
-        <li
-          class="list-elements"
-          *ngFor="let log of logs"
-          [style.animationDelay]="log.animationDelay"
-        >
-          <div class="log-message">
-            <strong>{{ generateLogMessage(log) }}</strong>
-          </div>
-          <div class="buttons-comtainer">
-            <small *ngIf="log.timestamp">
-              ({{ log.timestamp | date: 'short' }})
-            </small>
-            <a
-              *ngIf="log.entityType === 'customer' && log.action === 'edit'"
-              (click)="navigateToCustomerDetails(log)"
-              class="see-details-link"
-              href="javascript:void(0)"
-            >
-              View Customer Details
-            </a>
-            <a
-              *ngIf="log.entityType === 'user' && log.action === 'edit'"
-              (click)="navigateToUserDetails(log)"
-              class="see-details-link"
-              href="javascript:void(0)"
-            >
-              View User Details
-            </a>
-            <a
-              *ngIf="isEventEditLog(log)"
-              (click)="openLogDetails(log)"
-              class="see-details-link"
-              href="javascript:void(0)"
-            >
-              See Details
-            </a>
-          </div>
-        </li>
-      </ul>
-      
-      
+      <li
+        class="list-elements"
+        *ngFor="let log of filteredLogs"
+        [style.animationDelay]="log.animationDelay"
+      >
+        <div class="log-message">
+          <strong>{{ generateLogMessage(log) }}</strong>
+        </div>
+        <div class="buttons-comtainer">
+          <small *ngIf="log.timestamp">
+            ({{ log.timestamp | date: 'short' }})
+          </small>
+          <a
+            *ngIf="log.entityType === 'customer' && log.action === 'edit'"
+            (click)="navigateToCustomerDetails(log)"
+            class="see-details-link"
+            href="javascript:void(0)"
+          >
+            View Customer Details
+          </a>
+          <a
+            *ngIf="log.entityType === 'user' && log.action === 'edit'"
+            (click)="navigateToUserDetails(log)"
+            class="see-details-link"
+            href="javascript:void(0)"
+          >
+            View User Details
+          </a>
+          <a
+            *ngIf="isEventEditLog(log)"
+            (click)="openLogDetails(log)"
+            class="see-details-link"
+            href="javascript:void(0)"
+          >
+            See Details
+          </a>
+        </div>
+      </li>
+    </ul>
   </div>
   
