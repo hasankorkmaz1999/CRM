@@ -22,11 +22,11 @@
         <li
           *ngFor="let event of upcomingEvents; let i = index"
           (click)="openEventDetails(event)"
-          [ngClass]="{ 'highlight-today': isEventToday(event.date) }"
-       
+          [ngClass]="getEventClass(event.type)" 
+          
         >
           <div class="event-item">
-            <h4>{{ event.type }}</h4>
+            <h4  [ngClass]="getEventClass(event.type)" >{{ event.type }}</h4>
             <p>{{ event.date | date: 'short' }}</p>
             <p>Organized by: {{ event.users.join(', ') }}</p>
             <p *ngIf="isEventToday(event.date) && event.id">

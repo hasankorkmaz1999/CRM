@@ -38,7 +38,8 @@
 
 
         <div class="user-status">
-        <div class="user-name"><mat-icon>person</mat-icon> <span>{{ userName }}</span></div>
+        <div class="user-name"><mat-icon class="person-icon">person</mat-icon>
+           <span class="username">{{ userName }}</span></div>
         <mat-chip color="primary" selected>{{ userRole }}</mat-chip>
         </div>
 
@@ -55,7 +56,7 @@
           <div>
             <span class="spacer"></span>
             <button mat-button (click)="logout()" *ngIf="!isLoginRoute">
-              <mat-icon>logout</mat-icon> Logout
+              <mat-icon class="logout-icon">logout</mat-icon> <span class="logout">Logout</span> 
             </button>
           </div>
         </div>

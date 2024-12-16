@@ -202,6 +202,20 @@ export class DashboardComponent implements OnInit {
     }
   }
   
+
+  getEventClass(eventType: string): string {
+    switch (eventType?.toLowerCase()) {
+      case 'webinar':
+        return 'event-webinar';
+      case 'meeting':
+        return 'event-meeting';
+      case 'workshop':
+        return 'event-workshop';
+      default:
+        return 'event-other';
+    }
+  }
+  
   
   
   

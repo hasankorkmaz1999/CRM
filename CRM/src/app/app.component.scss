@@ -4,12 +4,32 @@
 
 .menu {
     cursor: pointer;
+    color: #ffffff;
 }
 
 
 .sidenav {
     width: 300px;
    
+}
+
+.username {
+    color: #ffffff;
+}
+
+
+.person-icon {
+    color: #ffffff;
+}
+
+
+.logout {
+    color: white;
+}
+
+
+.logout-icon {
+    color: white;
 }
 
 .logo-container {
@@ -69,11 +89,13 @@
     padding-top: 16px;
     padding-left: 56px;
     padding-right: 56px;
+    background-color: #1F1F1F;
+    height: 100vh;
 }
 
 
 .mat-drawer-container {
-   
+    
 }
 
 .mat-drawer-side {
@@ -113,18 +135,23 @@
 
 .sidenav {
     width: 250px;
-    background-color: rgba(0, 0, 0, 0.1); /* Dunkler Hintergrund */
+    background-color: #ffffff; /* Dunkler Hintergrund */
     color: #000000; /* Grauer Text */
 }
 
 
 .header {
-    background-color: rgba(0, 0, 0, 0);
-    border-bottom: 1px solid lightgrey;
+    background-color: #1F1F1F;
+    box-shadow: 0px 4px 8px -2px rgba(255, 255, 255, 0.09);
+    position: relative;
+    z-index: 10;
+    min-height: 60px;
+    padding: 10px 20px;
 }
+
 
 .user-name {
     display: flex;
     align-items: center;
-    
+
 }
