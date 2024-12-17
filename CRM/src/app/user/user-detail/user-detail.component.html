@@ -51,7 +51,7 @@
   <div class="user-details">
     <h2>{{ user.firstName }} {{ user.lastName }}</h2>
    
-    <span>{{ user.birthDate }}</span>
+    <span>{{ user.birthDate| date: 'MMMM d, y' }}</span>
   </div>
 </div>
 

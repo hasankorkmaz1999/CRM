@@ -1,6 +1,6 @@
 export class Event {
   id?: string;
- 
+  createdBy?: string;
   date: Date;
   users: string[]; // Namen der Benutzer
   description?: string;
@@ -9,7 +9,7 @@ export class Event {
 
   constructor(data: any) {
     this.id = data.id || '';
-  
+    this.createdBy = data.createdBy || 'Unknown';
     this.date = new Date(data.date) || new Date();
     this.users = data.users || [];
     this.description = data.description || '';

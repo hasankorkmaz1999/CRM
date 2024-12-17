@@ -45,6 +45,7 @@ export class LoginComponent {
     signInWithEmailAndPassword(this.auth, this.email, this.password)
       .then((userCredential) => {
         const user = userCredential.user;
+        this.userService.setUserRole(''); 
         this.checkUserRoleAndRedirect(user.uid);
       })
       .catch((error) => {
@@ -52,6 +53,7 @@ export class LoginComponent {
         this.isLoading = false;
       });
   }
+  
 
   private checkUserRoleAndRedirect(uid: string) {
     const userCollection = collection(this.firestore, 'users');

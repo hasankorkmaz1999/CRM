@@ -38,7 +38,8 @@
 
   <div class="user-details">
     <h2>{{ customer.firstName }} {{ customer.lastName }}</h2>
-    <p>Customer Since: {{ formatToEnglishDate(customer.createdAt) }}</p>
+    <p>Customer Since: {{ customer.createdAt | date: 'MMMM d, y' }}</p>
+
 
 
   </div>

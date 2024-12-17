@@ -37,7 +37,7 @@
 
       p {
         font-size: 24px;
-        color: #0078d7;
+        color: #ffffff;
       }
     }
   }
@@ -45,7 +45,7 @@
   /* Upcoming Events */
   .upcoming-events {
     margin-top: 20px;
-    overflow: visible;
+   
 
     h3 {
       color: #ffffff;
@@ -58,11 +58,13 @@
 
       li {
         cursor: pointer;
-        padding: 10px;
+        padding: 0px;
+        padding-top: 0;
+        padding-left: 0;
+        
         margin-bottom: 15px;
        
-        border-radius: 20px;
-        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
        
 
        
@@ -90,12 +92,16 @@
 
         .event-item {
           h4 {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
             margin: 0;
             font-weight: bold;
             color: #000000;
             text-align: center;
-            width: 20%;
+            width: 100%;
             box-shadow: none;
+            border: none;
+            background-color: none;
           }
 
           p {
@@ -108,29 +114,40 @@
   }
 
 
+  .date-div {
+    
+    display: flex;
+
+    .mat-icon {
+     color: white;
+    }
+  }
+
+
   .event-webinar {
-    border: 1px solid #5FBA9D;
-    background-color: #5FBA9D; /* Hellblau */
-    box-shadow: 0 0 10px 3px rgba(95, 186, 157, 0.5); /* Schatten mit transparenter Farbe */
+    border: 1px solid rgba(95, 186, 157, 0.8);
+    background-color: rgba(95, 186, 157, 0.15); /* Transparenter Hellblau */
+    box-shadow: 0 0 10px 3px rgba(95, 186, 157, 0.3); /* Transparenter Schatten */
   }
   
   .event-meeting {
-    border: 1px solid #6A5FC4;
-    background-color: #6A5FC4; /* Hellviolett */
-    box-shadow: 0 0 10px 3px rgba(106, 95, 196, 0.5);
+    border: 1px solid rgba(106, 95, 196, 0.8);
+    background-color: rgba(106, 95, 196, 0.15); /* Transparenter Hellviolett */
+    box-shadow: 0 0 10px 3px rgba(106, 95, 196, 0.3);
   }
   
   .event-workshop {
-    border: 1px solid #E87F36;
-    background-color: #E87F36; /* Hellorange */
-    box-shadow: 0 0 10px 3px rgba(232, 127, 54, 0.5);
+    border: 1px solid rgba(58, 102, 165, 0.8);
+    background-color: rgba(58, 102, 165, 0.15); /* Transparenter Dunkelblau */
+    box-shadow: 0 0 10px 3px rgba(58, 102, 165, 0.3);
   }
   
   .event-other {
-    border: 1px solid #f9f0ff;
-    background-color: #f9f0ff; /* Helllila */
-    box-shadow: 0 0 10px 3px rgba(249, 240, 255, 0.5);
+    border: 1px solid rgba(249, 240, 255, 0.8);
+    background-color: rgba(249, 240, 255, 0.15); /* Transparenter Helllila */
+    box-shadow: 0 0 10px 3px rgba(249, 240, 255, 0.3);
   }
+  
   
   
 
@@ -150,6 +167,7 @@
       li {
         margin-bottom: 10px;
         padding: 10px;
+        
        
         border-radius: 5px;
         background-color: rgba(255, 255, 255, 0.1);

@@ -27,8 +27,14 @@
         >
           <div class="event-item">
             <h4  [ngClass]="getEventClass(event.type)" >{{ event.type }}</h4>
-            <p>{{ event.date | date: 'short' }}</p>
-            <p>Organized by: {{ event.users.join(', ') }}</p>
+
+            <div class="date-div">
+            <mat-icon >event</mat-icon>  
+            <p>{{ event.date | date: 'MMMM d, y' }}</p>
+          </div>
+
+
+            <p>Participants: {{ event.users.join(', ') }}</p>
             <p *ngIf="isEventToday(event.date) && event.id">
               Starts in: {{ countdowns[event.id] || 'Ended' }}
             </p>
@@ -51,7 +57,7 @@
             <strong [innerHTML]="generateLogMessage(log)"></strong>
           </div>
           <div class="buttons-comtainer">
-            <small *ngIf="log.timestamp">{{ log.timestamp | date: 'short' }}</small>
+            <small *ngIf="log.timestamp">{{ log.timestamp | date: 'MMMM d, y' }}</small>
             <a
               *ngIf="log.entityType === 'customer' && log.action === 'edit'"
               (click)="navigateToCustomerDetails(log)"

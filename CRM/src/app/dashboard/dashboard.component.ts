@@ -172,6 +172,7 @@ export class DashboardComponent implements OnInit {
         description: event.description,
         date: event.date,
         users: event.users,
+        createdBy: event.createdBy,
       },
       width: '500px',
       autoFocus: false,

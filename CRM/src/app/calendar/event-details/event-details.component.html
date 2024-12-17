@@ -1,9 +1,10 @@
 <div class="event-container">
 
   <h1>{{ data.type }}</h1> <!-- Event Type anzeigen -->
-  <p>Date: {{ data.date | date: 'short' }}</p>
+  <p>Date: {{ data.date | date: 'MMMM d, y'}}</p>
   <p>Description: {{ data.description }}</p> <!-- Beschreibung hinzufügen -->
-  <p>Users: {{ data.users.join(', ') }}</p>
+  <p>Participants: {{ data.users.join(', ') }}</p>
+  <p>Created By: {{ data.createdBy }}</p>
 
   <div class="buttons">
     <button mat-button mat-dialog-close>Close</button>

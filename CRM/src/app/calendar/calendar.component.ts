@@ -15,6 +15,7 @@ import * as bootstrap from 'bootstrap';
 import { EventDetailsComponent } from './event-details/event-details.component';
 import { Event } from '../../models/events.class';
 import { LoggingService } from '../shared/logging.service';
+import { AuthService } from '../shared/auth.service';
 
 
 @Component({
@@ -62,7 +63,8 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   constructor(
     private firestore: Firestore,
     public dialog: MatDialog,
-    private loggingService: LoggingService 
+    private loggingService: LoggingService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -103,6 +105,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
             users: event.users,
             type: event.type,
             description: event.description,
+            createdBy: event.createdBy,
           },
         }));
   
@@ -142,7 +145,8 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   handleEventClick(event: any) {
    
-  
+    console.log('Dialog Data:', event.event.extendedProps);
+
     const dialogRef = this.dialog.open(EventDetailsComponent, {
       data: {
         id: event.event.extendedProps['id'],
@@ -150,7 +154,10 @@ export class CalendarComponent implements OnInit, AfterViewInit {
         description: event.event.extendedProps['description'], // Beschreibung
         date: event.event.start,
         users: event.event.extendedProps['users'],
+        createdBy: event.event.extendedProps['createdBy'],
+        
       },
+      
       autoFocus: false,
     });
   
@@ -164,29 +171,37 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   
   
 
-  addEvent() {
+  async addEvent() {
     const dialogRef = this.dialog.open(SelectUserComponent);
   
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
-        const newEvent = new Event({
-          type: result.type || 'Other', // Standardwert 'Other' verwenden
-          description: result.description?.trim() || '',
-          date: result.date,
-          users: result.users.map((user: User) => `${user.firstName} ${user.lastName}`),
-        });
+        try {
+          const currentUser = await this.authService.getCurrentUserDisplayName(); // Benutzername holen
   
-        // Validierung
-        if (!newEvent.type || !newEvent.date || newEvent.users.length === 0) {
-          console.error('Invalid event data:', newEvent);
-          return;
+          const newEvent = new Event({
+            type: result.type || 'Other',
+            description: result.description?.trim() || '',
+            date: result.date,
+            users: result.users.map((user: User) => `${user.firstName} ${user.lastName}`),
+            createdBy: currentUser, // Hier wird der Benutzername hinzugefügt
+          });
+  
+          // Validierung
+          if (!newEvent.type || !newEvent.date || newEvent.users.length === 0) {
+            console.error('Invalid event data:', newEvent);
+            return;
+          }
+  
+          this.events.push(newEvent);
+          this.saveEventToFirestore(newEvent);
+        } catch (error) {
+          console.error('Error fetching current user display name:', error);
         }
-  
-        this.events.push(newEvent);
-        this.saveEventToFirestore(newEvent);
       }
     });
   }
+  
   
   
   
@@ -197,12 +212,13 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       ...event,
       date: event.date.toISOString(),
       createdAt: new Date().toISOString(),
+      createdBy: event.createdBy, // Speichere den Ersteller
     };
-
+  
     addDoc(eventCollection, eventToSave)
       .then((docRef) => {
         console.log('Event saved successfully with ID:', docRef.id);
-
+  
         updateDoc(docRef, { id: docRef.id })
           .then(() => {
             console.log('ID added to event document');
@@ -213,6 +229,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       })
       .catch((error) => console.error('Error saving event:', error));
   }
+  
 
   logEventAction(action: string, eventId: string, type: string, timestamp: string) {
     this.loggingService.log(action, 'event', {
