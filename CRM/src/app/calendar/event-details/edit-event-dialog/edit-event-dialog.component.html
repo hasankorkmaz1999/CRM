@@ -42,9 +42,14 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Time</mat-label>
-      <input matInput formControlName="time" type="time" />
+      <mat-select formControlName="time">
+        <mat-option *ngFor="let time of usTimeOptions" [value]="time">
+          {{ time }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </mat-dialog-content>
+  
 
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>

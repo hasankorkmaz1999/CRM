@@ -18,42 +18,65 @@ import { LoggingService } from '../../shared/logging.service';
 export class EventDetailsComponent {
  
   constructor(
+    
     @Inject(MAT_DIALOG_DATA) public data: any,
     private firestore: Firestore,
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<EventDetailsComponent> ,
     private loggingService: LoggingService
-  ) {}
+  ) {console.log('Data received in EventDetailsComponent:', this.data);
+  }
 
   editEvent() {
-    const dialogRef = this.dialog.open(EditEventDialogComponent, {
-      data: this.data,
-    });
+    const eventDate = new Date(this.data.date);
+
+  // Datum und Uhrzeit separat extrahieren
+  const formattedDate = eventDate.toISOString().split('T')[0]; // "YYYY-MM-DD"
+  const hours = eventDate.getHours();
+  const minutes = eventDate.getMinutes().toString().padStart(2, '0');
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  const formattedTime = `${formattedHours}:${minutes} ${period}`; // "12:30 PM"
+
+  // Öffne den Dialog mit getrennten Feldern
+  const dialogRef = this.dialog.open(EditEventDialogComponent, {
+    data: { 
+      id: this.data.id,            
+      type: this.data.type,
+      description: this.data.description,
+      date: formattedDate,   // Sicherstellen, dass nur das Datum übergeben wird
+      time: this.data.time, // Fallback für Zeit, falls undefined
+      users: this.data.users
+    }
+  });
   
-    dialogRef.afterClosed().subscribe((result) => {
+
+  dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        const { updatedEvent, changes } = result; // Änderungen und Event-Daten
+        const { updatedEvent, changes } = result;
+  
+        // Uhrzeit aktualisieren
         const eventRef = doc(this.firestore, `events/${updatedEvent.id}`);
   
         updateDoc(eventRef, updatedEvent)
           .then(() => {
             console.log('Event updated successfully in Firestore!');
   
-            // Aktualisiere die lokalen Daten
+            // Lokale Daten aktualisieren
             this.data.type = updatedEvent.type;
             this.data.description = updatedEvent.description;
             this.data.date = updatedEvent.date;
+            this.data.time = updatedEvent.time; // Uhrzeit aktualisieren
             this.data.users = updatedEvent.users;
   
             console.log('Updated event details:', this.data);
   
-            // Logge die Aktion mit den Änderungen
             this.logEventAction(
               'edit',
               updatedEvent.id,
               updatedEvent.type,
               new Date().toISOString(),
-              changes // Übergib die Änderungen an die Log-Funktion
+              changes
             );
   
             dialogRef.close('reload');
@@ -62,6 +85,7 @@ export class EventDetailsComponent {
       }
     });
   }
+  
   
   
   
@@ -84,9 +108,10 @@ export class EventDetailsComponent {
             this.logEventAction(
               'delete',
               this.data.id,
-              this.data.type, // Type anstelle von title loggen
+              `${this.data.type} at ${this.data.time}`, // Uhrzeit hinzufügen
               new Date().toISOString()
             );
+            
   
             this.dialogRef.close('reload'); // Signalisiere die Elternkomponente, dass die Events neu geladen werden sollen
           })

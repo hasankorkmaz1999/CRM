@@ -2,6 +2,7 @@
 
   <h1>{{ data.type }}</h1> <!-- Event Type anzeigen -->
   <p>Date: {{ data.date | date: 'MMMM d, y'}}</p>
+  <p>Time: {{ data.time }}</p>
   <p>Description: {{ data.description }}</p> <!-- Beschreibung hinzufügen -->
   <p>Participants: {{ data.users.join(', ') }}</p>
   <p>Created By: {{ data.createdBy }}</p>

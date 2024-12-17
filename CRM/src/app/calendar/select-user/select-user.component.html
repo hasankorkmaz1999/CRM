@@ -28,9 +28,7 @@
 
 
     <form [formGroup]="eventForm">
-
       <mat-dialog-content class="inputfield">
-
         <mat-form-field appearance="outline">
           <mat-label>Event Type</mat-label>
           <mat-select formControlName="type">
@@ -39,36 +37,41 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-
-
+    
         <mat-form-field appearance="outline">
           <mat-label>Description</mat-label>
           <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
-
+    
         <mat-form-field appearance="outline">
           <mat-label>Date</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="date" />
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-
+    
         <mat-form-field appearance="outline">
           <mat-label>Time</mat-label>
-          <input matInput formControlName="time" type="time" />
+          <mat-select formControlName="time">
+            <mat-option *ngFor="let time of usTimeOptions" [value]="time">
+              {{ time }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </mat-dialog-content>
-
-
-      <div class="buttons">
-      <mat-dialog-actions>
+    
+      <!-- Buttons innerhalb des Formulars -->
+      <mat-dialog-actions class="buttons">
         <button mat-button (click)="goBack()">Back</button>
-        <button mat-button [disabled]="!eventForm.valid" [mat-dialog-close]="prepareEventData()" color="primary">Create</button>
+        <button mat-button 
+        [disabled]="!eventForm.valid" 
+        (click)="handleEventCreation()" 
+        color="primary">
+  Create
+</button>
       </mat-dialog-actions>
-
-    </div>
-
     </form>
+    
   </ng-container>
 
 </div>

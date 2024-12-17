@@ -122,7 +122,8 @@ export class DashboardComponent implements OnInit {
 
       this.upcomingEvents = events
         .filter((event) => new Date(event.date) >= today)
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .slice(0, 6);
     });
   }
 

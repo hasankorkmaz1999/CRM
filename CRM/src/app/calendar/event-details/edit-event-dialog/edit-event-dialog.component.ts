@@ -18,6 +18,8 @@ export class EditEventDialogComponent implements OnInit {
   users: User[] = []; // Alle Benutzer aus Firestore
   selectedUsers: string[] = [];
   eventTypes: string[] = ['Meeting', 'Webinar', 'Workshop', 'Other']; // Liste der Event-Typen // Benutzer, die bereits im Event ausgewählt sind
+  usTimeOptions: string[] = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -25,20 +27,24 @@ export class EditEventDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<EditEventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    // Erstelle das Formular und befülle die Werte
-    this.editForm = this.fb.group({
-      type: [this.data.type || 'Other', Validators.required], // Event-Typ
-      description: [this.data.description || '', Validators.maxLength(200)], // Event-Beschreibung
-      date: [new Date(this.data.date), Validators.required], // Event-Datum
-      time: [
-        new Date(this.data.date).toTimeString().slice(0, 5), // Event-Zeit
-        Validators.required,
-      ],
-    });
+    const parsedDate = this.data.date
+    ? new Date(this.data.date).toISOString().split('T')[0] // Konvertierung in YYYY-MM-DD
+    : '';
   
-    // Übernehme die bereits ausgewählten Benutzer
+  this.editForm = this.fb.group({
+    type: [this.data.type || 'Other', Validators.required],
+    description: [this.data.description || '', Validators.maxLength(200)],
+    date: [parsedDate, Validators.required],
+    time: [this.data.time || '08:00 AM', Validators.required],
+  });
+  
+  
     this.selectedUsers = this.data.users || [];
   }
+  
+  
+  
+  
   
 
   ngOnInit(): void {
@@ -51,6 +57,7 @@ export class EditEventDialogComponent implements OnInit {
       this.users = data as User[];
       console.log('Loaded users from Firestore:', this.users);
     });
+    this.generateUSTimeOptions(); 
   }
   
 
@@ -74,75 +81,80 @@ export class EditEventDialogComponent implements OnInit {
 
   saveChanges() {
     const formValue = this.editForm.value;
-    const updatedDate = new Date(formValue.date);
-    const [hours, minutes] = formValue.time.split(':');
-    updatedDate.setHours(+hours, +minutes);
   
+    // Datum und Uhrzeit formatieren wie beim Erstellen
+    const updatedDate = new Date(formValue.date).toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  
+    const updatedTime = formValue.time; // Uhrzeit bleibt wie eingegeben
+  
+    // Aktualisiertes Event-Objekt erstellen
     const updatedEvent = {
       id: this.data.id,
       type: formValue.type,
       description: formValue.description,
-      date: updatedDate.toISOString(),
+      date: updatedDate, // Formatiertes Datum
+      time: updatedTime, // Uhrzeit
       users: [...this.selectedUsers],
     };
   
     console.log('--- Updated Event ---', updatedEvent);
   
+    // Event in Firestore aktualisieren
+    const eventRef = doc(this.firestore, `events/${this.data.id}`);
+    updateDoc(eventRef, updatedEvent)
+      .then(() => {
+        console.log('Event updated successfully:', updatedEvent);
+        this.dialogRef.close({ updatedEvent, changes: this.getChanges(updatedEvent) });
+      })
+      .catch((error) => {
+        console.error('Error updating event in Firestore:', error);
+      });
+  }
+  
+
+  getChanges(updatedEvent: any): any {
     const changes: any = {};
     const originalEvent = this.data;
   
-    // Vergleich von Typ, Beschreibung und Datum
     if (originalEvent.type !== updatedEvent.type) {
       changes.type = { old: originalEvent.type, new: updatedEvent.type };
     }
-  
     if (originalEvent.description !== updatedEvent.description) {
       changes.description = { old: originalEvent.description, new: updatedEvent.description };
     }
-  
-    // Vergleiche die Datumswerte als ISO-Strings
-    if (new Date(originalEvent.date).toISOString() !== updatedDate.toISOString()) {
-      changes.date = { old: new Date(originalEvent.date).toISOString(), new: updatedDate.toISOString() };
+    if (originalEvent.date !== updatedEvent.date) {
+      changes.date = { old: originalEvent.date, new: updatedEvent.date };
+    }
+    if (originalEvent.time !== updatedEvent.time) {
+      changes.time = { old: originalEvent.time, new: updatedEvent.time };
     }
   
-    // Normalisiere Benutzerlisten
-    const normalizedOriginalUsers = [...(originalEvent.users || [])].map((u: string) =>
-      u.trim().toLowerCase()
-    );
-    const normalizedUpdatedUsers = [...(updatedEvent.users || [])].map((u: string) =>
-      u.trim().toLowerCase()
-    );
-  
-    // Vergleich der Benutzerlisten
-    const removedUsers = normalizedOriginalUsers.filter(
-      (user) => !normalizedUpdatedUsers.includes(user)
-    );
-    const addedUsers = normalizedUpdatedUsers.filter(
-      (user) => !normalizedOriginalUsers.includes(user)
-    );
-  
-    console.log('Removed Users:', removedUsers);
-    console.log('Added Users:', addedUsers);
-  
-    if (removedUsers.length > 0 || addedUsers.length > 0) {
-      changes.users = {
-        old: originalEvent.users || [],
-        new: updatedEvent.users || [],
-        added: addedUsers,
-        removed: removedUsers,
-      };
-    }
-  
-    console.log('--- Final Changes ---', changes);
-  
-    // Dialog schließen und Änderungen übergeben
-    this.dialogRef.close({ updatedEvent, changes });
+    return changes;
   }
   
   
   
   
+  generateUSTimeOptions() {
+    const times: string[] = [];
+    const startHour = 8; // 08:00 AM
+    const endHour = 17; // 05:00 PM (17 Uhr im 24-Stunden-Format)
   
+    for (let hour = startHour; hour <= endHour; hour++) {
+      const displayHour = hour > 12 ? hour - 12 : hour; // 12-Stunden-Format
+      const meridiem = hour >= 12 ? 'PM' : 'AM'; // AM/PM bestimmen
+  
+      ['00', '15', '30', '45'].forEach((minute) => {
+        times.push(`${displayHour}:${minute} ${meridiem}`);
+      });
+    }
+  
+    this.usTimeOptions = times;
+  }
   
 
   

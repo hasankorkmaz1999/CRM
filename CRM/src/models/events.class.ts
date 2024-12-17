@@ -2,10 +2,11 @@ export class Event {
   id?: string;
   createdBy?: string;
   date: Date;
-  users: string[]; // Namen der Benutzer
+  users: string[]; 
   description?: string;
   createdAt?: Date;
-  type: string; // Hinzugefügtes Feld für den Event-Typ
+  type: string;
+  time?: string;
 
   constructor(data: any) {
     this.id = data.id || '';
@@ -14,6 +15,7 @@ export class Event {
     this.users = data.users || [];
     this.description = data.description || '';
     this.createdAt = data.createdAt ? new Date(data.createdAt) : undefined;
-    this.type = data.type || 'Other'; // Standardwert, falls kein Typ angegeben wird
+    this.type = data.type || 'Other';
+    this.time = data.time || '';
   }
 }

@@ -1,58 +1,55 @@
-import { AfterViewInit, Component,CUSTOM_ELEMENTS_SCHEMA,OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, updateDoc } from '@angular/fire/firestore';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { MatDialog, MatDialogActions } from '@angular/material/dialog';
 import { SelectUserComponent } from './select-user/select-user.component';
-
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid'; // Tagesansicht
-import interactionPlugin from '@fullcalendar/interaction'; // Ermöglicht Drag & Drop und Klick-Interaktionen
-import timeGridPlugin from '@fullcalendar/timegrid'; 
-import { User } from '../../models/user.class';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import * as bootstrap from 'bootstrap';
 import { EventDetailsComponent } from './event-details/event-details.component';
 import { Event } from '../../models/events.class';
-import { LoggingService } from '../shared/logging.service';
-import { AuthService } from '../shared/auth.service';
 
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [FullCalendarModule, MatDialogActions, MatButtonModule, CommonModule],
+  imports: [
+    FullCalendarModule,
+     MatButtonModule,
+      CommonModule,
+      MatDialogActions,
+    ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',
   encapsulation: ViewEncapsulation.None,
-  
 })
 export class CalendarComponent implements OnInit, AfterViewInit {
   events: Event[] = [];
-
-
   showMonthViewButton: boolean = false;
 
-  @ViewChild('calendar') calendarComponent!: FullCalendarComponent; // Zugriff auf FullCalendar-Instanz
+  @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
-    firstDay: 1, // Montag als erster Tag der Woche
+    firstDay: 1,
     editable: true,
     selectable: true,
-    events: this.events,
-    dateClick: this.handleDateClick.bind(this), // Aufruf handleDateClick
+    dateClick: this.handleDateClick.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    eventTimeFormat: { // Formatierung der Event-Zeit
+    eventTimeFormat: {
       hour: 'numeric',
-      minute: '2-digit', // Fügt Minuten hinzu, falls nötig
-      meridiem: 'short' // Zeigt am/pm statt nur p oder a
+      minute: '2-digit',
+      meridiem: 'short',
     },
     eventDidMount: (info) => {
-      const userNames = info.event.extendedProps['users'].join(', ');
+      const userNames = info.event.extendedProps['users']?.join(', ') || 'No users';
       const tooltipTitle = `${info.event.extendedProps['type']} - Users: ${userNames}`;
-      const tooltip = new bootstrap.Tooltip(info.el, {
+      new bootstrap.Tooltip(info.el, {
         title: tooltipTitle,
         placement: 'top',
         trigger: 'hover',
@@ -60,182 +57,144 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     },
   };
 
-  constructor(
-    private firestore: Firestore,
-    public dialog: MatDialog,
-    private loggingService: LoggingService,
-    private authService: AuthService,
-  ) {}
+  constructor(private firestore: Firestore, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Andere Initialisierungen
+    this.loadEvents();
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      if (!this.calendarComponent || !this.calendarComponent.getApi()) {
-        console.error('Calendar component is not initialized.');
-        return;
-      }
-      this.loadEvents(); // Events laden
-    }, 0);
+    if (!this.calendarComponent) {
+      console.error('Calendar component is not initialized.');
+      return;
+    }
   }
+
+  loadEvents(): void {
+    const eventCollection = collection(this.firestore, 'events');
+    collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
+      const calendarApi = this.calendarComponent.getApi();
+      if (calendarApi) {
+        calendarApi.removeAllEvents();
   
-
-
-  loadEvents() {
-    setTimeout(() => {
-      if (!this.calendarComponent || !this.calendarComponent.getApi()) {
-        console.warn('Calendar component is not initialized or available.');
-        return;
+        const calendarEvents = data.map((eventData: any) => {
+          const combinedDateTime = this.parseAndCombineDateTime(eventData.date, eventData.time);
+          return {
+            id: eventData.id,
+            title: eventData.type,
+            start: combinedDateTime, // Kombiniertes Datum + Uhrzeit
+            extendedProps: {
+              id: eventData.id,
+              users: eventData.users || [],
+              type: eventData.type,
+              description: eventData.description || '',
+              createdBy: eventData.createdBy || '',
+              createdAt: eventData.createdAt || '',
+              time: eventData.time || 'No time provided',
+            },
+          };
+        });
+  
+        calendarEvents.forEach((event) => calendarApi.addEvent(event));
       }
-  
-      const eventCollection = collection(this.firestore, 'events');
-      collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
-        this.events = data.map((eventData) => new Event(eventData));
-  
-      
-  
-        const calendarEvents = this.events.map((event) => ({
-          id: event.id,
-          title: event.type,
-          start: event.date,
-          extendedProps: {
-            id: event.id,
-            users: event.users,
-            type: event.type,
-            description: event.description,
-            createdBy: event.createdBy,
-          },
-        }));
-  
-       
-  
-        const calendarApi = this.calendarComponent.getApi();
-        if (calendarApi) {
-          calendarApi.removeAllEvents();
-          calendarEvents.forEach((event) => calendarApi.addEvent(event));
-        }
-      });
-    }, 0);
+    });
   }
   
   
+  parseAndCombineDateTime(dateString: string, timeString: string): string {
+    if (!dateString || !timeString) {
+      console.warn('Missing date or time:', dateString, timeString);
+      return ''; // Leere Zeichenkette zurückgeben, um Fehler zu vermeiden
+    }
+  
+    try {
+      // Datum umwandeln: Extrahiere Monat, Tag und Jahr
+      const dateMatch = dateString.match(/(\w+) (\d{1,2}), (\d{4})/);
+      if (!dateMatch) {
+        console.error('Unable to parse date string:', dateString);
+        return '';
+      }
+  
+      const [_, month, day, year] = dateMatch;
+      const formattedDate = `${month} ${day}, ${year}`;
+  
+      // Erstelle ein Datum aus dem umgewandelten Format
+      const parsedDate = new Date(formattedDate);
+      if (isNaN(parsedDate.getTime())) {
+        console.error('Invalid parsed date:', formattedDate);
+        return '';
+      }
+  
+      // Uhrzeitteil parsen (z.B. 8:45 AM)
+      const [timePart, period] = timeString.split(' ');
+      let [hours, minutes] = timePart.split(':').map(Number);
+  
+      if (period === 'PM' && hours !== 12) hours += 12;
+      if (period === 'AM' && hours === 12) hours = 0;
+  
+      // Uhrzeit im Datum hinzufügen
+      parsedDate.setHours(hours, minutes, 0, 0);
+  
+      // Rückgabe im ISO-Format
+      return parsedDate.toISOString();
+    } catch (error) {
+      console.error('Error parsing date/time:', dateString, timeString, error);
+      return '';
+    }
+  }
   
   
   
   
 
-  handleDateClick(event: any) {
-   
-    
-    // Verwende die FullCalendar API, um die Ansicht zu wechseln
+  // Bei Klick auf ein Datum zur Wochenansicht wechseln
+  handleDateClick(event: any): void {
     const calendarApi = this.calendarComponent.getApi();
     calendarApi.changeView('timeGridWeek', event.date);
-    this.showMonthViewButton = true;  // Wechsel zur Wochenansicht
+    this.showMonthViewButton = true;
   }
 
-
-  switchToMonthView() {
+  // Zur Monatsansicht zurückkehren
+  switchToMonthView(): void {
     const calendarApi = this.calendarComponent.getApi();
-    calendarApi.changeView('dayGridMonth'); 
-    this.showMonthViewButton = false;// Zur Monatsansicht wechseln
+    calendarApi.changeView('dayGridMonth');
+    this.showMonthViewButton = false;
   }
 
-
-  handleEventClick(event: any) {
-   
-    console.log('Dialog Data:', event.event.extendedProps);
-
+  // Event-Details anzeigen und bearbeiten
+  handleEventClick(event: any): void {
+    const time = event.event.extendedProps['time'] || 'No time provided';
+    console.log('Time passed to dialog:', time);
+    
     const dialogRef = this.dialog.open(EventDetailsComponent, {
       data: {
         id: event.event.extendedProps['id'],
-        type: event.event.extendedProps['type'], // Nur der Typ des Events
-        description: event.event.extendedProps['description'], // Beschreibung
+        type: event.event.extendedProps['type'],
+        description: event.event.extendedProps['description'],
         date: event.event.start,
+        time: time, // Hier sicherstellen, dass die Zeit korrekt ist
         users: event.event.extendedProps['users'],
         createdBy: event.event.extendedProps['createdBy'],
-        
       },
-      
       autoFocus: false,
     });
-  
+    
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'reload') {
-        this.loadEvents(); // Events neu laden
+        this.loadEvents();
       }
     });
   }
-  
-  
-  
 
-  async addEvent() {
+  // Öffne Dialog für Event-Erstellung
+  openAddEventDialog(): void {
     const dialogRef = this.dialog.open(SelectUserComponent);
-  
-    dialogRef.afterClosed().subscribe(async (result) => {
-      if (result) {
-        try {
-          const currentUser = await this.authService.getCurrentUserDisplayName(); // Benutzername holen
-  
-          const newEvent = new Event({
-            type: result.type || 'Other',
-            description: result.description?.trim() || '',
-            date: result.date,
-            users: result.users.map((user: User) => `${user.firstName} ${user.lastName}`),
-            createdBy: currentUser, // Hier wird der Benutzername hinzugefügt
-          });
-  
-          // Validierung
-          if (!newEvent.type || !newEvent.date || newEvent.users.length === 0) {
-            console.error('Invalid event data:', newEvent);
-            return;
-          }
-  
-          this.events.push(newEvent);
-          this.saveEventToFirestore(newEvent);
-        } catch (error) {
-          console.error('Error fetching current user display name:', error);
-        }
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'reload') {
+        this.loadEvents();
       }
-    });
-  }
-  
-  
-  
-  
-
-  saveEventToFirestore(event: Event) {
-    const eventCollection = collection(this.firestore, 'events');
-    const eventToSave = {
-      ...event,
-      date: event.date.toISOString(),
-      createdAt: new Date().toISOString(),
-      createdBy: event.createdBy, // Speichere den Ersteller
-    };
-  
-    addDoc(eventCollection, eventToSave)
-      .then((docRef) => {
-        console.log('Event saved successfully with ID:', docRef.id);
-  
-        updateDoc(docRef, { id: docRef.id })
-          .then(() => {
-            console.log('ID added to event document');
-            this.logEventAction('add', docRef.id, event.type, event.date.toISOString());
-            this.loadEvents();
-          })
-          .catch((error) => console.error('Error updating document with ID:', error));
-      })
-      .catch((error) => console.error('Error saving event:', error));
-  }
-  
-
-  logEventAction(action: string, eventId: string, type: string, timestamp: string) {
-    this.loggingService.log(action, 'event', {
-      id: eventId,
-      type: type,
-      timestamp: timestamp,
     });
   }
 }

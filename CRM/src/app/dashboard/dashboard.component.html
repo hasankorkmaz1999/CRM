@@ -1,47 +1,64 @@
 <div class="dashboard">
     <!-- KPI Cards -->
-    <div class="kpi-cards">
-      <div class="kpi-card">
-        <h3>Total Events</h3>
-        <p>{{ totalEvents }}</p>
-      </div>
-      <div class="kpi-card">
-        <h3>Events Today</h3>
-        <p>{{ eventsToday }}</p>
-      </div>
-      <div class="kpi-card">
-        <h3>Events This Week</h3>
-        <p>{{ eventsThisWeek }}</p>
-      </div>
+
+
+<div class="events-container">
+
+  <div class="kpi-cards">
+    <div class="kpi-card">
+      <h3>Total Events</h3>
+      <p>{{ totalEvents }}</p>
     </div>
+    <div class="kpi-card">
+      <h3>Events Today</h3>
+      <p>{{ eventsToday }}</p>
+    </div>
+    <div class="kpi-card">
+      <h3>Events This Week</h3>
+      <p>{{ eventsThisWeek }}</p>
+    </div>
+  </div>
+
+
+  <div class="upcoming-events">
+    <h3>Upcoming Events</h3>
+    <ul>
+      <li
+        *ngFor="let event of upcomingEvents; let i = index"
+        (click)="openEventDetails(event)"
+        [ngClass]="getEventClass(event.type)">
+
+
+        <div class="event-item">
+
+
+
+          <h4  >{{ event.type }}</h4>
+
+          <div class="date-div">
+          <mat-icon >event</mat-icon>  
+          <p>{{ event.date | date: 'MMMM d, y' }}</p>
+        </div>
+
+
+       
+          <p *ngIf="isEventToday(event.date) && event.id">
+            Starts in: {{ countdowns[event.id] || 'Ended' }}
+          </p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+
+
+</div>
+
+
+   
   
     <!-- Upcoming Events -->
-    <div class="upcoming-events">
-      <h3>Upcoming Events</h3>
-      <ul>
-        <li
-          *ngFor="let event of upcomingEvents; let i = index"
-          (click)="openEventDetails(event)"
-          [ngClass]="getEventClass(event.type)" 
-          
-        >
-          <div class="event-item">
-            <h4  [ngClass]="getEventClass(event.type)" >{{ event.type }}</h4>
-
-            <div class="date-div">
-            <mat-icon >event</mat-icon>  
-            <p>{{ event.date | date: 'MMMM d, y' }}</p>
-          </div>
-
-
-            <p>Participants: {{ event.users.join(', ') }}</p>
-            <p *ngIf="isEventToday(event.date) && event.id">
-              Starts in: {{ countdowns[event.id] || 'Ended' }}
-            </p>
-          </div>
-        </li>
-      </ul>
-    </div>
+   
   
 
 

@@ -1,5 +1,15 @@
 .dashboard {
+ 
+
+.events-container {
+  width: 500px;
+  height: 500px;
+  background-color: #313132;
+  border-radius: 30px;
+
   padding: 20px;
+}
+
 
   /* KPI Cards */
   .kpi-cards {
@@ -44,26 +54,24 @@
 
   /* Upcoming Events */
   .upcoming-events {
+    width: 500px;
     margin-top: 20px;
-   
-
+    flex-wrap: wrap;
     h3 {
       color: #ffffff;
       font-weight: 700;
     }
 
     ul {
+      display: flex;
       list-style: none;
       padding: 0;
+      flex-wrap: wrap;
 
       li {
         cursor: pointer;
-        padding: 0px;
-        padding-top: 0;
-        padding-left: 0;
-        
         margin-bottom: 15px;
-       
+       margin-right: 10px;
         border-radius: 5px;
        
 
