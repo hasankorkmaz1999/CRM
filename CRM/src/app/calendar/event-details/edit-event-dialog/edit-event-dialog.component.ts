@@ -120,21 +120,51 @@ export class EditEventDialogComponent implements OnInit {
     const changes: any = {};
     const originalEvent = this.data;
   
+    // Hilfsfunktion für präzisen Vergleich
+    const normalizeDate = (date: string): string => {
+      return new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    };
+  
+    // Vergleich des Typs
     if (originalEvent.type !== updatedEvent.type) {
       changes.type = { old: originalEvent.type, new: updatedEvent.type };
     }
+  
+    // Vergleich der Beschreibung
     if (originalEvent.description !== updatedEvent.description) {
       changes.description = { old: originalEvent.description, new: updatedEvent.description };
     }
-    if (originalEvent.date !== updatedEvent.date) {
-      changes.date = { old: originalEvent.date, new: updatedEvent.date };
+  
+    // Vergleich des Datums (normalisieren vor dem Vergleich)
+    if (normalizeDate(originalEvent.date) !== normalizeDate(updatedEvent.date)) {
+      changes.date = {
+        old: normalizeDate(originalEvent.date),
+        new: normalizeDate(updatedEvent.date),
+      };
     }
+  
+    // Vergleich der Uhrzeit
     if (originalEvent.time !== updatedEvent.time) {
       changes.time = { old: originalEvent.time, new: updatedEvent.time };
     }
   
+    // Vergleich der Benutzer (Arrays vergleichen)
+    const originalUsers = JSON.stringify(originalEvent.users || []);
+    const updatedUsers = JSON.stringify(updatedEvent.users || []);
+    if (originalUsers !== updatedUsers) {
+      changes.users = {
+        old: originalEvent.users || [],
+        new: updatedEvent.users || [],
+      };
+    }
+  
     return changes;
   }
+  
   
   
   
@@ -161,12 +191,6 @@ export class EditEventDialogComponent implements OnInit {
   
 
   logChanges(eventId: string, changes: any) {
-    // Formatierung der alten und neuen Datumswerte
-    if (changes.date) {
-      changes.date.old = new Date(changes.date.old).toISOString();
-      changes.date.new = new Date(changes.date.new).toISOString();
-    }
-  
     const log = {
       timestamp: new Date().toISOString(),
       action: 'edit',
@@ -186,6 +210,7 @@ export class EditEventDialogComponent implements OnInit {
         console.error('Error logging changes:', error);
       });
   }
+  
   
   
   

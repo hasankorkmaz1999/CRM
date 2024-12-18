@@ -20,22 +20,31 @@ export class LogDetailsComponent {
   // Function to format values (Date or String)
   formatValue(value: any): string {
     if (!value) return 'Unknown';
-
-    // Check if the value is a string
-    if (typeof value === 'string') {
-      const parsedDate = new Date(value);
-      if (!isNaN(parsedDate.getTime())) {
-        return parsedDate.toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' });
-      }
-      return value; // If not a date, return as string
-    }
-
+  
+    // Prüfe, ob der Wert ein Firestore Timestamp ist (Firestore Sekundenformat)
     if (value.seconds) {
-      // Handle Firestore Timestamp
       const date = new Date(value.seconds * 1000);
-      return date.toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' });
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
     }
-
-    return value.toString(); // Fallback to string
+  
+    // Prüfe, ob der Wert ein ISO-Datumsstring ist oder ein normales Datum
+    if (typeof value === 'string' || value instanceof Date) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return date.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+      }
+    }
+  
+    // Gib den Wert zurück, wenn er nicht formatiert werden kann
+    return value.toString();
   }
+  
 }

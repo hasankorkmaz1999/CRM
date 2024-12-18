@@ -126,19 +126,18 @@ export class SelectUserComponent implements OnInit {
     this.authService.getCurrentUserDisplayName().then((currentUser) => {
       // Event-Daten vorbereiten (im lesbaren Format)
       const eventToSave = {
-        type: eventData.type || 'Other',                // Event-Typ
-        description: eventData.description || '',      // Beschreibung
-        date: new Date(eventData.date).toLocaleString('en-US', {  
-          year: 'numeric', month: 'long', day: 'numeric', 
-          hour: '2-digit', minute: '2-digit', hour12: true 
-        }),                                            // Lesbares Datum
-        time: eventData.time || '',                    // Uhrzeit
+        type: eventData.type || 'Other', // Event-Typ
+        description: eventData.description || '', // Beschreibung
+        date: new Date(eventData.date).toLocaleDateString('en-US', {  
+          year: 'numeric', month: 'long', day: 'numeric' 
+        }), // Nur Datum ohne Uhrzeit
+        time: eventData.time || '', // Uhrzeit separat
         users: eventData.users.map((user: any) => `${user.firstName} ${user.lastName}`), // Benutzer als Namen
         createdAt: currentDate.toLocaleString('en-US', {  
           year: 'numeric', month: 'long', day: 'numeric', 
           hour: '2-digit', minute: '2-digit', hour12: true 
-        }),                                            // Lesbares Erstellungsdatum
-        createdBy: currentUser || 'Unknown',           // Name des eingeloggten Benutzers
+        }), // Lesbares Erstellungsdatum
+        createdBy: currentUser || 'Unknown', // Name des eingeloggten Benutzers
       };
   
       // Firestore speichern
@@ -161,6 +160,7 @@ export class SelectUserComponent implements OnInit {
       console.error('Error fetching current user:', error);
     });
   }
+  
   
 
 

@@ -99,35 +99,58 @@ export class DashboardComponent implements OnInit {
   loadEvents() {
     const eventCollection = collection(this.firestore, 'events');
     collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
-      const events = data.map((eventData: any) => new Event(eventData));
-
-      const today = new Date();
-      const startOfWeek = new Date(today);
-      startOfWeek.setDate(today.getDate() - today.getDay() + 1);
-
+      const events = data.map((eventData: any) => {
+        const parsedDate = this.combineDateTime(eventData.date, eventData.time); // Datum & Zeit kombinieren
+        return new Event({ ...eventData, date: parsedDate });
+      });
+  
+      const now = new Date(); // Aktuelle Zeit berücksichtigen
+  
+      const startOfWeek = new Date(now);
+      startOfWeek.setDate(now.getDate() - now.getDay() + 1);
+  
       const endOfWeek = new Date(startOfWeek);
       endOfWeek.setDate(startOfWeek.getDate() + 6);
-
+  
       this.totalEvents = events.length;
-
+  
       this.eventsToday = events.filter((event) =>
-        this.isEventToday(new Date(event.date))
+        this.isEventToday(event.date)
       ).length;
-
+  
       this.eventsThisWeek = events.filter(
-        (event) =>
-          new Date(event.date) >= startOfWeek &&
-          new Date(event.date) <= endOfWeek
+        (event) => event.date >= startOfWeek && event.date <= endOfWeek
       ).length;
-
+  
       this.upcomingEvents = events
-        .filter((event) => new Date(event.date) >= today)
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .filter((event) => event.date >= now) // Hier "now" statt "today" verwenden
+        .sort((a, b) => a.date.getTime() - b.date.getTime())
         .slice(0, 6);
     });
   }
+  
+  
+  combineDateTime(dateString: string, timeString: string): Date {
+    try {
+      if (!dateString || !timeString) return new Date(NaN);
+      const combinedString = `${dateString} ${timeString}`;
+      const combinedDate = new Date(combinedString);
+      return isNaN(combinedDate.getTime()) ? new Date(NaN) : combinedDate;
+    } catch (error) {
+      console.error('Error combining date and time:', error);
+      return new Date(NaN);
+    }
+  }
+  
+  
+  
 
   isEventToday(eventDate: Date): boolean {
+    if (!(eventDate instanceof Date) || isNaN(eventDate.getTime())) {
+      console.warn('Invalid eventDate:', eventDate);
+      return false;
+    }
+  
     const today = new Date();
     return (
       eventDate.getFullYear() === today.getFullYear() &&
@@ -135,6 +158,7 @@ export class DashboardComponent implements OnInit {
       eventDate.getDate() === today.getDate()
     );
   }
+  
 
   startLiveCountdown() {
     interval(1000)
@@ -173,6 +197,7 @@ export class DashboardComponent implements OnInit {
         description: event.description,
         date: event.date,
         users: event.users,
+        time: event.time,
         createdBy: event.createdBy,
       },
       width: '500px',

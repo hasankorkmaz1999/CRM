@@ -1,36 +1,44 @@
 <div *ngIf="data">
-    <p><strong>Action:</strong> {{ data.action }}</p>
-    <p><strong>Entity Type:</strong> {{ data.entityType }}</p>
-    <p><strong>Timestamp:</strong> {{ data.timestamp | date: 'short' }}</p>
-  
-    <!-- Details ohne "users" -->
-    <div *ngIf="data.details?.changes">
-      <h3>Details</h3>
-      <ul>
-        <!-- Separates *ngIf und *ngFor -->
-        <ng-container *ngFor="let changeKey of objectKeys(data.details.changes)">
-          <li *ngIf="changeKey !== 'users'">
-            <strong>{{ changeKey }}:</strong>
-            <span>
-              "{{ formatValue(data.details.changes[changeKey].old) }}" →
-              "{{ formatValue(data.details.changes[changeKey].new) }}"
-            </span>
-          </li>
-        </ng-container>
-      </ul>
-    </div>
-  
-    <!-- Users spezifische Änderungen -->
-    <div *ngIf="data.details?.changes?.users">
-      <h3>Users</h3>
-      <p><strong>Old:</strong> {{ formatValue(data.details.changes.users.old) }}</p>
-      <p><strong>New:</strong> {{ formatValue(data.details.changes.users.new) }}</p>
-      <p *ngIf="data.details.changes.users.removed.length > 0">
-        <strong>Removed:</strong> {{ formatValue(data.details.changes.users.removed) }}
-      </p>
-      <p *ngIf="data.details.changes.users.added.length > 0">
-        <strong>Added:</strong> {{ formatValue(data.details.changes.users.added) }}
-      </p>
-    </div>
+  <p><strong>Action:</strong> {{ data.action }}</p>
+  <p><strong>Entity Type:</strong> {{ data.entityType }}</p>
+  <p><strong>Timestamp:</strong> {{ data.timestamp | date: 'MMMM d, y' }}</p>
+
+  <!-- Details ohne "users" -->
+  <div *ngIf="data.details?.changes">
+    <h3>Details</h3>
+    <ul>
+      <!-- Überprüfe Änderungen, ohne users -->
+      <ng-container *ngFor="let changeKey of objectKeys(data.details.changes)">
+        <li *ngIf="changeKey !== 'users'">
+          <strong>{{ changeKey }}:</strong>
+          <span>
+            "{{ formatValue(data.details.changes[changeKey]?.old) }}" →
+            "{{ formatValue(data.details.changes[changeKey]?.new) }}"
+          </span>
+        </li>
+      </ng-container>
+    </ul>
   </div>
-  
+
+  <!-- Users spezifische Änderungen -->
+  <div *ngIf="data.details?.changes?.users">
+    <h3>Participants</h3>
+    <p *ngIf="data.details.changes.users.old">
+      <strong>Old:</strong> {{ formatValue(data.details.changes.users.old) }}
+    </p>
+    <p *ngIf="data.details.changes.users.new">
+      <strong>New:</strong> {{ formatValue(data.details.changes.users.new) }}
+    </p>
+    <p *ngIf="data.details.changes.users.removed?.length > 0">
+      <strong>Removed:</strong> {{ formatValue(data.details.changes.users.removed) }}
+    </p>
+    <p *ngIf="data.details.changes.users.added?.length > 0">
+      <strong>Added:</strong> {{ formatValue(data.details.changes.users.added) }}
+    </p>
+  </div>
+</div>
+
+<!-- Keine Daten gefunden -->
+<div *ngIf="!data">
+  <p>No log data available.</p>
+</div>
