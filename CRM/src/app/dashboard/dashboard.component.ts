@@ -37,13 +37,7 @@ export class DashboardComponent implements OnInit {
     this. loadRecentLogs();
   }
 
-  openLogDetails(log: any) {
-    this.dialog.open(LogDetailsComponent, {
-      data: log,
-      width: '500px',
-      autoFocus: false,
-    });
-  }
+ 
 
   navigateToAllLogs() {
     this.router.navigate(['/logs']); 
@@ -205,10 +199,36 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-
-  isEventEditLog(log: any): boolean {
-    return log.action === 'edit' && log.entityType === 'event';
+  openLogDetails(log: any) {
+    this.dialog.open(LogDetailsComponent, {
+      data: log,
+      width: '500px',
+      autoFocus: false,
+    });
   }
+
+  
+  openAddedEventDetails(log: any) {
+    const event = {
+      id: log.details?.id || '',
+      type: log.details?.type || 'Unknown',
+      description: log.details?.description || '',
+      date: log.details?.date || '',
+      time: log.details?.time || '',
+      users: log.details?.users || [],
+      createdBy: log.details?.createdBy || '',
+    };
+  
+    this.dialog.open(EventDetailsComponent, {
+      data: {
+        ...event,
+        readOnly: true // Hier als Indikator für Anzeige ohne Bearbeiten/Löschen
+      },
+      width: '500px',
+      autoFocus: false,
+    });
+  }
+  
 
   navigateToUserDetails(log: any) {
     if (log.entityType === 'user' && log.details?.id) {

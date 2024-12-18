@@ -1,107 +1,99 @@
 <div class="dashboard">
-    <!-- KPI Cards -->
+  <!-- KPI Cards -->
 
-
-<div class="events-container">
-
-  <div class="kpi-cards">
-    <div class="kpi-card">
-      <h3>Total Events</h3>
-      <p>{{ totalEvents }}</p>
+  <div class="events-container">
+    <div class="kpi-cards">
+      <div class="kpi-card">
+        <h3>Total Events</h3>
+        <p>{{ totalEvents }}</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Events Today</h3>
+        <p>{{ eventsToday }}</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Events This Week</h3>
+        <p>{{ eventsThisWeek }}</p>
+      </div>
     </div>
-    <div class="kpi-card">
-      <h3>Events Today</h3>
-      <p>{{ eventsToday }}</p>
-    </div>
-    <div class="kpi-card">
-      <h3>Events This Week</h3>
-      <p>{{ eventsThisWeek }}</p>
-    </div>
-  </div>
 
-
-  <div class="upcoming-events">
-    <h3>Upcoming Events</h3>
-    <ul>
-      <li
-        *ngFor="let event of upcomingEvents; let i = index"
-        (click)="openEventDetails(event)"
-        [ngClass]="getEventClass(event.type)">
-
-
-        <div class="event-item">
-
-
-
-          <h4  >{{ event.type }}</h4>
-
-          <div class="date-div">
-          <mat-icon >event</mat-icon>  
-          <p>{{ event.date | date: 'MMMM d, y' }}</p>
-        </div>
-
-
-       
-          <p *ngIf="isEventToday(event.date) && event.id">
-            Starts in: {{ countdowns[event.id] || 'Ended' }}
-          </p>
-        </div>
-      </li>
-    </ul>
-  </div>
-
-
-
-</div>
-
-
-   
-  
-    <!-- Upcoming Events -->
-   
-  
-
-
-    <div class="logs-section">
-      <h3>Recent Activity Logs</h3>
+    <div class="upcoming-events">
+      <h3>Upcoming Events</h3>
       <ul>
         <li
-          class="list-elements"
-          *ngFor="let log of filteredLogs"
-          [ngClass]="'entity-' + (log.entityType?.toLowerCase() || 'unknown')"
+          *ngFor="let event of upcomingEvents; let i = index"
+          (click)="openEventDetails(event)"
+          [ngClass]="getEventClass(event.type)"
         >
-          <div class="log-message">
-            <strong [innerHTML]="generateLogMessage(log)"></strong>
-          </div>
-          <div class="buttons-comtainer">
-            <small *ngIf="log.timestamp">{{ log.timestamp | date: 'MMMM d, y' }}</small>
-            <a
-              *ngIf="log.entityType === 'customer' && log.action === 'edit'"
-              (click)="navigateToCustomerDetails(log)"
-              class="see-details-link"
-            >
-              View Customer Details
-            </a>
-            <a
-              *ngIf="log.entityType === 'user' && log.action === 'edit'"
-              (click)="navigateToUserDetails(log)"
-              class="see-details-link"
-            >
-              View User Details
-            </a>
-            <a
-              *ngIf="isEventEditLog(log)"
-              (click)="openLogDetails(log)"
-              class="see-details-link"
-            >
-              See Details
-            </a>
+          <div class="event-item">
+            <h4>{{ event.type }}</h4>
+
+            <div class="date-div">
+              <mat-icon>event</mat-icon>
+              <p>{{ event.date | date : "MMMM d, y" }}</p>
+            </div>
+
+            <p *ngIf="isEventToday(event.date) && event.id">
+              Starts in: {{ countdowns[event.id] || "Ended" }}
+            </p>
           </div>
         </li>
       </ul>
-      <button mat-raised-button color="primary" (click)="navigateToAllLogs()">
-        View All Logs
-      </button>
     </div>
-    
-    
+  </div>
+
+  <!-- Upcoming Events -->
+
+  <div class="logs-section">
+    <h3>Recent Activity Logs</h3>
+    <ul>
+      <li
+        class="list-elements"
+        *ngFor="let log of filteredLogs"
+        [ngClass]="'entity-' + (log.entityType?.toLowerCase() || 'unknown')"
+      >
+        <div class="log-message">
+          <strong [innerHTML]="generateLogMessage(log)"></strong>
+        </div>
+        <div class="buttons-comtainer">
+          <small *ngIf="log.timestamp">{{
+            log.timestamp | date : "MMMM d, y"
+          }}</small>
+          <a
+            *ngIf="log.entityType === 'customer' && log.action === 'edit'"
+            (click)="navigateToCustomerDetails(log)"
+            class="see-details-link"
+          >
+            View Customer Details
+          </a>
+          <a
+  *ngIf="log.entityType === 'user' && (log.action === 'edit' || log.action === 'add')"
+  (click)="navigateToUserDetails(log)"
+  class="see-details-link"
+>
+  View User Details
+</a>
+
+          <a
+          *ngIf="log.entityType === 'event' && log.action === 'add'"
+          (click)="openAddedEventDetails(log)"
+          class="see-details-link"
+        >
+          View Event Details
+        </a>
+        
+        <a
+          *ngIf="log.entityType === 'event' && log.action === 'edit'"
+          (click)="openLogDetails(log)"
+          class="see-details-link"
+        >
+          See Details
+        </a>
+        </div>
+      </li>
+    </ul>
+    <button mat-raised-button color="primary" (click)="navigateToAllLogs()">
+      View All Logs
+    </button>
+  </div>
+</div>

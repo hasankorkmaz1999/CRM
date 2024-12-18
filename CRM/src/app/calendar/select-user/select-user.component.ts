@@ -11,6 +11,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../shared/auth.service';
+import { LoggingService } from '../../shared/logging.service';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class SelectUserComponent implements OnInit {
     private dialogRef: MatDialogRef<SelectUserComponent>,
     private fb: FormBuilder,
     private authService: AuthService,
+    private loggingService: LoggingService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.eventForm = this.fb.group({
@@ -144,7 +146,7 @@ export class SelectUserComponent implements OnInit {
       addDoc(eventCollection, eventToSave)
         .then((docRef) => {
           console.log('Event saved successfully with ID:', docRef.id);
-  
+          this.logEventAction('add', docRef.id, eventToSave);
           // Aktualisiere die ID im gespeicherten Dokument
           updateDoc(docRef, { id: docRef.id })
             .then(() => {
@@ -162,7 +164,17 @@ export class SelectUserComponent implements OnInit {
   }
   
   
+  logEventAction(action: string, eventId: string, eventData: any) {
+    this.loggingService.log(action, 'event', {
+      id: eventId,
+      type: eventData.type,
+      createdBy: eventData.createdBy,
+      date: eventData.date,
+      time: eventData.time,
+      users: eventData.users || [],
+    });
 
 
+}
 
 }

@@ -1,16 +1,16 @@
 <div class="event-container">
-
   <h1>{{ data.type }}</h1> <!-- Event Type anzeigen -->
-  <p>Date: {{ data.date | date: 'MMMM d, y'}}</p>
+  <p>Date: {{ data.date | date: 'MMMM d, y' }}</p>
   <p>Time: {{ data.time }}</p>
   <p>Description: {{ data.description }}</p> <!-- Beschreibung hinzufügen -->
-  <p>Participants: {{ data.users.join(', ') }}</p>
+  <p *ngIf="data.users?.length > 0">Participants: {{ data.users.join(', ') }}</p>
   <p>Created By: {{ data.createdBy }}</p>
 
   <div class="buttons">
     <button mat-button mat-dialog-close>Close</button>
 
-    <div class="two-buttons">
+    <!-- Nur anzeigen, wenn readOnly NICHT gesetzt ist -->
+    <div class="two-buttons" *ngIf="!data.readOnly">
       <button (click)="editEvent()" mat-icon-button color="primary" matTooltip="Edit" matTooltipPosition="above">
         <mat-icon>edit</mat-icon>
       </button>
@@ -20,5 +20,4 @@
       </button>
     </div>
   </div>
-
 </div>
