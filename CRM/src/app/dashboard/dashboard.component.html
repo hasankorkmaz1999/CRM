@@ -24,23 +24,40 @@
           *ngFor="let event of upcomingEvents; let i = index"
           (click)="openEventDetails(event)"
           [ngClass]="getEventClass(event.type)"
+          [matTooltip]="isEventToday(event.date) && event.id ? 'Starts in: ' + (countdowns[event.id] || 'Ended') : ''"
+          matTooltipPosition="above"
         >
           <div class="event-item">
             <h4>{{ event.type }}</h4>
+            <mat-icon>event</mat-icon>
+
+          </div>
+
 
             <div class="date-div">
-              <mat-icon>event</mat-icon>
+              
               <p>{{ event.date | date : "MMMM d, y" }}</p>
+             
             </div>
 
-            <p *ngIf="isEventToday(event.date) && event.id">
-              Starts in: {{ countdowns[event.id] || "Ended" }}
-            </p>
-          </div>
+
+            <div class="">
+               <p>{{event.time}}</p>
+            </div>
+
+        
+         
         </li>
       </ul>
+      <button class="go-calendar" routerLink="/calendar">
+        Go to Calendar
+      </button>
     </div>
   </div>
+
+
+
+
 
   <!-- Upcoming Events -->
 
@@ -60,39 +77,45 @@
             log.timestamp | date : "MMMM d, y"
           }}</small>
           <a
-            *ngIf="log.entityType === 'customer' && log.action === 'edit'"
+            *ngIf="
+              log.entityType === 'customer' &&
+              (log.action === 'edit' || log.action === 'add')
+            "
             (click)="navigateToCustomerDetails(log)"
             class="see-details-link"
           >
             View Customer Details
           </a>
           <a
-  *ngIf="log.entityType === 'user' && (log.action === 'edit' || log.action === 'add')"
-  (click)="navigateToUserDetails(log)"
-  class="see-details-link"
->
-  View User Details
-</a>
+            *ngIf="
+              log.entityType === 'user' &&
+              (log.action === 'edit' || log.action === 'add')
+            "
+            (click)="navigateToUserDetails(log)"
+            class="see-details-link"
+          >
+            View User Details
+          </a>
 
           <a
-          *ngIf="log.entityType === 'event' && log.action === 'add'"
-          (click)="openAddedEventDetails(log)"
-          class="see-details-link"
-        >
-          View Event Details
-        </a>
-        
-        <a
-          *ngIf="log.entityType === 'event' && log.action === 'edit'"
-          (click)="openLogDetails(log)"
-          class="see-details-link"
-        >
-          See Details
-        </a>
+            *ngIf="log.entityType === 'event' && log.action === 'add'"
+            (click)="openAddedEventDetails(log)"
+            class="see-details-link"
+          >
+            View Event Details
+          </a>
+
+          <a
+            *ngIf="log.entityType === 'event' && log.action === 'edit'"
+            (click)="openLogDetails(log)"
+            class="see-details-link"
+          >
+            See Details
+          </a>
         </div>
       </li>
     </ul>
-    <button mat-raised-button color="primary" (click)="navigateToAllLogs()">
+    <button class="go-calendar" (click)="navigateToAllLogs()">
       View All Logs
     </button>
   </div>

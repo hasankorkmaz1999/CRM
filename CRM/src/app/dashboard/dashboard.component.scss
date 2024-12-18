@@ -1,25 +1,48 @@
 .dashboard {
- 
+  display: flex;
+  justify-content: space-between;
+  .events-container {
+    width: 500px;
+    height: 600px;
+    background-color: #313132;
+    border-radius: 30px;
+    margin-bottom: 400px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-.events-container {
-  width: 500px;
-  height: 500px;
-  background-color: #313132;
-  border-radius: 30px;
+    /* Smooth Fade-In Animation */
+    transform: scale(0.9); /* Start leicht kleiner */
+    opacity: 0;
+    animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
+    will-change: transform, opacity; /* Optimierung */
+  }
 
-  padding: 20px;
-}
-
+  /* Keyframes für den smoothen Fade-In-Effekt */
+  @keyframes smoothFadeIn {
+    0% {
+      transform: scale(0.9); /* Start leicht kleiner */
+      opacity: 0; /* Unsichtbar */
+    }
+    50% {
+      transform: scale(1); /* In Position */
+      opacity: 0.5; /* Halb sichtbar */
+    }
+    100% {
+      transform: scale(1); /* Endzustand */
+      opacity: 1; /* Voll sichtbar */
+    }
+  }
 
   /* KPI Cards */
   .kpi-cards {
     display: flex;
     gap: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 
     .kpi-card {
-      flex: 1;
-
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -35,11 +58,6 @@
       -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
       box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
 
-      opacity: 0;
-      transform: scale(0.95); /* Initialer Zustand */
-      animation: popIn 0.4s ease-out forwards;
-      animation-delay: calc(var(--index, 0) * 0.2s);
-
       h3 {
         margin: 0 0 10px;
         color: #ffffff;
@@ -52,11 +70,45 @@
     }
   }
 
+  .go-calendar {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.06);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
+    box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
+
+    color: white;
+    border: none;
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Weiche Animation */
+  }
+
+  .go-calendar:hover {
+    -webkit-box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8); /* Größerer & heller Schatten */
+    box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8);
+    transform: translateY(-3px); /* Leichtes Anheben */
+  }
+
+  .event-item {
+    display: flex;
+    justify-content: space-between;
+    .mat-icon {
+      color: #313132;
+    }
+  }
+
   /* Upcoming Events */
   .upcoming-events {
     width: 500px;
     margin-top: 20px;
+
     flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     h3 {
       color: #ffffff;
       font-weight: 700;
@@ -64,6 +116,8 @@
 
     ul {
       display: flex;
+      justify-content: center;
+      align-items: center;
       list-style: none;
       padding: 0;
       flex-wrap: wrap;
@@ -71,101 +125,81 @@
       li {
         cursor: pointer;
         margin-bottom: 15px;
-       margin-right: 10px;
+        margin-right: 10px;
         border-radius: 5px;
-       
 
-       
-        opacity: 0;
-        transform: scale(0.95); /* Initialer Zustand */
-        animation: popIn 0.4s ease-out forwards;
-        animation-delay: calc(var(--index, 0) * 0.2s);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding: 5px;
 
-        &:hover {
-          transform: scale(1.55)  rotate(1deg);
-          box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.35);
+        p {
+          color: #313132;
         }
 
-        &.highlight-today {
-         
-          border-color: #ff0000;
-
-          &:hover {
-           
-            border-color: #ff3333;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-          }
-        }
-
-        .event-item {
-          h4 {
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            margin: 0;
-            font-weight: bold;
-            color: #000000;
-            text-align: center;
-            width: 100%;
-            box-shadow: none;
-            border: none;
-            background-color: none;
-          }
-
-          p {
-            margin: 5px 0;
-            color: #ffffff;
-          }
+        h4 {
+          color: #313132;
         }
       }
     }
   }
 
-
   .date-div {
-    
     display: flex;
+  }
 
-    .mat-icon {
-     color: white;
+  .event-webinar,
+  .event-meeting,
+  .event-workshop,
+  .event-other {
+    position: relative;
+    background-color: #ffffff; /* Standardfarbe für alle Karten */
+    border-radius: 12px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    transform: scale(1); /* Standardgröße */
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Leichter Schatten */
+
+    &:hover {
+      transform: scale(1.05); /* Vergrößerung beim Hover */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); /* Größerer Schatten beim Hover */
     }
   }
 
-
   .event-webinar {
-    border: 1px solid rgba(95, 186, 157, 0.8);
-    background-color: rgba(95, 186, 157, 0.15); /* Transparenter Hellblau */
-    box-shadow: 0 0 10px 3px rgba(95, 186, 157, 0.3); /* Transparenter Schatten */
+    background-color: #cfff5e; /* Helles Grün */
   }
-  
+
   .event-meeting {
-    border: 1px solid rgba(106, 95, 196, 0.8);
-    background-color: rgba(106, 95, 196, 0.15); /* Transparenter Hellviolett */
-    box-shadow: 0 0 10px 3px rgba(106, 95, 196, 0.3);
+    background-color: #ffffff; /* Rot */
   }
-  
+
   .event-workshop {
-    border: 1px solid rgba(58, 102, 165, 0.8);
-    background-color: rgba(58, 102, 165, 0.15); /* Transparenter Dunkelblau */
-    box-shadow: 0 0 10px 3px rgba(58, 102, 165, 0.3);
+    background-color: #6dc7c4; /* Pastell-Türkis */
   }
-  
+
   .event-other {
-    border: 1px solid rgba(249, 240, 255, 0.8);
-    background-color: rgba(249, 240, 255, 0.15); /* Transparenter Helllila */
-    box-shadow: 0 0 10px 3px rgba(249, 240, 255, 0.3);
+    background-color: #7d7dff; /* Violett */
   }
-  
-  
-  
 
   /* Logs Section */
   .logs-section {
-    margin-top: 20px;
+    width: 500px;
+    height: 600px;
+    background-color: #313132;
+    border-radius: 30px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.9); /* Start leicht kleiner */
+    opacity: 0;
+    animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
+    will-change: transform, opacity; /* Optimierung */
 
     > h3 {
       color: #ffffff;
       font-weight: 700;
+      margin-bottom: 20px;
     }
 
     ul {
@@ -174,22 +208,32 @@
 
       li {
         margin-bottom: 10px;
-        padding: 10px;
-        
-       
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 0;
+        display: flex;
+        justify-content: space-between;
+
+        height: 60px;
+
         border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.1);
-        opacity: 0;
-        transform: scale(0.95); /* Initialer Zustand */
-        animation: popIn 0.4s ease-out forwards;
-        animation-delay: calc(var(--index, 0) * 0.2s);
+        background-color: rgba(255, 255, 255, 0.06);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+
+        border-radius: 8px;
+        -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
+        box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
 
         strong {
           color: white;
           font-weight: 400;
         }
 
-
+        small {
+          color: white;
+        }
 
         &.entity-user {
           border-left: 10px solid #adb2cd; /* Weiches Indigo */
@@ -202,8 +246,8 @@
         }
 
         &.entity-event {
-          border-left: 10px solid #e7c38e; 
-          box-shadow: -8px 0 8px -2px rgba(231, 195, 142, 0.5);/* Weiches Pastellorange */
+          border-left: 10px solid #e7c38e;
+          box-shadow: -8px 0 8px -2px rgba(231, 195, 142, 0.5); /* Weiches Pastellorange */
         }
 
         &.entity-unknown {
@@ -217,61 +261,23 @@
         align-items: center;
       }
 
-      .list-elements {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        height: auto;
-      }
-
       .buttons-comtainer {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         justify-content: space-between;
-      }
 
-      .see-details-link {
-        color: blue;
-        text-decoration: none;
-        cursor: pointer;
+        a {
+          color: #4f9dff; /* Helles Blau */
 
-        &:hover {
-          text-decoration: underline;
+          white-space: nowrap;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }
   }
 }
-
-/* Keyframes für die Pop-in-Animation */
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95); /* Start leicht verkleinert */
-  }
-  to {
-    opacity: 1;
-    transform: scale(1); /* Endzustand */
-  }
-}
-
-.logs-section {
-  ul {
-    list-style: none;
-    padding: 0;
-
-    li {
-      margin-bottom: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-
-      /* Dynamische Rahmenfarben basierend auf entityType */
-    }
-  }
-}
-
-
-

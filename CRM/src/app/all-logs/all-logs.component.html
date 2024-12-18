@@ -6,24 +6,20 @@
       </button>
     </div>
 
-<div class="header-top">
-
-    <h3>All Activity Logs</h3>
-
-    <div class="sort-options">
-      <mat-form-field appearance="outline">
-        <mat-label>Sort by</mat-label>
-        <mat-select [(value)]="selectedSort" (selectionChange)="onSortChange()">
-          <mat-option value="newest">Newest</mat-option>
-          <mat-option value="oldest">Oldest</mat-option>
-          <mat-option value="users">Users</mat-option>
-          <mat-option value="customers">Customers</mat-option>
-          <mat-option value="events">Events</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-</div>
+    <div class="header-top">
+        <h3>All Activity Logs</h3>
+        <div class="sort-options">
+          <label for="sort" class="form-label">Sort by</label>
+          <select id="sort" class="custom-select" [(ngModel)]="selectedSort" (change)="onSortChange()">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="users">Users</option>
+            <option value="customers">Customers</option>
+            <option value="events">Events</option>
+          </select>
+        </div>
+      </div>
+      
 
 
 <ul>
@@ -34,33 +30,45 @@
       [style.animationDelay]="log.animationDelay"
     >
       <div class="log-message">
-        <strong>{{ generateLogMessage(log) }}</strong>
+        <strong [innerHTML]="generateLogMessage(log)"></strong>
       </div>
       <div class="buttons-comtainer">
-        <small *ngIf="log.timestamp">
-          ({{ log.timestamp | date: 'short' }})
-        </small>
+        <small *ngIf="log.timestamp">{{
+          log.timestamp | date : "MMMM d, y"
+        }}</small>
         <a
-          *ngIf="log.entityType === 'customer' && log.action === 'edit'"
+          *ngIf="
+            log.entityType === 'customer' &&
+            (log.action === 'edit' || log.action === 'add')
+          "
           (click)="navigateToCustomerDetails(log)"
           class="see-details-link"
-          href="javascript:void(0)"
         >
           View Customer Details
         </a>
         <a
-          *ngIf="log.entityType === 'user' && log.action === 'edit'"
+          *ngIf="
+            log.entityType === 'user' &&
+            (log.action === 'edit' || log.action === 'add')
+          "
           (click)="navigateToUserDetails(log)"
           class="see-details-link"
-          href="javascript:void(0)"
         >
           View User Details
         </a>
+
         <a
-          *ngIf="isEventEditLog(log)"
+          *ngIf="log.entityType === 'event' && log.action === 'add'"
+          (click)="openAddedEventDetails(log)"
+          class="see-details-link"
+        >
+          View Event Details
+        </a>
+
+        <a
+          *ngIf="log.entityType === 'event' && log.action === 'edit'"
           (click)="openLogDetails(log)"
           class="see-details-link"
-          href="javascript:void(0)"
         >
           See Details
         </a>

@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { LogDetailsComponent } from '../dashboard/log-details/log-details.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
+import { EventDetailsComponent } from '../calendar/event-details/event-details.component';
 
 @Component({
   selector: 'app-all-logs',
@@ -134,6 +135,28 @@ export class AllLogsComponent implements OnInit {
   openLogDetails(log: any) {
     this.dialog.open(LogDetailsComponent, {
       data: log,
+      width: '500px',
+      autoFocus: false,
+    });
+  }
+
+
+  openAddedEventDetails(log: any) {
+    const event = {
+      id: log.details?.id || '',
+      type: log.details?.type || 'Unknown',
+      description: log.details?.description || '',
+      date: log.details?.date || '',
+      time: log.details?.time || '',
+      users: log.details?.users || [],
+      createdBy: log.details?.createdBy || '',
+    };
+  
+    this.dialog.open(EventDetailsComponent, {
+      data: {
+        ...event,
+        readOnly: true // Hier als Indikator für Anzeige ohne Bearbeiten/Löschen
+      },
       width: '500px',
       autoFocus: false,
     });

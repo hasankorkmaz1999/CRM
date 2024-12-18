@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   logs: any[] = [];
   selectedLog: string | null = null;
   filteredLogs: any[] = []; // Begrenzte Logs mit Animation
-  maxLogs: number = 5; // Begrenze auf 5 Logs
+  maxLogs: number = 6; // Begrenze auf 5 Logs
 
   constructor(private firestore: Firestore, private dialog: MatDialog, private router: Router) {}
 
