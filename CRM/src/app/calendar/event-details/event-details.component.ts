@@ -11,7 +11,7 @@ import { LoggingService } from '../../shared/logging.service';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule, SharedModule, MatButton, MatButtonModule, DialogContent],
+  imports: [CommonModule, SharedModule, MatButton, MatButtonModule, DialogContent, EditEventDialogComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -41,6 +41,7 @@ export class EventDetailsComponent {
 
   // Öffne den Dialog mit getrennten Feldern
   const dialogRef = this.dialog.open(EditEventDialogComponent, {
+    
     data: { 
       id: this.data.id,            
       type: this.data.type,

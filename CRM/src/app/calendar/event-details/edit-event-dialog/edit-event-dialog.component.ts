@@ -19,6 +19,7 @@ export class EditEventDialogComponent implements OnInit {
   selectedUsers: string[] = [];
   eventTypes: string[] = ['Meeting', 'Webinar', 'Workshop', 'Other']; // Liste der Event-Typen // Benutzer, die bereits im Event ausgewählt sind
   usTimeOptions: string[] = [];
+  
 
 
   constructor(

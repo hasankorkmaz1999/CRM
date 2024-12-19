@@ -1,10 +1,8 @@
 .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 
-    .close-button {
-      color: white;
-    }
+    
 }
 
 .event-container {
@@ -19,14 +17,32 @@
 }
 
 
-
+.close-button {
+ color: white;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  transition: 250ms ease-in-out;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  &:hover {
+   transform: scale(1.2);
+   color: red;
+  }
+}
 
 
   .delete {
     box-shadow: none;
   }
 
-
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
   
 
 
