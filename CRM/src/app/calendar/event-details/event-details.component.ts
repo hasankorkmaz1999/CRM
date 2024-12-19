@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef  } from '@angular/material/dialog';
 import { SharedModule } from '../../shared/shared.module';
 import { MatButton, MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,7 @@ import { LoggingService } from '../../shared/logging.service';
   imports: [CommonModule, SharedModule, MatButton, MatButtonModule, DialogContent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class EventDetailsComponent {
  

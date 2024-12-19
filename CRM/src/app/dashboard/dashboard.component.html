@@ -119,4 +119,65 @@
       View All Logs
     </button>
   </div>
+
+
+
+
+<div class="todos-section">
+
+  <div class="todo-header">
+  <h3>To-Do List</h3>
+
+
+  <div class="todo-input-section">
+  <!-- To-Do Input Form -->
+  <form (ngSubmit)="addTodo()" [formGroup]="todoForm" class="todo-form">
+    <input formControlName="title"placeholder="Enter a new task..." class="todo-input" />
+    
+    <button type="submit" [disabled]="todoForm.invalid" class="add-todo-btn" mat-icon-button >
+    <mat-icon class="add-button">add</mat-icon>
+  </button>
+  </form>
+</div>
+</div>
+
+
+<div class="todo-wrapper">
+
+  <!-- Display To-Dos -->
+  <ul class="todo-list">
+    <li
+    *ngFor="let todo of todos; trackBy: trackByTodoId"
+    [class.completed]="todo.completed"
+  >
+      <label>
+        <input
+          type="checkbox"
+          [checked]="todo.completed"
+          (change)="toggleTodoCompletion(todo)"
+          class="custom-checkbox"
+        />
+        <span>{{ todo.title }}</span>
+      </label>
+
+      <button (click)="deleteTodo(todo.id)" class="delete-btn">
+        <mat-icon>delete</mat-icon>
+      </button>
+      
+    </li>
+  </ul>
+
+  <div class="progress-div">
+  <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
+  <p class="progress-text">{{ completedTasks }}/{{ totalTasks }} completed</p>
+  </div>
+
+</div>
+
+</div>
+
+
+
+
+
 </div>

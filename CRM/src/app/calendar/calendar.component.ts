@@ -175,6 +175,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
         time: time, // Hier sicherstellen, dass die Zeit korrekt ist
         users: event.event.extendedProps['users'],
         createdBy: event.event.extendedProps['createdBy'],
+        source: 'calendar',
       },
       autoFocus: false,
     });

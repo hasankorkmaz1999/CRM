@@ -1,12 +1,215 @@
 .dashboard {
   display: flex;
-  justify-content: space-between;
+ justify-content: space-around;
+ flex-wrap: wrap;
+}
+
+
+  .todos-section {
+    
+    width: 500px;
+    height: 600px;
+    background-color: #313132;
+    border-radius: 30px;
+  
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    scrollbar-width: thin; /* Für Firefox: Dünne Scrollbar */
+    scrollbar-color: #4f9dff #313132; 
+
+    transform: scale(0.9); /* Start leicht kleiner */
+    opacity: 0;
+    animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
+    will-change: transform, opacity; /* Optimierung */
+
+    .todo-header {
+    width: 100%;
+
+    h3 {
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+    }
+    }
+
+    .todo-input {
+      width: 100%;
+      background-color: #313132;
+      font-size: 24px;
+      border: 1px solid white;
+      border-radius: 20px;
+      height: 50px;
+      padding-left: 10px;
+      color: white;
+    }
+
+    .todo-form {
+      display: flex;
+      width: 100%;
+      margin-bottom: 30px;
+      
+    }
+  }
+
+
+  .todo-input-section {
+    display: flex;
+    align-items: center;
+  }
+
+  .add-button {
+    height: 50px;
+    width: 50px;
+    color: white;
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+  }
+
+
+  .add-todo-btn {
+    padding: 0;
+    margin-left: 10px;
+  }
+
+
+  .todo-list {
+    width: 100%;
+    padding: 0;
+    
+  
+    li {
+      list-style: none;
+      position: relative; /* Für Pseudo-Elemente */
+      border: 1px solid red; /* Standardrahmen in Rot */
+      
+      font-size: 16px;
+      margin-bottom: 10px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden; /* Beschränkung des Effekts */
+      background-color: #313132; /* Hintergrundfarbe der Aufgabe */
+      transition: border-color 0.3s ease; /* Fallback für Übergänge */
+    }
+
+    label {
+      color: white;
+      font-size: 18px;
+      text-align: center;
+    }
+  
+    li.completed {
+      animation: borderFill 1s forwards ease-in-out; /* Animation bei Abschluss */
+    }
+  
+    /* Keyframes für die Border-Füllanimation */
+    @keyframes borderFill {
+      0% {
+        border-image-source: linear-gradient(to right, red, red);
+        border-image-slice: 1; /* Aktiviert den Gradient als Border */
+      }
+      100% {
+        border-image-source: linear-gradient(to right, green, green, green);
+        border-image-slice: 1; /* Beibehaltung der Füllung */
+      }
+    }
+  
+    .custom-checkbox {
+      width: 25px; /* Größe der Checkbox */
+      height: 25px;
+      appearance: none; /* Entfernt das standardmäßige Browser-Styling */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      margin-right: 20px;
+      border: 2px solid #ffffff; /* Standardfarbe */
+      border-radius: 4px; /* Abgerundete Ecken */
+      background-color: transparent; /* Transparenter Hintergrund */
+      cursor: pointer;
+      transition: all 0.3s ease;
+      vertical-align: middle; 
+    }
+  
+    .custom-checkbox:checked {
+      border-color: #4caf50; /* Farbe der Checkbox bei Auswahl */
+    }
+  }
+  
+  
+ 
+  
+  .custom-checkbox:checked::after {
+    content: '✔'; /* Haken-Symbol */
+    display: block;
+    font-size: 18px;
+    color: white; /* Farbe des Haken-Symbols */
+    text-align: center;
+    line-height: 25px; /* Vertikale Zentrierung des Haken-Symbols */
+  }
+  
+  
+  
+
+  .delete-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+  }
+
+
+  .todo-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: thin; /* Für Firefox */
+    scrollbar-color: rgb(83, 82, 82) transparent; /* Für Firefox */
+  }
+  
+  /* Für WebKit-basierte Browser */
+  .todo-wrapper::-webkit-scrollbar {
+    width: 8px; /* Breite der Scrollbar */
+  }
+  
+  .todo-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgb(47, 47, 47); /* Farbe des Scrollbalkens */
+    border-radius: 10px; /* Runde Ecken */
+  }
+  
+  .todo-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(47, 46, 46); /* Hover-Farbe für den Scrollbalken */
+  }
+  
+  .todo-wrapper::-webkit-scrollbar-track {
+    background-color: transparent; /* Farbe des Scroll-Tracks */
+  }
+  
+
+.progress-div {
+  p {
+    text-align: center;
+    margin-top: 10px;
+    color: white;
+    font-size: 18px;
+  }
+}
+
+
+
   .events-container {
     width: 500px;
     height: 600px;
     background-color: #313132;
     border-radius: 30px;
-    margin-bottom: 400px;
+    
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -280,4 +483,9 @@
       }
     }
   }
-}
+
+ 
+ 
+
+
+

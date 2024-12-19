@@ -1,5 +1,6 @@
 <div class="event-container">
-  <h1>{{ data.type }}</h1> <!-- Event Type anzeigen -->
+  <h1>{{ data.type }}</h1>
+  <button class="close-button">X</button>
   <p>Date: {{ data.date | date: 'MMMM d, y' }}</p>
   <p>Time: {{ data.time }}</p>
   <p>Description: {{ data.description }}</p> <!-- Beschreibung hinzufügen -->
@@ -7,14 +8,13 @@
   <p>Created By: {{ data.createdBy }}</p>
 
   <div class="buttons">
-    <button mat-button mat-dialog-close>Close</button>
+   
 
-    <!-- Nur anzeigen, wenn readOnly NICHT gesetzt ist -->
-    <div class="two-buttons" *ngIf="!data.readOnly">
+    <div class="two-buttons" *ngIf="data.source !== 'dashboard'">
       <button (click)="editEvent()" mat-icon-button color="primary" matTooltip="Edit" matTooltipPosition="above">
         <mat-icon>edit</mat-icon>
       </button>
-
+  
       <button (click)="deleteEvent()" mat-icon-button color="warn" matTooltip="Delete" matTooltipPosition="above">
         <mat-icon>delete</mat-icon>
       </button>

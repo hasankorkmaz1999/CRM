@@ -1,23 +1,39 @@
 .buttons {
     display: flex;
     justify-content: space-between;
+
+    .close-button {
+      color: white;
+    }
 }
 
 .event-container {
-    padding: 20px;
+   
+ h1 {
+  color: white;
+ }
+
+ p {
+  color: white;
+ }
 }
 
 
-::ng-deep .mat-icon-button.cdk-focused {
-    box-shadow: none; /* Entfernt die Hover-Umrandung */
-  }
-  
-  ::ng-deep .mat-icon-button.cdk-focused:focus {
-    outline: none; /* Entfernt die Standard-Outline */
-  }
-  
+
 
 
   .delete {
     box-shadow: none;
+  }
+
+
+  
+
+
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    padding: 20px !important;
+    background-color: rgba(84, 82, 82, 0.06) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important;
+    box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
   }

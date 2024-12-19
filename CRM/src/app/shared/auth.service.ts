@@ -75,7 +75,13 @@ export class AuthService {
   }
 
   // Zusätzliche Methode: Gibt den aktuellen Benutzer zurück
-  getCurrentUser(): User | null {
-    return this.currentUser;
+  // Zusätzliche Methode: Gibt den aktuellen Benutzer zurück
+getCurrentUser(): Promise<User | null> {
+    return new Promise((resolve) => {
+      onAuthStateChanged(this.auth, (user) => {
+        resolve(user); // Gibt entweder den Benutzer oder `null` zurück
+      });
+    });
   }
+  
 }

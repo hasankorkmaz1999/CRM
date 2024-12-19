@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, deleteDoc, updateDoc, doc } from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Event } from '../../models/events.class';
 import { EventDetailsComponent } from '../calendar/event-details/event-details.component';
@@ -9,6 +9,8 @@ import { map } from 'rxjs/operators';
 import { LogDetailsComponent } from './log-details/log-details.component';
 import { UserDetailComponent } from '../user/user-detail/user-detail.component';
 import { Router, RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,12 +31,93 @@ export class DashboardComponent implements OnInit {
   filteredLogs: any[] = []; // Begrenzte Logs mit Animation
   maxLogs: number = 6; // Begrenze auf 5 Logs
 
-  constructor(private firestore: Firestore, private dialog: MatDialog, private router: Router) {}
+  todos: any[] = []; // To-Do-Liste
+  todoForm: FormGroup; // Formular für neue Aufgaben
+  userId: string = ''; // ID des aktuellen Benutzers
+  progressValue: number = 0; // Fortschrittswert für die Progress-Bar
+  completedTasks: number = 0; // Erledigte Aufgaben
+  totalTasks: number = 0;
 
-  ngOnInit(): void {
-    this.loadEvents();
-    this.startLiveCountdown();
-    this. loadRecentLogs();
+
+  constructor(
+    private firestore: Firestore,
+     private dialog: MatDialog,
+      private router: Router,
+      private fb: FormBuilder,
+      private authService: AuthService
+    ) {
+      this.todoForm = this.fb.group({
+        title: ['', [Validators.required, Validators.minLength(1)]],
+      });
+    }
+
+    ngOnInit(): void {
+      this.loadEvents();
+      this.startLiveCountdown();
+      this.loadRecentLogs();
+      this.updateProgressBar();
+    
+      this.authService.getCurrentUser().then((user) => {
+        if (user && user.uid) { // Sichere Prüfung
+          this.userId = user.uid;
+          this.loadTodos();
+        } else {
+          console.warn('No user or invalid user UID.');
+        }
+      }).catch((error) => {
+        console.error('Error fetching user:', error);
+      });
+    }
+    
+    
+    updateProgressBar(): void {
+      this.totalTasks = this.todos.length; // Gesamtanzahl der Aufgaben
+      this.completedTasks = this.todos.filter((todo) => todo.completed).length; // Anzahl der erledigten Aufgaben
+      this.progressValue = this.totalTasks > 0 ? (this.completedTasks / this.totalTasks) * 100 : 0;
+    }
+  
+    trackByTodoId(index: number, todo: any): string {
+      return todo.id; // Eindeutige ID für jedes To-Do
+    }
+    
+
+
+    loadTodos() {
+      const todosCollection = collection(this.firestore, 'todos');
+      collectionData(todosCollection, { idField: 'id' }).subscribe((data) => {
+        this.todos = data.filter((todo: any) => todo.userId === this.userId); // Benutzerbezogene To-Dos
+        this.updateProgressBar(); // Fortschritt aktualisieren
+      });
+    }
+    
+
+  // Neue Aufgabe hinzufügen
+  addTodo() {
+    const newTodo = {
+      title: this.todoForm.value.title,
+      completed: false,
+      userId: this.userId,
+      createdAt: new Date(),
+    };
+
+    const todosCollection = collection(this.firestore, 'todos');
+    addDoc(todosCollection, newTodo).then(() => {
+      this.todoForm.reset(); // Formular zurücksetzen
+    });
+  }
+
+  // Aufgabe als erledigt markieren
+  toggleTodoCompletion(todo: any) {
+    const todoDoc = doc(this.firestore, `todos/${todo.id}`);
+    updateDoc(todoDoc, { completed: !todo.completed });
+  }
+  
+
+  // Aufgabe löschen
+  deleteTodo(todoId: string) {
+    const todoDoc = doc(this.firestore, `todos/${todoId}`);
+    deleteDoc(todoDoc);
+    this.updateProgressBar(); 
   }
 
  
@@ -193,6 +276,7 @@ export class DashboardComponent implements OnInit {
         users: event.users,
         time: event.time,
         createdBy: event.createdBy,
+        source: 'dashboard',
       },
       width: '500px',
       autoFocus: false,
@@ -222,7 +306,7 @@ export class DashboardComponent implements OnInit {
     this.dialog.open(EventDetailsComponent, {
       data: {
         ...event,
-        readOnly: true // Hier als Indikator für Anzeige ohne Bearbeiten/Löschen
+        source: 'dashboard',// Hier als Indikator für Anzeige ohne Bearbeiten/Löschen
       },
       width: '500px',
       autoFocus: false,
