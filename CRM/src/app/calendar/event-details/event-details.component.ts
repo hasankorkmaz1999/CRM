@@ -41,7 +41,7 @@ export class EventDetailsComponent {
 
   // Öffne den Dialog mit getrennten Feldern
   const dialogRef = this.dialog.open(EditEventDialogComponent, {
-    
+    autoFocus: false, // AutoFocus auf false setzen
     data: { 
       id: this.data.id,            
       type: this.data.type,
@@ -51,6 +51,7 @@ export class EventDetailsComponent {
       users: this.data.users
     }
   });
+
   
 
   dialogRef.afterClosed().subscribe((result) => {

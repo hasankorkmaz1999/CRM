@@ -1,3 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
-
-
+* {
+    scrollbar-width: thin; /* Für Firefox */
+    scrollbar-color: rgb(83, 82, 82) transparent; /* Farbe für Firefox */
+  
+    /* Für WebKit-basierte Browser */
+    &::-webkit-scrollbar {
+      width: 2px; /* Extra dünne Breite */
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(47, 47, 47); /* Farbe des Scrollbalkens */
+      border-radius: 10px; /* Runde Ecken */
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: rgb(47, 46, 46); /* Hover-Farbe für den Scrollbalken */
+    }
+  
+    &::-webkit-scrollbar-track {
+      background-color: transparent; /* Transparenter Hintergrund für die Scrollbar-Spur */
+    }
+  }
+  

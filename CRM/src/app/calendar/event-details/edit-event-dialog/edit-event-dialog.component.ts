@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -11,7 +11,8 @@ import { MatListModule, MatListOption } from '@angular/material/list';
   standalone: true,
   imports: [SharedModule, ReactiveFormsModule, MatListOption , MatListModule],
   templateUrl: './edit-event-dialog.component.html',
-  styleUrl: './edit-event-dialog.component.scss'
+  styleUrl: './edit-event-dialog.component.scss',
+  encapsulation: ViewEncapsulation.None ,
 })
 export class EditEventDialogComponent implements OnInit {
   editForm: FormGroup;
@@ -26,6 +27,8 @@ export class EditEventDialogComponent implements OnInit {
     private fb: FormBuilder,
     private firestore: Firestore,
     private dialogRef: MatDialogRef<EditEventDialogComponent>,
+    
+
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     const parsedDate = this.data.date

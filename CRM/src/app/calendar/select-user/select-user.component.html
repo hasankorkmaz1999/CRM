@@ -29,7 +29,7 @@
 
     <form [formGroup]="eventForm">
       <mat-dialog-content class="inputfield">
-        <mat-form-field appearance="outline">
+        <mat-form-field >
           <mat-label>Event Type</mat-label>
           <mat-select formControlName="type">
             <mat-option *ngFor="let type of eventTypes" [value]="type">
@@ -38,19 +38,19 @@
           </mat-select>
         </mat-form-field>
     
-        <mat-form-field appearance="outline">
+        <mat-form-field >
           <mat-label>Description</mat-label>
           <textarea matInput formControlName="description"></textarea>
         </mat-form-field>
     
-        <mat-form-field appearance="outline">
+        <mat-form-field >
           <mat-label>Date</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="date" />
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     
-        <mat-form-field appearance="outline">
+        <mat-form-field >
           <mat-label>Time</mat-label>
           <mat-select formControlName="time">
             <mat-option *ngFor="let time of usTimeOptions" [value]="time">

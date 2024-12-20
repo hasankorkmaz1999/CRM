@@ -116,7 +116,7 @@
         border-image-slice: 1; /* Aktiviert den Gradient als Border */
       }
       100% {
-        border-image-source: linear-gradient(to right, green, green, green);
+        border-image-source: linear-gradient(to right,  #cfff5e, #cfff5e, #cfff5e);
         border-image-slice: 1; /* Beibehaltung der Füllung */
       }
     }
@@ -137,7 +137,7 @@
     }
   
     .custom-checkbox:checked {
-      border-color: #4caf50; /* Farbe der Checkbox bei Auswahl */
+      border-color: #cfff5e; /* Farbe der Checkbox bei Auswahl */
     }
   }
   

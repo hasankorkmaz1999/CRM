@@ -190,12 +190,15 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   // Öffne Dialog für Event-Erstellung
   openAddEventDialog(): void {
-    const dialogRef = this.dialog.open(SelectUserComponent);
-
+    const dialogRef = this.dialog.open(SelectUserComponent, {
+      autoFocus: false, // AutoFocus auf false setzen
+    });
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'reload') {
         this.loadEvents();
       }
     });
   }
+  
 }

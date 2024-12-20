@@ -1,10 +1,11 @@
 
+<div class="edit-dialog-container">
 
 <h2 mat-dialog-title>Edit Event</h2>
 
 <!-- Benutzer-Auswahl -->
 <div>
-  <h3>Select Users</h3>
+  
   <mat-selection-list>
     <mat-list-option
       *ngFor="let user of users"
@@ -17,10 +18,13 @@
   </mat-selection-list>
 </div>
 
+
+
+<div class="details-section">
 <!-- Event-Daten bearbeiten -->
-<form [formGroup]="editForm">
-  <mat-dialog-content>
-    <mat-form-field appearance="outline">
+<form  class="details-section" [formGroup]="editForm">
+  <mat-dialog-content  class="details-section">
+    <mat-form-field >
       <mat-label>Event Type</mat-label>
       <mat-select formControlName="type">
         <mat-option *ngFor="let type of eventTypes" [value]="type">
@@ -29,20 +33,20 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field >
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
     
 
-    <mat-form-field appearance="outline">
+    <mat-form-field >
       <mat-label>Date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="date" />
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field >
       <mat-label>Time</mat-label>
       <mat-select formControlName="time">
         <mat-option *ngFor="let time of usTimeOptions" [value]="time">
@@ -53,6 +57,7 @@
   </mat-dialog-content>
   
 
+
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>
     <button mat-button color="primary" (click)="saveChanges()">
@@ -61,7 +66,7 @@
   </mat-dialog-actions>
 </form>
 
+</div>
 
-
-
+</div>
 
