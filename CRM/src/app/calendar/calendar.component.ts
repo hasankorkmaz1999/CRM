@@ -39,7 +39,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     firstDay: 1,
     editable: true,
     selectable: true,
-    dateClick: this.handleDateClick.bind(this),
+   
     eventClick: this.handleEventClick.bind(this),
     eventTimeFormat: {
       hour: 'numeric',
