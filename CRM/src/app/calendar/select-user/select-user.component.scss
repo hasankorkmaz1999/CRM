@@ -170,3 +170,13 @@ mat-dialog-actions button {
     background-color: transparent !important; /* Kein Hintergrund */
     
   }
+
+
+  .mat-mdc-select  { 
+    color: white !important;
+  }
+
+
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: #f8f9fa !important;
+}

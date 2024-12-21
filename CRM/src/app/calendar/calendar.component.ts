@@ -39,7 +39,6 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     firstDay: 1,
     editable: true,
     selectable: true,
-   
     eventClick: this.handleEventClick.bind(this),
     eventTimeFormat: {
       hour: 'numeric',
@@ -47,15 +46,31 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       meridiem: 'short',
     },
     eventDidMount: (info) => {
+      const eventType = info.event.extendedProps['type'] as 'Meeting' | 'Webinar' | 'Workshop' | 'Other';
+      const cssClassMap: Record<'Meeting' | 'Webinar' | 'Workshop' | 'Other', string> = {
+        Meeting: 'event-meeting',
+        Webinar: 'event-webinar',
+        Workshop: 'event-workshop',
+        Other: 'event-other',
+      };
+    
+      // Füge eine CSS-Klasse basierend auf dem Typ hinzu
+      const cssClass = cssClassMap[eventType] || 'event-default';
+      info.el.classList.add(cssClass);
+    
+      // Tooltip hinzufügen
       const userNames = info.event.extendedProps['users']?.join(', ') || 'No users';
-      const tooltipTitle = `${info.event.extendedProps['type']} - Users: ${userNames}`;
+      const tooltipTitle = `${eventType} - Users: ${userNames}`;
       new bootstrap.Tooltip(info.el, {
         title: tooltipTitle,
         placement: 'top',
         trigger: 'hover',
       });
     },
+    
+    
   };
+  
 
   constructor(private firestore: Firestore, public dialog: MatDialog) {}
 
