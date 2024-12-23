@@ -31,13 +31,14 @@
       <!-- Datenzeilen in tbody -->
       <tr class="under-tr" *ngFor="let user of filteredUsers">
 
-        <td  [routerLink]="['/user', user.uid]">
+        <td [routerLink]="['/user', user.uid]" class="icon-container">
           <!-- Abhängig von der Rolle ein Icon anzeigen -->
-          <mat-icon *ngIf="user.role === 'Admin'" color="primary">admin_panel_settings</mat-icon>
-          <mat-icon *ngIf="user.role === 'Employee'" color="accent">work</mat-icon>
-          <mat-icon *ngIf="user.role === 'Guest'" color="warn">person_outline</mat-icon>
-          <mat-icon *ngIf="!user.role" color="gray">help_outline</mat-icon>
+          <mat-icon *ngIf="user.role === 'Admin'" class="icon admin-icon">admin_panel_settings</mat-icon>
+          <mat-icon *ngIf="user.role === 'Employee'" class="icon employee-icon">work</mat-icon>
+          <mat-icon *ngIf="user.role === 'Guest'" class="icon guest-icon">person_outline</mat-icon>
+          <mat-icon *ngIf="!user.role" class="icon default-icon">help_outline</mat-icon>
         </td>
+        
 
         <td [routerLink]="['/user', user.uid]">{{ user.firstName }} {{ user.lastName }}</td>
         <td [routerLink]="['/user', user.uid]">{{ user.email }}</td>

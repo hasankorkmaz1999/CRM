@@ -85,3 +85,39 @@
   border-color: white !important;
   box-shadow: white !important;
 }
+.icon-container {
+
+ 
+}
+.icon {
+    font-size: 34px;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+    color: currentColor;
+  }
+  
+  .admin-icon {
+    color: #3f51b5; /* Blau für Admin */
+    filter: drop-shadow(0 0 8px #3f51b5);
+    overflow: visible;
+  }
+  
+  .employee-icon {
+    color: #ff9800; /* Orange für Employee */
+    filter: drop-shadow(0 0 8px #ff9800);
+  
+        overflow: visible;
+       
+  }
+  
+  .guest-icon {
+    color: #4caf50; /* Grün für Gäste */
+    filter: drop-shadow(0 0 8px #4caf50);
+    overflow: visible;
+  }
+  
+  .default-icon {
+    color: #9e9e9e; /* Grau für unbekannte Rollen */
+    filter: drop-shadow(0 0 8px #9e9e9e);
+    overflow: visible;
+  }
+  
