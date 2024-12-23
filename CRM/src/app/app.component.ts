@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -6,7 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button'; 
 import {MatTooltipModule} from '@angular/material/tooltip'; 
-import {MatDialogModule} from '@angular/material/dialog'; 
+import {MatDialog, MatDialogModule} from '@angular/material/dialog'; 
 import { HttpClientModule } from '@angular/common/http';
 import { Auth, signInWithEmailAndPassword, onAuthStateChanged } from '@angular/fire/auth';
 import { UserService } from './shared/user.service';
@@ -35,7 +35,7 @@ import { SharedModule } from './shared/shared.module';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent  implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   isLoginRoute: boolean = false;
   userRole: string | null = '';
   userName: string | null = '';
@@ -43,7 +43,8 @@ export class AppComponent  implements OnInit {
   constructor(
     private router: Router,
      private auth: Auth,
-     private userService: UserService
+     private userService: UserService,
+     private dialog: MatDialog, 
     ) {
     this.router.events.subscribe(() => {
       this.isLoginRoute = this.router.url === '/login';
@@ -61,6 +62,21 @@ export class AppComponent  implements OnInit {
     const isLoggedIn = !!localStorage.getItem('userRole');
     if (!isLoggedIn) {
       this.router.navigate(['/login']);
+    }
+
+    this.dialog.afterAllClosed.subscribe(() => {
+      const appRoot = document.querySelector('app-root');
+      if (appRoot?.hasAttribute('aria-hidden')) {
+        appRoot.removeAttribute('aria-hidden');
+      }
+    });
+  }
+
+
+  ngAfterViewInit(): void {
+    const appRoot = document.querySelector('app-root');
+    if (appRoot?.hasAttribute('aria-hidden')) {
+      appRoot.removeAttribute('aria-hidden');
     }
   }
 

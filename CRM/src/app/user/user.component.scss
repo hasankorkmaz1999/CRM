@@ -1,84 +1,87 @@
 .add-user-button {
-    position: absolute;
-    right: 56px;
-    bottom: 56px;
+  position: absolute;
+  right: 56px;
+  bottom: 56px;
 }
-
 
 .user-table {
-    width: 100%;
-    border-collapse: collapse;
-   
-    tr  {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-        &:first-child {
-            cursor: unset;
-            &:hover {
-                background-color: unset;
-            }
-        }
+  border-collapse: separate; /* Verhindert, dass Header und Rows aneinanderkleben */
+  border-spacing: 0 30px; /* Fügt vertikalen Abstand zwischen Header und Rows hinzu */
+  width: 100%;
+  color: white; /* Für besseren Kontrast */
 
-        &:last-child {
-            border-bottom: 0;
-        }
-
-        td {
-            height: 60px;
-            &:first-child {
-                padding-left: 16px;
-            }
-        }
-        cursor: pointer;
-
-
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.04);
-        }
-    
-    }
-
-
-
-   
-    th {
-        color: rgba(0, 0, 0, 0.4);
-        font-size: 14px;
-        font-weight: 500;
-        text-align: start;
-        height: 30px;
-
-        &:first-child {
-            padding-left: 16px;
-        }
-    }
+  tbody {
+    border-radius: 10px;
+  }
 }
 
+.header-row {
+  background-color: #444444; /* Kopfzeilenfarbe */
+  padding: 10px; /* Innenabstand */
+  text-align: left;
+  font-size: 20px;
+
+  th {
+    padding: 20px;
+  }
+}
+
+.under-tr {
+    background-color: #2d2d2d;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Weiche Übergänge */
+  }
+  
+  .under-tr:hover {
+    transform: translateY(-5px) scale(1.02); /* Leicht nach oben und größer */
+    box-shadow: rgba(0, 0, 0, 0.6) 0px 35px 30px -20px; /* Intensiverer Schatten beim Hover */
+  }
+
+.user-table td {
+  padding: 10px; /* Innenabstand für Zellen */
+  font-size: 20px;
+}
+
+.user-table tr:first-of-type {
+  margin-bottom: 35px; /* Abstand zwischen Header und erster Zeile */
+}
 
 .search-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%; /* Passe die Breite nach Bedarf an */
-    max-width: 300px;
-    margin-bottom: 40px; /* Optional: Maximale Breite */
-  }
-  
-  .search-label {
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #153fb3; /* Label-Farbe */
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 8px 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  
-  .search-input:focus {
-    border-color: #007bff; /* Farbe für den Fokuszustand */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Passe die Breite nach Bedarf an */
+  max-width: 300px;
+  margin-bottom: 40px; /* Optional: Maximale Breite */
+}
+
+.search-label {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #4c5ab3; /* Label-Farbe */
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #4c5ab3; /* Farbe für den Fokuszustand */
+}
+
+.mat-mdc-card {
+  border-radius: var(--mdc-elevated-card-container-shape);
+  background-color: transparent;
+  border-width: 0;
+  border-style: solid;
+  border-color: white !important;
+  box-shadow: white !important;
+}

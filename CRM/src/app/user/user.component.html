@@ -15,31 +15,45 @@
 
 
 
-<mat-card appearance="outlined">
-
-  <!-- Suchfeld -->
- 
-
+<mat-card>
   <!-- Benutzer-Tabelle -->
   <table class="user-table">
-    <tr>
-      <th>Name</th>
-      <th>E-mail</th>
-      <th>City</th>
-      <th>Actions</th>
-    </tr>
-    <tr *ngFor="let user of filteredUsers">
-      <td [routerLink]="['/user', user.uid]">{{ user.firstName }} {{ user.lastName }}</td>
-      <td [routerLink]="['/user', user.uid]">{{ user.email }}</td>
-      <td [routerLink]="['/user', user.uid]">{{ user.city }}</td>
-      <td>
-        <button mat-icon-button color="warn" (click)="openDeleteDialog(user)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </tr>
+    <thead> <!-- Kopfzeile umschlossen von thead -->
+      <tr class="header-row">
+        <th>Role</th>
+        <th>Name</th>
+        <th>E-mail</th>
+        <th>City</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody> 
+      <!-- Datenzeilen in tbody -->
+      <tr class="under-tr" *ngFor="let user of filteredUsers">
+
+        <td  [routerLink]="['/user', user.uid]">
+          <!-- Abhängig von der Rolle ein Icon anzeigen -->
+          <mat-icon *ngIf="user.role === 'Admin'" color="primary">admin_panel_settings</mat-icon>
+          <mat-icon *ngIf="user.role === 'Employee'" color="accent">work</mat-icon>
+          <mat-icon *ngIf="user.role === 'Guest'" color="warn">person_outline</mat-icon>
+          <mat-icon *ngIf="!user.role" color="gray">help_outline</mat-icon>
+        </td>
+
+        <td [routerLink]="['/user', user.uid]">{{ user.firstName }} {{ user.lastName }}</td>
+        <td [routerLink]="['/user', user.uid]">{{ user.email }}</td>
+        <td [routerLink]="['/user', user.uid]">{{ user.city }}</td>
+        <td>
+
+
+          <button mat-icon-button color="warn" (click)="openDeleteDialog(user)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </mat-card>
+
 
 <!-- Hinzufügen-Button -->
 <button (click)="openDialog()" class="add-user-button" mat-fab color="primary" matTooltip="Add user" matTooltipPosition="above">

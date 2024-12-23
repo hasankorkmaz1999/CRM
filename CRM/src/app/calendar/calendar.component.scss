@@ -1,19 +1,17 @@
 .event-button {
-border-radius: 30px;
-    margin-top: 20px;
-    padding: 10px;
+  border-radius: 30px;
+  position: absolute;
+  bottom: 70px;
+  left: 70px;
 
+  padding: 10px;
 }
-
 
 .button-container {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
-
-
-
 
 .fc {
   overflow-y: hidden;
@@ -21,6 +19,39 @@ border-radius: 30px;
   height: 100%;
   border: none !important;
 
+  .fc-toolbar {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .fc-toolbar-chunk {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    text-align: center;
+
+    .fc-toolbar-title {
+      text-align: center;
+      width: 100%;
+    }
+
+    .fc-today-button {
+      display: none;
+      position: absolute;
+      bottom: 70px;
+      right: 70px;
+    }
+  }
+
+  .fc-button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 20px !important;
+    margin-right: 20px;
+  }
 
   .fc-daygrid-event-harness {
     display: block; /* Block-Level für jedes Event */
@@ -29,25 +60,22 @@ border-radius: 30px;
     position: relative;
     height: 30px; /* Position für individuelle Platzierung */
   }
-  
 
-.fc-daygrid-day-top {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 20px;
+  .fc-daygrid-day-top {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+  }
 
-}
+  .fc-daygrid-event {
+    margin-top: 1px;
+    z-index: 6;
+    position: relative !important;
 
-.fc-daygrid-event {
-  margin-top: 1px;
-  z-index: 6;
-  position: relative !important;
- 
-  gap: 10px;
-  
-}
-  
+    gap: 10px;
+  }
+
   table {
     border: none !important;
     border-collapse: separate !important; /* Kein Zusammenfassen der Ränder */
@@ -57,34 +85,33 @@ border-radius: 30px;
     height: 100% !important;
   }
 
-
   .fc-scroller-liquid-absolute {
     position: static !important; /* Entfernt die absolute Positionierung */
     inset: auto !important; /* Hebt das "inset" auf */
   }
 
-  
-  .fc-col-header  {
+  .fc-col-header {
     border: none !important;
 
     th {
       border: none !important;
     }
-
   }
 
- 
-
-  tbody, td, tfoot, th, thead, tr {
+  tbody,
+  td,
+  tfoot,
+  th,
+  thead,
+  tr {
     border-color: inherit;
     border-style: solid;
     border-width: 0;
     width: 50px !important;
     gap: 10px !important;
     margin: 20px !important;
-  
-}
-  
+  }
+
   .fc-button-primary {
     background-color: transparent;
     border-color: white;
@@ -92,56 +119,46 @@ border-radius: 30px;
     &:hover {
       background-color: transparent;
     }
-
   }
 
   .fc .fc-scroller-harness {
     direction: ltr;
     overflow: hidden;
     position: relative;
-border: none !important;
-
-}
+    border: none !important;
+  }
 
   .fc-view-harness {
     border: none !important;
     flex-grow: 0;
     position: relative;
-}
-
+  }
 
   .fc-button-primary:disabled {
     background-color: transparent;
     border-color: white;
     color: var(--fc-button-text-color);
+  }
+
+  .fc-daygrid-day-frame {
+    height: 100%; /* Stellt sicher, dass der Rahmen den Container ausfüllt */
+    overflow: hidden; /* Versteckt überflüssigen Inhalt */
+    position: relative; /* Notwendig für die Scroll-Option */
+    border: none;
+    border-color: transparent;
+    max-height: 20% !important;
+  }
+
+  h2 {
+    color: white;
+  }
 }
-
-
-.fc-daygrid-day-frame {
-  height: 100%; /* Stellt sicher, dass der Rahmen den Container ausfüllt */
-  overflow: hidden; /* Versteckt überflüssigen Inhalt */
-  position: relative; /* Notwendig für die Scroll-Option */
-  border: none;
-  border-color: transparent;
-  max-height: 20% !important;
- 
-}
-
-
 
 h2 {
   color: white;
 }
 
-  }
-  
-
-  h2 {
-    color: white;
-  }
-
-
- /* Allgemeines Styling für Events */
+/* Allgemeines Styling für Events */
 .fc-event {
   text-decoration: none;
   color: #000000; /* Standardfarbe für Text */
@@ -170,58 +187,43 @@ h2 {
   filter: brightness(1.2); /* Heller bei Hover */
 }
 
+.fc-col-header-cell-cushion {
+  text-decoration: none;
+}
 
- 
+.fc-daygrid-day-number {
+  text-decoration: none;
 
-  .fc-col-header-cell-cushion {
-    text-decoration: none;
-  }
-  
+  font-size: 16px;
+}
 
+.fc-daygrid-event-dot {
+  border-color: red;
+}
 
-  .fc-daygrid-day-number {
-    text-decoration: none;
-    
-    font-size: 16px;
-  }
+.fc-event-time {
+  font-weight: bold;
+}
 
+.fc-daygrid-dot-event .fc-event-title {
+  font-weight: 100;
+}
 
-  .fc-daygrid-event-dot {
-    border-color: red;
-  }
+a {
+  color: #f8f9fa;
+}
 
-
-  .fc-event-time {
-    font-weight: bold;
-  }
-
-
- 
-
-
-  .fc-daygrid-dot-event .fc-event-title {
-    font-weight: 100;
-  }
-
-
-  a {
-    color: #f8f9fa;
-  }
-
-
- 
-  
-
+.fc .fc-button-group > .fc-button {
+  flex: none !important; /* Setzt die Flex-Eigenschaften außer Kraft */
+  width: auto; /* Optional: Legt eine Standardbreite fest, falls erforderlich */
+  position: static; /* Entfernt relative Positionierung, falls nicht nötig */
+}
 
 .fc-button-primary {
   background-color: rgba(0, 0, 0, 0.38);
   border-color: white;
   color: var(--fc-button-text-color);
 }
-
-
-
-
 
 .fc-daygrid-day-events {
   display: flex; /* Flexbox aktivieren */
@@ -236,16 +238,10 @@ h2 {
   z-index: 1; /* Sicherstellen, dass Inhalte sichtbar sind */
 }
 
-
-
-
-
 .fc-daygrid-day {
-  margin: 5px !important; 
-  gap: 10px !important; 
- 
+  margin: 5px !important;
+  gap: 10px !important;
 
-  
   border: none !important; /* Entfernt die Standard-Umrandung */
   border-radius: 8px; /* Runde Ecken für jeden Tag */
   background-color: rgba(255, 255, 255, 0.1); /* Milchglas-Effekt */
@@ -261,15 +257,14 @@ h2 {
 }
 
 .fc-day-today {
-  background-color: rgba(255, 255, 255, 0.3) !important; /* Etwas heller für den heutigen Tag */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ) !important; /* Etwas heller für den heutigen Tag */
   border: 2px solid rgba(255, 255, 255, 0.6) !important; /* Umrandung für den heutigen Tag */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Schatteneffekt für den heutigen Tag */
 }
 
-
-
-
 /* Entfernt die Umrandungen der einzelnen Tage */
-
-
-

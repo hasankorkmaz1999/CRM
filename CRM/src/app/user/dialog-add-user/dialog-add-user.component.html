@@ -1,89 +1,83 @@
-<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
 <h2 mat-dialog-title>Add User</h2>
 <mat-dialog-content>
-  <div> 
-    <mat-form-field class="inputfield"  appearance="outline">
-      <mat-label>First name</mat-label>
-      <input [disabled]="loading" [(ngModel)]="user.firstName" matInput placeholder="First name">
+  <form [formGroup]="userForm">
+    <!-- First Name -->
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" placeholder="First name">
+      <mat-error *ngIf="userForm.get('firstName')?.hasError('required')">First Name is required</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Last name</mat-label>
-      <input [disabled]="loading" [(ngModel)]="user.lastName" matInput placeholder="Last name">
+    <!-- Last Name -->
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" placeholder="Last name">
+      <mat-error *ngIf="userForm.get('lastName')?.hasError('required')">Last Name is required</mat-error>
     </mat-form-field>
-  </div>
 
-  <div>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>E-mail</mat-label>
-      <input [disabled]="loading" [(ngModel)]="user.email" matInput placeholder="E-mail">
+    <!-- Email -->
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="Email" type="email">
+      <mat-error *ngIf="userForm.get('email')?.hasError('required')">Email is required</mat-error>
+      <mat-error *ngIf="userForm.get('email')?.hasError('email')">Invalid email format</mat-error>
     </mat-form-field>
-  </div>
 
-  <div>
-    <mat-form-field appearance="outline" class="full-width">
+    <!-- Phone -->
+    <mat-form-field class="full-width" appearance="outline">
       <mat-label>Phone</mat-label>
-      <input [disabled]="loading" [(ngModel)]="user.phone" matInput placeholder="Phone">
+      <input matInput formControlName="phone" placeholder="Phone">
     </mat-form-field>
-  </div>
-
-  <div>
-    <mat-form-field appearance="outline" class="full-width">
+    
+    <mat-form-field class="full-width" appearance="outline">
       <mat-label>Birth Date</mat-label>
-      <input [disabled]="loading" [(ngModel)]="birthDate" matInput placeholder="Birth Date" [matDatepicker]="picker">
-      <mat-datepicker-toggle matIconSuffix [for]="picker">
-        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-      </mat-datepicker-toggle>
+      <input matInput formControlName="birthDate" [matDatepicker]="picker" placeholder="Birth Date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-  </div>
-
-  <div>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Street + House No.</mat-label>
-      <input [disabled]="loading" [(ngModel)]="user.street" matInput placeholder="Street + House No.">
+    
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Street</mat-label>
+      <input matInput formControlName="street" placeholder="Street + House No.">
     </mat-form-field>
-  </div>
-
-  <div>
-    <mat-form-field class="inputfield" appearance="outline">
+    
+    <mat-form-field class="half-width" appearance="outline">
       <mat-label>Zip Code</mat-label>
-      <input [disabled]="loading" [(ngModel)]="user.zipCode" matInput placeholder="Zip Code">
+      <input matInput formControlName="zipCode" placeholder="Zip Code">
     </mat-form-field>
-
-    <mat-form-field appearance="outline">
+    
+    <mat-form-field class="half-width" appearance="outline">
       <mat-label>City</mat-label>
-      <input [disabled]="loading" [(ngModel)]="user.city" matInput placeholder="City">
+      <input matInput formControlName="city" placeholder="City">
     </mat-form-field>
-  </div>
-
-
-  <div>
-    <mat-form-field appearance="outline" class="full-width">
+    
+    <!-- Role -->
+    <mat-form-field class="full-width" appearance="outline">
       <mat-label>User Role</mat-label>
-      <mat-select [(ngModel)]="user.role" placeholder="Select a role" [disabled]="loading">
+      <mat-select formControlName="role">
         <mat-option value="Admin">Admin</mat-option>
         <mat-option value="Employee">Employee</mat-option>
         <mat-option value="Guest">Guest</mat-option>
       </mat-select>
+      <mat-error *ngIf="userForm.get('role')?.hasError('required')">Role is required</mat-error>
     </mat-form-field>
-  </div>
 
-
-
-  <div>
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" [(ngModel)]="password" />
+    <!-- Password -->
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Password </mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Password">
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="userForm.get('password')?.hasError('required')">Password is required</mat-error>
+      <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">Password must be at least 6 characters</mat-error>
     </mat-form-field>
     
-  </div>
-
-
-
-  <mat-dialog-actions>
-    <button [disabled]="loading" mat-button [mat-dialog-close]>Cancel</button>
-    <button [disabled]="loading" mat-button (click)="saveUser()" [mat-dialog-close] cdkFocusInitial>Save</button>
-  </mat-dialog-actions>
+  </form>
 </mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]>Cancel</button>
+  <button mat-button [disabled]="userForm.invalid" (click)="saveUser()" [mat-dialog-close] cdkFocusInitial>Save</button>
+</mat-dialog-actions>
