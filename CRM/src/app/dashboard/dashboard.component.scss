@@ -302,6 +302,35 @@
     }
   }
 
+  .events-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 280px;
+    width: 450px;
+  }
+
+  .no-events-div {
+    height: 280px;
+    background-color: rgba(135, 218, 246, 0.1);
+    width: 450px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .no-events-placeholder {
+    text-align: center;
+    vertical-align: middle;
+   
+    font-size: 30px;
+    color: #4f9dff;  
+   
+   
+  }
+
   /* Upcoming Events */
   .upcoming-events {
     width: 500px;
@@ -311,6 +340,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     h3 {
       color: #ffffff;

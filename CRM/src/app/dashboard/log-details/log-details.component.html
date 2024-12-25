@@ -1,5 +1,12 @@
-<div *ngIf="data">
+<div class="log-container" *ngIf="data">
+
+<div class="header">
   <p><strong>Action:</strong> {{ data.action }}</p>
+  <button class="close-button" mat-dialog-close>
+    &#10006; 
+  </button>
+</div>
+
   <p><strong>Entity Type:</strong> {{ data.entityType }}</p>
   <p><strong>Timestamp:</strong> {{ data.timestamp | date: 'MMMM d, y' }}</p>
 

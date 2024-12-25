@@ -166,15 +166,17 @@ export class SelectUserComponent implements OnInit {
   
   logEventAction(action: string, eventId: string, eventData: any) {
     this.loggingService.log(action, 'event', {
-      id: eventId,
-      type: eventData.type,
-      createdBy: eventData.createdBy,
-      date: eventData.date,
-      time: eventData.time,
-      users: eventData.users || [],
+        id: eventId,
+        type: eventData.type,
+        createdBy: eventData.createdBy,
+        date: eventData.date,
+        time: eventData.time,
+        users: eventData.users || [],
+        description: eventData.description || 'No description ' // Beschreibung hinzufügen
     });
+}
+
 
 
 }
 
-}

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SharedModule } from '../../shared/shared.module';
 
@@ -8,6 +8,7 @@ import { SharedModule } from '../../shared/shared.module';
   imports: [SharedModule],
   templateUrl: './log-details.component.html',
   styleUrls: ['./log-details.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class LogDetailsComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}

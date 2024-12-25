@@ -180,3 +180,9 @@ mat-dialog-actions button {
   .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
     color: #f8f9fa !important;
 }
+
+.cdk-overlay-dark-backdrop {
+    background: rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(10px); /* Unscharf machen */
+    -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+}

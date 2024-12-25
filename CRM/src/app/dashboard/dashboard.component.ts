@@ -293,6 +293,7 @@ export class DashboardComponent implements OnInit {
 
   
   openAddedEventDetails(log: any) {
+    console.log('Log details:', log.details); // Prüfe, was in log.details enthalten ist
     const event = {
       id: log.details?.id || '',
       type: log.details?.type || 'Unknown',
@@ -302,16 +303,17 @@ export class DashboardComponent implements OnInit {
       users: log.details?.users || [],
       createdBy: log.details?.createdBy || '',
     };
-  
+    
     this.dialog.open(EventDetailsComponent, {
       data: {
         ...event,
-        source: 'dashboard',// Hier als Indikator für Anzeige ohne Bearbeiten/Löschen
+        source: 'dashboard', // Hier als Indikator für Anzeige ohne Bearbeiten/Löschen
       },
       width: '500px',
       autoFocus: false,
     });
   }
+  
   
 
   navigateToUserDetails(log: any) {
