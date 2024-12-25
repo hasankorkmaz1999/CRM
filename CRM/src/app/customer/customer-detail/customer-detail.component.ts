@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Firestore, doc, docData, updateDoc } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { Customer } from '../../../models/customer.class';
-
+import { Location } from '@angular/common';
 
 import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-picture.component';
 import { EditCustomerDetailsComponent } from '../edit-customer-details/edit-customer-details.component';
@@ -24,7 +24,8 @@ export class CustomerDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private firestore: Firestore,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -83,7 +84,9 @@ export class CustomerDetailComponent implements OnInit {
   }
 
 
- 
+  goBack() {
+    this.location.back();
+  }
   
   
   

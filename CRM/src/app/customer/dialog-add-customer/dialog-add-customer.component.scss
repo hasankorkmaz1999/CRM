@@ -1,11 +1,227 @@
-.add-customer-comtainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.inputfield {
+    margin-right: 16px;
 }
 
-.buttons-customer-comtainer {
-    display: flex;
-    justify-content: center;
+
+.label {
+    height: 30px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+
+.half-width {
+  width: 50%;
+}
+
+.half-width-margin {
+  margin-right: 15px;
+  width: 50%;
+}
+
+.zip-city {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.mdc-dialog__actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+ .buttons-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  
+ }
+ 
+ .cancel-button {
+
+  .mdc-button__label{
+    color: red;
+    font-size: 20px; 
+  }
+ 
+}
+
+.save-button {
+
+
+  .mdc-button__label{
+    color: rgb(98, 110, 215); 
+    font-size: 20px;
+  }
+  
+}
+
+
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  padding: 20px !important;
+  background-color: rgba(84, 82, 82, 0.06) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
+
+
+}
+
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(10px); /* Unscharf machen */
+  -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+}
+
+h2[mat-dialog-title], h3 {
+  color: #ffffff !important; /* Weißer Text */
+}
+
+
+.mdc-list-item__primary-text {
+  color: #fff !important;
+}
+
+
+.mat-mdc-list-option.mat-accent {
+  --mdc-checkbox-disabled-selected-icon-color: rgba(255, 255, 255, 0.38);
+  --mdc-checkbox-disabled-unselected-icon-color: rgba(255, 255, 255, 0.38);
+  --mdc-checkbox-selected-checkmark-color: white;
+  --mdc-checkbox-selected-focus-icon-color: #0d6efd;
+  --mdc-checkbox-selected-hover-icon-color: #0d6efd;
+  --mdc-checkbox-selected-icon-color: #0d6efd;
+  --mdc-checkbox-selected-pressed-icon-color: #0d6efd;
+  --mdc-checkbox-unselected-focus-icon-color: #ffffff;
+  --mdc-checkbox-unselected-hover-icon-color: #ffffff;
+  --mdc-checkbox-unselected-icon-color: rgba(255, 255, 255, 0.54);
+  --mdc-checkbox-unselected-pressed-icon-color: rgba(255, 255, 255, 0.54);
+  --mdc-checkbox-selected-focus-state-layer-color: #0d6efd;
+  --mdc-checkbox-selected-hover-state-layer-color: #0d6efd;
+  --mdc-checkbox-selected-pressed-state-layer-color: #0d6efd;
+  --mdc-checkbox-unselected-focus-state-layer-color: white;
+  --mdc-checkbox-unselected-hover-state-layer-color: white;
+  --mdc-checkbox-unselected-pressed-state-layer-color: white;
+}
+
+mat-dialog-actions button {
+  color: #ffffff !important; /* Weißer Text */
+}
+
+button:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Leichter weißer Hover-Effekt */
+}
+
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent !important;
+  border: 1px solid white  !important;
+  border-radius: 10px !important;
+  color: white !important;
+}
+
+.mat-mdc-select-panel.mat-mdc-select-panel {
+  background-color: #4b4b4b !important;
+  color: #ffffff !important;
+}
+
+
+.mat-calendar-body-label {
+  height: 0;
+  line-height: 0;
+  text-align: start;
+  padding-left: 4.7142857143%;
+  padding-right: 4.7142857143%;
+  font-size: var(--mat-datepicker-calendar-body-label-text-size);
+  font-weight: var(--mat-datepicker-calendar-body-label-text-weight);
+  color: #fff !important;
+}
+
+.mat-mdc-select-arrow svg {
+  fill: #ffffff !important;
+ 
+}
+
+
+.mat-mdc-floating-label {
+  color: #ffffff !important; /* Weißer Text für das Label */
+}
+
+
+mat-datepicker-toggle {
+  color: #ffffff !important; /* Weißes Icon */
+}
+
+
+
+.mat-datepicker-content .mat-calendar-previous-button:not(.mat-mdc-button-disabled), .mat-datepicker-content .mat-calendar-next-button:not(.mat-mdc-button-disabled) {
+  color: white !important;
+}
+
+.mat-calendar-body-label {
+  height: 0;
+  line-height: 0;
+  text-align: start;
+  padding-left: 4.7142857143%;
+  padding-right: 4.7142857143%;
+  font-size: var(--mat-datepicker-calendar-body-label-text-size);
+  font-weight: var(--mat-datepicker-calendar-body-label-text-weight);
+  color: #fff !important;
+}
+
+.mat-mdc-select-arrow svg {
+  fill: #ffffff !important;
+ 
+}
+
+
+.mat-calendar-body-cell-content.mat-focus-indicator {
+  color: white !important;
+}
+
+.mat-calendar-table-header th {
+  color: white !important;
+}
+
+
+.mat-mdc-button:not(:disabled) {
+  color: white !important;
+}
+
+.mat-calendar-arrow  {
+  fill: white !important;
+}
+
+.mat-calendar {
+  color: #ffffff !important; /* Weißer Text */
+  background-color: #424242 !important; /* Optional: Dunkler Hintergrund für Lesbarkeit */
+}
+
+
+input.mat-input-element,
+textarea {
+  color: #ffffff !important; /* Weißer Text */
+  background-color: transparent !important; /* Kein Hintergrund */
+  caret-color: white !important;
+}
+
+
+.mat-mdc-select  { 
+  color: white !important;
+}
+
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: #f8f9fa !important;
+  caret-color: white !important;
+}
+
+
+.mat-mdc-text-field-wrapper { 
+  color: white !important;
 }

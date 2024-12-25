@@ -9,20 +9,55 @@
   border-spacing: 0 30px; /* Fügt vertikalen Abstand zwischen Header und Rows hinzu */
   width: 100%;
   color: white; /* Für besseren Kontrast */
-
-  tbody {
-    border-radius: 10px;
+   background-color: transparent !important;
+   border: none;
+  >thead {
+    border-radius: 20px !important;
+    background-color: #f0f0f0; /* Beispielhintergrund */
+    border: 1px solid #ddd;
+    overflow: hidden;
+    
+ 
   }
+
 }
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+
+}
+
+h1 {
+    color: white;
+    margin: 0;
+}
+
+
+.table-header-container {
+    border-radius: 20px; /* Abgerundete Ecken */
+    overflow: hidden; /* Verhindert, dass Inhalte die Ecken überschreiten */
+    background-color: #444444; /* Hintergrundfarbe */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+  }
+
+ 
 
 .header-row {
   background-color: #444444; /* Kopfzeilenfarbe */
-  padding: 10px; /* Innenabstand */
+  padding: 20px; /* Innenabstand */
   text-align: left;
   font-size: 20px;
+  border-radius: 20px !important;
+  height: 70px;
 
   th {
-    padding: 20px;
+    padding: 10px;
   }
 }
 
@@ -49,10 +84,12 @@
 
 .search-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+ 
+
   width: 100%; /* Passe die Breite nach Bedarf an */
   max-width: 300px;
-  margin-bottom: 40px; /* Optional: Maximale Breite */
+ 
 }
 
 .search-label {

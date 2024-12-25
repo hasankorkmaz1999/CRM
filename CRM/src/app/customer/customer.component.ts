@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { DialogAddCustomerComponent } from './dialog-add-customer/dialog-add-customer.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Firestore, collection, collectionData, doc, deleteDoc } from '@angular/fire/firestore';
 import { Customer } from '../../models/customer.class';
-import { DialogContent } from '../user/user.component';
 import { LoggingService } from '../shared/logging.service';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-customer',
   standalone: true,
   imports: [SharedModule],
   templateUrl: './customer.component.html',
-  styleUrl: './customer.component.scss'
+  styleUrl: './customer.component.scss',
+ 
 })
 export class CustomerComponent implements OnInit {
   customers: Customer[] = [];
@@ -65,7 +66,8 @@ export class CustomerComponent implements OnInit {
  
 
   openDeleteDialog(customer: Customer) {
-    const dialogRef = this.dialog.open(DialogContent, {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      autoFocus: false, 
       data: {
         type: 'customer',
         name: `${customer.firstName} ${customer.lastName}`,

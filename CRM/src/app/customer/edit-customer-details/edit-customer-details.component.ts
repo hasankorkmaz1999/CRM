@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -11,7 +11,8 @@ import { LoggingService } from '../../shared/logging.service';
   standalone: true,
   imports: [SharedModule],
   templateUrl: './edit-customer-details.component.html',
-  styleUrl: './edit-customer-details.component.scss'
+  styleUrl: './edit-customer-details.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class EditCustomerDetailsComponent implements OnInit {
   customerForm!: FormGroup;

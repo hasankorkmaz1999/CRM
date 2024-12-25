@@ -1,6 +1,14 @@
-<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
-<mat-dialog-content>
+
+
+<div class="progress-bar-container">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+</div>
+
+
+
+<mat-dialog-content class="upload-container">
+ 
   <div class="upload-container">
     <h2 mat-dialog-title>Upload Profile Picture</h2>
 
@@ -8,7 +16,7 @@
 
     <!-- Benutzerdefinierte Datei-Auswahl -->
     <button class="file-button" color="primary" mat-button (click)="fileInput.click()">Choose File</button>
-    <span *ngIf="selectedFileName">{{ selectedFileName }}</span>
+    <span class="filename" *ngIf="selectedFileName">{{ selectedFileName }}</span>
 
     <!-- Reset-Button -->
     <button *ngIf="selectedFileName" class="reset-button" mat-button color="warn" (click)="resetSelection()">Reset Selection</button>
@@ -19,8 +27,9 @@
     </div>
 
     <mat-dialog-actions>
-      <button [disabled]="loading || !selectedFileName" mat-button (click)="uploadPicture()">Upload</button>
-      <button [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+      <button  class="buttonis" [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+
+      <button class="buttonis" [disabled]="loading || !selectedFileName" mat-button (click)="uploadPicture()">Upload</button>
     </mat-dialog-actions>
   </div>
 </mat-dialog-content>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { User } from '../../../models/user.class';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
@@ -14,6 +14,7 @@ import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
   imports: [SharedModule, FormsModule, MatOptionModule,FormsModule, ReactiveFormsModule, MatSelectModule],
   templateUrl: './dialog-add-user.component.html',
   styleUrl: './dialog-add-user.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class DialogAddUserComponent {
   user = new User();

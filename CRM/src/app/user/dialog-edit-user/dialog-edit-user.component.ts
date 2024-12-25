@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { User } from '../../../models/user.class';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
@@ -11,7 +11,8 @@ import { LoggingService } from '../../shared/logging.service';
   standalone: true,
   imports: [SharedModule, FormsModule],
   templateUrl: './dialog-edit-user.component.html',
-  styleUrl: './dialog-edit-user.component.scss'
+  styleUrl: './dialog-edit-user.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class DialogEditUserComponent implements OnInit {
   userForm!: FormGroup;

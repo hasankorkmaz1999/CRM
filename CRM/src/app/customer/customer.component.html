@@ -10,9 +10,10 @@
     />
   </div>
   
-  <mat-card appearance="outlined">
+  <mat-card>
     <table class="customer-table">
-      <tr>
+      <thead> 
+      <tr class="header-row">
         <th>First Name</th>
         <th>Last Name</th>
         <th>E-mail</th>
@@ -20,7 +21,10 @@
         <th>City</th>
         <th>Actions</th>
       </tr>
-      <tr class="single-customer" *ngFor="let customer of filteredCustomers">
+    </thead>
+
+    <tbody>
+      <tr class="under-tr" *ngFor="let customer of filteredCustomers">
         <td [routerLink]="['/customer', customer.id]">{{ customer.firstName }}</td>
         <td [routerLink]="['/customer', customer.id]">{{ customer.lastName }}</td>
         <td  [routerLink]="['/customer', customer.id]">{{ customer.email }}</td>
@@ -33,6 +37,7 @@
           </button>
         </td>
       </tr>
+    </tbody>
     </table>
   </mat-card>
   

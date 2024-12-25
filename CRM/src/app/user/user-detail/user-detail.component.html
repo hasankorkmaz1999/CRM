@@ -1,86 +1,102 @@
-<mat-card class="user-detail-header" appearance="outlined">
- 
-
-  <button
-    class="edit-icon"
-    [matMenuTriggerFor]="userMenu"
-    mat-icon-button
-    aria-label="Example icon button with a vertical three dot icon"
-  >
-    <mat-icon>more_vert</mat-icon>
-  </button>
-
-  <mat-menu #userMenu="matMenu">
-    <button mat-menu-item (click)="editUserDetails()">Edit</button>
-    <button mat-menu-item>Item 2</button>
-  </mat-menu>
-
-<div class="left-section">
-
-  <div class="user-role">
-    {{user.role}}
-  </div>
-
-
-
- 
-<div class="leftundersection">
-  <div class="profile-picture-container">
-    <img
-      [src]="user.profilePicture || '/assets/img/user.png'"
-      [ngClass]="{
-        'default-picture': !user.profilePicture,
-        'uploaded-picture': user.profilePicture
-      }"
-      alt="Profile Picture"
-    />
-
-    <button
-      (click)="addOrEditProfilePicture()"
-      class="add-picture-button"
-      mat-fab
-      color="primary"
-      matTooltip="Add/Edit picture"
-      matTooltipPosition="above"
-    >
-      <mat-icon *ngIf="!user.profilePicture">add</mat-icon>
-      <mat-icon *ngIf="user.profilePicture">edit</mat-icon>
+<div class="back-button">
+  <button mat-icon-button (click)="goBack()">
+      <mat-icon class="large-icon">arrow_back</mat-icon>
     </button>
   </div>
 
-  <div class="user-details">
-    <h2>{{ user.firstName }} {{ user.lastName }}</h2>
-   
-    <span>{{ user.birthDate| date: 'MMMM d, y' }}</span>
+
+
+<mat-card class="user-detail-header">
+ 
+  <div class="left-section">
+    <div class="profile-picture-container">
+      <img
+        [src]="user.profilePicture || '/assets/img/user.png'"
+        [ngClass]="{
+          'default-picture': !user.profilePicture,
+          'uploaded-picture': user.profilePicture
+        }"
+        alt="Profile Picture"
+      />
+
+      <button
+        (click)="addOrEditProfilePicture()"
+        class="add-picture-button"
+        mat-fab
+        color="primary"
+        matTooltip="Add/Edit picture"
+        matTooltipPosition="above"
+      >
+        <mat-icon *ngIf="!user.profilePicture">add</mat-icon>
+        <mat-icon *ngIf="user.profilePicture">edit</mat-icon>
+      </button>
+    </div>
   </div>
+
+
+
+  
+
+  
+
+
+  <div class="middle-section">
+    <div class="user-details">
+      <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+
+      <span class="birthdate">
+        <strong>Birth Date:</strong> {{ user.birthDate | date: "MMMM d, y" }}
+      </span>
+
+      <div class="role-container">
+      <span class="user-role">
+      {{ user.role }}
+       </span>
+      <mat-icon *ngIf="user.role === 'Admin'" class="icon admin-icon">admin_panel_settings</mat-icon>
+      <mat-icon *ngIf="user.role === 'Employee'" class="icon employee-icon">work</mat-icon>
+      <mat-icon *ngIf="user.role === 'Guest'" class="icon guest-icon">person_outline</mat-icon>
+      <mat-icon *ngIf="!user.role" class="icon default-icon">help_outline</mat-icon>
+    
+  </div>
+
+    </div>
+  </div>
+
+
+
+
+<div class="edit-container">
+  <button mat-icon-button class="custom-edit-icon" (click)="editUserDetails()">
+    <mat-icon>edit_square</mat-icon>
+  </button>
+
 </div>
 
-
-
-
-</div>
 
 </mat-card>
 
-<mat-card class="user-detail-address" appearance="outlined">
+
+
+
+<mat-card class="user-detail-address">
   <mat-card-header>
     <mat-card-title>Address</mat-card-title>
     <mat-card-subtitle></mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content class="address-content">
-    <span>{{ user.street }}</span>
-    <span>{{ user.zipCode }} {{ user.city }}</span>
+    <span>Street: {{ user.street }}</span>
+    <span>City: {{ user.zipCode }} {{ user.city }}</span>
   </mat-card-content>
 </mat-card>
 
 
-<mat-card class="user-detail-address" appearance="outlined">
-  <mat-menu #addressMenu="matMenu">
-    <button mat-menu-item>Edit</button>
-    <button mat-menu-item>Item 2</button>
-  </mat-menu>
 
+
+
+
+<mat-card class="user-detail-address">
+  
   <mat-card-header>
     <mat-card-title>Contact</mat-card-title>
     <mat-card-subtitle></mat-card-subtitle>
@@ -88,18 +104,17 @@
 
   <mat-card-content class="address-content">
     <span></span>
-    <span>E-mail:   <a 
-      href="mailto:{{ user.email }}" 
-      class="email-link">
-      {{ user.email }}
-    </a></span>
-    <span>Phone: <a 
-      href="tel:{{ user.phone.toString() }}" 
-      class="phone-link">
-      {{ user.phone }}
-    </a>
-    
-    
+    <span
+      >E-mail:
+      <a href="mailto:{{ user.email }}" class="email-link">
+        {{ user.email }}
+      </a></span
+    >
+    <span
+      >Phone:
+      <a href="tel:{{ user.phone.toString() }}" class="phone-link">
+        {{ user.phone }}
+      </a>
     </span>
   </mat-card-content>
 </mat-card>

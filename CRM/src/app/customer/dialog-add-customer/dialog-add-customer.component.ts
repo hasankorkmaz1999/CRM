@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
@@ -10,7 +10,8 @@ import { LoggingService } from '../../shared/logging.service';
   standalone: true,
   imports: [SharedModule, FormsModule],
   templateUrl: './dialog-add-customer.component.html',
-  styleUrl: './dialog-add-customer.component.scss'
+  styleUrl: './dialog-add-customer.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class DialogAddCustomerComponent {
   customerForm: FormGroup;

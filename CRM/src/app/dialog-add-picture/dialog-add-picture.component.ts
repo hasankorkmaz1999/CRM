@@ -1,7 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { HttpClient } from '@angular/common/http';
@@ -10,9 +10,11 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-dialog-add-picture',
   standalone: true,
-  imports: [SharedModule, FormsModule ],
+  imports: [SharedModule, FormsModule, MatDialogModule ],
   templateUrl: './dialog-add-picture.component.html',
-  styleUrl: './dialog-add-picture.component.scss'
+  styleUrl: './dialog-add-picture.component.scss',
+  encapsulation: ViewEncapsulation.None,
+
 })
 export class DialogAddPictureComponent {
   selectedFile: File | null = null;

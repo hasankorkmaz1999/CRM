@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
 import { Firestore, doc, docData } from '@angular/fire/firestore';
@@ -8,7 +8,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-picture.component';
-
+import { Location } from '@angular/common';
 
 
 
@@ -17,7 +17,8 @@ import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-p
   standalone: true,
   imports: [SharedModule, MatMenuModule],
   templateUrl: './user-detail.component.html',
-  styleUrl: './user-detail.component.scss'
+  styleUrl: './user-detail.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class UserDetailComponent implements OnInit {
 
@@ -26,7 +27,9 @@ export class UserDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
      private firestore: Firestore,
-      public dialog: MatDialog) {}
+      public dialog: MatDialog,
+      private location: Location
+    ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(paramMap => {
@@ -86,9 +89,15 @@ export class UserDetailComponent implements OnInit {
   
 
 
- 
+  goBack() {
+    this.location.back();
+  }
 
   
 
 
 }
+
+
+
+

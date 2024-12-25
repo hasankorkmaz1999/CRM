@@ -5,13 +5,13 @@ import { SharedModule } from '../../shared/shared.module';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { EditEventDialogComponent } from './edit-event-dialog/edit-event-dialog.component';
 import { Firestore, doc, updateDoc, deleteDoc, collection, addDoc } from '@angular/fire/firestore';
-import { DialogContent } from '../../user/user.component';
 import { LoggingService } from '../../shared/logging.service';
+import { DeleteDialogComponent } from '../../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule, SharedModule, MatButton, MatButtonModule, DialogContent, EditEventDialogComponent],
+  imports: [CommonModule, SharedModule, MatButton, MatButtonModule, DeleteDialogComponent, EditEventDialogComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -96,7 +96,8 @@ export class EventDetailsComponent {
 
 
   deleteEvent() {
-    const dialogRef = this.dialog.open(DialogContent, {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      autoFocus: false, 
       data: { type: 'event', name: this.data.type }, // Verwende `type` anstelle von `title`
     });
   

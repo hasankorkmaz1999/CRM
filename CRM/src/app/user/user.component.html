@@ -1,19 +1,23 @@
 
+<div class="header-top">
+
+  <h1> Users </h1>
+
 <div class="search-container">
-  <label for="search-input" class="search-label">Search Users</label>
+ 
   <input
     id="search-input"
     type="text"
     class="search-input"
     [(ngModel)]="searchQuery"
-    placeholder="Search by name"
+    placeholder="Search users by name"
     (input)="filterUsers()"
   />
 </div>
 
 
 
-
+</div>
 
 <mat-card>
   <!-- Benutzer-Tabelle -->

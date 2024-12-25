@@ -9,11 +9,19 @@ import { Firestore, collection, collectionData, doc, deleteDoc } from '@angular/
 import { User } from '../../models/user.class';
 import { LoggingService } from '../shared/logging.service';
 import { Auth, User as FirebaseUser } from '@angular/fire/auth';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatTooltipModule, SharedModule, MatDialogModule],
+  imports: [MatIconModule,
+     MatButtonModule,
+      MatTooltipModule,
+       SharedModule,
+        MatDialogModule,
+        DeleteDialogComponent
+
+      ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
 })
@@ -40,7 +48,7 @@ export class UserComponent implements OnInit {
     const userCollection = collection(this.firestore, 'users');
     collectionData(userCollection, { idField: 'id' })
       .subscribe((changes) => {
-        console.log('Received changes from database:', changes);
+       
         this.allUsers = changes as User[];
 
         // Sortiere alphabetisch nach Vorname
@@ -57,7 +65,8 @@ export class UserComponent implements OnInit {
   }
 
   openDeleteDialog(user: User) {
-    const dialogRef = this.dialog.open(DialogContent, {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      autoFocus: false, 
       data: { type: 'user', name: `${user.firstName} ${user.lastName}` },
     });
 
@@ -107,33 +116,4 @@ export class UserComponent implements OnInit {
 }
 
 
-@Component({
-  selector: 'dialog-content',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
-  template: `
-  <div class="delete-dialog">
-    <h2 mat-dialog-title>Confirm Deletion</h2>
-    <mat-dialog-content>
-      <p>Are you sure you want to delete this {{ data.type }}?</p>
-      <p><strong>{{ data.name }}</strong></p>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close>No</button>
-      <button mat-button [mat-dialog-close]="true" color="warn">Yes</button>
-    </mat-dialog-actions>
-  </div>
-`,
-styles: [`
-  .delete-dialog {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-  }
-`],
-})
-export class DialogContent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { type: string; name: string }) {}
-}
+
