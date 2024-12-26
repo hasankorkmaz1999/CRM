@@ -1,35 +1,51 @@
+
+<div class="headercontainer">
+<h1>Customers</h1>
+
+
 <div class="search-container">
-    <label for="search-input" class="search-label">Search Customers</label>
+ 
     <input
       id="search-input"
       type="text"
       class="search-input"
       [(ngModel)]="searchQuery"
-      placeholder="Search by name"
+      placeholder="Search customers by name"
       (input)="filterCustomers()"
     />
   </div>
+
+</div>
+
   
   <mat-card>
     <table class="customer-table">
       <thead> 
       <tr class="header-row">
+        <th>Status</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>E-mail</th>
         <th>Phone</th>
-        <th>City</th>
+        
         <th>Actions</th>
       </tr>
     </thead>
 
     <tbody>
       <tr class="under-tr" *ngFor="let customer of filteredCustomers">
+
+        <td [routerLink]="['/customer', customer.id]" class="status-column">
+          <span class="status {{ customer.status }}">
+            {{ customer.status | titlecase }}
+          </span>
+        </td>
+
         <td [routerLink]="['/customer', customer.id]">{{ customer.firstName }}</td>
         <td [routerLink]="['/customer', customer.id]">{{ customer.lastName }}</td>
         <td  [routerLink]="['/customer', customer.id]">{{ customer.email }}</td>
         <td  [routerLink]="['/customer', customer.id]">{{ customer.phone }}</td>
-        <td  [routerLink]="['/customer', customer.id]">{{ customer.address.city }}</td>
+        
         <td>
          
           <button mat-icon-button color="warn" (click)="openDeleteDialog(customer)">

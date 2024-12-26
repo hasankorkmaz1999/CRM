@@ -21,7 +21,7 @@
 .search-input {
   width: 100%;
   padding: 8px 10px;
-  font-size: 24px;
+  font-size: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
   outline: none;
@@ -106,3 +106,55 @@
     border-color: white !important;
     box-shadow: white !important;
   }
+
+  .headercontainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+
+    h1 {
+      color: white;
+    }
+  }
+
+
+
+
+  .customer-table {
+    border-collapse: separate; /* Verhindert, dass Header und Rows aneinanderkleben */
+    border-spacing: 0 30px; /* Fügt vertikalen Abstand zwischen Header und Rows hinzu */
+    width: 100%;
+    color: white; /* Für besseren Kontrast */
+    background-color: transparent !important;
+    border: none;
+  
+    /* Animation für die gesamte Tabelle */
+    animation: smoothFadeIn 0.8s ease-out;
+  
+    > thead {
+      border-radius: 20px !important;
+      background-color: #f0f0f0; /* Beispielhintergrund */
+      border: 1px solid #ddd;
+      overflow: hidden;
+    }
+  
+    
+  
+    /* Keyframes für die Tabelle */
+    @keyframes smoothFadeIn {
+      0% {
+        transform: scale(0.9); /* Start leicht kleiner */
+        opacity: 0; /* Unsichtbar */
+      }
+      50% {
+        transform: scale(1); /* In Position */
+        opacity: 0.5; /* Halb sichtbar */
+      }
+      100% {
+        transform: scale(1); /* Endzustand */
+        opacity: 1; /* Voll sichtbar */
+      }
+    }
+
+}

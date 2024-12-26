@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import * as bootstrap from 'bootstrap';
 import { EventDetailsComponent } from './event-details/event-details.component';
 import { Event } from '../../models/events.class';
+import { SharedModule } from '../shared/shared.module';
 
 
 @Component({
@@ -22,6 +23,7 @@ import { Event } from '../../models/events.class';
      MatButtonModule,
       CommonModule,
       MatDialogActions,
+      SharedModule
     ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',

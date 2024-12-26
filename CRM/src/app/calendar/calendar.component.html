@@ -1,28 +1,14 @@
 
-
-<!-- FullCalendar Instanz -->
+<div class="calendar-container ">
 <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+</div>
 
-<!-- Buttons für Aktionen -->
-<mat-dialog-actions>
-  <div class="button-container">
-    <!-- Button zum Hinzufügen eines Events -->
-    <button 
-      color="primary" 
-      class="event-button" 
-      mat-flat-button 
-      (click)="openAddEventDialog()">
-      Add Event
-    </button>
-
-    <!-- Button für die Monatsansicht -->
-    <button 
-      color="secondary" 
-      class="event-button" 
-      mat-flat-button 
-      (click)="switchToMonthView()" 
-      *ngIf="showMonthViewButton">
-      Month View
+  <div class="buttons-container">
+   
+    <button (click)="openAddEventDialog()" class="add-event-button" mat-fab color="primary" matTooltip="Add event" matTooltipPosition="above">
+      <mat-icon>add</mat-icon>
     </button>
   </div>
-</mat-dialog-actions>
+
+  
+

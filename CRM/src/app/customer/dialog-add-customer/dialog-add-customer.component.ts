@@ -52,7 +52,8 @@ export class DialogAddCustomerComponent {
           country: formData.country,
         },
         notes: formData.notes,
-        createdAt: new Date().toISOString(), // Datum der Erstellung hinzufügen
+        createdAt: new Date().toISOString(), 
+        status: 'new',
       };
 
       try {
