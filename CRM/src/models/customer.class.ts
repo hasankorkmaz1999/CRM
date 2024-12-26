@@ -13,7 +13,7 @@ export class Customer {
   createdAt: Date;
   notes?: string;
   profilePicture?: string;
-  status: 'active' | 'inactive' | 'pending' | 'deleted' | 'new'; // Status mit festgelegten Werten
+  status: 'active' | 'inactive' | 'pending' | 'new'; // Status mit festgelegten Werten
 
   constructor(obj?: any) {
     this.id = obj?.id || '';

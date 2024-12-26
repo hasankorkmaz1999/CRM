@@ -1,3 +1,7 @@
+.customer-component {
+  padding: 46px;
+}
+
 .add-customer-button {
     position: absolute;
     right: 56px;
@@ -33,6 +37,9 @@
 .search-input:focus {
   border-color: #4c5ab3; /* Farbe für den Fokuszustand */
 }
+
+
+
   .customer-table {
     border-collapse: separate; /* Verhindert, dass Header und Rows aneinanderkleben */
     border-spacing: 0 30px; /* Fügt vertikalen Abstand zwischen Header und Rows hinzu */
@@ -40,13 +47,10 @@
     color: white; /* Für besseren Kontrast */
      background-color: transparent !important;
      border: none;
-    >thead {
-      border-radius: 20px !important;
-      background-color: #f0f0f0; /* Beispielhintergrund */
-      border: 1px solid #ddd;
-      overflow: hidden;
-      
    
+    td {
+      padding: 10px; /* Innenabstand für Zellen */
+      font-size: 20px;
     }
   
   }
@@ -88,10 +92,7 @@
       box-shadow: rgba(0, 0, 0, 0.6) 0px 35px 30px -20px; /* Intensiverer Schatten beim Hover */
     }
   
-  .customer-table td {
-    padding: 10px; /* Innenabstand für Zellen */
-    font-size: 20px;
-  }
+  .customer-table 
   
   .user-table tr:first-of-type {
     margin-bottom: 35px; /* Abstand zwischen Header und erster Zeile */
@@ -134,7 +135,7 @@
   
     > thead {
       border-radius: 20px !important;
-      background-color: #f0f0f0; /* Beispielhintergrund */
+    
       border: 1px solid #ddd;
       overflow: hidden;
     }
@@ -157,4 +158,36 @@
       }
     }
 
+}
+
+
+/* Standardstatus-Styles */
+/* Standardstatus-Styles */
+.status {
+  font-weight: bold;
+  
+}
+
+/* Status: New (Grün) */
+.status.new {
+  color: green;
+  filter: drop-shadow(0 0 8px green);
+}
+
+/* Status: Active (Blau) */
+.status.active {
+  color: rgb(103, 103, 251);
+  filter: drop-shadow(0 0 8px rgb(103, 103, 251));
+}
+
+/* Status: Inactive (Rot) */
+.status.inactive {
+  color: red;
+  filter: drop-shadow(0 0 8px red);
+}
+
+/* Status: Pending (Orange) */
+.status.pending {
+  color: orange;
+  filter: drop-shadow(0 0 8px orange);
 }

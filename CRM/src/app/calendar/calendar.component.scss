@@ -1,3 +1,8 @@
+ .calendar-component {
+  padding: 46px;
+  height: 100vh;
+ }
+ 
  .calendar-container {
   height: 100vh;
  }
@@ -25,7 +30,7 @@
 .fc {
  
   width: 100%;
-  height: 100%;
+  height: 50vh;
   border: none !important;
 
   .fc-toolbar {
@@ -92,7 +97,7 @@
     font-size: 16px;
     width: 100% !important;
     height: 100% !important;
-    margin-bottom: 30px !important;
+   
   }
 
   .fc-scroller-liquid-absolute {
@@ -102,6 +107,7 @@
 
   .fc-col-header {
     border: none !important;
+    margin-bottom: 0 !important;
 
     th {
       border: none !important;
@@ -132,19 +138,9 @@
     }
   }
 
-  .fc .fc-scroller-harness {
-    direction: ltr;
-    overflow: hidden;
-    position: relative;
-    border: none !important;
-  }
+  
 
-  .fc-view-harness {
-    border: none !important;
-    flex-grow: 0;
-    position: relative;
-  }
-
+ 
   .fc-button-primary:disabled {
     background-color: transparent;
     border-color: white;

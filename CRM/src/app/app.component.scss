@@ -37,8 +37,8 @@
     border-bottom: 1px solid rgb(0, 0, 0, 0.1);
     padding-left: 16px;
     padding-right: 16px;
-
-    min-height: 102px;
+height: 102px;
+  
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,17 +88,15 @@
 
 
 .router-container {
-    padding-top: 46px;
-    padding-left: 46px;
-    padding-right: 46px;
-    padding-bottom: 46px;
+   
     background-color: #1F1F1F;
     height: 100vh;
 }
 
 
-.mat-drawer-container {
-    
+.mat-drawer-inner-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .mat-drawer-side {
@@ -141,7 +139,35 @@
     background-color: #1F1F1F; /* Dunkler Hintergrund */
     color: #000000; /* Grauer Text */
     box-shadow: 2px 4px 8px -2px rgba(255, 255, 255, 0.09);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+   
 }
+
+.menu-items {
+flex-grow: 1;
+}
+
+.links-container {
+ 
+    display: flex;
+  flex-direction: column;
+ 
+  
+  }
+
+  .links {
+    list-style: none;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+ .privacy-links {
+   position: absolute;
+   bottom: 50px;
+ }
+
 
 
 .header {
@@ -163,3 +189,5 @@
 .links {
     color: #ffffff;
 }
+
+

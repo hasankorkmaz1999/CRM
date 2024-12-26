@@ -1,7 +1,7 @@
 import { Component, NgModule, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LoggingService } from '../../shared/logging.service';
 
@@ -38,7 +38,7 @@ export class DialogAddCustomerComponent {
   async saveCustomer() {
     if (this.customerForm.valid) {
       const formData = this.customerForm.value;
-
+  
       // Struktur des Kundenobjekts für Firestore
       const customerData = {
         firstName: formData.firstName,
@@ -52,18 +52,22 @@ export class DialogAddCustomerComponent {
           country: formData.country,
         },
         notes: formData.notes,
-        createdAt: new Date().toISOString(), 
+        createdAt: new Date().toISOString(),
         status: 'new',
       };
-
+  
       try {
         const customerCollection = collection(this.firestore, 'customers');
         const customerDocRef = await addDoc(customerCollection, customerData); // Kunde in Firestore speichern
-        console.log('Customer successfully saved:', customerData);
-
-        // Logge die Aktion
-        this.logCustomerAction('add', customerDocRef.id, customerData);
-
+  
+        // Die generierte ID zum gespeicherten Dokument hinzufügen
+        await updateDoc(customerDocRef, { id: customerDocRef.id });
+  
+        console.log('Customer successfully saved with ID:', customerDocRef.id);
+  
+        // Logge die Aktion mit der hinzugefügten ID
+        this.logCustomerAction('add', customerDocRef.id, { ...customerData, id: customerDocRef.id });
+  
         // Schließe den Dialog und signalisiere dem Aufrufer, dass der Kunde hinzugefügt wurde
         this.dialogRef.close(true);
       } catch (error) {
@@ -73,7 +77,7 @@ export class DialogAddCustomerComponent {
       console.warn('Customer form is invalid.');
     }
   }
-
+  
 
 
   logCustomerAction(action: string, customerId: string, customerData: any) {

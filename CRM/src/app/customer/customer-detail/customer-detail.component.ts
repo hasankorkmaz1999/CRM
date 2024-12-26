@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
 import { Firestore, doc, docData, updateDoc } from '@angular/fire/firestore';
@@ -15,7 +15,8 @@ import { EditCustomerDetailsComponent } from '../edit-customer-details/edit-cust
   standalone: true,
   imports: [SharedModule],
   templateUrl: './customer-detail.component.html',
-  styleUrl: './customer-detail.component.scss'
+  styleUrl: './customer-detail.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class CustomerDetailComponent implements OnInit {
   customerId = '';
@@ -40,7 +41,7 @@ export class CustomerDetailComponent implements OnInit {
     const customerDoc = doc(this.firestore, `customers/${this.customerId}`);
     docData(customerDoc).subscribe((data: any) => {
       this.customer = new Customer(data);
-      console.log('Fetched customer data:', this.customer);
+     
     });
   }
 
@@ -59,6 +60,29 @@ export class CustomerDetailComponent implements OnInit {
       }
     });
   }
+
+
+  
+  
+  updateCustomerStatus(newStatus: 'active' | 'inactive' | 'pending' | 'new') {
+    if (!this.customer || !this.customer.id) {
+      console.warn('Customer or Customer ID is null, cannot update status.');
+      return;
+    }
+  
+    const customerDoc = doc(this.firestore, `customers/${this.customer.id}`);
+    updateDoc(customerDoc, { status: newStatus })
+      .then(() => {
+        console.log('Customer status updated to:', newStatus);
+        this.customer.status = newStatus; // Lokale Kopie aktualisieren
+      })
+      .catch((error) => {
+        console.error('Error updating customer status:', error);
+      });
+  }
+  
+  
+  
   
   
 

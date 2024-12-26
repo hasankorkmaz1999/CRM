@@ -37,7 +37,7 @@ export class CustomerComponent implements OnInit {
       this.customers = data.map((customerData) => new Customer(customerData));
 
       // Sortiere alphabetisch nach Nachname (oder Vorname, falls gewünscht)
-      this.customers.sort((a, b) => a.lastName.localeCompare(b.lastName));
+      this.customers.sort((a, b) => a.firstName.localeCompare(b.firstName));
 
       // Aktualisiere die gefilterten Kunden
       this.filteredCustomers = [...this.customers];
@@ -51,7 +51,7 @@ export class CustomerComponent implements OnInit {
         customer.firstName.toLowerCase().includes(query) ||
         customer.lastName.toLowerCase().includes(query)
       )
-      .sort((a, b) => a.lastName.localeCompare(b.lastName)); // Alphabetisch sortieren
+      .sort((a, b) => a.firstName.localeCompare(b.firstName)); // Alphabetisch sortieren
   }
 
   openAddDialog() {

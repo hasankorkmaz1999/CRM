@@ -1,26 +1,46 @@
 <ng-container *ngIf="!isLoginRoute">
-  <mat-drawer-container class="mat-drawer-container" autosize>
+  <mat-drawer-container class="mat-drawer-container" >
     <mat-drawer #drawer class="sidenav" [opened]="true" mode="side">
       <div class="logo-container">
         <img src="/assets/img/crm_logo.png" alt="">
       </div>
-      <ul class="menu-items">
-        <li class="links" routerLink="/dashboard">
-          <mat-icon>fact_check</mat-icon>Dashboard
-        </li>
-        <li class="links" routerLink="/user">
-          <mat-icon>perm_identity</mat-icon> User
-        </li>
-        <li class="links" routerLink="/calendar">
-          <mat-icon>calendar_today</mat-icon> Calendar
-        </li>
-        <li class="links" routerLink="/customer">
-          <mat-icon>people</mat-icon> Customer
-        </li>
-        <li class="links" routerLink="/statistics">
-          <mat-icon>insert_chart</mat-icon> Statistics
-        </li>
-      </ul>
+
+      <div class="links-container">
+
+       
+       
+        <ul class="menu-items">
+          <li class="links" routerLink="/dashboard">
+            <mat-icon>fact_check</mat-icon> Dashboard
+          </li>
+          <li class="links" routerLink="/user">
+            <mat-icon>perm_identity</mat-icon> User
+          </li>
+          <li class="links" routerLink="/calendar">
+            <mat-icon>calendar_today</mat-icon> Calendar
+          </li>
+          <li class="links" routerLink="/customer">
+            <mat-icon>people</mat-icon> Customer
+          </li>
+          <li class="links" routerLink="/statistics">
+            <mat-icon>insert_chart</mat-icon> Statistics
+          </li>
+        </ul>
+
+        <!-- Privacy and Legal Links at the bottom -->
+        <div class="privacy-links">
+          <ul>
+          
+            <li class="links" routerLink="/privacy-policy">
+              Privacy Policy
+            </li>
+            <li class="links" routerLink="/legal-notice">
+              Legal Notice
+            </li>
+          </ul>
+        </div>
+        
+      </div>
     </mat-drawer>
 
 
@@ -28,42 +48,46 @@
 
     
     <div class="example-sidenav-content">
-      <mat-toolbar class="header">
-        <mat-toolbar-row class="mat-toolbar-div">
-
-          <div class="left-section">
-          <mat-icon (click)="drawer.toggle()" class="menu">menu</mat-icon>
-         
-        </div>
-
-
-        <div class="user-status">
-        <div class="user-name"><mat-icon class="person-icon">person</mat-icon>
-           <span class="username">{{ userName }}</span></div>
-        <mat-chip color="primary" selected>{{ userRole }}</mat-chip>
-        </div>
-
-
-        
-           
-           
-         
-        
-
-
-        <div class="right-section">
-        
-          <div>
-            <span class="spacer"></span>
-            <button mat-button (click)="logout()" *ngIf="!isLoginRoute">
-              <mat-icon class="logout-icon">logout</mat-icon> <span class="logout">Logout</span> 
-            </button>
-          </div>
-        </div>
-          
-        </mat-toolbar-row>
-      </mat-toolbar>
+     
       <div class="router-container">
+
+        <mat-toolbar class="header">
+          <mat-toolbar-row class="mat-toolbar-div">
+  
+            <div class="left-section">
+            <mat-icon (click)="drawer.toggle()" class="menu">menu</mat-icon>
+           
+          </div>
+  
+  
+          <div class="user-status">
+          <div class="user-name"><mat-icon class="person-icon">person</mat-icon>
+             <span class="username">{{ userName }}</span></div>
+          <mat-chip color="primary" selected>{{ userRole }}</mat-chip>
+          </div>
+  
+  
+          
+             
+             
+           
+          
+  
+  
+          <div class="right-section">
+          
+            <div>
+              <span class="spacer"></span>
+              <button mat-button (click)="logout()" *ngIf="!isLoginRoute">
+                <mat-icon class="logout-icon">logout</mat-icon> <span class="logout">Logout</span> 
+              </button>
+            </div>
+          </div>
+            
+          </mat-toolbar-row>
+        </mat-toolbar>
+
+
         <router-outlet></router-outlet>
       </div>
     </div>
