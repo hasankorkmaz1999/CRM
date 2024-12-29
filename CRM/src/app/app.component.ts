@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Auth, signInWithEmailAndPassword, onAuthStateChanged } from '@angular/fire/auth';
 import { UserService } from './shared/user.service';
 import { SharedModule } from './shared/shared.module';
+import { CalendarModule } from 'angular-calendar';
 
 
 
@@ -29,6 +30,7 @@ import { SharedModule } from './shared/shared.module';
     MatDialogModule,
     HttpClientModule,
     SharedModule,
+    CalendarModule
     
     
   ],

@@ -12,6 +12,7 @@ import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { AllLogsComponent } from './all-logs/all-logs.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
+import { AngularCalendarComponent } from './calendar/angular-calendar/angular-calendar.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Standardroute zur Login-Seite
@@ -29,6 +30,6 @@ export const routes: Routes = [
   { path: 'logs', component: AllLogsComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'legal-notice', component: LegalNoticeComponent },
-  
+  { path: 'calendar-angular', component: AngularCalendarComponent },
   
 ];

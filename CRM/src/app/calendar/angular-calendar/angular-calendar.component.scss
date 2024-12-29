@@ -1,0 +1,14 @@
+::ng-deep .cal-day {
+    background-color: #f0f0f0;  // Hintergrundfarbe der Tage
+  }
+  
+  ::ng-deep .cal-header {
+    background-color: #1F1F1F;  // Hintergrundfarbe des Kopfbereichs
+    color: white;  // Textfarbe
+  }
+  
+  ::ng-deep .cal-event {
+    background-color: #007bff;  // Hintergrundfarbe für Ereignisse
+    color: white;  // Textfarbe der Ereignisse
+  }
+  
