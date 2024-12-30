@@ -37,11 +37,11 @@
   
 
 ::ng-deep .cal-month-view {
-    background-color: #1F1F1F !important;
+    background-color: #181818 !important;
 }
 
  ::ng-deep .cal-month-view .cal-cell {
-    background-color: #1F1F1F !important; 
+    background-color: #181818 !important; 
     color: rgb(255, 255, 255) !important; 
     border: none !important;
   } 
@@ -115,35 +115,42 @@
 
 
 .custom-cell {
-    background-color: rgba(255, 255, 0, 0.2); /* Gelb für Debugging */
+    background-color: rgba(107, 107, 107, 0.2); /* Gelb für Debugging */
     color: white;
-    min-height: 100px;
+    min-height: 150px;
+    margin: 5px;
+    border-radius: 10px;
 }
  
  
   
   .day-number {
     font-weight: bold;
+    padding-top: 5px;
+    padding-right: 5px;
     margin-bottom: 5px;
     font-size: 14px;
+    text-align: right;
   }
   
   .custom-event {
-    color: black;
-    background-color: yellow !important;
+  margin-bottom: 5px;
     padding: 5px;
     border-radius: 3px;
+    overflow-y: auto;
 }
 
   
   .custom-event .event-time {
     margin-right: 5px;
     font-weight: bold;
+    color: #181818;
   }
   
   .custom-event .event-title {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: #181818;
   }
   

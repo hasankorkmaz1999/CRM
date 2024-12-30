@@ -2,6 +2,7 @@
   display: flex;
  justify-content: space-around;
  flex-wrap: wrap;
+ padding: 46px;
 }
 
 
@@ -9,7 +10,7 @@
     
     width: 500px;
     height: 600px;
-    background-color: #313132;
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 30px;
   
     padding: 20px;
@@ -207,7 +208,7 @@
   .events-container {
     width: 500px;
     height: 600px;
-    background-color: #313132;
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 30px;
     margin-bottom: 30px;
     padding: 20px;
@@ -336,7 +337,7 @@
     width: 500px;
     margin-top: 20px;
 
-    flex-wrap: wrap;
+   
     display: flex;
     justify-content: center;
     align-items: center;
@@ -354,13 +355,14 @@
       list-style: none;
       padding: 0;
       flex-wrap: wrap;
+      width: 700px !important;
 
       li {
         cursor: pointer;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         margin-right: 10px;
         border-radius: 5px;
-
+        width: 140px;
         padding: 5px;
 
         p {
@@ -410,14 +412,14 @@
   }
 
   .event-other {
-    background-color: #7d7dff; /* Violett */
+    background-color: #a3a3a6; /* Violett */
   }
 
   /* Logs Section */
   .logs-section {
     width: 500px;
     height: 600px;
-    background-color: #313132;
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 30px;
     margin-bottom: 30px;
     padding: 20px;
@@ -448,7 +450,7 @@
         padding-bottom: 0;
         display: flex;
         justify-content: space-between;
-
+        
         height: 60px;
 
         border-radius: 5px;

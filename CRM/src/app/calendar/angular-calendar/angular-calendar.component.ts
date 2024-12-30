@@ -63,15 +63,26 @@ export class AngularCalendarComponent implements OnInit {
       console.log('Original Data from Firestore:', data);
       this.events = data.map((eventData: any) => {
         const eventDateTime = this.parseAndCombineDateTime(eventData.date, eventData.time); // Datum und Zeit kombinieren
+        const eventType = eventData.type; // Event-Typ ermitteln
+  
+        // Farben basierend auf Event-Typ
+        let eventColor = { primary: '#3f51b5', secondary: '#7986cb' }; // Standardfarbe
+        if (eventType === 'Meeting') {
+          eventColor = { primary: '#ff4081', secondary: '#ff80ab' };
+        } else if (eventType === 'Webinar') {
+          eventColor = { primary: '#3f51b5', secondary: '#81c784' };
+        } else if (eventType === 'Workshop') {
+          eventColor = { primary: '#fff', secondary: '#ffb74d' };
+        } else if (eventType === 'Other') {
+          eventColor = { primary: '#a3a3a6', secondary: '#ba68c8' };
+        }
+  
         return {
           id: eventData.id,
           title: eventData.type,
           start: eventDateTime, 
           end: eventDateTime,
-          color: {
-            primary: eventData.type === 'Meeting' ? '#ff4081' : '#3f51b5', 
-            secondary: eventData.type === 'Meeting' ? '#ff80ab' : '#7986cb',
-          },
+          color: eventColor, // Dynamische Farbzuweisung
           meta: {
             users: eventData.users || [],
             description: eventData.description || '',
