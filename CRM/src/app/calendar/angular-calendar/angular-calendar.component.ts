@@ -97,6 +97,8 @@ export class AngularCalendarComponent implements OnInit {
         } as CalendarEvent;
       });
       console.log('Processed Events:', this.events);
+      console.log('Final Event Data for Calendar:', this.events);
+
     });
   }
   
@@ -104,15 +106,30 @@ export class AngularCalendarComponent implements OnInit {
   
   
   parseAndCombineDateTime(dateString: string, timeString: string): Date {
-    if (!dateString || !timeString) {
-      console.warn('Invalid date or time:', dateString, timeString);
-      return new Date(); 
+    console.log('Date String:', dateString);
+    console.log('Time String:', timeString);
+  
+    // Konvertiere das Firestore-Datum ins ISO-Format
+    const parsedDate = new Date(dateString); // Datum wird geparst
+    if (isNaN(parsedDate.getTime())) {
+      console.error('Invalid date format:', dateString);
+      return new Date(); // Rückgabe des aktuellen Datums bei ungültigem Format
+    }
+  
+    // Extrahiere Jahr, Monat und Tag
+    const year = parsedDate.getFullYear();
+    const month = parsedDate.getMonth(); // 0-basiert
+    const day = parsedDate.getDate();
+  
+    // Validierung der Zeit
+    if (!/^\d{1,2}:\d{2} (AM|PM)$/.test(timeString)) {
+      console.error('Invalid time format:', timeString);
+      return new Date(); // Rückgabe des aktuellen Datums bei ungültigem Format
     }
   
     try {
-      
-      const formattedDate = new Date(dateString).toISOString().split('T')[0]; 
-      const [time, meridiem] = timeString.split(' '); 
+      // Verarbeite Zeit im Format HH:mm AM/PM
+      const [time, meridiem] = timeString.split(' ');
       let [hours, minutes] = time.split(':').map(Number);
   
       if (meridiem === 'PM' && hours !== 12) {
@@ -121,16 +138,19 @@ export class AngularCalendarComponent implements OnInit {
         hours = 0;
       }
   
-      const combinedDateTime = `${formattedDate}T${hours.toString().padStart(2, '0')}:${minutes
-        .toString()
-        .padStart(2, '0')}:00`;
-  
-      return new Date(combinedDateTime);
+      // Erstelle ein Datum unter Berücksichtigung von UTC
+      const combinedDate = new Date(Date.UTC(year, month, day, hours, minutes));
+     
+      return combinedDate;
     } catch (error) {
       console.error('Error parsing date/time:', error);
-      return new Date();
+      return new Date(); // Rückgabe des aktuellen Datums bei Fehler
     }
   }
+  
+  
+  
+  
   
   
 
@@ -159,18 +179,23 @@ export class AngularCalendarComponent implements OnInit {
   }
 
 
+  
+
   handleEventClick(event: any): void {
-    console.log('Clicked Event:', event); // Debugging
-    this.selectedEvent = {
-      id: event?.id || 'Unknown ID',
-      type: event?.title || 'Unknown Type',
-      description: event?.meta?.description || 'No description provided',
-      date: event?.start || new Date(),
-      time: event?.meta?.time || 'No time provided',
-      users: event?.meta?.users || [],
-      createdBy: event?.meta?.createdBy || 'Unknown',
-    };
+    this.selectedEvent = null; // Entferne das aktuelle Event für die Animation
+    setTimeout(() => {
+      this.selectedEvent = {
+        id: event?.id || 'Unknown ID',
+        type: event?.title || 'Unknown Type',
+        description: event?.meta?.description || 'No description provided',
+        date: event?.start || new Date(),
+        time: event?.meta?.time || 'No time provided',
+        users: event?.meta?.users || [],
+        createdBy: event?.meta?.createdBy || 'Unknown',
+      };
+    }, 50); // Verzögerung, um die Animation korrekt zu triggern
   }
+  
   
 
   closeSidebar(): void {

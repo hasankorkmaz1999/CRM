@@ -4,7 +4,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserComponent } from './user/user.component';
-import { CalendarComponent } from './calendar/calendar.component';
+
 import { CustomerComponent } from './customer/customer.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { CustomerDetailComponent } from './customer/customer-detail/customer-detail.component';
@@ -20,7 +20,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'user', component: UserComponent },
   {path: 'user/:id', component: UserDetailComponent},
-  { path: 'calendar', component: CalendarComponent },
+ 
   { path: 'customer', component: CustomerComponent },
   { path: 'statistics', component: StatisticsComponent },
   {path: 'user/:id', component: UserDetailComponent},

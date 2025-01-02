@@ -19,44 +19,43 @@
 
     <div class="upcoming-events">
       <h3>Upcoming Events</h3>
-      
-
-      <div  *ngIf="!upcomingEvents || upcomingEvents.length === 0" class="no-events-div">
-      <!-- Wenn keine Events vorhanden sind -->
-      <p  class="no-events-placeholder">
-        No upcoming events
-      </p>
-    </div>
-      <!-- Wenn Events vorhanden sind -->
-<div class="events-wrapper">
-
-      <ul *ngIf="upcomingEvents && upcomingEvents.length > 0">
-        <li
-          *ngFor="let event of upcomingEvents; let i = index"
-          (click)="openEventDetails(event)"
-          [ngClass]="getEventClass(event.type)"
-          [matTooltip]="isEventToday(event.date) && event.id ? 'Starts in: ' + (countdowns[event.id] || 'Ended') : ''"
-          matTooltipPosition="above"
-        >
-          <div class="event-item">
-            <h4>{{ event.type }}</h4>
-            <mat-icon>event</mat-icon>
-          </div>
-          <div class="date-div">
-            <p>{{ event.date | date : "MMMM d, y" }}</p>
-          </div>
-          <div>
-            <p>{{ event.time }}</p>
-          </div>
-        </li>
-      </ul>
-
-    </div>
     
-      <button class="go-calendar" routerLink="/calendar">
+      <!-- Wenn keine Events vorhanden sind -->
+      <div *ngIf="!upcomingEvents || upcomingEvents.length === 0" class="no-events-div">
+        <p class="no-events-placeholder">
+          No upcoming events
+        </p>
+      </div>
+    
+      <!-- Wenn Events vorhanden sind -->
+      <div *ngIf="upcomingEvents && upcomingEvents.length > 0" class="events-wrapper">
+        <ul>
+          <li
+            *ngFor="let event of upcomingEvents; let i = index"
+            (click)="openEventDetails(event)"
+            [ngClass]="getEventClass(event.type)"
+            [matTooltip]="isEventToday(event.date) && event.id ? 'Starts in: ' + (countdowns[event.id] || 'Ended') : ''"
+            matTooltipPosition="above"
+          >
+            <div class="event-item">
+              <h4>{{ event.type }}</h4>
+              <mat-icon>event</mat-icon>
+            </div>
+            <div class="date-div">
+              <p>{{ event.date | date : 'MMMM d, y' }}</p>
+            </div>
+            <div>
+              <p>{{ event.time }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    
+      <button class="go-calendar" routerLink="/calendar-angular">
         Go to Calendar
       </button>
     </div>
+    
     
   </div>
 

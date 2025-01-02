@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, Input, Optional, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Optional, Output, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef  } from '@angular/material/dialog';
 import { SharedModule } from '../../shared/shared.module';
 import { MatButton, MatButtonModule } from '@angular/material/button';
@@ -18,13 +18,14 @@ import { DeleteDialogComponent } from '../../delete-dialog/delete-dialog.compone
 })
 export class EventDetailsComponent {
   @Input() data: any; // Für Sidebar-Nutzung
+  @Output() closeSidebarEvent = new EventEmitter<void>(); // EventEmitter für Sidebar-Schließen
   isDialog: boolean = false;
 
   constructor(
     private firestore: Firestore,
     private dialog: MatDialog,
     private loggingService: LoggingService,
-    @Optional() private dialogRef?: MatDialogRef<EventDetailsComponent>, // Optional für Dialog
+    @Optional() public dialogRef?: MatDialogRef<EventDetailsComponent>, // Optional für Dialog
     @Optional() @Inject(MAT_DIALOG_DATA) public dialogData?: any // Optional für Dialog
   ) {
     if (this.dialogData) {
@@ -33,6 +34,15 @@ export class EventDetailsComponent {
     }
 
     console.log('Data received in EventDetailsComponent:', this.data);
+  }
+
+
+  close(): void {
+    if (this.isDialog && this.dialogRef) {
+      this.dialogRef.close(); // Dialog schließen
+    } else {
+      this.closeSidebarEvent.emit(); // Sidebar schließen
+    }
   }
 
   editEvent() {
@@ -107,7 +117,7 @@ export class EventDetailsComponent {
       autoFocus: false,
       data: { type: 'event', name: this.data.type },
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const eventRef = doc(this.firestore, `events/${this.data.id}`);
@@ -115,9 +125,12 @@ export class EventDetailsComponent {
           .then(() => {
             console.log('Event deleted successfully from Firestore!');
             this.logEventAction('delete', this.data.id, this.data.type, new Date().toISOString());
-
-            if (this.isDialog && this.dialogRef) {
-              this.dialogRef.close('reload'); // Dialog schließen
+  
+            // Emit the closeSidebarEvent if this is not a dialog
+            if (!this.isDialog) {
+              this.closeSidebarEvent.emit(); // Inform parent to close the sidebar
+            } else {
+              this.dialogRef?.close(); // Close the dialog
             }
           })
           .catch((error) => console.error('Error deleting event from Firestore:', error));

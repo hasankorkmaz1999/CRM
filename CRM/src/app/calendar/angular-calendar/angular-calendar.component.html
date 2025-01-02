@@ -1,24 +1,33 @@
 <div class="calendar-wrapper">
      
-   <div class="sidebar-wrapper">
+    <div class="sidebar-wrapper">
 
-    <h2>Event Details</h2>
-
-    <div class="sidebar">
-
-        
-        <ng-container *ngIf="selectedEvent; else emptySidebar">
-          <app-event-details [data]="selectedEvent"></app-event-details>
-          <button (click)="closeSidebar()" class="close-sidebar">Close</button>
-        </ng-container>
-        <ng-template #emptySidebar>
-          <div class="empty-sidebar">
-            <p>Select an event to view details</p>
-          </div>
-        </ng-template>
+        <h2>Event Details</h2>
+      
+        <div class="sidebar">
+      
+          <ng-container *ngIf="selectedEvent; else emptySidebar">
+      
+            <div class="event-details-content" @slideInAnimation>
+              <app-event-details 
+                [data]="selectedEvent"
+                (closeSidebarEvent)="closeSidebar()"
+              ></app-event-details>
+            </div>
+      
+          </ng-container>
+      
+          <ng-template #emptySidebar>
+            <div class="empty-sidebar">
+              <p >Select an event to view details</p>
+            </div>
+          </ng-template>
+      
+        </div>
+      
       </div>
-
-    </div>
+      
+      
   
     <div class="calendar-component">
       <div class="calendar-header">
