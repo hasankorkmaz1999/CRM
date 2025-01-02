@@ -1,6 +1,8 @@
-.calendar-component {
+.calendar-angular {
     padding: 46px;
 }
+
+
 
 .calendar-header {
     display: flex;
@@ -151,14 +153,14 @@
   .custom-event .event-time {
     margin-right: 5px;
     font-weight: bold;
-    color: #181818;
+    color: #000000;
   }
   
   .custom-event .event-title {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: #181818;
+    color: #000000;
   }
   
 
@@ -170,7 +172,7 @@
 
 
   .sidebar-wrapper {
-    margin-top: 90px;
+    margin-top: 70px;
 margin-right: 10px;
     h2 {
         color: white;
@@ -182,7 +184,7 @@ margin-right: 10px;
     border-radius: 10px;
     position: relative;
     width: 300px; // Breite der Sidebar
-    background-color: #353535; // Hintergrundfarbe der Sidebar
+    background-color: rgba(107, 107, 107, 0.2);
     color: white;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); // Schatten für die Sidebar
@@ -195,23 +197,22 @@ overflow-x: hidden;
         position: absolute;
         bottom: 400px;
         text-align: center;
+        line-height: 1.5em;
     }
   }
   
   .calendar-component {
     flex: 1; // Kalender nimmt den restlichen verfügbaren Platz ein
-    padding: 20px;
+    margin-right: 20px;
   }
   
 
-  .empty-sidebar {
-    
-  }
+
 
 
   @keyframes slideInFromRight {
     from {
-      transform: translateX(100%); /* Start außerhalb des Sichtbereichs */
+      transform: translateX(-100%); /* Start außerhalb des Sichtbereichs */
       opacity: 0; /* Unsichtbar zu Beginn */
     }
     to {
@@ -221,6 +222,12 @@ overflow-x: hidden;
   }
   
   .event-details-content {
-    animation: slideInFromRight 0.3s ease-out; /* Wende die Animation an */
+    animation: slideInFromRight 0.5s ease-out; /* Wende die Animation an */
   }
   
+
+  .event-button {
+    position: absolute;
+    bottom: 36px;
+    left: 50px;
+  }

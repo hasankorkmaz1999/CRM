@@ -1,5 +1,7 @@
 <div class="event-container">
 
+
+ 
   <div class="header">
   <h1>{{ data.type }}</h1>
   <button class="close-button" (click)="close()">
@@ -7,11 +9,61 @@
   </button>
 </div>
 
-  <p>Date: {{ data.date | date: 'MMMM d, y' }}</p>
-  <p>Time: {{ data.time }}</p>
-  <p>Description: {{ data.description }}</p> <!-- Beschreibung hinzufügen -->
-  <p *ngIf="data.users?.length > 0">Participants: {{ data.users.join(', ') }}</p>
-  <p>Created By: {{ data.createdBy }}</p>
+<div class="events-wrapper"> 
+
+<div class="event-details">
+  <div class="event-row">
+    <div class="icon-wrapper">
+      <mat-icon>event</mat-icon>
+    </div>
+    <div class="details">
+      <span class="label">Date:</span>
+      <p>{{ data.date | date: 'MMMM d, y' }}</p>
+    </div>
+  </div>
+
+  <div class="event-row">
+    <div class="icon-wrapper">
+      <mat-icon>schedule</mat-icon>
+    </div>
+    <div class="details">
+      <span class="label">Time:</span>
+      <p>{{ data.time }}</p>
+    </div>
+  </div>
+
+  <div class="event-row">
+    <div class="icon-wrapper">
+      <mat-icon>description</mat-icon>
+    </div>
+    <div class="details">
+      <span class="label">Description:</span>
+      <p>{{ data.description }}</p>
+    </div>
+  </div>
+
+  <div class="event-row">
+    <div class="icon-wrapper">
+      <mat-icon>group</mat-icon>
+    </div>
+    <div class="details">
+      <span class="label">Participants:</span>
+      <p *ngIf="data.users?.length > 0">{{ data.users.join(', ') }}</p>
+    </div>
+  </div>
+
+  <div class="event-row">
+    <div class="icon-wrapper">
+      <mat-icon>account_circle</mat-icon>
+    </div>
+    <div class="details">
+      <span class="label">Created By:</span>
+      <p>{{ data.createdBy }}</p>
+    </div>
+  </div>
+</div>
+
+
 
   <div class="buttons">
    
@@ -26,5 +78,9 @@
       </button>
     </div>
   </div>
+
+</div>
+
+
   
 </div>

@@ -18,11 +18,12 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { SharedModule } from '../../shared/shared.module';
 import { EventDetailsComponent } from '../event-details/event-details.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-angular-calendar',
   standalone: true,
-  imports: [CommonModule, CalendarModule, SharedModule, MatDialogModule, EventDetailsComponent],
+  imports: [CommonModule ,CommonModule, CalendarModule, SharedModule, MatDialogModule, EventDetailsComponent],
   providers: [
     CalendarUtils,
     CalendarA11y, 

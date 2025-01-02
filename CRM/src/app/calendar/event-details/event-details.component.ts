@@ -33,7 +33,7 @@ export class EventDetailsComponent {
       this.isDialog = true; // Bestimmen, ob es als Dialog verwendet wird
     }
 
-    console.log('Data received in EventDetailsComponent:', this.data);
+   
   }
 
 
