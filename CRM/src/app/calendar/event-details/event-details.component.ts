@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Input, Optional, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef  } from '@angular/material/dialog';
 import { SharedModule } from '../../shared/shared.module';
 import { MatButton, MatButtonModule } from '@angular/material/button';
@@ -17,15 +17,22 @@ import { DeleteDialogComponent } from '../../delete-dialog/delete-dialog.compone
   encapsulation: ViewEncapsulation.None,
 })
 export class EventDetailsComponent {
- 
+  @Input() data: any; // Für Sidebar-Nutzung
+  isDialog: boolean = false;
+
   constructor(
-    
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private firestore: Firestore,
     private dialog: MatDialog,
-    private dialogRef: MatDialogRef<EventDetailsComponent> ,
-    private loggingService: LoggingService
-  ) {console.log('Data received in EventDetailsComponent:', this.data);
+    private loggingService: LoggingService,
+    @Optional() private dialogRef?: MatDialogRef<EventDetailsComponent>, // Optional für Dialog
+    @Optional() @Inject(MAT_DIALOG_DATA) public dialogData?: any // Optional für Dialog
+  ) {
+    if (this.dialogData) {
+      this.data = this.dialogData; // Daten aus dem Dialog setzen
+      this.isDialog = true; // Bestimmen, ob es als Dialog verwendet wird
+    }
+
+    console.log('Data received in EventDetailsComponent:', this.data);
   }
 
   editEvent() {
@@ -97,27 +104,21 @@ export class EventDetailsComponent {
 
   deleteEvent() {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      autoFocus: false, 
-      data: { type: 'event', name: this.data.type }, // Verwende `type` anstelle von `title`
+      autoFocus: false,
+      data: { type: 'event', name: this.data.type },
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const eventRef = doc(this.firestore, `events/${this.data.id}`);
         deleteDoc(eventRef)
           .then(() => {
             console.log('Event deleted successfully from Firestore!');
-  
-            // Logge die Aktion
-            this.logEventAction(
-              'delete',
-              this.data.id,
-              `${this.data.type} at ${this.data.time}`, // Uhrzeit hinzufügen
-              new Date().toISOString()
-            );
-            
-  
-            this.dialogRef.close('reload'); // Signalisiere die Elternkomponente, dass die Events neu geladen werden sollen
+            this.logEventAction('delete', this.data.id, this.data.type, new Date().toISOString());
+
+            if (this.isDialog && this.dialogRef) {
+              this.dialogRef.close('reload'); // Dialog schließen
+            }
           })
           .catch((error) => console.error('Error deleting event from Firestore:', error));
       }
@@ -145,6 +146,13 @@ export class EventDetailsComponent {
       .catch((error) => console.error('Error saving log:', error));
   }
   
+
+  closeSidebar(): void {
+    if (!this.isDialog) {
+      // Nur für Sidebar-Modus
+      this.data = null;
+    }
+  }
   
   
 }

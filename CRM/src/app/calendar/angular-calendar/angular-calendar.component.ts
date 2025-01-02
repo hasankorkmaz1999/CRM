@@ -14,14 +14,15 @@ import { CommonModule } from '@angular/common';
 import { addHours, addMonths, subMonths } from 'date-fns';
 import { SelectUserComponent } from '../select-user/select-user.component';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { SharedModule } from '../../shared/shared.module';
+import { EventDetailsComponent } from '../event-details/event-details.component';
 
 @Component({
   selector: 'app-angular-calendar',
   standalone: true,
-  imports: [CommonModule, CalendarModule, SharedModule],
+  imports: [CommonModule, CalendarModule, SharedModule, MatDialogModule, EventDetailsComponent],
   providers: [
     CalendarUtils,
     CalendarA11y, 
@@ -47,9 +48,12 @@ import { SharedModule } from '../../shared/shared.module';
 
 
 export class AngularCalendarComponent implements OnInit {
+
+
   view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
+  selectedEvent: any = null;
 
   constructor(private firestore: Firestore, public dialog: MatDialog) {}
 
@@ -154,5 +158,25 @@ export class AngularCalendarComponent implements OnInit {
     });
   }
 
+
+  handleEventClick(event: any): void {
+    console.log('Clicked Event:', event); // Debugging
+    this.selectedEvent = {
+      id: event?.id || 'Unknown ID',
+      type: event?.title || 'Unknown Type',
+      description: event?.meta?.description || 'No description provided',
+      date: event?.start || new Date(),
+      time: event?.meta?.time || 'No time provided',
+      users: event?.meta?.users || [],
+      createdBy: event?.meta?.createdBy || 'Unknown',
+    };
+  }
+  
+
+  closeSidebar(): void {
+    this.selectedEvent = null;
+  }
+  
+  
 
 }

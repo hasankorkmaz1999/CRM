@@ -1,3 +1,7 @@
+.all-logs-comp {
+    padding: 46px;
+}
+
 .logs-section {
   border-radius: 30px;
 
@@ -47,24 +51,25 @@
       }
 
       &.entity-user {
-        border-left: 10px solid #adb2cd; /* Weiches Indigo */
-        box-shadow: -8px 0 8px -2px rgba(173, 178, 205, 0.5);
+        border-left: 5px solid #e58765; /* Neutral Slate Blue */
+        box-shadow: -8px 0 8px -2px rgba(229, 135, 101, 0.4);
       }
-
+      
       &.entity-customer {
-        border-left: 10px solid #b2cfb3;
-        box-shadow: -8px 0 8px -2px rgba(178, 207, 179, 0.5); /* Helles Pastellgrün */
+        border-left: 5px solid #68D391; /* Soft Mint Green */
+        box-shadow: -8px 0 8px -2px rgba(104, 211, 145, 0.4);
       }
-
+      
       &.entity-event {
-        border-left: 10px solid #e7c38e;
-        box-shadow: -8px 0 8px -2px rgba(231, 195, 142, 0.5); /* Weiches Pastellorange */
+        border-left: 5px solid #55b0f6; /* Modern Pastel Orange */
+        box-shadow: -8px 0 8px -2px rgba(85, 176, 246, 0.4);
       }
-
+      
       &.entity-unknown {
-        border-left: 10px solid #e0e0e0;
-        box-shadow: -8px 0 8px -2px rgba(224, 224, 224, 0.5); /* Helles Grau */
+        border-left: 10px solid #CBD5E0; /* Light Neutral Gray */
+        box-shadow: -8px 0 8px -2px rgba(203, 213, 224, 0.4);
       }
+      
     }
 
     .log-message {

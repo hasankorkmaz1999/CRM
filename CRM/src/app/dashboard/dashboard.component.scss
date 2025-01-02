@@ -38,7 +38,7 @@
 
     .todo-input {
       width: 100%;
-      background-color: #313132;
+      background-color: transparent;
       font-size: 24px;
       border: 1px solid white;
       border-radius: 20px;
@@ -96,7 +96,7 @@
       align-items: center;
       justify-content: space-between;
       overflow: hidden; /* Beschränkung des Effekts */
-      background-color: #313132; /* Hintergrundfarbe der Aufgabe */
+      background-color: transparent; /* Hintergrundfarbe der Aufgabe */
       transition: border-color 0.3s ease; /* Fallback für Übergänge */
     }
 
@@ -117,7 +117,7 @@
         border-image-slice: 1; /* Aktiviert den Gradient als Border */
       }
       100% {
-        border-image-source: linear-gradient(to right,  #cfff5e, #cfff5e, #cfff5e);
+        border-image-source: linear-gradient(to right,  #68D391, #68D391, #68D391);
         border-image-slice: 1; /* Beibehaltung der Füllung */
       }
     }
@@ -138,7 +138,7 @@
     }
   
     .custom-checkbox:checked {
-      border-color: #cfff5e; /* Farbe der Checkbox bei Auswahl */
+      border-color: #68D391; /* Farbe der Checkbox bei Auswahl */
     }
   }
   
@@ -400,15 +400,15 @@
   }
 
   .event-webinar {
-    background-color: #cfff5e; /* Helles Grün */
+    background-color: #3f51b5; /* Helles Grün */
   }
 
   .event-meeting {
-    background-color: #ffffff; /* Rot */
+    background-color: #ff4081; /* Rot */
   }
 
   .event-workshop {
-    background-color: #6dc7c4; /* Pastell-Türkis */
+    background-color: #fff; /* Pastell-Türkis */
   }
 
   .event-other {
@@ -470,26 +470,26 @@
         small {
           color: white;
         }
-
         &.entity-user {
-          border-left: 10px solid #adb2cd; /* Weiches Indigo */
-          box-shadow: -8px 0 8px -2px rgba(173, 178, 205, 0.5);
+          border-left: 5px solid #e58765; /* Neutral Slate Blue */
+          box-shadow: -8px 0 8px -2px rgba(229, 135, 101, 0.4);
         }
-
+        
         &.entity-customer {
-          border-left: 10px solid #b2cfb3;
-          box-shadow: -8px 0 8px -2px rgba(178, 207, 179, 0.5); /* Helles Pastellgrün */
+          border-left: 5px solid #68D391; /* Soft Mint Green */
+          box-shadow: -8px 0 8px -2px rgba(104, 211, 145, 0.4);
         }
-
+        
         &.entity-event {
-          border-left: 10px solid #e7c38e;
-          box-shadow: -8px 0 8px -2px rgba(231, 195, 142, 0.5); /* Weiches Pastellorange */
+          border-left: 5px solid #55b0f6; /* Modern Pastel Orange */
+          box-shadow: -8px 0 8px -2px rgba(85, 176, 246, 0.4);
         }
-
+        
         &.entity-unknown {
-          border-left: 10px solid #e0e0e0;
-          box-shadow: -8px 0 8px -2px rgba(224, 224, 224, 0.5); /* Helles Grau */
+          border-left: 10px solid #CBD5E0; /* Light Neutral Gray */
+          box-shadow: -8px 0 8px -2px rgba(203, 213, 224, 0.4);
         }
+        
       }
 
       .log-message {

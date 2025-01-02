@@ -134,11 +134,18 @@
   }
   
   .custom-event {
-  margin-bottom: 5px;
+    margin-bottom: 5px;
     padding: 5px;
     border-radius: 3px;
     overflow-y: auto;
-}
+    transition: transform 0.2s ease-in-out; /* Animation für sanften Übergang */
+  }
+  
+  .custom-event:hover {
+    transform: scale(1.05); /* Leicht vergrößern beim Hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Schatten hinzufügen */
+  }
+  
 
   
   .custom-event .event-time {
@@ -154,3 +161,48 @@
     color: #181818;
   }
   
+
+  .calendar-wrapper {
+    display: flex;
+    flex-direction: row-reverse; // Sidebar links
+    align-items: flex-start;
+  }
+
+
+  .sidebar-wrapper {
+    margin-top: 90px;
+margin-right: 10px;
+    h2 {
+        color: white;
+    }
+  }
+  
+  .sidebar {
+    border-radius: 10px;
+    position: relative;
+    width: 300px; // Breite der Sidebar
+    background-color: #353535; // Hintergrundfarbe der Sidebar
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); // Schatten für die Sidebar
+    height: 800px; // Volle Höhe für die Sidebar
+    overflow-y: auto; // Scrollbar für Inhalte
+
+    p {
+        color: #8e8d8d;
+        font-size: 24px;
+        position: absolute;
+        bottom: 400px;
+        text-align: center;
+    }
+  }
+  
+  .calendar-component {
+    flex: 1; // Kalender nimmt den restlichen verfügbaren Platz ein
+    padding: 20px;
+  }
+  
+
+  .empty-sidebar {
+    
+  }
