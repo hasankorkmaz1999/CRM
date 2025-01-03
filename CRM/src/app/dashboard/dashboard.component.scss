@@ -517,6 +517,23 @@
     }
   }
 
+
+  .quick-actions-container {
+    width: 500px;
+    height: 600px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 30px;
+    margin-bottom: 30px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.9); /* Start leicht kleiner */
+    opacity: 0;
+    animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
+    will-change: transform, opacity; /* Optimierung */
+  }
  
  
 

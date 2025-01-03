@@ -10,6 +10,7 @@ import { User } from '../../models/user.class';
 import { LoggingService } from '../shared/logging.service';
 import { Auth, User as FirebaseUser } from '@angular/fire/auth';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -35,7 +36,8 @@ export class UserComponent implements OnInit {
     public dialog: MatDialog,
     private firestore: Firestore,
     private loggingService: LoggingService,
-    private auth: Auth // Auth-Service für den aktuell angemeldeten Benutzer
+    private auth: Auth, // Auth-Service für den aktuell angemeldeten Benutzer
+    private route: ActivatedRoute 
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +57,12 @@ export class UserComponent implements OnInit {
         this.allUsers.sort((a, b) => a.firstName.localeCompare(b.firstName));
 
         this.filteredUsers = [...this.allUsers];
+      });
+      
+      this.route.queryParams.subscribe((params) => {
+        if (params['addUser'] === 'true') {
+          this.openDialog(); // Dialog öffnen
+        }
       });
   }
 

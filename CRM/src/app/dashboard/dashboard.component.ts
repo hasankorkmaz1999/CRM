@@ -57,16 +57,15 @@ export class DashboardComponent implements OnInit {
       this.loadRecentLogs();
       this.updateProgressBar();
     
-      this.authService.getCurrentUser().then((user) => {
-        if (user && user.uid) { // Sichere Prüfung
+      this.authService.currentUser$.subscribe((user) => {
+        if (user && user.uid) {
           this.userId = user.uid;
           this.loadTodos();
         } else {
           console.warn('No user or invalid user UID.');
         }
-      }).catch((error) => {
-        console.error('Error fetching user:', error);
       });
+      
     }
     
     
@@ -348,7 +347,21 @@ export class DashboardComponent implements OnInit {
         return 'event-other';
     }
   }
+
+
+  goToUserAndOpenDialog(): void {
+    this.router.navigate(['/user'], { queryParams: { addUser: true } });
+  }
   
+
+  goToCustomerAndOpenDialog(): void {
+    this.router.navigate(['/customer'], { queryParams: { addCustomer: 'true' } });
+  }
+  
+  // Methode für Add New Event
+  goToEventAndOpenDialog(): void {
+    this.router.navigate(['/calendar-angular'], { queryParams: { addEvent: 'true' } });
+  }
   
   
   

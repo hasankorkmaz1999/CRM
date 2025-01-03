@@ -19,6 +19,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SharedModule } from '../../shared/shared.module';
 import { EventDetailsComponent } from '../event-details/event-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-angular-calendar',
@@ -56,10 +57,15 @@ export class AngularCalendarComponent implements OnInit {
   events: CalendarEvent[] = [];
   selectedEvent: any = null;
 
-  constructor(private firestore: Firestore, public dialog: MatDialog) {}
+  constructor(private firestore: Firestore,private route: ActivatedRoute, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadEvents(); 
+    this.route.queryParams.subscribe((params) => {
+      if (params['addEvent'] === 'true') {
+        this.openAddEventDialog();
+      }
+    });
   }
 
   loadEvents(): void {

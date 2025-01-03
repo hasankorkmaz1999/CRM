@@ -6,6 +6,7 @@ import { Firestore, collection, collectionData, doc, deleteDoc } from '@angular/
 import { Customer } from '../../models/customer.class';
 import { LoggingService } from '../shared/logging.service';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-customer',
@@ -23,11 +24,19 @@ export class CustomerComponent implements OnInit {
   constructor(
     private firestore: Firestore,
      private dialog: MatDialog,
-     private loggingService: LoggingService
+     private loggingService: LoggingService,
+     private route: ActivatedRoute,
     ) {}
 
   ngOnInit(): void {
     this.loadCustomers();
+
+
+    this.route.queryParams.subscribe((params) => {
+      if (params['addCustomer'] === 'true') {
+        this.openAddDialog();
+      }
+    });
   }
 
   loadCustomers() {

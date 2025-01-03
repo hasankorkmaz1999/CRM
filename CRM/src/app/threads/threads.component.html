@@ -1,0 +1,24 @@
+<div class="thread-container">
+    <h1>Threads</h1>
+  
+    <!-- Thread-Erstellung -->
+    <div class="create-thread">
+      <h2>Create a New Thread</h2>
+      <form (ngSubmit)="createThread()">
+        <input type="text" placeholder="Thread Title" [(ngModel)]="newThread.title" name="title" required />
+        <textarea placeholder="Thread Description" [(ngModel)]="newThread.description" name="description"></textarea>
+        <button type="submit" mat-raised-button color="primary">Create Thread</button>
+      </form>
+    </div>
+  
+    <!-- Liste der Threads -->
+    <div class="thread-list">
+      <h2>All Threads</h2>
+      <div *ngFor="let thread of threads" class="thread-item" (click)="openThread(thread)">
+        <h3>{{ thread.title }}</h3>
+        <p>{{ thread.description }}</p>
+        <small>Created by {{ thread.createdBy }} on {{ thread.createdAt | date:'medium' }}</small>
+      </div>
+    </div>
+  </div>
+  

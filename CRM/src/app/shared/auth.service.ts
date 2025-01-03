@@ -1,47 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Auth, User, onAuthStateChanged } from '@angular/fire/auth';
 import { collection, Firestore, getDocs, query, where } from '@angular/fire/firestore';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUser: User | null = null;
-  private currentUserName: string | null = null; // Speichert FirstName + LastName
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(
-    private auth: Auth,
-    private firestore: Firestore
-  ) {
+  private currentUserNameSubject = new BehaviorSubject<string>('Unknown User');
+  currentUserName$ = this.currentUserNameSubject.asObservable();
+
+  constructor(private auth: Auth, private firestore: Firestore) {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        this.currentUser = user;
-        this.fetchUserDetails(user.uid); // Lade zusätzliche Details
+        this.currentUserSubject.next(user);
+        this.fetchUserDetails(user.uid).then((name) => {
+          this.currentUserNameSubject.next(name || 'Unknown User');
+        });
       } else {
-        this.currentUser = null;
-        this.currentUserName = null;
-        console.log('No user is signed in.');
+        this.currentUserSubject.next(null);
+        this.currentUserNameSubject.next('Unknown User');
       }
     });
-  }
-
-  // Gibt die UID des aktuellen Benutzers zurück
-  getCurrentUserId(): string | null {
-    return this.currentUser?.uid || null;
-  }
-
-  // Gibt den Anzeigenamen zurück oder lädt Benutzerinformationen
-  async getCurrentUserDisplayName(): Promise<string> {
-    if (this.currentUserName) {
-      return this.currentUserName;
-    }
-
-    if (this.currentUser?.uid) {
-      const fullName = await this.fetchUserDetails(this.currentUser.uid);
-      return fullName || 'Unknown User';
-    }
-
-    return 'Unknown User';
   }
 
   // Lädt Benutzerinformationen aus Firestore
@@ -55,10 +38,7 @@ export class AuthService {
         const userData = querySnapshot.docs[0].data();
         const firstName = userData['firstName'] || '';
         const lastName = userData['lastName'] || '';
-        const fullName = `${firstName} ${lastName}`.trim();
-        this.currentUserName = fullName; // Speichert es für zukünftige Abfragen
-        console.log(`User: ${fullName}`);
-        return fullName;
+        return `${firstName} ${lastName}`.trim();
       } else {
         console.warn('No user found with this UID.');
         return null;
@@ -69,19 +49,13 @@ export class AuthService {
     }
   }
 
-  // Prüft, ob ein Benutzer eingeloggt ist
-  isUserLoggedIn(): boolean {
-    return !!this.currentUser;
+  // Gibt den aktuellen Benutzer synchron zurück
+  getCurrentUserSync(): User | null {
+    return this.currentUserSubject.value;
   }
 
-  // Zusätzliche Methode: Gibt den aktuellen Benutzer zurück
-  // Zusätzliche Methode: Gibt den aktuellen Benutzer zurück
-getCurrentUser(): Promise<User | null> {
-    return new Promise((resolve) => {
-      onAuthStateChanged(this.auth, (user) => {
-        resolve(user); // Gibt entweder den Benutzer oder `null` zurück
-      });
-    });
+  // Gibt den Namen des aktuellen Benutzers synchron zurück
+  getCurrentUserNameSync(): string {
+    return this.currentUserNameSubject.value;
   }
-  
 }

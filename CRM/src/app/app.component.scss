@@ -42,7 +42,8 @@ height: 102px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid rgb(71, 71, 71);
+   
+    box-shadow: 2px 4px 8px -2px rgba(255, 255, 255, 0.09);
     img {
         width: 200px;
         filter: invert(100%) brightness(100%);
@@ -51,14 +52,14 @@ height: 102px;
 
 
 .mat-toolbar {
-    min-height: 100px;
-    height: 100px;
+    min-height: 102px;
+    height: 102px;
 }
 
 
 .mat-toolbar-row {
-    min-height: 100px;
-    height: 100px;
+    min-height: 102px;
+    height: 102px;
 }
 
 .menu-items {
@@ -161,6 +162,10 @@ flex-grow: 1;
     list-style: none;
     margin-bottom: 10px;
     text-align: center;
+
+ 
+        padding-top: 20px;
+  
   }
 
  .privacy-links {

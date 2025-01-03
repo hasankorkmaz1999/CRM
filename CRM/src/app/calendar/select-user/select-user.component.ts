@@ -38,6 +38,7 @@ export class SelectUserComponent implements OnInit {
   eventForm: FormGroup;
   eventTypes: string[] = ['Meeting', 'Webinar', 'Workshop', 'Other'];
   usTimeOptions: string[] = [];
+  currentUserName: string = 'Unknown User';
 
   constructor(
     private firestore: Firestore,
@@ -48,20 +49,28 @@ export class SelectUserComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.eventForm = this.fb.group({
-      type: ['', Validators.required], // Event Type
-      description: [''], // Event Description
-      date: ['', Validators.required], // Event Date
-      time: ['', Validators.required], // Event Time
+      type: ['', Validators.required],
+      description: [''],
+      date: ['', Validators.required],
+      time: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
+    // Abonniere den aktuellen Benutzer
+    this.authService.currentUserName$.subscribe((name) => {
+      this.currentUserName = name;
+      console.log('Current User Name:', this.currentUserName);
+    });
+
     const userCollection = collection(this.firestore, 'users');
     collectionData(userCollection, { idField: 'id' }).subscribe((data) => {
       this.users = data as User[];
     });
+
     this.generateUSTimeOptions();
   }
+
 
   generateUSTimeOptions() {
     const times: string[] = [];
@@ -120,47 +129,44 @@ export class SelectUserComponent implements OnInit {
   
   
   saveEventToFirestore(eventData: any) {
-    const eventCollection = collection(this.firestore, 'events'); // Firestore-Referenz
-  
+    const eventCollection = collection(this.firestore, 'events');
     const currentDate = new Date();
   
-    // Aktuellen Benutzer über AuthService holen
-    this.authService.getCurrentUserDisplayName().then((currentUser) => {
-      // Event-Daten vorbereiten (im lesbaren Format)
-      const eventToSave = {
-        type: eventData.type || 'Other', // Event-Typ
-        description: eventData.description || '', // Beschreibung
-        date: new Date(eventData.date).toLocaleDateString('en-US', {  
-          year: 'numeric', month: 'long', day: 'numeric' 
-        }), // Nur Datum ohne Uhrzeit
-        time: eventData.time || '', // Uhrzeit separat
-        users: eventData.users.map((user: any) => `${user.firstName} ${user.lastName}`), // Benutzer als Namen
-        createdAt: currentDate.toLocaleString('en-US', {  
-          year: 'numeric', month: 'long', day: 'numeric', 
-          hour: '2-digit', minute: '2-digit', hour12: true 
-        }), // Lesbares Erstellungsdatum
-        createdBy: currentUser || 'Unknown', // Name des eingeloggten Benutzers
-      };
-  
-      // Firestore speichern
-      addDoc(eventCollection, eventToSave)
-        .then((docRef) => {
-          console.log('Event saved successfully with ID:', docRef.id);
-          this.logEventAction('add', docRef.id, eventToSave);
-          // Aktualisiere die ID im gespeicherten Dokument
-          updateDoc(docRef, { id: docRef.id })
-            .then(() => {
-              console.log('Document updated with ID:', docRef.id);
-              this.dialogRef.close('reload'); // Dialog schließen und reload signalisieren
-            })
-            .catch((error) => console.error('Error updating document ID:', error));
-        })
-        .catch((error) => {
-          console.error('Error saving event:', error);
-        });
-    }).catch((error) => {
-      console.error('Error fetching current user:', error);
-    });
+    const eventToSave = {
+      type: eventData.type || 'Other',
+      description: eventData.description || '',
+      date: new Date(eventData.date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+      time: eventData.time || '',
+      users: eventData.users.map((user: any) => `${user.firstName} ${user.lastName}`),
+      createdAt: currentDate.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }),
+      createdBy: this.currentUserName || 'Unknown',
+    };
+
+    addDoc(eventCollection, eventToSave)
+      .then((docRef) => {
+        console.log('Event saved successfully with ID:', docRef.id);
+        this.logEventAction('add', docRef.id, eventToSave);
+        updateDoc(docRef, { id: docRef.id })
+          .then(() => {
+            console.log('Document updated with ID:', docRef.id);
+            this.dialogRef.close('reload');
+          })
+          .catch((error) => console.error('Error updating document ID:', error));
+      })
+      .catch((error) => {
+        console.error('Error saving event:', error);
+      });
   }
   
   
