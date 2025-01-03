@@ -5,11 +5,13 @@ import { Thread } from '../../models/thread.class';
 import { addDoc, collection, updateDoc } from 'firebase/firestore';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { AuthService } from '../shared/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ThreadsCommentsComponent } from './threads-comments/threads-comments.component';
 
 @Component({
   selector: 'app-threads',
   standalone: true,
-  imports: [SharedModule, CommonModule],
+  imports: [SharedModule, CommonModule, ThreadsCommentsComponent],
   templateUrl: './threads.component.html',
   styleUrl: './threads.component.scss'
 })
@@ -22,7 +24,11 @@ import { AuthService } from '../shared/auth.service';
     };
     currentUserName: string = 'Unknown User'; 
   
-    constructor(private firestore: Firestore, private authService: AuthService) {}
+    constructor( 
+      private firestore: Firestore,
+       private authService: AuthService,
+       private dialog: MatDialog
+      ) {}
   
     ngOnInit(): void {
       this.authService.currentUserName$.subscribe((name) => {
@@ -78,7 +84,11 @@ import { AuthService } from '../shared/auth.service';
   
    
     openThread(thread: Thread) {
-      console.log('Opening thread:', thread);
-      
+      this.dialog.open(ThreadsCommentsComponent, {
+        data: { threadId: thread.threadId, threadTitle: thread.title },
+        width: '600px',
+        autoFocus: false,
+      });
     }
+    
   }

@@ -1,5 +1,18 @@
 .thread-container {
     padding: 20px;
+
+    h3 {
+        color: white;
+
+    }
+
+    p {
+        color: white;
+    }
+
+    small {
+        color: white;
+    }
   }
   
   .create-thread {
@@ -20,7 +33,7 @@
   }
   
   .thread-item:hover {
-    background-color: #f9f9f9;
+   
   }
   
 

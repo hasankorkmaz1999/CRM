@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Comments for "{{ data.threadTitle }}"</h1>
+<div mat-dialog-content>
+  <div *ngFor="let comment of comments" class="comment-item">
+    <p>{{ comment.message }}</p>
+    <small>By {{ comment.createdBy }} on {{ comment.createdAt | date: 'short' }}</small>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <form [formGroup]="commentForm" (ngSubmit)="addComment()">
+    <mat-form-field appearance="outline" class="full-width">
+      <textarea matInput placeholder="Write a comment..." formControlName="message"></textarea>
+    </mat-form-field>
+    <button mat-button type="submit" [disabled]="commentForm.invalid">Post</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+  </form>
+</div>
+
