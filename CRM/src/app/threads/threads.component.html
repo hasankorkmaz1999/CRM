@@ -1,24 +1,81 @@
 <div class="thread-container">
     <h1>Threads</h1>
   
-    <!-- Thread-Erstellung -->
+
     <div class="create-thread">
-      <h2>Create a New Thread</h2>
-      <form (ngSubmit)="createThread()">
-        <input type="text" placeholder="Thread Title" [(ngModel)]="newThread.title" name="title" required />
-        <textarea placeholder="Thread Description" [(ngModel)]="newThread.description" name="description"></textarea>
-        <button type="submit" mat-raised-button color="primary">Create Thread</button>
-      </form>
-    </div>
+        <!-- Thread-Erstellung -->
+        <div class="creater-thread">
+          <h2>Create a New Thread</h2>
+          <form (ngSubmit)="createThread()" enctype="multipart/form-data">
+            <!-- Thread Title -->
+            <input type="text" placeholder="Thread Title" [(ngModel)]="newThread.title" name="title" required />
+      
+            <!-- Thread Description -->
+            <textarea placeholder="Thread Description" [(ngModel)]="newThread.description" name="description"></textarea>
+      
+            <!-- Datei hochladen -->
+            <input type="file" (change)="onFileSelected($event)" name="file" accept="image/*" />
+      
+            <!-- Vorschau des hochgeladenen Bildes -->
+            <div *ngIf="selectedFilePreview" class="image-preview">
+              <h4>Image Preview:</h4>
+              <img [src]="selectedFilePreview" alt="Selected Image" />
+            </div>
+      
+            <!-- Absenden-Button -->
+            <button type="submit" mat-raised-button color="primary">Create Thread</button>
+          </form>
+        </div>
+      </div>
+      
   
     <!-- Liste der Threads -->
     <div class="thread-list">
-      <h2>All Threads</h2>
-      <div *ngFor="let thread of threads" class="thread-item" (click)="openThread(thread)">
-        <h3>{{ thread.title }}</h3>
-        <p>{{ thread.description }}</p>
-        <small>Created by {{ thread.createdBy }} on {{ thread.createdAt | date:'medium' }}</small>
+        <h2>All Threads</h2>
+        <div *ngFor="let thread of threads" class="thread-item">
+          <div class="thread-header">
+      
+            <!-- Profilbild des Benutzers -->
+            <div class="user">
+              <img
+                [src]="thread.profilePicture || '/assets/img/user.png'"
+                class="profile-picture"
+                alt="Profile Picture"
+              />
+              <small> {{ thread.createdBy }}</small>
+            </div>
+      
+            <!-- Datum -->
+            <small>
+              {{ thread.createdAt | date: 'MMM d, y, h:mm a' }}
+            </small>
+      
+          </div>
+      
+          <!-- Thread-Titel und Beschreibung -->
+          <h3>{{ thread.title }}</h3>
+          <p>{{ thread.description }}</p>
+      
+          <!-- Hochgeladenes Bild -->
+          <div *ngIf="thread.imageUrl" class="thread-image">
+            <img
+              [src]="thread.imageUrl"
+              alt="Uploaded Thread Image"
+              class="uploaded-image"
+            />
+          </div>
+      
+          <!-- Kommentare -->
+          <div class="thread-meta">
+            <div class="comments-icon" (click)="openThread(thread, $event)">
+              <mat-icon>chat_bubble</mat-icon>
+              <span>{{ thread.commentCount || 0 }}</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      
+      
+      
   </div>
   

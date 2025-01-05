@@ -16,7 +16,14 @@
   }
   
   .create-thread {
+    width: 400px;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    form {
+        display: flex;
+        flex-direction: column;
+    }
   }
   
   .thread-list {
@@ -44,3 +51,53 @@
   h2 {
     color: white;
   }
+
+
+  .comments-icon {
+    color: white;
+
+  }
+
+
+  .thread-header {
+display: flex;
+justify-content: space-between;
+
+
+
+
+small {
+    font-size: 20px;
+}
+
+
+    .profile-picture {
+        height: 50px;
+        width: 50px;
+        border-radius: 50px;
+      }
+  }
+
+
+  .thread-meta {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+
+  .image-preview {
+    height: 200px;
+    width: 200px;
+
+    img {
+        height: 200px;
+        width: 200px;
+    }
+  }
+
+  .uploaded-image {
+    height: 200px;
+    width: 200px;
+  }
+  

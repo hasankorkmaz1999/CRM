@@ -58,4 +58,17 @@ export class AuthService {
   getCurrentUserNameSync(): string {
     return this.currentUserNameSubject.value;
   }
+
+  getUserProfilePictureByName(userName: string): Promise<string> {
+    const usersCollection = collection(this.firestore, 'users');
+    const userQuery = query(usersCollection, where('name', '==', userName));
+    return getDocs(userQuery).then((snapshot) => {
+      if (!snapshot.empty) {
+        const userData = snapshot.docs[0].data();
+        return userData['profilePicture'] || '/assets/img/user.png';
+      }
+      return '/assets/img/user.png';
+    });
+  }
+  
 }

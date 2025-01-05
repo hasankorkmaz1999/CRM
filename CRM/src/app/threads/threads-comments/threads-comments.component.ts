@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, doc, Firestore, increment, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SharedModule } from '../../shared/shared.module';
@@ -66,18 +66,23 @@ export class ThreadsCommentsComponent  implements OnInit {
       const newComment = {
         threadId: this.data.threadId,
         message: this.commentForm.value.message,
-        createdBy: this.authService.getCurrentUserNameSync(), 
+        createdBy: this.authService.getCurrentUserNameSync(), // Aktueller Benutzer
         createdAt: new Date().toISOString(),
       };
   
       addDoc(commentsCollection, newComment).then(() => {
-        console.log('Comment added successfully!');
+        // Kommentar erfolgreich hinzugefügt, jetzt den commentCount aktualisieren
+        const threadDoc = doc(this.firestore, `threads/${this.data.threadId}`);
+        updateDoc(threadDoc, {
+          commentCount: increment(1), // Erhöhe den commentCount um 1
+        }).then(() => {
+          console.log('Thread commentCount updated successfully');
+        });
         this.commentForm.reset();
-      }).catch((error) => {
-        console.error('Error adding comment:', error);
       });
     }
   }
+  
   
   
 

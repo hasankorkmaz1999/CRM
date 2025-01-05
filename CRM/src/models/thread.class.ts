@@ -5,6 +5,8 @@ export class Thread {
     createdBy: string;
     createdAt: string;
     commentCount?: number; 
+    profilePicture?: string;
+    imageUrl?: string;
   
     constructor(obj?: any) {
       this.threadId = obj?.threadId || '';
@@ -13,6 +15,8 @@ export class Thread {
       this.createdBy = obj?.createdBy || 'Unknown';
       this.createdAt = obj?.createdAt || new Date().toISOString();
       this.commentCount = obj?.commentCount || 0;
+      this.profilePicture = obj?.profilePicture || '/assets/img/user.png';
+      this.imageUrl = obj?.imageUrl || '';
     }
   }
   
