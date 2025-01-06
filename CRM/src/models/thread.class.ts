@@ -1,6 +1,6 @@
 export class Thread {
     threadId: string; 
-    title: string; 
+   
     description: string; 
     createdBy: string;
     createdAt: string;
@@ -10,7 +10,7 @@ export class Thread {
   
     constructor(obj?: any) {
       this.threadId = obj?.threadId || '';
-      this.title = obj?.title || '';
+     
       this.description = obj?.description || '';
       this.createdBy = obj?.createdBy || 'Unknown';
       this.createdAt = obj?.createdAt || new Date().toISOString();

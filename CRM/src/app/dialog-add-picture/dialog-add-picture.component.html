@@ -15,7 +15,7 @@
     <input class="input" type="file" (change)="onFileSelected($event)" #fileInput hidden />
 
     <!-- Benutzerdefinierte Datei-Auswahl -->
-    <button class="file-button" color="primary" mat-button (click)="fileInput.click()">Choose File</button>
+    <button class="file-button" color="primary" mat-button (click)="fileInput.click()">Choose Picture</button>
     <span class="filename" *ngIf="selectedFileName">{{ selectedFileName }}</span>
 
     <!-- Reset-Button -->
@@ -23,7 +23,12 @@
 
     <div *ngIf="previewUrl">
       <h3>Preview:</h3>
+
+      <div class="image-wrapper">
+
       <img class="preview-image" [src]="previewUrl" alt="Preview" width="200" />
+
+    </div>
     </div>
 
     <mat-dialog-actions>

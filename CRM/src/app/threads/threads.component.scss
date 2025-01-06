@@ -1,5 +1,5 @@
 .thread-container {
-    padding: 20px;
+    padding: 46px;
 
     h3 {
         color: white;
@@ -16,14 +16,86 @@
   }
   
   .create-thread {
-    width: 400px;
-    margin-bottom: 20px;
+   margin-top: 20px;
+    margin-bottom: 40px;
     display: flex;
     flex-direction: column;
+    background-color: rgba(84, 82, 82, 0.06) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important;
+    box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
+    padding: 20px;
+    border-radius: 20px;
     form {
         display: flex;
         flex-direction: column;
     }
+  }
+
+
+  .creater-thread {
+   
+    .announcement-textarea {
+        color: rgb(169, 169, 169);
+        overflow-y: hidden;
+        min-height: 50px;
+        background-color: transparent;
+        width: 100%; /* Füllt den verfügbaren Platz */
+        resize: none; /* Entfernt den Resize-Griff */
+        font-size: 18px;
+        padding: 10px;
+        line-height: 1.5; /* Verbessert die Lesbarkeit */
+       border: none;
+        border-radius: 4px; /* Optional: Abgerundete Ecken */
+        box-sizing: border-box;
+        caret-color: white; /* Padding und Border in Breite/Höhe einrechnen */
+      }
+
+      .announcement-textarea:focus {
+        outline: none;
+       
+       
+      }
+
+
+      
+      
+      
+
+   
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+  }
+
+
+.post-button {
+    float: right;
+
+    width: 50px;
+    margin-right: 20px ;
+}
+
+
+  .upload-icon-container {
+    margin-left: 10px;
+   
+    margin-top: 20px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+    .mat-icon {
+     color: white;
+    }
+  }
+
+
+  .add-picture-button {
+    background-color: transparent;
+    border: none;
+    width: 30px;
   }
   
   .thread-list {
@@ -32,13 +104,7 @@
     gap: 10px;
   }
   
-  .thread-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+ 
   .thread-item:hover {
    
   }
@@ -50,6 +116,8 @@
 
   h2 {
     color: white;
+    margin-bottom: 10px;
+    margin-left: 10px;
   }
 
 
@@ -57,6 +125,9 @@
     color: white;
 
   }
+
+
+ 
 
 
   .thread-header {
@@ -70,11 +141,21 @@ small {
     font-size: 20px;
 }
 
+.image-wrapper {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
+    overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
+    background-color: #f0f0f0; /* Hintergrundfarbe */
+}
+
 
     .profile-picture {
-        height: 50px;
-        width: 50px;
-        border-radius: 50px;
+       
+        width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
       }
   }
 
@@ -86,18 +167,47 @@ small {
   }
 
 
-  .image-preview {
+  .preview-image {
     height: 200px;
     width: 200px;
+    object-fit: contain; /* Zeigt das gesamte Bild an, ohne es zuzuschneiden */
+   
+    border-radius: 4px; /* Optional: Abgerundete Ecken */
+    background-color: transparent; /* Optional: Hintergrundfarbe für leere Bereiche */
+}
 
-    img {
-        height: 200px;
-        width: 200px;
-    }
-  }
 
   .uploaded-image {
     height: 200px;
     width: 200px;
+    object-fit: contain;
+  }
+  
+
+  @keyframes slideInFromTop {
+    0% {
+      transform: translateY(-50%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .thread-item {
+    background-color: rgba(84, 82, 82, 0.06) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important;
+    box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
+    padding: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Für sanfte Übergänge */
+  }
+  
+  .thread-item.new-thread {
+    animation: slideInFromTop 0.6s ease-out;
+    animation-fill-mode: forwards;
   }
   

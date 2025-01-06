@@ -12,6 +12,8 @@
  
   <div class="left-section">
     <div class="profile-picture-container">
+
+      <div class="image-wrapper">
       <img
         [src]="user.profilePicture || '/assets/img/user.png'"
         [ngClass]="{
@@ -20,6 +22,7 @@
         }"
         alt="Profile Picture"
       />
+    </div>
 
       <button
         (click)="addOrEditProfilePicture()"
