@@ -1,17 +1,51 @@
-<h1 mat-dialog-title>Comments for "{{ data.threadTitle }}"</h1>
-<div mat-dialog-content>
-  <div *ngFor="let comment of comments" class="comment-item">
-    <p>{{ comment.message }}</p>
-    <small>By {{ comment.createdBy }} on {{ comment.createdAt | date: 'short' }}</small>
+
+
+<div class="comment-dialog">
+
+
+    <h1 >Comments for "{{ data.threadDescription | slice:0:50 }}{{ data.threadDescription.length > 50 ? '...' : '' }}"</h1>
+
+    <div mat-dialog-content>
+        <div *ngFor="let comment of comments" class="comment-item">
+          <div class="comment-header">
+
+
+            <div class="user">
+            <div class="image-wrapper">
+            <img
+              [src]="comment.profilePicture"
+              class="profile-picture"
+              alt="Profile Picture"
+            />
+           
+          </div>
+          <p>{{ comment.createdBy }}</p>
+
+          
+        </div>
+        
+        <small>{{ comment.createdAt |  date: 'MMM d, y, h:mm a'  }}</small>
+
+         
+          </div>
+          <p>{{ comment.message }}</p>
+        </div>
+      </div>
+      
+
+
+<form [formGroup]="commentForm" (ngSubmit)="addComment()">
+<textarea class="announcement-textarea" matInput placeholder="Write a comment..." formControlName="message"></textarea>
+
+
+ 
+   
+     <div class="buttons">
+<button class="cancel" color="warn" mat-button mat-dialog-close>Cancel</button>
+    <button color="primary" mat-button type="submit" [disabled]="commentForm.invalid">Post</button>
   </div>
-</div>
-<div mat-dialog-actions>
-  <form [formGroup]="commentForm" (ngSubmit)="addComment()">
-    <mat-form-field appearance="outline" class="full-width">
-      <textarea matInput placeholder="Write a comment..." formControlName="message"></textarea>
-    </mat-form-field>
-    <button mat-button type="submit" [disabled]="commentForm.invalid">Post</button>
-    <button mat-button mat-dialog-close>Cancel</button>
   </form>
+
+
 </div>
 

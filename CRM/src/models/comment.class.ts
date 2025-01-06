@@ -4,6 +4,7 @@ export class Comment {
     message: string; 
     createdBy: string; 
     createdAt: string;
+    profilePicture: string;
   
     constructor(obj?: any) {
       this.commentId = obj?.commentId || '';
@@ -11,6 +12,7 @@ export class Comment {
       this.message = obj?.message || '';
       this.createdBy = obj?.createdBy || 'Unknown';
       this.createdAt = obj?.createdAt || new Date().toISOString();
+      this.profilePicture = obj?.profilePicture || '/assets/img/user.png';
     }
   }
   

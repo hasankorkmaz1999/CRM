@@ -1,8 +1,12 @@
 .thread-container {
     padding: 46px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     h3 {
         color: white;
+        text-align: center;
 
     }
 
@@ -16,21 +20,26 @@
   }
   
   .create-thread {
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
    margin-top: 20px;
     margin-bottom: 40px;
+    width: 60%;
     display: flex;
     flex-direction: column;
     background-color: rgba(84, 82, 82, 0.06) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     backdrop-filter: blur(20px) !important;
-    box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
-    padding: 20px;
-    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+     border-radius: 20px;
     form {
         display: flex;
         flex-direction: column;
     }
   }
+
+ 
 
 
   .creater-thread {
@@ -57,17 +66,34 @@
        
       }
 
-
-      
-      
-      
-
    
   }
+
+
+  .progress-bar-container {
+    position: absolute;
+    top: 0px; /* Direkt oben */
+    left: 0;
+    width: 100%; /* Fülle die gesamte Breite */
+    z-index: 100; /* Stelle sicher, dass es über allem liegt */
+    height: 4px; /* Schlankere Höhe */
+    background: none; /* Debugging-Farbe entfernen */
+    border: none; /* Rahmen entfernen */
+}
+
+
+
+
 
   .user {
     display: flex;
     align-items: center;
+    justify-content: center;
+
+
+    small {
+        margin-bottom: 15px;
+    }
   }
 
 
@@ -101,6 +127,7 @@
   .thread-list {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
   }
   
@@ -133,12 +160,13 @@
   .thread-header {
 display: flex;
 justify-content: space-between;
-
+align-items: center;
 
 
 
 small {
     font-size: 20px;
+    margin-bottom: 15px;
 }
 
 .image-wrapper {
@@ -147,6 +175,8 @@ small {
     border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
     overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
     background-color: #f0f0f0; /* Hintergrundfarbe */
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
 
@@ -168,8 +198,8 @@ small {
 
 
   .preview-image {
-    height: 200px;
-    width: 200px;
+    height: 300px;
+    width: 300px;
     object-fit: contain; /* Zeigt das gesamte Bild an, ohne es zuzuschneiden */
    
     border-radius: 4px; /* Optional: Abgerundete Ecken */
@@ -177,11 +207,7 @@ small {
 }
 
 
-  .uploaded-image {
-    height: 200px;
-    width: 200px;
-    object-fit: contain;
-  }
+ 
   
 
   @keyframes slideInFromTop {
@@ -196,12 +222,14 @@ small {
   }
   
   .thread-item {
-    background-color: rgba(84, 82, 82, 0.06) !important;
+    background-color: rgba(183, 183, 183, 0.06) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     backdrop-filter: blur(20px) !important;
     box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
     padding: 20px;
-    border-radius: 5px;
+    width: 800px;
+    border-radius: 15px;
+    margin-bottom: 30px;
     cursor: pointer;
     transition: all 0.3s ease-in-out; /* Für sanfte Übergänge */
   }
@@ -211,3 +239,41 @@ small {
     animation-fill-mode: forwards;
   }
   
+
+  .thread-descrip {
+    font-size: 18px;
+    background-color: rgba(18, 18, 18, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    height: fit-content;
+    margin-right: 20px;
+    overflow-y: auto;
+    
+
+  }
+
+
+  .thread-inhalt {
+    background-color: rgba(18, 18, 18, 0.3);
+    
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+
+
+
+  .uploaded-image {
+    height: 300px;
+    width: 300px;
+    object-fit: contain;
+  }
+
+
+  .file-preview {
+    padding: 10px;
+  }

@@ -22,6 +22,8 @@ export class ThreadsComponent implements OnInit {
   newThread: Partial<Thread> = {
     description: '',
   };
+
+
 loading = false;
   isNewThread = false;
   currentUserName: string = 'Unknown User';
@@ -154,7 +156,7 @@ loading = false;
     console.log('Opening thread comments:', thread);
 
     this.dialog.open(ThreadsCommentsComponent, {
-      data: { threadId: thread.threadId, threadTitle: thread.description },
+      data: { threadId: thread.threadId, threadDescription: thread.description },
       width: '600px',
       autoFocus: false,
     });

@@ -64,10 +64,11 @@
             type="submit" 
             mat-raised-button 
             color="primary"
-            [disabled]="loading"
+            [disabled]="loading || !newThread.description?.trim()"
           >
             Post
           </button>
+          
           
           </div>
           
@@ -99,9 +100,14 @@
 
               <small>{{ thread.createdBy }}</small>
             </div>
+
+
+
             <small>{{ thread.createdAt | date: 'MMM d, y, h:mm a' }}</small>
           </div>
-          <p>{{ thread.description }}</p>
+
+          <div class="thread-inhalt">
+          <p class="thread-descrip">{{ thread.description }}</p>
           <div *ngIf="thread.imageUrl" class="thread-image">
             <img
               [src]="thread.imageUrl"
@@ -109,6 +115,8 @@
               class="uploaded-image"
             />
           </div>
+        </div>
+
           <div class="thread-meta">
             <div class="comments-icon" (click)="openThread(thread, $event)">
               <mat-icon>chat_bubble</mat-icon>

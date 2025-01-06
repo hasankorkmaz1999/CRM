@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { addDoc, collection, collectionData, doc, Firestore, increment, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -12,7 +12,8 @@ import { Comment } from '../../../models/comment.class';
   standalone: true,
   imports: [SharedModule, CommonModule],
   templateUrl: './threads-comments.component.html',
-  styleUrl: './threads-comments.component.scss'
+  styleUrl: './threads-comments.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class ThreadsCommentsComponent  implements OnInit {
   comments: Comment[] = [];
@@ -23,7 +24,7 @@ export class ThreadsCommentsComponent  implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private dialogRef: MatDialogRef<ThreadsCommentsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { threadId: string; threadTitle: string }
+    @Inject(MAT_DIALOG_DATA) public data: { threadId: string; threadDescription: string }
   ) {
     this.commentForm = this.fb.group({
       message: ['', [Validators.required, Validators.minLength(1)]],
@@ -40,17 +41,22 @@ export class ThreadsCommentsComponent  implements OnInit {
   
   loadComments(): void {
     const commentsCollection = collection(this.firestore, `threads/${this.data.threadId}/comments`);
-    
-    collectionData(commentsCollection, { idField: 'commentId' }).subscribe((data: any[]) => {
-      this.comments = data.map((commentData: any) => {
-        return new Comment({
-          commentId: commentData.commentId || '',
-          threadId: this.data.threadId, 
-          message: commentData.message || '',
-          createdBy: commentData.createdBy || 'Unknown',
-          createdAt: commentData.createdAt || new Date().toISOString(),
-        });
-      });
+  
+    collectionData(commentsCollection, { idField: 'commentId' }).subscribe(async (data: any[]) => {
+      const commentsWithProfilePictures = await Promise.all(
+        data.map(async (commentData: any) => {
+          const profilePicture = await this.authService.getUserProfilePictureByName(commentData.createdBy);
+          return new Comment({
+            commentId: commentData.commentId || '',
+            threadId: this.data.threadId,
+            message: commentData.message || '',
+            createdBy: commentData.createdBy || 'Unknown',
+            createdAt: commentData.createdAt || new Date().toISOString(),
+            profilePicture: profilePicture || '/assets/img/user.png', // Bild laden
+          });
+        })
+      );
+      this.comments = commentsWithProfilePictures;
     }, error => {
       console.error('Error loading comments:', error);
     });
