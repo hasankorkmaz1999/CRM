@@ -4,18 +4,14 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button'; 
-import {MatTooltipModule} from '@angular/material/tooltip'; 
-import {MatDialog, MatDialogModule} from '@angular/material/dialog'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule } from '@angular/common/http';
-import { Auth, signInWithEmailAndPassword, onAuthStateChanged } from '@angular/fire/auth';
-import { UserService } from './shared/user.service';
+import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+import { AuthService } from './shared/auth.service';
 import { SharedModule } from './shared/shared.module';
 import { CalendarModule } from 'angular-calendar';
-
-
-
-
 
 @Component({
   selector: 'app-root',
@@ -32,42 +28,41 @@ import { CalendarModule } from 'angular-calendar';
     MatDialogModule,
     HttpClientModule,
     SharedModule,
-    CalendarModule
-    
-    
+    CalendarModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, AfterViewInit {
   isLoginRoute: boolean = false;
-  userRole: string | null = '';
-  userName: string | null = '';
+  userName: string = 'Unknown User'; // Benutzername für den Header
+  userRole: string = ''; // Benutzerrolle
 
   constructor(
     private router: Router,
-     private auth: Auth,
-     private userService: UserService,
-     private dialog: MatDialog, 
-    ) {
+    private auth: Auth,
+    private authService: AuthService,
+    private dialog: MatDialog
+  ) {
     this.router.events.subscribe(() => {
       this.isLoginRoute = this.router.url === '/login';
     });
   }
 
   ngOnInit(): void {
-    this.userService.userRole$.subscribe((role) => {
-      this.userRole = role;
+    // Abonnieren der aktuellen Benutzerdetails aus dem AuthService
+    this.authService.currentUserDetails$.subscribe((details) => {
+      this.userName = details.name;
+      this.userRole = details.role;
     });
-    this.userService.userName$.subscribe((name) => {
-      this.userName = name;
-    });
-
+  
+    // Überprüfen, ob der Benutzer eingeloggt ist
     const isLoggedIn = !!localStorage.getItem('userRole');
     if (!isLoggedIn) {
       this.router.navigate(['/login']);
     }
-
+  
+    // Dialog Cleanup
     this.dialog.afterAllClosed.subscribe(() => {
       const appRoot = document.querySelector('app-root');
       if (appRoot?.hasAttribute('aria-hidden')) {
@@ -75,7 +70,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
+  
+  
 
   ngAfterViewInit(): void {
     const appRoot = document.querySelector('app-root');
@@ -87,8 +83,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   logout() {
     this.auth.signOut()
       .then(() => {
-        this.userService.setUserName(null);
-        this.userService.setUserRole(null);
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userRole');
         this.router.navigate(['/login']);
         console.log('User logged out successfully');
       })

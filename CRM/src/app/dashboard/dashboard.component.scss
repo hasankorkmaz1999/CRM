@@ -1,8 +1,99 @@
 .dashboard {
   display: flex;
- justify-content: space-around;
- flex-wrap: wrap;
- padding: 46px;
+justify-content: space-between;
+ 
+ padding: 36px;
+ 
+
+}
+
+.middle-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+
+
+
+
+.left-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-right: 30px;
+
+}
+
+.threads-container {
+  width: 500px;
+  height: 600px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    color: white;
+  }
+}
+
+
+.quick-actions-container {
+  width: 100%;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+  display: flex;
+  
+  justify-content: space-between;
+  align-items: center;
+  transform: scale(0.9); /* Start leicht kleiner */
+  opacity: 0;
+  animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
+  will-change: transform, opacity; /* Optimierung */
+
+  button {
+    border-radius: 10px;
+background-color: transparent;
+    font-size: 18px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+color: white;
+border: none;
+transition: box-shadow 0.3s ease, transform 0.3s ease; /* Weiche Animation */
+
+
+-webkit-backdrop-filter: blur(20px);
+backdrop-filter: blur(20px);
+
+border-radius: 8px;
+-webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5); /* Gleichmäßiger Schatten */
+box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
+
+&:hover {
+  -webkit-box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); /* Größerer & heller Schatten */
+  box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8);
+  transform: translateY(-3px); /* Leichtes Anheben */
+}
+    
+
+    .mat-icon {
+      margin-right: 10px;
+      color: rgb(68, 80, 167);
+    }
+  }
+
+ 
 }
 
 
@@ -415,10 +506,13 @@
     background-color: #a3a3a6; /* Violett */
   }
 
+  
+
   /* Logs Section */
   .logs-section {
-    width: 500px;
-    height: 600px;
+    overflow: hidden;
+    width: 350px;
+    height: calc(100vh - 230px);
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 30px;
     margin-bottom: 30px;
@@ -440,7 +534,10 @@
 
     ul {
       list-style: none;
-      padding: 0;
+      overflow: hidden;
+ padding: 0;
+  height: 100%;
+ 
 
       li {
         margin-bottom: 10px;
@@ -471,8 +568,8 @@
           color: white;
         }
         &.entity-user {
-          border-left: 5px solid #e58765; /* Neutral Slate Blue */
-          box-shadow: -8px 0 8px -2px rgba(229, 135, 101, 0.4);
+          border-left: 5px solid #ffffff; /* Neutral Slate Blue */
+          box-shadow: -8px 0 8px -2px rgba(255, 255, 255, 0.4);
         }
         
         &.entity-customer {
@@ -518,24 +615,6 @@
   }
 
 
-  .quick-actions-container {
-    width: 500px;
-    height: 600px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 30px;
-    margin-bottom: 30px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transform: scale(0.9); /* Start leicht kleiner */
-    opacity: 0;
-    animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
-    will-change: transform, opacity; /* Optimierung */
-  }
  
- 
-
 
 

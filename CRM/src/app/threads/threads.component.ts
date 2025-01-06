@@ -17,16 +17,25 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
   templateUrl: './threads.component.html',
   styleUrl: './threads.component.scss',
 })
+
+
+
 export class ThreadsComponent implements OnInit {
+
+
+
+
   threads: Thread[] = [];
-  newThread: Partial<Thread> = {
-    description: '',
-  };
+  newThread: Partial<Thread> = {description: ''};
 
 
-loading = false;
+
+
+
+  loading = false;
   isNewThread = false;
   currentUserName: string = 'Unknown User';
+  currentUserProfilePicture: string = '/assets/img/user.png';
 
   selectedFile: File | null = null; // Die ausgewählte Datei
   selectedFilePreview: string | null = null; // Vorschau-URL der Datei
@@ -38,10 +47,17 @@ loading = false;
     private http: HttpClient
   ) {}
 
+
+
+
+
+
   ngOnInit(): void {
-    this.authService.currentUserName$.subscribe((name) => {
-      this.currentUserName = name;
-      console.log('Current User:', this.currentUserName);
+    // Abonniere die aktuellen Benutzerdetails
+    this.authService.currentUserDetails$.subscribe((details) => {
+      this.currentUserName = details.name || 'Unknown User';
+      this.currentUserProfilePicture = details.profilePicture || '/assets/img/user.png';
+      console.log('Current User:', this.currentUserName, this.currentUserProfilePicture);
     });
 
     this.loadThreads();
@@ -55,46 +71,39 @@ loading = false;
       );
     });
   }
-  
 
   createThread() {
     if (this.newThread.description) {
       this.loading = true; // Progressbar anzeigen
       const threadCollection = collection(this.firestore, 'threads');
-  
+
       // Falls kein Bild ausgewählt wurde, speichere nur den Thread
       if (!this.selectedFile) {
-        this.authService.getUserProfilePictureByName(this.currentUserName).then((profilePicture) => {
-          this.saveThread(threadCollection, null, profilePicture);
-        }).finally(() => {
-          this.loading = false; // Progressbar ausblenden
-        });
+        this.saveThread(threadCollection, null, this.currentUserProfilePicture);
+        this.loading = false; // Progressbar ausblenden
         return;
       }
-  
+
       // Bild bei Cloudinary hochladen
       const formData = new FormData();
       formData.append('file', this.selectedFile);
       formData.append('upload_preset', 'simple-crm');
-  
-      this.authService.getUserProfilePictureByName(this.currentUserName).then((profilePicture) => {
-        this.http.post('https://api.cloudinary.com/v1_1/drzrzowgj/image/upload', formData).subscribe({
-          next: (response: any) => {
-            console.log('Image uploaded successfully:', response.secure_url);
-            this.saveThread(threadCollection, response.secure_url, profilePicture);
-          },
-          error: (error) => {
-            console.error('Error uploading image:', error);
-            alert('Failed to upload image. Please try again.');
-          },
-          complete: () => {
-            this.loading = false; // Progressbar ausblenden
-          }
-        });
+
+      this.http.post('https://api.cloudinary.com/v1_1/drzrzowgj/image/upload', formData).subscribe({
+        next: (response: any) => {
+          console.log('Image uploaded successfully:', response.secure_url);
+          this.saveThread(threadCollection, response.secure_url, this.currentUserProfilePicture);
+        },
+        error: (error) => {
+          console.error('Error uploading image:', error);
+          alert('Failed to upload image. Please try again.');
+        },
+        complete: () => {
+          this.loading = false; // Progressbar ausblenden
+        },
       });
     }
   }
-  
 
   private saveThread(
     threadCollection: any,
@@ -109,21 +118,21 @@ loading = false;
       profilePicture: profilePicture,
       imageUrl: imageUrl,
     };
-  
+
     addDoc(threadCollection, threadToSave)
       .then((docRef) => {
         console.log('Thread successfully created with ID:', docRef.id);
         const threadId = docRef.id;
-  
+
         const newThread = {
           ...threadToSave,
           threadId: threadId,
         };
-  
+
         // Füge den neuen Thread hinzu und setze `isNewThread`
         this.threads = [newThread as Thread, ...this.threads];
         this.isNewThread = true;
-  
+
         // Aktualisiere die threadId in Firestore
         return updateDoc(docRef, { threadId });
       })
@@ -140,12 +149,19 @@ loading = false;
         this.loading = false; // Progressbar ausblenden
       });
   }
-  
+
+
+  trackByThreadId(index: number, thread: any): string {
+    return thread.threadId; // Eindeutige ID des Threads
+  }
   
 
+
+
   resetNewThreadFlag(): void {
-    console.log('Animation ended');
-    this.isNewThread = false;
+    setTimeout(() => {
+      this.isNewThread = false;
+    }, 800); // Warte, bis die Animation abgeschlossen ist
   }
   
 

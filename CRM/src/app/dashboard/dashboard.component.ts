@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Firestore, addDoc, collection, collectionData, deleteDoc, updateDoc, doc } from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Event } from '../../models/events.class';
@@ -19,7 +19,7 @@ import { AuthService } from '../shared/auth.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   events: Event[] = [];
   upcomingEvents: Event[] = [];
   totalEvents: number = 0;
@@ -27,9 +27,11 @@ export class DashboardComponent implements OnInit {
   eventsToday: number = 0;
   countdowns: { [eventId: string]: string } = {};
   logs: any[] = [];
-  selectedLog: string | null = null;
-  filteredLogs: any[] = []; // Begrenzte Logs mit Animation
-  maxLogs: number = 6; // Begrenze auf 5 Logs
+  visibleLogs: any[] = []; // Logs, die aktuell angezeigt werden
+  maxVisibleLogs: number = 0; // Maximale Logs, die in den Bereich passen
+  @ViewChild('logsSection') logsSection!: ElementRef;
+
+
 
   todos: any[] = []; // To-Do-Liste
   todoForm: FormGroup; // Formular für neue Aufgaben
@@ -37,6 +39,12 @@ export class DashboardComponent implements OnInit {
   progressValue: number = 0; // Fortschrittswert für die Progress-Bar
   completedTasks: number = 0; // Erledigte Aufgaben
   totalTasks: number = 0;
+
+
+  currentUserName: string = 'Unknown User'; // Name des aktuellen Benutzers
+  currentUserRole: string = 'Unknown Role'; // Rolle des aktuellen Benutzers
+  currentUserProfilePicture: string = '/assets/img/user.png'; // Profilbild des aktuellen Benutzers
+
 
 
   constructor(
@@ -52,21 +60,69 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit(): void {
+      // Benutzerinformationen aus dem AuthService abrufen
+      const userDetails = this.authService.getCurrentUserDetailsSync();
+      this.currentUserName = userDetails.name;
+      this.currentUserRole = userDetails.role;
+      this.currentUserProfilePicture = userDetails.profilePicture;
+  
+      // Benutzer-ID abrufen
+      const currentUser = this.authService.getCurrentUserSync();
+      if (currentUser) {
+        this.userId = currentUser.uid;
+      }
+  
       this.loadEvents();
       this.startLiveCountdown();
       this.loadRecentLogs();
+      this.loadTodos();
       this.updateProgressBar();
-    
-      this.authService.currentUser$.subscribe((user) => {
-        if (user && user.uid) {
-          this.userId = user.uid;
-          this.loadTodos();
-        } else {
-          console.warn('No user or invalid user UID.');
-        }
-      });
-      
     }
+
+
+    ngAfterViewInit(): void {
+      this.calculateVisibleLogs();
+
+  // Füge einen Resize-Listener hinzu, um sichtbare Logs bei Größenänderung zu aktualisieren
+  window.addEventListener('resize', () => {
+    this.calculateVisibleLogs();
+  });
+    }
+
+    calculateVisibleLogs() {
+      if (!this.logsSection) return;
+    
+      const logsSectionHeight = this.logsSection.nativeElement.offsetHeight;
+      const averageLogHeight = 60; // Höhe anpassen
+      this.maxVisibleLogs = Math.floor(logsSectionHeight / averageLogHeight);
+    
+      console.log(`Container Height: ${logsSectionHeight}, Max Visible Logs: ${this.maxVisibleLogs}`);
+    
+      this.visibleLogs = this.logs.slice(0, this.maxVisibleLogs);
+    }
+    
+
+
+    loadRecentLogs() {
+      const logsCollection = collection(this.firestore, 'logs');
+      collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
+        const allLogs = data.map((log: any) => ({
+          ...log,
+          timestamp: log.timestamp ? new Date(log.timestamp) : null,
+        }));
+    
+        // Sortiere nach Timestamp (neueste zuerst)
+        const sortedLogs = allLogs.sort(
+          (a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
+        );
+    
+        this.logs = sortedLogs; // Speichere alle Logs
+        this.calculateVisibleLogs(); // Begrenze die Logs auf die sichtbare Anzahl
+      });
+    }
+    
+    
+    
     
     
     updateProgressBar(): void {
@@ -127,25 +183,7 @@ export class DashboardComponent implements OnInit {
   
 
 
-  loadRecentLogs() {
-    const logsCollection = collection(this.firestore, 'logs');
-    collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
-      const allLogs = data.map((log: any) => ({
-        ...log,
-        timestamp: log.timestamp ? new Date(log.timestamp) : null,
-      }));
-
-      // Sortiere nach Timestamp (neueste zuerst)
-      const sortedLogs = allLogs.sort(
-        (a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
-      );
-
-      // Begrenze auf die letzten 5 Logs
-      this.filteredLogs = sortedLogs.slice(0, this.maxLogs).map((log, index) => ({
-        ...log,
-      }));
-    });
-  }
+ 
 
 
   generateLogMessage(log: any): string {

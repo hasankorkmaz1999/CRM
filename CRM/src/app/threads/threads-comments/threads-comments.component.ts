@@ -18,6 +18,8 @@ import { Comment } from '../../../models/comment.class';
 export class ThreadsCommentsComponent  implements OnInit {
   comments: Comment[] = [];
   commentForm: FormGroup;
+  currentUserName: string = 'Unknown User';
+  currentUserProfilePicture: string = '/assets/img/user.png';
 
   constructor(
     private firestore: Firestore,
@@ -35,47 +37,45 @@ export class ThreadsCommentsComponent  implements OnInit {
   }
 
   ngOnInit(): void {
+    // Hole aktuelle Benutzerdetails aus dem AuthService
+    const userDetails = this.authService.getCurrentUserDetailsSync();
+    this.currentUserName = userDetails.name;
+    this.currentUserProfilePicture = userDetails.profilePicture;
+
     this.loadComments();
   }
 
-  
   loadComments(): void {
     const commentsCollection = collection(this.firestore, `threads/${this.data.threadId}/comments`);
-  
-    collectionData(commentsCollection, { idField: 'commentId' }).subscribe(async (data: any[]) => {
-      const commentsWithProfilePictures = await Promise.all(
-        data.map(async (commentData: any) => {
-          const profilePicture = await this.authService.getUserProfilePictureByName(commentData.createdBy);
-          return new Comment({
-            commentId: commentData.commentId || '',
-            threadId: this.data.threadId,
-            message: commentData.message || '',
-            createdBy: commentData.createdBy || 'Unknown',
-            createdAt: commentData.createdAt || new Date().toISOString(),
-            profilePicture: profilePicture || '/assets/img/user.png', // Bild laden
-          });
-        })
-      );
-      this.comments = commentsWithProfilePictures;
+
+    collectionData(commentsCollection, { idField: 'commentId' }).subscribe((data: any[]) => {
+      this.comments = data.map((commentData: any) => {
+        return new Comment({
+          commentId: commentData.commentId || '',
+          threadId: this.data.threadId,
+          message: commentData.message || '',
+          createdBy: commentData.createdBy || 'Unknown',
+          createdAt: commentData.createdAt || new Date().toISOString(),
+          profilePicture: commentData.profilePicture || '/assets/img/user.png', // Nutze gespeichertes Profilbild
+        });
+      });
     }, error => {
       console.error('Error loading comments:', error);
     });
   }
-  
-  
-  
 
- 
   addComment(): void {
     if (this.commentForm.valid) {
       const commentsCollection = collection(this.firestore, `threads/${this.data.threadId}/comments`);
+
       const newComment = {
         threadId: this.data.threadId,
         message: this.commentForm.value.message,
-        createdBy: this.authService.getCurrentUserNameSync(), // Aktueller Benutzer
+        createdBy: this.currentUserName, // Benutzernamen setzen
         createdAt: new Date().toISOString(),
+        profilePicture: this.currentUserProfilePicture, // Profilbild setzen
       };
-  
+
       addDoc(commentsCollection, newComment).then(() => {
         // Kommentar erfolgreich hinzugefügt, jetzt den commentCount aktualisieren
         const threadDoc = doc(this.firestore, `threads/${this.data.threadId}`);
@@ -88,11 +88,7 @@ export class ThreadsCommentsComponent  implements OnInit {
       });
     }
   }
-  
-  
-  
 
- 
   closeDialog(): void {
     this.dialogRef.close();
   }

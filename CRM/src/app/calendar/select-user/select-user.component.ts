@@ -57,19 +57,22 @@ export class SelectUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Abonniere den aktuellen Benutzer
-    this.authService.currentUserName$.subscribe((name) => {
-      this.currentUserName = name;
+    // Abonniere die aktuellen Benutzerdetails
+    this.authService.currentUserDetails$.subscribe((details) => {
+      this.currentUserName = details.name; // Name des aktuellen Benutzers
       console.log('Current User Name:', this.currentUserName);
     });
-
+  
+    // Lade die Benutzerliste
     const userCollection = collection(this.firestore, 'users');
     collectionData(userCollection, { idField: 'id' }).subscribe((data) => {
       this.users = data as User[];
     });
-
+  
+    // Generiere Zeitoptionen
     this.generateUSTimeOptions();
   }
+  
 
 
   generateUSTimeOptions() {

@@ -210,16 +210,7 @@ small {
  
   
 
-  @keyframes slideInFromTop {
-    0% {
-      transform: translateY(-50%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
+ 
   
   .thread-item {
     background-color: rgba(183, 183, 183, 0.06) !important;
@@ -234,11 +225,35 @@ small {
     transition: all 0.3s ease-in-out; /* Für sanfte Übergänge */
   }
   
+  
+  
+  
   .thread-item.new-thread {
-    animation: slideInFromTop 0.6s ease-out;
-    animation-fill-mode: forwards;
+    animation: slideInFromTop 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    animation-fill-mode: forwards; /* Bleibt im Endzustand */
+    will-change: transform, opacity;
   }
   
+  @keyframes slideInFromTop {
+    0% {
+      transform: translateY(-400px) scale(0.5); /* Start weit oben und kleiner */
+      opacity: 0;
+    }
+    60% {
+      transform: translateY(-20px) scale(1.2); /* Kurz nach vorne (überziehen) */
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(0) scale(1); /* Endzustand */
+      opacity: 1;
+    }
+  }
+  
+  
+  
+  
+  
+
 
   .thread-descrip {
     font-size: 18px;

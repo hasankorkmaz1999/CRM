@@ -1,6 +1,31 @@
 <div class="dashboard">
   <!-- KPI Cards -->
 
+
+  <div class="left-wrapper">
+
+
+    <div class="quick-actions-container">
+      <button  (click)="goToUserAndOpenDialog()">
+        <mat-icon>person_add</mat-icon>
+        Add New User
+      </button>
+  
+      <button  (click)="goToCustomerAndOpenDialog()">
+        <mat-icon>group_add</mat-icon>
+        Add New Customer
+      </button>
+      
+      <button  (click)="goToEventAndOpenDialog()">
+        <mat-icon>event</mat-icon>
+        Add New Event
+      </button>
+      
+    </div>
+
+
+<div class="middle-wrapper">
+
   <div class="events-container">
     <div class="kpi-cards">
       <div class="kpi-card">
@@ -62,24 +87,10 @@
 
 
 
-
-  <div class="quick-actions-container">
-    <button mat-raised-button color="accent" (click)="goToUserAndOpenDialog()">
-      <mat-icon>person_add</mat-icon>
-      Add New User
-    </button>
-
-    <button mat-raised-button color="primary" (click)="goToCustomerAndOpenDialog()">
-      <mat-icon>group_add</mat-icon>
-      Add New Customer
-    </button>
-    
-    <button mat-raised-button color="warn" (click)="goToEventAndOpenDialog()">
-      <mat-icon>event</mat-icon>
-      Add New Event
-    </button>
-    
-  </div>
+<div class="threads-container">
+<h1>New Announcements</h1>
+</div>
+  
 
 
  
@@ -140,70 +151,39 @@
 </div>
 
 
+</div>
 
+
+</div>
 
 
 
  <!-- Upcoming Events -->
-
- <div class="logs-section">
-  <h3>Recent Activity Logs</h3>
-  <ul>
-    <li
-      class="list-elements"
-      *ngFor="let log of filteredLogs"
-      [ngClass]="'entity-' + (log.entityType?.toLowerCase() || 'unknown')"
+ <div class="logs-section-wrapper">
+  <div class="logs-section" #logsSection>
+    <h3>Recent Activity Logs</h3>
+    <ul>
+      <li
+        class="list-elements"
+        *ngFor="let log of visibleLogs"
+        [ngClass]="'entity-' + (log.entityType?.toLowerCase() || 'unknown')"
+      >
+        <div class="log-message">
+          <strong [innerHTML]="generateLogMessage(log)"></strong>
+        </div>
+       
+      </li>
+    </ul>
+    <button
+      *ngIf="logs.length > visibleLogs.length"
+      class="go-calendar"
+      (click)="navigateToAllLogs()"
     >
-      <div class="log-message">
-        <strong [innerHTML]="generateLogMessage(log)"></strong>
-      </div>
-      <div class="buttons-comtainer">
-        <small *ngIf="log.timestamp">{{
-          log.timestamp | date : "MMMM d, y"
-        }}</small>
-        <a
-          *ngIf="
-            log.entityType === 'customer' &&
-            (log.action === 'edit' || log.action === 'add')
-          "
-          (click)="navigateToCustomerDetails(log)"
-          class="see-details-link"
-        >
-          View Customer Details
-        </a>
-        <a
-          *ngIf="
-            log.entityType === 'user' &&
-            (log.action === 'edit' || log.action === 'add')
-          "
-          (click)="navigateToUserDetails(log)"
-          class="see-details-link"
-        >
-          View User Details
-        </a>
-
-        <a
-          *ngIf="log.entityType === 'event' && log.action === 'add'"
-          (click)="openAddedEventDetails(log)"
-          class="see-details-link"
-        >
-          View Event Details
-        </a>
-
-        <a
-          *ngIf="log.entityType === 'event' && log.action === 'edit'"
-          (click)="openLogDetails(log)"
-          class="see-details-link"
-        >
-          See Details
-        </a>
-      </div>
-    </li>
-  </ul>
-  <button class="go-calendar" (click)="navigateToAllLogs()">
-    View All Logs
-  </button>
+      View All Logs
+    </button>
+  </div>
 </div>
+
 
 
 </div>

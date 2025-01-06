@@ -81,11 +81,11 @@
     <div class="thread-list">
         <h2>All Announcements</h2>
         <div
-          *ngFor="let thread of threads; let i = index"
-          [class.new-thread]="i === 0 && isNewThread"
-          (animationend)="resetNewThreadFlag()"
-          class="thread-item"
-        >
+  *ngFor="let thread of threads; let i = index; trackBy: trackByThreadId"
+  [class.new-thread]="i === 0 && isNewThread"
+  (animationend)="resetNewThreadFlag()"
+  class="thread-item"
+>
           <div class="thread-header">
             <div class="user">
 
