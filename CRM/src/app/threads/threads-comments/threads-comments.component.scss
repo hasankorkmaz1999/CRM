@@ -1,11 +1,13 @@
 .comment-dialog {
     padding: 15px;
     background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
 }
 
 
 .mat-mdc-dialog-container .mdc-dialog__surface {
     background-color: #3d3d3d !important;
+    border-radius: 5px !important;
 }
 
 h1 {
@@ -104,3 +106,10 @@ h1 {
         }
         
       }
+
+
+      .cdk-overlay-dark-backdrop {
+        background: rgba(0, 0, 0, 0.32);
+        backdrop-filter: blur(10px); /* Unscharf machen */
+        -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+    }

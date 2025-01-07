@@ -1,0 +1,16 @@
+<div class="image-dialog-container" (click)="closeDialog()">
+    <!-- Schließen-Button oben rechts -->
+    <button class="close-button" (click)="closeDialog()">
+      &#10006;
+    </button>
+  
+    <!-- Bild -->
+    <img
+      [src]="data.imageUrl"
+      alt="Full Image"
+      class="full-image"
+      (click)="$event.stopPropagation()"
+    />
+  </div>
+  
+  

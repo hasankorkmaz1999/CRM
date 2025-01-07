@@ -1,0 +1,56 @@
+.image-dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+  }
+  
+  .full-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    background-color: transparent;
+  }
+
+
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    background-color: rgba(0, 0, 0, 0.01) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-shadow: none !important;
+    pointer-events: auto;
+   width: auto;
+   height: auto;
+  }
+
+
+
+ 
+  
+  
+
+.cdk-overlay-dark-backdrop {
+    background: rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(10px); /* Unscharf machen */
+    -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+}
+
+
+.close-button {
+    color: white;
+     background-color: transparent;
+     border: none !important;
+     font-size: 20px;
+     transition: 250ms ease-in-out;
+     position: absolute;
+     top: 15px;
+     right: 15px;
+     outline: none !important;
+     &:hover {
+        border: none !important;
+        outline: none !important;
+      transform: scale(1.2);
+      color: red;
+     }
+   }

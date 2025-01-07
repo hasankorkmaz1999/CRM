@@ -1,21 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Thread } from '../../models/thread.class';
 import { addDoc, collection, updateDoc } from 'firebase/firestore';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { AuthService } from '../shared/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ThreadsCommentsComponent } from './threads-comments/threads-comments.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { ImageViewerDialogComponent } from './image-viewer-dialog/image-viewer-dialog.component';
 
 @Component({
   selector: 'app-threads',
   standalone: true,
-  imports: [SharedModule, CommonModule, HttpClientModule, ThreadsCommentsComponent,   CdkTextareaAutosize,],
+  imports: [SharedModule,
+     CommonModule,
+      HttpClientModule,
+     
+          CdkTextareaAutosize,
+          MatDialogModule
+        ],
   templateUrl: './threads.component.html',
   styleUrl: './threads.component.scss',
+  providers: [DatePipe], // Für Datumshandhabung
 })
 
 
@@ -27,7 +35,7 @@ export class ThreadsComponent implements OnInit {
 
   threads: Thread[] = [];
   newThread: Partial<Thread> = {description: ''};
-
+  groupedThreads: { [key: string]: Thread[] } = {};
 
 
 
@@ -44,7 +52,8 @@ export class ThreadsComponent implements OnInit {
     private firestore: Firestore,
     private authService: AuthService,
     private dialog: MatDialog,
-    private http: HttpClient
+    private http: HttpClient,
+    private datePipe: DatePipe
   ) {}
 
 
@@ -69,7 +78,44 @@ export class ThreadsComponent implements OnInit {
       this.threads = (data as Thread[]).sort(
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
+      this.groupThreadsByDate();
     });
+  }
+
+
+  groupThreadsByDate(): void {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    this.groupedThreads = this.threads.reduce((groups, thread) => {
+      const threadDate = new Date(thread.createdAt);
+      let groupKey = '';
+
+      if (this.isSameDate(threadDate, today)) {
+        groupKey = 'Today';
+      } else if (this.isSameDate(threadDate, yesterday)) {
+        groupKey = 'Yesterday';
+      } else {
+        groupKey = this.datePipe.transform(threadDate, 'MMMM d, y') || 'Older';
+      }
+
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
+      }
+
+      groups[groupKey].push(thread);
+
+      return groups;
+    }, {} as { [key: string]: Thread[] });
+  }
+
+  isSameDate(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
   }
 
   createThread() {
@@ -195,5 +241,14 @@ export class ThreadsComponent implements OnInit {
     if (fileInput) {
       fileInput.click();
     }
+  }
+
+  openImageDialog(imageUrl: string): void {
+    this.dialog.open(ImageViewerDialogComponent, {
+      data: { imageUrl },
+      width: '80vw',
+      height: '80vh',
+      panelClass: 'custom-dialog', // Optional: Für individuelles Styling
+    });
   }
 }

@@ -5,8 +5,11 @@
     align-items: center;
 
     h3 {
+      border-top: 1px solid lightgray;
         color: white;
         text-align: center;
+        padding-top: 20px;
+        font-size: 20px;
 
     }
 
@@ -150,7 +153,7 @@
 
   .comments-icon {
     color: white;
-
+cursor: pointer;
   }
 
 
@@ -207,7 +210,9 @@ small {
 }
 
 
- 
+ .thread-image {
+
+ }
   
 
  
@@ -221,7 +226,7 @@ small {
     width: 800px;
     border-radius: 15px;
     margin-bottom: 30px;
-    cursor: pointer;
+  
     transition: all 0.3s ease-in-out; /* Für sanfte Übergänge */
   }
   
@@ -286,9 +291,16 @@ small {
     height: 300px;
     width: 300px;
     object-fit: contain;
+    cursor: pointer;
+    transition: 0.3s ease-in-out; 
+
+    &:hover {
+      transform: scale(1.0.5);
+    }
   }
 
 
   .file-preview {
     padding: 10px;
   }
+
