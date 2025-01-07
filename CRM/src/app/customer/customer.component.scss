@@ -171,23 +171,52 @@
 /* Status: New (Grün) */
 .status.new {
   color: green;
-  filter: drop-shadow(0 0 8px green);
+ 
 }
 
 /* Status: Active (Blau) */
 .status.active {
   color: rgb(103, 103, 251);
-  filter: drop-shadow(0 0 8px rgb(103, 103, 251));
+ 
 }
 
 /* Status: Inactive (Rot) */
 .status.inactive {
   color: red;
-  filter: drop-shadow(0 0 8px red);
+ 
 }
 
 /* Status: Pending (Orange) */
 .status.pending {
   color: orange;
+ 
+}
+
+
+.status-circle {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.status-new {
+  background-color: blue;
+  filter: drop-shadow(0 0 8px rgb(103, 103, 251));
+}
+
+.status-active {
+  background-color: green;
+  filter: drop-shadow(0 0 8px green);
+}
+
+.status-inactive {
+  background-color: red;
+  filter: drop-shadow(0 0 8px red);
+}
+
+.status-pending {
+  background-color: orange;
   filter: drop-shadow(0 0 8px orange);
 }

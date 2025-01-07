@@ -88,7 +88,24 @@
 
 
 <div class="threads-container">
-<h1>New Announcements</h1>
+  <h1>Latest Announcements</h1>
+
+  <div class="threads">
+
+
+    <div class="singel-threads" *ngFor="let thread of threads.slice(0, 5)">
+    <div class="thread-header">  
+    <span>{{ thread.createdBy }}</span> 
+    <small>{{ thread.createdAt | date: 'MMM d, y, h:mm a' }}</small>
+  </div>
+      <p>{{ thread.description | slice: 0:30 }}...</p>
+      
+     
+    </div>
+
+  </div>
+
+
 </div>
   
 
@@ -105,30 +122,33 @@
 
 <div class="todos-section">
 
-  <div class="todo-header">
-    <h3>To-Dos</h3>
-  
+
+  <div class="left-section-todo">
+    <div class="todo-header">
+      <h3>To-Dos</h3>
+
+      <!-- Button, um ein To-Do hinzuzufügen -->
+      <button (click)="addTodo()" [disabled]="!todoInputValue" class="add-todo-btn">
+        <mat-icon class="add-button">add</mat-icon>
+      </button>
+    </div>
+
     <div class="todo-input-section">
-      <!-- To-Do Input Form -->
-      <form (ngSubmit)="addTodo()" [formGroup]="todoForm" class="todo-form">
-        <textarea
-          formControlName="title"
-          placeholder="Enter a new task..."
-          name="title"
-          required
-          cdkTextareaAutosize
-          matInput
-          #autosize="cdkTextareaAutosize"
-          (input)="autosize.resizeToFitContent(true)"
-          class="todo-textarea"
-        ></textarea>
-  
-        <button [disabled]="todoForm.invalid" class="add-todo-btn">
-          <mat-icon class="add-button">add</mat-icon>
-        </button>
-      </form>
+      <!-- Eingabefeld für das To-Do -->
+      <textarea
+        [(ngModel)]="todoInputValue"
+        placeholder="Enter a new task..."
+        name="title"
+        required
+        cdkTextareaAutosize
+        matInput
+        #autosize="cdkTextareaAutosize"
+        (input)="autosize.resizeToFitContent(true)"
+        class="todo-textarea"
+      ></textarea>
     </div>
   </div>
+  
 
 
 
@@ -144,6 +164,8 @@
     (animationend)="resetNewTodoFlag()"
     class="todo-item"
   >
+
+  <div class="wrapper">
       <label>
         <input
           type="checkbox"
@@ -151,9 +173,14 @@
           (change)="toggleTodoCompletion(todo)"
           class="custom-checkbox"
         />
-        <span>{{ todo.description }}</span>
+       
       </label>
-  
+
+      <span>{{ todo.description }}</span>
+    </div>
+
+
+
       <button (click)="deleteTodo(todo.id)" class="delete-btn">
         <mat-icon>delete</mat-icon>
       </button>

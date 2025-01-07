@@ -36,8 +36,9 @@
       <tr class="under-tr" *ngFor="let customer of filteredCustomers">
 
         <td [routerLink]="['/customer', customer.id]" class="status-column">
-          <span class="status {{ customer.status }}">
-            {{ customer.status | titlecase }}
+          <span class="status-circle status-{{ customer.status }}">
+
+          
           </span>
         </td>
 

@@ -12,6 +12,7 @@ import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../shared/auth.service';
 import { Todo } from '../../models/todo.class';
+import { Thread } from '../../models/thread.class';
 
 @Component({
   selector: 'app-dashboard',
@@ -50,6 +51,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   isNewTodo: boolean = false;
 
 
+  threads: Thread[] = []; 
+
+
 
   constructor(
     private firestore: Firestore,
@@ -86,6 +90,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.loadRecentLogs();
       this.loadTodos();
       this.updateProgressBar();
+      this.loadThreads();
     }
     
 
@@ -108,6 +113,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     
     
       this.visibleLogs = this.logs.slice(0, this.maxVisibleLogs);
+    }
+
+    loadThreads() {
+      const threadCollection = collection(this.firestore, 'threads');
+      collectionData(threadCollection, { idField: 'threadId' }).subscribe((data) => {
+        // Sortiere die Threads nach Erstellungsdatum
+        this.threads = (data as Thread[]).sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
     }
     
 
@@ -165,26 +180,30 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     
     
     
+    todoInputValue: string = ''; // Variable für das Eingabefeld
+
     addTodo() {
       if (!this.userId) {
         console.error('Benutzer-ID nicht verfügbar. Task kann nicht hinzugefügt werden.');
         return;
       }
     
-    
+      if (!this.todoInputValue.trim()) {
+        console.warn('Leerer Text. Task kann nicht hinzugefügt werden.');
+        return;
+      }
     
       const newTodo: Omit<Todo, 'id'> = {
-        description: this.todoForm.value.title, // Beschreibung der Aufgabe
+        description: this.todoInputValue.trim(), // Beschreibung der Aufgabe
         completed: false,
         userId: this.userId,
         createdAt: new Date().toISOString(), // In String umwandeln (ISO-Format)
-        
       };
     
       const todosCollection = collection(this.firestore, 'todos');
       addDoc(todosCollection, newTodo).then((docRef) => {
-        // Aufgabe zurücksetzen
-        this.todoForm.reset();
+        // Eingabefeld leeren
+        this.todoInputValue = '';
     
         // Neues Todo der Liste hinzufügen
         this.todos = [
@@ -198,6 +217,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.updateProgressBar(); // Fortschrittsanzeige aktualisieren
       });
     }
+    
     
     
     
