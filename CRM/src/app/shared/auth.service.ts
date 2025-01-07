@@ -22,23 +22,37 @@ export class AuthService {
   currentUserDetails$ = this.currentUserDetailsSubject.asObservable();
 
   constructor(private auth: Auth, private firestore: Firestore) {
+
+
     onAuthStateChanged(this.auth, (user) => {
-      console.log('Firebase Auth Current User:', user); // Debugging
       if (user) {
+        console.log('Firebase Auth Current User:', {
+          uid: user.uid,
+          email: user.email || 'No Email',
+          displayName: user.displayName || 'No Display Name',
+        });
+    
         this.currentUserSubject.next(user);
+    
         this.fetchUserDetails(user.uid).then((details) => {
           if (details) {
+            console.log('Benutzername aus Firestore:', details.name);
+            console.log('Benutzername aus Firestore:', details.role);
             this.currentUserDetailsSubject.next(details);
           } else {
+            console.warn('Benutzerdetails konnten nicht aus Firestore geladen werden.');
             this.resetCurrentUserDetails();
           }
         });
       } else {
+        console.warn('Kein Benutzer angemeldet.');
         this.currentUserSubject.next(null);
         this.resetCurrentUserDetails();
       }
     });
+    
   }
+
 
   // Lädt Benutzerinformationen aus Firestore
   public async fetchUserDetails(uid: string): Promise<{

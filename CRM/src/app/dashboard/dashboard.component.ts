@@ -11,6 +11,7 @@ import { UserDetailComponent } from '../user/user-detail/user-detail.component';
 import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../shared/auth.service';
+import { Todo } from '../../models/todo.class';
 
 @Component({
   selector: 'app-dashboard',
@@ -46,6 +47,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   currentUserProfilePicture: string = '/assets/img/user.png'; // Profilbild des aktuellen Benutzers
 
 
+  isNewTodo: boolean = false;
+
+
 
   constructor(
     private firestore: Firestore,
@@ -60,24 +64,30 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-      // Benutzerinformationen aus dem AuthService abrufen
-      const userDetails = this.authService.getCurrentUserDetailsSync();
-      this.currentUserName = userDetails.name;
-      this.currentUserRole = userDetails.role;
-      this.currentUserProfilePicture = userDetails.profilePicture;
-  
-      // Benutzer-ID abrufen
-      const currentUser = this.authService.getCurrentUserSync();
-      if (currentUser) {
-        this.userId = currentUser.uid;
-      }
-  
+      // Benutzerinformationen abonnieren
+      this.authService.currentUser$.subscribe((currentUser) => {
+        if (currentUser) {
+          this.userId = currentUser.uid;
+          console.log('Benutzer-ID abgerufen:', this.userId);
+        } 
+      });
+    
+      // Benutzerdetails abonnieren
+      this.authService.currentUserDetails$.subscribe((details) => {
+        this.currentUserName = details.name;
+        this.currentUserRole = details.role;
+        this.currentUserProfilePicture = details.profilePicture;
+    
+        console.log('Benutzerdetails:', details);
+      });
+    
       this.loadEvents();
       this.startLiveCountdown();
       this.loadRecentLogs();
       this.loadTodos();
       this.updateProgressBar();
     }
+    
 
 
     ngAfterViewInit(): void {
@@ -96,7 +106,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       const averageLogHeight = 60; // Höhe anpassen
       this.maxVisibleLogs = Math.floor(logsSectionHeight / averageLogHeight);
     
-      console.log(`Container Height: ${logsSectionHeight}, Max Visible Logs: ${this.maxVisibleLogs}`);
     
       this.visibleLogs = this.logs.slice(0, this.maxVisibleLogs);
     }
@@ -140,26 +149,71 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     loadTodos() {
       const todosCollection = collection(this.firestore, 'todos');
       collectionData(todosCollection, { idField: 'id' }).subscribe((data) => {
-        this.todos = data.filter((todo: any) => todo.userId === this.userId); // Benutzerbezogene To-Dos
-        this.updateProgressBar(); // Fortschritt aktualisieren
+        this.todos = (data as Todo[])
+          .filter((todo) => todo.userId === this.userId)
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        this.updateProgressBar();
       });
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    addTodo() {
+      if (!this.userId) {
+        console.error('Benutzer-ID nicht verfügbar. Task kann nicht hinzugefügt werden.');
+        return;
+      }
+    
+    
+    
+      const newTodo: Omit<Todo, 'id'> = {
+        description: this.todoForm.value.title, // Beschreibung der Aufgabe
+        completed: false,
+        userId: this.userId,
+        createdAt: new Date().toISOString(), // In String umwandeln (ISO-Format)
+        
+      };
+    
+      const todosCollection = collection(this.firestore, 'todos');
+      addDoc(todosCollection, newTodo).then((docRef) => {
+        // Aufgabe zurücksetzen
+        this.todoForm.reset();
+    
+        // Neues Todo der Liste hinzufügen
+        this.todos = [
+          new Todo({ ...newTodo, id: docRef.id }), // Erstellt eine neue Todo-Instanz
+          ...this.todos,
+        ].sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        ); // Sortierung nach `createdAt`
+    
+        console.log('Neues Todo erfolgreich hinzugefügt:', docRef.id);
+        this.updateProgressBar(); // Fortschrittsanzeige aktualisieren
+      });
+    }
+    
+    
+    
 
-  // Neue Aufgabe hinzufügen
-  addTodo() {
-    const newTodo = {
-      title: this.todoForm.value.title,
-      completed: false,
-      userId: this.userId,
-      createdAt: new Date(),
-    };
-
-    const todosCollection = collection(this.firestore, 'todos');
-    addDoc(todosCollection, newTodo).then(() => {
-      this.todoForm.reset(); // Formular zurücksetzen
-    });
-  }
+    resetNewTodoFlag(): void {
+      setTimeout(() => {
+        this.isNewTodo = false; // Entferne das Flag nach der Animation
+      }, 800); // Wartezeit entsprechend der CSS-Animation
+    }
+    
+    
+    
+    
+    
+    
+  
 
   // Aufgabe als erledigt markieren
   toggleTodoCompletion(todo: any) {

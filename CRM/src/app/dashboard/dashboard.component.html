@@ -97,32 +97,52 @@
 
 
 
+
+
+
+</div>
+
+
 <div class="todos-section">
 
   <div class="todo-header">
-  <h3>To-Do List</h3>
+    <h3>To-Dos</h3>
+  
+    <div class="todo-input-section">
+      <!-- To-Do Input Form -->
+      <form (ngSubmit)="addTodo()" [formGroup]="todoForm" class="todo-form">
+        <textarea
+          formControlName="title"
+          placeholder="Enter a new task..."
+          name="title"
+          required
+          cdkTextareaAutosize
+          matInput
+          #autosize="cdkTextareaAutosize"
+          (input)="autosize.resizeToFitContent(true)"
+          class="todo-textarea"
+        ></textarea>
+  
+        <button [disabled]="todoForm.invalid" class="add-todo-btn">
+          <mat-icon class="add-button">add</mat-icon>
+        </button>
+      </form>
+    </div>
+  </div>
 
 
-  <div class="todo-input-section">
-  <!-- To-Do Input Form -->
-  <form (ngSubmit)="addTodo()" [formGroup]="todoForm" class="todo-form">
-    <input formControlName="title"placeholder="Enter a new task..." class="todo-input" />
-    
-    <button type="submit" [disabled]="todoForm.invalid" class="add-todo-btn" mat-icon-button >
-    <mat-icon class="add-button">add</mat-icon>
-  </button>
-  </form>
-</div>
-</div>
 
+  <div class="right-section-todo">
 
 <div class="todo-wrapper">
 
   <!-- Display To-Dos -->
   <ul class="todo-list">
     <li
-    *ngFor="let todo of todos; trackBy: trackByTodoId"
-    [class.completed]="todo.completed"
+    *ngFor="let todo of todos; let i = index; trackBy: trackByTodoId"
+    [class.new-todo]="i === 0 && isNewTodo"
+    (animationend)="resetNewTodoFlag()"
+    class="todo-item"
   >
       <label>
         <input
@@ -131,17 +151,21 @@
           (change)="toggleTodoCompletion(todo)"
           class="custom-checkbox"
         />
-        <span>{{ todo.title }}</span>
+        <span>{{ todo.description }}</span>
       </label>
-
+  
       <button (click)="deleteTodo(todo.id)" class="delete-btn">
         <mat-icon>delete</mat-icon>
       </button>
-      
     </li>
   </ul>
+  
+  
+  
+ 
+</div>
 
-  <div class="progress-div">
+<div class="progress-div">
   <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
   <p class="progress-text">{{ completedTasks }}/{{ totalTasks }} completed</p>
   </div>
@@ -151,7 +175,8 @@
 </div>
 
 
-</div>
+
+
 
 
 </div>

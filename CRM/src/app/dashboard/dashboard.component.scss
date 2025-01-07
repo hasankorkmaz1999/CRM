@@ -1,10 +1,8 @@
 .dashboard {
   display: flex;
-justify-content: space-between;
- 
- padding: 36px;
- 
+  justify-content: space-between;
 
+  padding: 36px;
 }
 
 .middle-wrapper {
@@ -12,19 +10,12 @@ justify-content: space-between;
   justify-content: space-between;
 }
 
-
-
-
-
-
-
 .left-wrapper {
   width: 100%;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   margin-right: 30px;
-
 }
 
 .threads-container {
@@ -37,22 +28,23 @@ justify-content: space-between;
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
+  will-change: transform, opacity; /* Optimierung */
 
   h1 {
     color: white;
   }
 }
 
-
 .quick-actions-container {
   width: 100%;
-  height: 100px;
+  height: 70px;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 30px;
   margin-bottom: 30px;
-  padding: 20px;
+  padding: 10px;
   display: flex;
-  
+
   justify-content: space-between;
   align-items: center;
   transform: scale(0.9); /* Start leicht kleiner */
@@ -62,311 +54,319 @@ justify-content: space-between;
 
   button {
     border-radius: 10px;
-background-color: transparent;
+    background-color: transparent;
     font-size: 18px;
     padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-color: white;
-border: none;
-transition: box-shadow 0.3s ease, transform 0.3s ease; /* Weiche Animation */
+    color: white;
+    border: none;
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Weiche Animation */
 
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
 
--webkit-backdrop-filter: blur(20px);
-backdrop-filter: blur(20px);
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5); /* Gleichmäßiger Schatten */
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
 
-border-radius: 8px;
--webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5); /* Gleichmäßiger Schatten */
-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
-
-&:hover {
-  -webkit-box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); /* Größerer & heller Schatten */
-  box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8);
-  transform: translateY(-3px); /* Leichtes Anheben */
-}
-    
+    &:hover {
+      -webkit-box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); /* Größerer & heller Schatten */
+      box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8);
+      transform: translateY(-3px); /* Leichtes Anheben */
+    }
 
     .mat-icon {
       margin-right: 10px;
       color: rgb(68, 80, 167);
     }
   }
-
- 
 }
 
 
-  .todos-section {
-    
-    width: 500px;
-    height: 600px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 30px;
-  
-    padding: 20px;
+
+
+
+
+.right-section-todo {
+  width: 100%;
+}
+
+.todos-section {
+  width: 100%;
+  height: 350px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+
+  padding: 20px;
+  display: flex;
+
+  align-items: center;
+  scrollbar-width: thin; /* Für Firefox: Dünne Scrollbar */
+  scrollbar-color: #4f9dff #313132;
+
+  transform: scale(0.9); /* Start leicht kleiner */
+  opacity: 0;
+  animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
+  will-change: transform, opacity; /* Optimierung */
+
+  .todo-header {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    scrollbar-width: thin; /* Für Firefox: Dünne Scrollbar */
-    scrollbar-color: #4f9dff #313132; 
-
-    transform: scale(0.9); /* Start leicht kleiner */
-    opacity: 0;
-    animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
-    will-change: transform, opacity; /* Optimierung */
-
-    .todo-header {
-    width: 100%;
+    width: 500px;
+    height: 100%;
+    margin-right: 30px;
 
     h3 {
       color: white;
       font-size: 24px;
-      font-weight: 700;
-      text-align: center;
-    }
-    }
 
-    .todo-input {
-      width: 100%;
-      background-color: transparent;
-      font-size: 24px;
-      border: 1px solid white;
-      border-radius: 20px;
-      height: 50px;
-      padding-left: 10px;
-      color: white;
-    }
-
-    .todo-form {
-      display: flex;
-      width: 100%;
-      margin-bottom: 30px;
-      
+      text-align: start;
     }
   }
 
-
-  .todo-input-section {
-    display: flex;
-    align-items: center;
-  }
-
-  .add-button {
-    height: 50px;
-    width: 50px;
-    color: white;
-    border: 1px solid white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 30px;
-  }
-
-
-  .add-todo-btn {
-    padding: 0;
-    margin-left: 10px;
-  }
-
-
-  .todo-list {
-    width: 100%;
-    padding: 0;
-    
-  
-    li {
-      list-style: none;
-      position: relative; /* Für Pseudo-Elemente */
-      border: 1px solid red; /* Standardrahmen in Rot */
-      
-      font-size: 16px;
-      margin-bottom: 10px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      overflow: hidden; /* Beschränkung des Effekts */
-      background-color: transparent; /* Hintergrundfarbe der Aufgabe */
-      transition: border-color 0.3s ease; /* Fallback für Übergänge */
-    }
-
-    label {
-      color: white;
-      font-size: 18px;
-      text-align: center;
-    }
-  
-    li.completed {
-      animation: borderFill 1s forwards ease-in-out; /* Animation bei Abschluss */
-    }
-  
-    /* Keyframes für die Border-Füllanimation */
-    @keyframes borderFill {
-      0% {
-        border-image-source: linear-gradient(to right, red, red);
-        border-image-slice: 1; /* Aktiviert den Gradient als Border */
-      }
-      100% {
-        border-image-source: linear-gradient(to right,  #68D391, #68D391, #68D391);
-        border-image-slice: 1; /* Beibehaltung der Füllung */
-      }
-    }
-  
-    .custom-checkbox {
-      width: 25px; /* Größe der Checkbox */
-      height: 25px;
-      appearance: none; /* Entfernt das standardmäßige Browser-Styling */
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      margin-right: 20px;
-      border: 2px solid #ffffff; /* Standardfarbe */
-      border-radius: 4px; /* Abgerundete Ecken */
-      background-color: transparent; /* Transparenter Hintergrund */
-      cursor: pointer;
-      transition: all 0.3s ease;
-      vertical-align: middle; 
-    }
-  
-    .custom-checkbox:checked {
-      border-color: #68D391; /* Farbe der Checkbox bei Auswahl */
-    }
-  }
-  
-  
- 
-  
-  .custom-checkbox:checked::after {
-    content: '✔'; /* Haken-Symbol */
-    display: block;
-    font-size: 18px;
-    color: white; /* Farbe des Haken-Symbols */
-    text-align: center;
-    line-height: 25px; /* Vertikale Zentrierung des Haken-Symbols */
-  }
-  
-  
-  
-
-  .delete-btn {
-    background-color: transparent;
-    border: none;
-    color: white;
-  }
-
-
-  .todo-wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100vh;
+  .todo-textarea {
+    color: rgb(169, 169, 169);
     overflow-y: auto;
-    scrollbar-width: thin; /* Für Firefox */
-    scrollbar-color: rgb(83, 82, 82) transparent; /* Für Firefox */
+    min-height: 250px;
+    max-height: 260px;
+    background-color: rgba(31, 31, 31, 0.4);
+    width: 100%; /* Füllt den verfügbaren Platz */
+    resize: none; /* Entfernt den Resize-Griff */
+    font-size: 18px;
+    padding: 10px;
+    line-height: 1.5; /* Verbessert die Lesbarkeit */
+    border: none;
+    border-radius: 4px; /* Optional: Abgerundete Ecken */
+    box-sizing: border-box;
+    caret-color: white;
+
+    &:focus {
+      outline: none;
+    }
   }
-  
-  /* Für WebKit-basierte Browser */
-  .todo-wrapper::-webkit-scrollbar {
-    width: 8px; /* Breite der Scrollbar */
+
+  .todo-form {
+    display: flex;
+    width: 100%;
+    margin-bottom: 30px;
   }
-  
-  .todo-wrapper::-webkit-scrollbar-thumb {
-    background-color: rgb(47, 47, 47); /* Farbe des Scrollbalkens */
-    border-radius: 10px; /* Runde Ecken */
+}
+
+.todo-input-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-button {
+  height: 50px;
+  width: 50px;
+  color: white;
+  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+}
+
+.add-todo-btn {
+  background-color: transparent; /* Primärfarbe */
+  border: none;
+  margin-left: 10px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Sanfter Übergang */
+  box-shadow: none; /* Standardzustand ohne Schatten */
+}
+
+.add-button {
+  font-size: 24px;
+  color: white;
+  transition: transform 0.3s ease; /* Sanfter Übergang beim Skalieren */
+}
+
+.add-todo-btn:hover .add-button {
+  transform: scale(1.1); /* Vergrößert das Plus-Zeichen beim Hover */
+}
+
+.todo-list {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  margin: 0;
+
+  li {
+    list-style: none;
+    position: relative; /* Für Pseudo-Elemente */
+    border: 1px solid rgb(255, 255, 255); /* Standardrahmen in Rot */
+    border-radius: 10px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden; /* Beschränkung des Effekts */
+    background-color: transparent; /* Hintergrundfarbe der Aufgabe */
+    transition: border-color 0.3s ease; /* Fallback für Übergänge */
   }
-  
-  .todo-wrapper::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(47, 46, 46); /* Hover-Farbe für den Scrollbalken */
+
+  label {
+    color: white;
+    font-size: 18px;
+    text-align: center;
   }
-  
-  .todo-wrapper::-webkit-scrollbar-track {
-    background-color: transparent; /* Farbe des Scroll-Tracks */
+
+  li.new-todo {
+    animation: slideInFromTop 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    animation-fill-mode: forwards; /* Bleibt im Endzustand */
+    will-change: transform, opacity;
   }
-  
+
+  /* Sicherstellen, dass nur das neue Todo animiert wird */
+  @keyframes slideInFromTop {
+    0% {
+      transform: translateY(-400px) scale(0.5); /* Start weit oben und kleiner */
+      opacity: 0;
+    }
+    60% {
+      transform: translateY(-20px) scale(1.2); /* Kurz nach vorne (überziehen) */
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(0) scale(1); /* Endzustand */
+      opacity: 1;
+    }
+  }
+
+  .custom-checkbox {
+    width: 25px; /* Größe der Checkbox */
+    height: 25px;
+    appearance: none; /* Entfernt das standardmäßige Browser-Styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin-right: 20px;
+    border: 2px solid #ffffff; /* Standardfarbe */
+    border-radius: 4px; /* Abgerundete Ecken */
+    background-color: transparent; /* Transparenter Hintergrund */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    vertical-align: middle;
+  }
+
+  .custom-checkbox:checked {
+    border-color: #68d391; /* Farbe der Checkbox bei Auswahl */
+  }
+}
+
+.custom-checkbox:checked::after {
+  content: "✔"; /* Haken-Symbol */
+  display: block;
+  font-size: 18px;
+  color: white; /* Farbe des Haken-Symbols */
+  text-align: center;
+  line-height: 25px; /* Vertikale Zentrierung des Haken-Symbols */
+}
+
+.delete-btn {
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+.todo-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 200px;
+  margin-bottom: 40px;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Für Firefox */
+  scrollbar-color: rgb(83, 82, 82) transparent; /* Für Firefox */
+}
+
+/* Für WebKit-basierte Browser */
+.todo-wrapper::-webkit-scrollbar {
+  width: 8px; /* Breite der Scrollbar */
+}
+
+.todo-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgb(47, 47, 47); /* Farbe des Scrollbalkens */
+  border-radius: 10px; /* Runde Ecken */
+}
+
+.todo-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(47, 46, 46); /* Hover-Farbe für den Scrollbalken */
+}
+
+.todo-wrapper::-webkit-scrollbar-track {
+  background-color: transparent; /* Farbe des Scroll-Tracks */
+}
 
 .progress-div {
-  p {
+  width: 100%;
+  .progress-text {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 0;
     color: white;
     font-size: 18px;
   }
 }
 
+.events-container {
+  width: 500px;
+  height: 600px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
+  /* Smooth Fade-In Animation */
+  transform: scale(0.9); /* Start leicht kleiner */
+  opacity: 0;
+  animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
+  will-change: transform, opacity; /* Optimierung */
+}
 
-  .events-container {
-    width: 500px;
-    height: 600px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 30px;
-    margin-bottom: 30px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    /* Smooth Fade-In Animation */
+/* Keyframes für den smoothen Fade-In-Effekt */
+@keyframes smoothFadeIn {
+  0% {
     transform: scale(0.9); /* Start leicht kleiner */
-    opacity: 0;
-    animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
-    will-change: transform, opacity; /* Optimierung */
+    opacity: 0; /* Unsichtbar */
   }
-
-  /* Keyframes für den smoothen Fade-In-Effekt */
-  @keyframes smoothFadeIn {
-    0% {
-      transform: scale(0.9); /* Start leicht kleiner */
-      opacity: 0; /* Unsichtbar */
-    }
-    50% {
-      transform: scale(1); /* In Position */
-      opacity: 0.5; /* Halb sichtbar */
-    }
-    100% {
-      transform: scale(1); /* Endzustand */
-      opacity: 1; /* Voll sichtbar */
-    }
+  50% {
+    transform: scale(1); /* In Position */
+    opacity: 0.5; /* Halb sichtbar */
   }
+  100% {
+    transform: scale(1); /* Endzustand */
+    opacity: 1; /* Voll sichtbar */
+  }
+}
 
-  /* KPI Cards */
-  .kpi-cards {
+/* KPI Cards */
+.kpi-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  .kpi-card {
     display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
 
-    .kpi-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-direction: column;
-
-      padding: 15px;
-
-      background-color: rgba(255, 255, 255, 0.06);
-      -webkit-backdrop-filter: blur(20px);
-      backdrop-filter: blur(20px);
-
-      border-radius: 8px;
-      -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
-      box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
-
-      h3 {
-        margin: 0 0 10px;
-        color: #ffffff;
-      }
-
-      p {
-        font-size: 24px;
-        color: #ffffff;
-      }
-    }
-  }
-
-  .go-calendar {
     padding: 15px;
+
     background-color: rgba(255, 255, 255, 0.06);
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
@@ -375,246 +375,256 @@ box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
     box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
 
-    color: white;
-    border: none;
-    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Weiche Animation */
-  }
+    h3 {
+      margin: 0 0 10px;
+      color: #ffffff;
+    }
 
-  .go-calendar:hover {
-    -webkit-box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8); /* Größerer & heller Schatten */
-    box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8);
-    transform: translateY(-3px); /* Leichtes Anheben */
-  }
-
-  .event-item {
-    display: flex;
-    justify-content: space-between;
-    .mat-icon {
-      color: #313132;
+    p {
+      font-size: 24px;
+      color: #ffffff;
     }
   }
+}
 
-  .events-wrapper {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    height: 280px;
-    width: 450px;
+.go-calendar {
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+
+  border-radius: 8px;
+  -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
+  box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
+
+  color: white;
+  border: none;
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* Weiche Animation */
+}
+
+.go-calendar:hover {
+  -webkit-box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8); /* Größerer & heller Schatten */
+  box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8);
+  transform: translateY(-3px); /* Leichtes Anheben */
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  .mat-icon {
+    color: #313132;
+  }
+}
+
+.events-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 280px;
+  width: 450px;
+}
+
+.no-events-div {
+  height: 280px;
+  background-color: rgba(135, 218, 246, 0.1);
+  width: 450px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.no-events-placeholder {
+  text-align: center;
+  vertical-align: middle;
+
+  font-size: 30px;
+  color: #4f9dff;
+}
+
+/* Upcoming Events */
+.upcoming-events {
+  width: 500px;
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  h3 {
+    color: #ffffff;
+    font-weight: 700;
   }
 
-  .no-events-div {
-    height: 280px;
-    background-color: rgba(135, 218, 246, 0.1);
-    width: 450px;
-    border-radius: 20px;
+  ul {
     display: flex;
     justify-content: center;
     align-items: center;
+    list-style: none;
+    padding: 0;
+    flex-wrap: wrap;
+    width: 700px !important;
+
+    li {
+      cursor: pointer;
+      margin-bottom: 10px;
+      margin-right: 10px;
+      border-radius: 5px;
+      width: 140px;
+      padding: 5px;
+
+      p {
+        color: #313132;
+      }
+
+      h4 {
+        color: #313132;
+      }
+    }
+  }
+}
+
+.date-div {
+  display: flex;
+}
+
+.event-webinar,
+.event-meeting,
+.event-workshop,
+.event-other {
+  position: relative;
+  background-color: #ffffff; /* Standardfarbe für alle Karten */
+  border-radius: 12px;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  transform: scale(1); /* Standardgröße */
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Leichter Schatten */
+
+  &:hover {
+    transform: scale(1.05); /* Vergrößerung beim Hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); /* Größerer Schatten beim Hover */
+  }
+}
+
+.event-webinar {
+  background-color: #3f51b5; /* Helles Grün */
+}
+
+.event-meeting {
+  background-color: #ff4081; /* Rot */
+}
+
+.event-workshop {
+  background-color: #fff; /* Pastell-Türkis */
+}
+
+.event-other {
+  background-color: #a3a3a6; /* Violett */
+}
+
+/* Logs Section */
+.logs-section {
+  overflow: hidden;
+  width: 350px;
+  height: calc(100vh - 230px);
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0.9); /* Start leicht kleiner */
+  opacity: 0;
+  animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
+  will-change: transform, opacity; /* Optimierung */
+
+  > h3 {
+    color: #ffffff;
+    font-weight: 700;
     margin-bottom: 20px;
   }
 
-  .no-events-placeholder {
-    text-align: center;
-    vertical-align: middle;
-   
-    font-size: 30px;
-    color: #4f9dff;  
-   
-   
-  }
-
-  /* Upcoming Events */
-  .upcoming-events {
-    width: 500px;
-    margin-top: 20px;
-
-   
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-    h3 {
-      color: #ffffff;
-      font-weight: 700;
-    }
-
-    ul {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      list-style: none;
-      padding: 0;
-      flex-wrap: wrap;
-      width: 700px !important;
-
-      li {
-        cursor: pointer;
-        margin-bottom: 10px;
-        margin-right: 10px;
-        border-radius: 5px;
-        width: 140px;
-        padding: 5px;
-
-        p {
-          color: #313132;
-        }
-
-        h4 {
-          color: #313132;
-        }
-      }
-    }
-  }
-
-  .date-div {
-    display: flex;
-  }
-
-  .event-webinar,
-  .event-meeting,
-  .event-workshop,
-  .event-other {
-    position: relative;
-    background-color: #ffffff; /* Standardfarbe für alle Karten */
-    border-radius: 12px;
-    color: #fff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    transform: scale(1); /* Standardgröße */
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Leichter Schatten */
-
-    &:hover {
-      transform: scale(1.05); /* Vergrößerung beim Hover */
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); /* Größerer Schatten beim Hover */
-    }
-  }
-
-  .event-webinar {
-    background-color: #3f51b5; /* Helles Grün */
-  }
-
-  .event-meeting {
-    background-color: #ff4081; /* Rot */
-  }
-
-  .event-workshop {
-    background-color: #fff; /* Pastell-Türkis */
-  }
-
-  .event-other {
-    background-color: #a3a3a6; /* Violett */
-  }
-
-  
-
-  /* Logs Section */
-  .logs-section {
+  ul {
+    list-style: none;
     overflow: hidden;
-    width: 350px;
-    height: calc(100vh - 230px);
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 30px;
-    margin-bottom: 30px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transform: scale(0.9); /* Start leicht kleiner */
-    opacity: 0;
-    animation: smoothFadeIn 0.8s ease-out forwards; /* Sanfter Übergang */
-    will-change: transform, opacity; /* Optimierung */
+    padding: 0;
+    height: 100%;
 
-    > h3 {
-      color: #ffffff;
-      font-weight: 700;
-      margin-bottom: 20px;
+    li {
+      margin-bottom: 10px;
+      padding-top: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-bottom: 0;
+      display: flex;
+      justify-content: space-between;
+
+      height: 60px;
+
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.06);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+
+      border-radius: 8px;
+      -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
+      box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
+
+      strong {
+        color: white;
+        font-weight: 400;
+      }
+
+      small {
+        color: white;
+      }
+      &.entity-user {
+        border-left: 5px solid #ffffff; /* Neutral Slate Blue */
+        box-shadow: -8px 0 8px -2px rgba(255, 255, 255, 0.4);
+      }
+
+      &.entity-customer {
+        border-left: 5px solid #68d391; /* Soft Mint Green */
+        box-shadow: -8px 0 8px -2px rgba(104, 211, 145, 0.4);
+      }
+
+      &.entity-event {
+        border-left: 5px solid #55b0f6; /* Modern Pastel Orange */
+        box-shadow: -8px 0 8px -2px rgba(85, 176, 246, 0.4);
+      }
+
+      &.entity-unknown {
+        border-left: 10px solid #cbd5e0; /* Light Neutral Gray */
+        box-shadow: -8px 0 8px -2px rgba(203, 213, 224, 0.4);
+      }
     }
 
-    ul {
-      list-style: none;
-      overflow: hidden;
- padding: 0;
-  height: 100%;
- 
+    .log-message {
+      display: flex;
+      align-items: center;
+    }
 
-      li {
-        margin-bottom: 10px;
-        padding-top: 10px;
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-bottom: 0;
-        display: flex;
-        justify-content: space-between;
-        
-        height: 60px;
+    .buttons-comtainer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
 
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.06);
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
+      a {
+        color: #4f9dff; /* Helles Blau */
 
-        border-radius: 8px;
-        -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
-        box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
+        white-space: nowrap;
+        text-decoration: none;
 
-        strong {
-          color: white;
-          font-weight: 400;
-        }
-
-        small {
-          color: white;
-        }
-        &.entity-user {
-          border-left: 5px solid #ffffff; /* Neutral Slate Blue */
-          box-shadow: -8px 0 8px -2px rgba(255, 255, 255, 0.4);
-        }
-        
-        &.entity-customer {
-          border-left: 5px solid #68D391; /* Soft Mint Green */
-          box-shadow: -8px 0 8px -2px rgba(104, 211, 145, 0.4);
-        }
-        
-        &.entity-event {
-          border-left: 5px solid #55b0f6; /* Modern Pastel Orange */
-          box-shadow: -8px 0 8px -2px rgba(85, 176, 246, 0.4);
-        }
-        
-        &.entity-unknown {
-          border-left: 10px solid #CBD5E0; /* Light Neutral Gray */
-          box-shadow: -8px 0 8px -2px rgba(203, 213, 224, 0.4);
-        }
-        
-      }
-
-      .log-message {
-        display: flex;
-        align-items: center;
-      }
-
-      .buttons-comtainer {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        justify-content: space-between;
-
-        a {
-          color: #4f9dff; /* Helles Blau */
-
-          white-space: nowrap;
-          text-decoration: none;
-
-          &:hover {
-            text-decoration: underline;
-          }
+        &:hover {
+          text-decoration: underline;
         }
       }
     }
   }
-
-
- 
-
-
+}
