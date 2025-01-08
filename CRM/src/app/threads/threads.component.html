@@ -80,16 +80,17 @@
     <!-- Liste der Threads -->
     <div class="thread-list">
       <h2>All Announcements</h2>
-    
-      <div *ngFor="let group of groupedThreads | keyvalue">
-        <h3 class="group-title">{{ group.key }}</h3> <!-- Gruppentitel (Today, Yesterday, etc.) -->
+      
+      <div *ngFor="let groupKey of getGroupKeys()">
+        <!-- Gruppentitel (Today, Yesterday, etc.) -->
+        <h3>{{ groupKey }}</h3>
         
         <div
-          *ngFor="let thread of group.value; let i = index"
-          [class.new-thread]="i === 0 && isNewThread"
-          (animationend)="resetNewThreadFlag()"
-          class="thread-item"
-        >
+  *ngFor="let thread of groupedThreads[groupKey]; let i = index"
+  [ngClass]="{ 'new-thread': i === 0 && isNewThread }"
+  class="thread-item"
+>
+
           <div class="thread-header">
             <div class="user">
               <div class="image-wrapper">
@@ -107,7 +108,12 @@
           <div class="thread-inhalt">
             <p class="thread-descrip">{{ thread.description }}</p>
             <div *ngIf="thread.imageUrl" class="thread-image">
-              <img  (click)="openImageDialog(thread.imageUrl)" [src]="thread.imageUrl" alt="Uploaded Thread Image" class="uploaded-image" />
+              <img 
+                (click)="openImageDialog(thread.imageUrl)" 
+                [src]="thread.imageUrl" 
+                alt="Uploaded Thread Image" 
+                class="uploaded-image" 
+              />
             </div>
           </div>
     
@@ -119,7 +125,12 @@
           </div>
         </div>
       </div>
+
+      <button *ngIf="lastVisible" (click)="loadMoreThreads()" class="load-more-button">
+        Load More Threads
+      </button>
     </div>
+    
     
       
   </div>

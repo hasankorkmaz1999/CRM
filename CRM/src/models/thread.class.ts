@@ -3,7 +3,7 @@ export class Thread {
    
     description: string; 
     createdBy: string;
-    createdAt: string;
+    createdAt: string | Date;
     commentCount?: number; 
     profilePicture?: string;
     imageUrl?: string;

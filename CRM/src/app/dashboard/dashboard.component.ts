@@ -21,7 +21,7 @@ import { Thread } from '../../models/thread.class';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit {
   events: Event[] = [];
   upcomingEvents: Event[] = [];
   totalEvents: number = 0;
@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   logs: any[] = [];
   visibleLogs: any[] = []; // Logs, die aktuell angezeigt werden
   maxVisibleLogs: number = 0; // Maximale Logs, die in den Bereich passen
-  @ViewChild('logsSection') logsSection!: ElementRef;
+ 
 
 
 
@@ -95,25 +95,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     
 
 
-    ngAfterViewInit(): void {
-      this.calculateVisibleLogs();
+   
 
-  // Füge einen Resize-Listener hinzu, um sichtbare Logs bei Größenänderung zu aktualisieren
-  window.addEventListener('resize', () => {
-    this.calculateVisibleLogs();
-  });
-    }
-
-    calculateVisibleLogs() {
-      if (!this.logsSection) return;
     
-      const logsSectionHeight = this.logsSection.nativeElement.offsetHeight;
-      const averageLogHeight = 60; // Höhe anpassen
-      this.maxVisibleLogs = Math.floor(logsSectionHeight / averageLogHeight);
-    
-    
-      this.visibleLogs = this.logs.slice(0, this.maxVisibleLogs);
-    }
 
     loadThreads() {
       const threadCollection = collection(this.firestore, 'threads');
@@ -141,7 +125,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         );
     
         this.logs = sortedLogs; // Speichere alle Logs
-        this.calculateVisibleLogs(); // Begrenze die Logs auf die sichtbare Anzahl
+      
       });
     }
     

@@ -1,12 +1,12 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { MatNativeDateModule } from '@angular/material/core'; // Wichtig!
+import { MatNativeDateModule } from '@angular/material/core';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { importProvidersFrom } from '@angular/core';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { provideAuth, getAuth } from '@angular/fire/auth'; // Neu importiert!
+import { initializeApp, provideFirebaseApp, FirebaseApp } from '@angular/fire/app';
+import { provideFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from '@angular/fire/firestore';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
@@ -14,8 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideRouter(routes),
     provideAnimationsAsync(),
-    importProvidersFrom(MatNativeDateModule), // Über `importProvidersFrom`
-// Direkt ohne `importProvidersFrom`
+    importProvidersFrom(MatNativeDateModule),
     provideFirebaseApp(() =>
       initializeApp({
         projectId: 'crm1-9fda4',
@@ -26,9 +25,12 @@ export const appConfig: ApplicationConfig = {
         messagingSenderId: '352496201349',
       })
     ),
-    provideFirestore(() => getFirestore()),
-    provideAuth(() => getAuth()), 
+    provideFirestore((injector) => {
+      const app = injector.get(FirebaseApp); // FirebaseApp aus dem Injector abrufen
+      return initializeFirestore(app, {
+        localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+      });
+    }),
+    provideAuth(() => getAuth()),
   ],
 };
-
- 

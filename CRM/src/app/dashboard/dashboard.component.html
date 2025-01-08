@@ -1,3 +1,6 @@
+<div class="dashboard-component">
+
+
 <div class="dashboard">
   <!-- KPI Cards -->
 
@@ -25,6 +28,87 @@
 
 
 <div class="middle-wrapper">
+
+  <div class="todos-section">
+
+
+    <div class="left-section-todo">
+      <div class="todo-header">
+        <h3>To-Dos</h3>
+  
+        <!-- Button, um ein To-Do hinzuzufügen -->
+        <button (click)="addTodo()" [disabled]="!todoInputValue" class="add-todo-btn">
+          <mat-icon class="add-button">add</mat-icon>
+        </button>
+      </div>
+  
+      <div class="todo-input-section">
+        <!-- Eingabefeld für das To-Do -->
+        <textarea
+          [(ngModel)]="todoInputValue"
+          placeholder="Enter a new task..."
+          name="title"
+          required
+          cdkTextareaAutosize
+          matInput
+          #autosize="cdkTextareaAutosize"
+          (input)="autosize.resizeToFitContent(true)"
+          class="todo-textarea"
+        ></textarea>
+      </div>
+    </div>
+    
+  
+  
+  
+    <div class="right-section-todo">
+  
+  <div class="todo-wrapper">
+  
+    <!-- Display To-Dos -->
+    <ul class="todo-list">
+      <li
+      *ngFor="let todo of todos; let i = index; trackBy: trackByTodoId"
+      [class.new-todo]="i === 0 && isNewTodo"
+      (animationend)="resetNewTodoFlag()"
+      class="todo-item"
+    >
+  
+    <div class="wrapper">
+        <label>
+          <input
+            type="checkbox"
+            [checked]="todo.completed"
+            (change)="toggleTodoCompletion(todo)"
+            class="custom-checkbox"
+          />
+         
+        </label>
+  
+        <span>{{ todo.description }}</span>
+      </div>
+  
+  
+  
+        <button (click)="deleteTodo(todo.id)" class="delete-btn">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </li>
+    </ul>
+    
+    
+    
+   
+  </div>
+  
+  <div class="progress-div">
+    <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
+    <p class="progress-text">{{ completedTasks }}/{{ totalTasks }} completed</p>
+    </div>
+  
+  </div>
+  
+  </div>
 
   <div class="events-container">
     <div class="kpi-cards">
@@ -87,17 +171,55 @@
 
 
 
+
+
+
+ 
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="right-section-noti ">
+
 <div class="threads-container">
   <h1>Latest Announcements</h1>
 
   <div class="threads">
 
 
-    <div class="singel-threads" *ngFor="let thread of threads.slice(0, 5)">
+    <div class="singel-threads" *ngFor="let thread of threads.slice(0, 4)">
     <div class="thread-header">  
+
+   <div class="user">
+      <div class="image-wrapper">
+        <img
+          [src]="thread.profilePicture || '/assets/img/user.png'"
+          class="profile-picture"
+          alt="Profile Picture"
+        />
+      </div> 
     <span>{{ thread.createdBy }}</span> 
-    <small>{{ thread.createdAt | date: 'MMM d, y, h:mm a' }}</small>
+
   </div>
+
+
+    <small>{{ thread.createdAt | date: 'MMM d, y' }}</small>
+     </div>
       <p>{{ thread.description | slice: 0:30 }}...</p>
       
      
@@ -105,108 +227,13 @@
 
   </div>
 
+  <button class="go-calendar" routerLink="/threads">
+    View All
+  </button>
+
 
 </div>
   
-
-
- 
-
-
-
-
-
-
-</div>
-
-
-<div class="todos-section">
-
-
-  <div class="left-section-todo">
-    <div class="todo-header">
-      <h3>To-Dos</h3>
-
-      <!-- Button, um ein To-Do hinzuzufügen -->
-      <button (click)="addTodo()" [disabled]="!todoInputValue" class="add-todo-btn">
-        <mat-icon class="add-button">add</mat-icon>
-      </button>
-    </div>
-
-    <div class="todo-input-section">
-      <!-- Eingabefeld für das To-Do -->
-      <textarea
-        [(ngModel)]="todoInputValue"
-        placeholder="Enter a new task..."
-        name="title"
-        required
-        cdkTextareaAutosize
-        matInput
-        #autosize="cdkTextareaAutosize"
-        (input)="autosize.resizeToFitContent(true)"
-        class="todo-textarea"
-      ></textarea>
-    </div>
-  </div>
-  
-
-
-
-  <div class="right-section-todo">
-
-<div class="todo-wrapper">
-
-  <!-- Display To-Dos -->
-  <ul class="todo-list">
-    <li
-    *ngFor="let todo of todos; let i = index; trackBy: trackByTodoId"
-    [class.new-todo]="i === 0 && isNewTodo"
-    (animationend)="resetNewTodoFlag()"
-    class="todo-item"
-  >
-
-  <div class="wrapper">
-      <label>
-        <input
-          type="checkbox"
-          [checked]="todo.completed"
-          (change)="toggleTodoCompletion(todo)"
-          class="custom-checkbox"
-        />
-       
-      </label>
-
-      <span>{{ todo.description }}</span>
-    </div>
-
-
-
-      <button (click)="deleteTodo(todo.id)" class="delete-btn">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </li>
-  </ul>
-  
-  
-  
- 
-</div>
-
-<div class="progress-div">
-  <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
-  <p class="progress-text">{{ completedTasks }}/{{ totalTasks }} completed</p>
-  </div>
-
-</div>
-
-</div>
-
-
-
-
-
-
-</div>
 
 
 
@@ -216,10 +243,10 @@
     <h3>Recent Activity Logs</h3>
     <ul>
       <li
-        class="list-elements"
-        *ngFor="let log of visibleLogs"
-        [ngClass]="'entity-' + (log.entityType?.toLowerCase() || 'unknown')"
-      >
+      class="list-elements"
+      *ngFor="let log of logs.slice(0, 5)"
+      [ngClass]="'entity-' + (log.entityType?.toLowerCase() || 'unknown')"
+    >
         <div class="log-message">
           <strong [innerHTML]="generateLogMessage(log)"></strong>
         </div>
@@ -234,6 +261,14 @@
       View All Logs
     </button>
   </div>
+</div>
+
+
+
+</div>
+
+
+
 </div>
 
 

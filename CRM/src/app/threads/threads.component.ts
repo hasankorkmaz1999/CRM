@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Thread } from '../../models/thread.class';
-import { addDoc, collection, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, getDocs, limit, orderBy, query, startAfter, updateDoc } from 'firebase/firestore';
 import { collectionData, Firestore } from '@angular/fire/firestore';
 import { AuthService } from '../shared/auth.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -34,10 +34,11 @@ export class ThreadsComponent implements OnInit {
 
 
   threads: Thread[] = [];
-  newThread: Partial<Thread> = {description: ''};
+  newThread: Partial<Thread> = { description: '' };
+
   groupedThreads: { [key: string]: Thread[] } = {};
 
-
+  lastVisible: any = null; 
 
 
   loading = false;
@@ -72,133 +73,173 @@ export class ThreadsComponent implements OnInit {
     this.loadThreads();
   }
 
-  loadThreads() {
+
+
+
+  async loadThreads() {
+    this.loading = true;
     const threadCollection = collection(this.firestore, 'threads');
-    collectionData(threadCollection, { idField: 'threadId' }).subscribe((data) => {
-      this.threads = (data as Thread[]).sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-      this.groupThreadsByDate();
+    let threadQuery = query(threadCollection, orderBy('createdAt', 'desc'), limit(10));
+
+    // Wenn wir bereits Threads geladen haben, den letzten Thread als Startpunkt verwenden
+    if (this.lastVisible) {
+      threadQuery = query(threadCollection, orderBy('createdAt', 'desc'), startAfter(this.lastVisible), limit(10));
+    }
+
+    const snapshot = await getDocs(threadQuery);
+
+    const threads = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return new Thread({
+        threadId: doc.id,
+        ...data,
+        createdAt: data['createdAt']?.toDate ? data['createdAt'].toDate() : new Date(data['createdAt']),
+      });
     });
+
+    // Wenn keine Threads mehr da sind, keinen weiteren "Load More"-Button anzeigen
+    if (snapshot.docs.length > 0) {
+      this.lastVisible = snapshot.docs[snapshot.docs.length - 1]; // Speichern des letzten geladenen Dokuments
+    } else {
+      this.lastVisible = null;
+    }
+
+    this.threads = [...this.threads, ...threads]; // Neue Threads an die bestehende Liste anhängen
+    this.groupedThreads = this.groupThreadsByDate(this.threads); // Threads gruppieren
+    this.loading = false;
   }
-
-
-  groupThreadsByDate(): void {
+  
+  
+  groupThreadsByDate(threads: Thread[]): { [key: string]: Thread[] } {
+    const grouped: { [key: string]: Thread[] } = {};
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
-
-    this.groupedThreads = this.threads.reduce((groups, thread) => {
+  
+    const datePipe = new DatePipe('en-US'); // Verwende englisches Datumsformat
+  
+    threads.forEach((thread) => {
       const threadDate = new Date(thread.createdAt);
-      let groupKey = '';
-
-      if (this.isSameDate(threadDate, today)) {
-        groupKey = 'Today';
-      } else if (this.isSameDate(threadDate, yesterday)) {
-        groupKey = 'Yesterday';
+      let dateKey: string;
+  
+      if (threadDate.toDateString() === today.toDateString()) {
+        dateKey = 'Today';
+      } else if (threadDate.toDateString() === yesterday.toDateString()) {
+        dateKey = 'Yesterday';
       } else {
-        groupKey = this.datePipe.transform(threadDate, 'MMMM d, y') || 'Older';
+        dateKey = datePipe.transform(threadDate, 'MMM d, y') || threadDate.toLocaleDateString();
       }
-
-      if (!groups[groupKey]) {
-        groups[groupKey] = [];
+  
+      if (!grouped[dateKey]) {
+        grouped[dateKey] = [];
       }
+      grouped[dateKey].push(thread);
+    });
+  
+    return grouped;
+  }
+  
 
-      groups[groupKey].push(thread);
 
-      return groups;
-    }, {} as { [key: string]: Thread[] });
+
+  getGroupKeys(): string[] {
+    return Object.keys(this.groupedThreads);
+  }
+  
+  
+  
+  loadMoreThreads() {
+    if (this.lastVisible) {
+      this.loadThreads(); // Lädt weitere Threads
+    }
   }
 
-  isSameDate(date1: Date, date2: Date): boolean {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
-  }
+
+
+
+  
+ 
 
   createThread() {
     if (this.newThread.description) {
       this.loading = true; // Progressbar anzeigen
       const threadCollection = collection(this.firestore, 'threads');
-
-      // Falls kein Bild ausgewählt wurde, speichere nur den Thread
+  
       if (!this.selectedFile) {
         this.saveThread(threadCollection, null, this.currentUserProfilePicture);
-        this.loading = false; // Progressbar ausblenden
         return;
       }
-
-      // Bild bei Cloudinary hochladen
+  
       const formData = new FormData();
       formData.append('file', this.selectedFile);
       formData.append('upload_preset', 'simple-crm');
-
+  
       this.http.post('https://api.cloudinary.com/v1_1/drzrzowgj/image/upload', formData).subscribe({
         next: (response: any) => {
-          console.log('Image uploaded successfully:', response.secure_url);
           this.saveThread(threadCollection, response.secure_url, this.currentUserProfilePicture);
         },
         error: (error) => {
           console.error('Error uploading image:', error);
           alert('Failed to upload image. Please try again.');
-        },
-        complete: () => {
-          this.loading = false; // Progressbar ausblenden
+          this.loading = false;
         },
       });
     }
   }
-
+  
   private saveThread(
     threadCollection: any,
     imageUrl: string | null,
     profilePicture: string | null
   ): void {
     const threadToSave = {
-      description: this.newThread.description,
+      description: this.newThread.description || '', // Fallback auf leeren String
       createdBy: this.currentUserName,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(), // ISO-String für Firebase
       commentCount: 0,
       profilePicture: profilePicture,
       imageUrl: imageUrl,
     };
-
+  
     addDoc(threadCollection, threadToSave)
       .then((docRef) => {
         console.log('Thread successfully created with ID:', docRef.id);
-        const threadId = docRef.id;
-
-        const newThread = {
+  
+        // Füge den neuen Thread lokal hinzu
+        const newThread: Thread = new Thread({
+          threadId: docRef.id,
           ...threadToSave,
-          threadId: threadId,
-        };
-
-        // Füge den neuen Thread hinzu und setze `isNewThread`
-        this.threads = [newThread as Thread, ...this.threads];
-        this.isNewThread = true;
-
-        // Aktualisiere die threadId in Firestore
-        return updateDoc(docRef, { threadId });
-      })
-      .then(() => {
-        console.log('Thread ID updated successfully.');
-        this.newThread = { description: '' };
-        this.selectedFile = null;
-        this.selectedFilePreview = null;
+          createdAt: new Date(), // Lokale Darstellung als Date
+        });
+  
+        this.threads.unshift(newThread); // Neuen Thread an den Anfang der Liste einfügen
+        this.groupedThreads = this.groupThreadsByDate(this.threads); // Threads neu gruppieren
+  
+        this.isNewThread = true; // Animation für neuen Thread auslösen
+        setTimeout(() => {
+          this.isNewThread = false; // Zustand nach Animation zurücksetzen
+        }, 1000); // Nach 1 Sekunde zurücksetzen
       })
       .catch((error) => {
         console.error('Error creating/updating thread:', error);
       })
       .finally(() => {
-        this.loading = false; // Progressbar ausblenden
+        this.loading = false;
+        this.newThread = { description: '' }; // Form zurücksetzen
+        this.selectedFile = null;
+        this.selectedFilePreview = null;
       });
   }
+  
+  
+  
+  
+  
 
 
   trackByThreadId(index: number, thread: any): string {
     return thread.threadId; // Eindeutige ID des Threads
+    
   }
   
 
@@ -216,13 +257,21 @@ export class ThreadsComponent implements OnInit {
       event.stopPropagation();
     }
     console.log('Opening thread comments:', thread);
-
-    this.dialog.open(ThreadsCommentsComponent, {
+  
+    const dialogRef = this.dialog.open(ThreadsCommentsComponent, {
       data: { threadId: thread.threadId, threadDescription: thread.description },
       width: '600px',
       autoFocus: false,
     });
+  
+    const instance = dialogRef.componentInstance;
+    instance.commentAdded.subscribe(() => {
+      // Kommentar wurde hinzugefügt, aktualisiere den commentCount
+      thread.commentCount = (thread.commentCount || 0) + 1;
+    });
   }
+  
+  
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
