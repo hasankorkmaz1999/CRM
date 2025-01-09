@@ -1,11 +1,11 @@
 export class Todo {
-  id?: string; // Optionale ID, die von Firestore generiert wird
+  id: string; // Optionale ID, die von Firestore generiert wird
  
   description?: string; // Beschreibung der Aufgabe
   completed: boolean; // Status der Aufgabe (erledigt oder nicht)
   createdAt: string ; // Erstellungsdatum kann ein String oder Date sein
   userId: string; // ID des Benutzers, dem die Aufgabe gehört
-  
+  priority: string;
 
   constructor(obj?: any) {
     this.id = obj?.id;
@@ -14,7 +14,7 @@ export class Todo {
     this.completed = obj?.completed || false;
     this.createdAt = obj?.createdAt || new Date().toISOString();// Immer in ein Date umwandeln
     this.userId = obj?.userId || '';
-   
+    this.priority = obj?.priority || 'medium';
   }
 }
 

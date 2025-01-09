@@ -49,6 +49,8 @@ export class DashboardComponent implements OnInit {
 
 
   isNewTodo: boolean = false;
+  todoInputValue: string = ''; 
+  selectedPriority: string = 'medium'; 
 
 
   threads: Thread[] = []; 
@@ -139,18 +141,15 @@ export class DashboardComponent implements OnInit {
       this.progressValue = this.totalTasks > 0 ? (this.completedTasks / this.totalTasks) * 100 : 0;
     }
   
-    trackByTodoId(index: number, todo: any): string {
-      return todo.id; // Eindeutige ID für jedes To-Do
-    }
+    
     
 
 
     loadTodos() {
       const todosCollection = collection(this.firestore, 'todos');
       collectionData(todosCollection, { idField: 'id' }).subscribe((data) => {
-        this.todos = (data as Todo[])
-          .filter((todo) => todo.userId === this.userId)
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        // Hier stellen wir sicher, dass jedes Todo korrekt die ID zugewiesen bekommt
+        this.todos = (data as Todo[]).filter((todo) => todo.userId === this.userId);
         this.updateProgressBar();
       });
     }
@@ -159,12 +158,14 @@ export class DashboardComponent implements OnInit {
     
     
     
+    setPriority(priority: string): void {
+      this.selectedPriority = priority;
+    }
     
     
     
-    
-    
-    todoInputValue: string = ''; // Variable für das Eingabefeld
+   
+    newTodo: Partial<Todo> = { description: '' };
 
     addTodo() {
       if (!this.userId) {
@@ -178,40 +179,53 @@ export class DashboardComponent implements OnInit {
       }
     
       const newTodo: Omit<Todo, 'id'> = {
-        description: this.todoInputValue.trim(), // Beschreibung der Aufgabe
+        description: this.todoInputValue.trim(),
         completed: false,
         userId: this.userId,
-        createdAt: new Date().toISOString(), // In String umwandeln (ISO-Format)
+        createdAt: new Date().toISOString(),
+        priority: this.selectedPriority,
       };
     
       const todosCollection = collection(this.firestore, 'todos');
       addDoc(todosCollection, newTodo).then((docRef) => {
-        // Eingabefeld leeren
+        // Eingabefeld und Priorität zurücksetzen
         this.todoInputValue = '';
+        this.selectedPriority = 'medium';
     
-        // Neues Todo der Liste hinzufügen
-        this.todos = [
-          new Todo({ ...newTodo, id: docRef.id }), // Erstellt eine neue Todo-Instanz
-          ...this.todos,
-        ].sort(
-          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        ); // Sortierung nach `createdAt`
+        // Neues Todo mit ID erstellen
+        const newTodoWithId = new Todo({
+          ...newTodo,
+          id: docRef.id, // ID des Dokuments
+        });
+    
+        // Neues Todo oben in der Liste hinzufügen
+        this.todos = [newTodoWithId, ...this.todos];
+    
+        // Animations-Flag setzen
+        this.isNewTodo = true;
+        setTimeout(() => {
+          this.isNewTodo = false; // Flag nach der Animation zurücksetzen
+        }, 800); // Dauer der Animation
     
         console.log('Neues Todo erfolgreich hinzugefügt:', docRef.id);
-        this.updateProgressBar(); // Fortschrittsanzeige aktualisieren
+    
+        // Fortschrittsanzeige aktualisieren
+        this.updateProgressBar();
+      }).catch((error) => {
+        console.error('Fehler beim Hinzufügen des Todos:', error);
       });
     }
     
     
     
     
-
-    resetNewTodoFlag(): void {
-      setTimeout(() => {
-        this.isNewTodo = false; // Entferne das Flag nach der Animation
-      }, 800); // Wartezeit entsprechend der CSS-Animation
-    }
     
+    
+    
+    trackByTodoId(index: number, todo: any): string {
+      return todo.id; // Eindeutige ID für jedes To-Do
+    }
+   
     
     
     

@@ -24,14 +24,17 @@
 
 
 
-  .mwl-calendar-month-view-header {
-    background-color: transparent !important;
-  }
+  
   
 
   html,
 body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400; /* Du kannst auch ein anderes Gewicht wählen */
+}
+
+*,
+*::before,
+*::after {
+  font-family: 'Poppins', sans-serif;
 }

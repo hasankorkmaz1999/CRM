@@ -1,276 +1,292 @@
 <div class="dashboard-component">
+  <div class="dashboard">
+    <!-- KPI Cards -->
 
+    <div class="left-wrapper">
+      <div class="quick-actions-container">
+        <button (click)="goToUserAndOpenDialog()">
+          <mat-icon>person_add</mat-icon>
+          Add New User
+        </button>
 
-<div class="dashboard">
-  <!-- KPI Cards -->
+        <button (click)="goToCustomerAndOpenDialog()">
+          <mat-icon>group_add</mat-icon>
+          Add New Customer
+        </button>
 
-
-  <div class="left-wrapper">
-
-
-    <div class="quick-actions-container">
-      <button  (click)="goToUserAndOpenDialog()">
-        <mat-icon>person_add</mat-icon>
-        Add New User
-      </button>
-  
-      <button  (click)="goToCustomerAndOpenDialog()">
-        <mat-icon>group_add</mat-icon>
-        Add New Customer
-      </button>
-      
-      <button  (click)="goToEventAndOpenDialog()">
-        <mat-icon>event</mat-icon>
-        Add New Event
-      </button>
-      
-    </div>
-
-
-<div class="middle-wrapper">
-
-  <div class="todos-section">
-
-
-    <div class="left-section-todo">
-      <div class="todo-header">
-        <h3>To-Dos</h3>
-  
-        <!-- Button, um ein To-Do hinzuzufügen -->
-        <button (click)="addTodo()" [disabled]="!todoInputValue" class="add-todo-btn">
-          <mat-icon class="add-button">add</mat-icon>
+        <button (click)="goToEventAndOpenDialog()">
+          <mat-icon>event</mat-icon>
+          Add New Event
         </button>
       </div>
-  
-      <div class="todo-input-section">
-        <!-- Eingabefeld für das To-Do -->
-        <textarea
-          [(ngModel)]="todoInputValue"
-          placeholder="Enter a new task..."
-          name="title"
-          required
-          cdkTextareaAutosize
-          matInput
-          #autosize="cdkTextareaAutosize"
-          (input)="autosize.resizeToFitContent(true)"
-          class="todo-textarea"
-        ></textarea>
-      </div>
-    </div>
-    
-  
-  
-  
-    <div class="right-section-todo">
-  
-  <div class="todo-wrapper">
-  
-    <!-- Display To-Dos -->
-    <ul class="todo-list">
-      <li
-      *ngFor="let todo of todos; let i = index; trackBy: trackByTodoId"
-      [class.new-todo]="i === 0 && isNewTodo"
-      (animationend)="resetNewTodoFlag()"
-      class="todo-item"
-    >
-  
-    <div class="wrapper">
-        <label>
-          <input
-            type="checkbox"
-            [checked]="todo.completed"
-            (change)="toggleTodoCompletion(todo)"
-            class="custom-checkbox"
-          />
-         
-        </label>
-  
-        <span>{{ todo.description }}</span>
-      </div>
-  
-  
-  
-        <button (click)="deleteTodo(todo.id)" class="delete-btn">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </li>
-    </ul>
-    
-    
-    
-   
-  </div>
-  
-  <div class="progress-div">
-    <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
-    <p class="progress-text">{{ completedTasks }}/{{ totalTasks }} completed</p>
-    </div>
-  
-  </div>
-  
-  </div>
 
-  <div class="events-container">
-    <div class="kpi-cards">
-      <div class="kpi-card">
-        <h3>Total Events</h3>
-        <p>{{ totalEvents }}</p>
-      </div>
-      <div class="kpi-card">
-        <h3>Events Today</h3>
-        <p>{{ eventsToday }}</p>
-      </div>
-      <div class="kpi-card">
-        <h3>Events This Week</h3>
-        <p>{{ eventsThisWeek }}</p>
-      </div>
-    </div>
 
-    <div class="upcoming-events">
-      <h3>Upcoming Events</h3>
-    
-      <!-- Wenn keine Events vorhanden sind -->
-      <div *ngIf="!upcomingEvents || upcomingEvents.length === 0" class="no-events-div">
-        <p class="no-events-placeholder">
-          No upcoming events
-        </p>
-      </div>
-    
-      <!-- Wenn Events vorhanden sind -->
-      <div *ngIf="upcomingEvents && upcomingEvents.length > 0" class="events-wrapper">
-        <ul>
-          <li
-            *ngFor="let event of upcomingEvents; let i = index"
-            (click)="openEventDetails(event)"
-            [ngClass]="getEventClass(event.type)"
-            [matTooltip]="isEventToday(event.date) && event.id ? 'Starts in: ' + (countdowns[event.id] || 'Ended') : ''"
-            matTooltipPosition="above"
-          >
-            <div class="event-item">
-              <h4>{{ event.type }}</h4>
-              <mat-icon>event</mat-icon>
+
+
+      <div class="middle-wrapper">
+
+
+
+
+
+
+
+        <div class="todos-section">
+          <div class="todo-header">
+            <h3>To-Dos</h3>
+
+            <!-- Button, um ein To-Do hinzuzufügen -->
+
+            <div class="task-div">
+              <!-- Eingabefeld für das To-Do -->
+              <div class="textarea-container">
+                <textarea
+                  [(ngModel)]="todoInputValue"
+                  placeholder="Enter a new task..."
+                  name="title"
+                  required
+                  cdkTextareaAutosize
+                  matInput
+                  #autosize="cdkTextareaAutosize"
+                  (input)="autosize.resizeToFitContent(true)"
+                  class="todo-textarea"
+                ></textarea>
+                <!-- Button innerhalb des Containers -->
+                <button
+                  (click)="addTodo()"
+                  [disabled]="!todoInputValue"
+                  class="add-todo-btn"
+                >
+                  <mat-icon class="add-button">add</mat-icon>
+                </button>
+              </div>
+
+              <!-- Buttons für Prioritäten -->
+              <div class="priority-buttons">
+                <h2>Priority</h2>
+                <button
+                  type="button"
+                  [class.selected]="selectedPriority === 'high'"
+                  (click)="setPriority('high')" class="priority-button high">
+                  <img src="/assets/img/iconPrioUrgent.svg" alt="" />
+                </button>
+                <button
+                  type="button"
+                  [class.selected]="selectedPriority === 'medium'"
+                  (click)="setPriority('medium')"
+                  class="priority-button medium">
+                  <img src="/assets/img/iconPrioMedium.svg" alt="" />
+                </button>
+                <button
+                  type="button"
+                  [class.selected]="selectedPriority === 'low'"
+                  (click)="setPriority('low')"
+                  class="priority-button low">
+                  <img src="/assets/img/iconPrioLow.svg" alt="" />
+                </button>
+              </div>
             </div>
-            <div class="date-div">
-              <p>{{ event.date | date : 'MMMM d, y' }}</p>
+          </div>
+
+          <div class="todo-bottom"></div>
+
+          <div class="todo-wrapper">
+            <!-- Display To-Dos -->
+            <div class="todo-list">
+              <div
+              *ngFor="let todo of todos; let i = index; trackBy: trackByTodoId"
+              [ngClass]="{ 'new-todo': isNewTodo && i === 0 }"
+              class="todo-item"
+            >
+                   
+                <div class="wrapper">
+                  <label>
+                    <input
+                      type="checkbox"
+                      [checked]="todo.completed"
+                      (change)="toggleTodoCompletion(todo)"
+                      class="custom-checkbox"
+                    />
+                  </label>
+                </div>
+          
+                <!-- Anzeige der Priorität -->
+                <div class="description-wrapper">
+                  <span class="todo-descrip">{{ todo.description }}</span>
+                </div>
+          
+                <div class="li-right">
+                  <span class="priority-label">
+                    <img
+                      *ngIf="todo.priority === 'high'"
+                      src="/assets/img/iconPrioUrgent.svg"
+                      alt="High Priority"
+                      class="priority-icon"
+                    />
+                    <img
+                      *ngIf="todo.priority === 'medium'"
+                      src="/assets/img/iconPrioMedium.svg"
+                      alt="Medium Priority"
+                      class="priority-icon"
+                    />
+                    <img
+                      *ngIf="todo.priority === 'low'"
+                      src="/assets/img/iconPrioLow.svg"
+                      alt="Low Priority"
+                      class="priority-icon"
+                    />
+                  </span>
+          
+                  <button (click)="deleteTodo(todo.id)" class="delete-btn">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
             </div>
-            <div>
-              <p>{{ event.time }}</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    
-      <button class="go-calendar" routerLink="/calendar-angular">
-        Go to Calendar
-      </button>
-    </div>
-    
-    
-  </div>
+          </div>
 
-
-
-
-
-
-
- 
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-</div>
-
-
-<div class="right-section-noti ">
-
-<div class="threads-container">
-  <h1>Latest Announcements</h1>
-
-  <div class="threads">
-
-
-    <div class="singel-threads" *ngFor="let thread of threads.slice(0, 4)">
-    <div class="thread-header">  
-
-   <div class="user">
-      <div class="image-wrapper">
-        <img
-          [src]="thread.profilePicture || '/assets/img/user.png'"
-          class="profile-picture"
-          alt="Profile Picture"
-        />
-      </div> 
-    <span>{{ thread.createdBy }}</span> 
-
-  </div>
-
-
-    <small>{{ thread.createdAt | date: 'MMM d, y' }}</small>
-     </div>
-      <p>{{ thread.description | slice: 0:30 }}...</p>
-      
-     
-    </div>
-
-  </div>
-
-  <button class="go-calendar" routerLink="/threads">
-    View All
-  </button>
-
-
-</div>
-  
-
-
-
- <!-- Upcoming Events -->
- <div class="logs-section-wrapper">
-  <div class="logs-section" #logsSection>
-    <h3>Recent Activity Logs</h3>
-    <ul>
-      <li
-      class="list-elements"
-      *ngFor="let log of logs.slice(0, 5)"
-      [ngClass]="'entity-' + (log.entityType?.toLowerCase() || 'unknown')"
-    >
-        <div class="log-message">
-          <strong [innerHTML]="generateLogMessage(log)"></strong>
+          <div class="progress-div">
+            <mat-progress-bar
+              mode="determinate"
+              [value]="progressValue"
+            ></mat-progress-bar>
+            <p class="progress-text">
+              {{ completedTasks }}/{{ totalTasks }} completed
+            </p>
+          </div>
         </div>
-       
-      </li>
-    </ul>
-    <button
-      *ngIf="logs.length > visibleLogs.length"
-      class="go-calendar"
-      (click)="navigateToAllLogs()"
-    >
-      View All Logs
-    </button>
+
+
+
+
+
+
+
+
+
+        <div class="events-container">
+          <div class="kpi-cards">
+            <div class="kpi-card">
+              <h3>Total Events</h3>
+              <p>{{ totalEvents }}</p>
+            </div>
+            <div class="kpi-card">
+              <h3>Events Today</h3>
+              <p>{{ eventsToday }}</p>
+            </div>
+            <div class="kpi-card">
+              <h3>Events This Week</h3>
+              <p>{{ eventsThisWeek }}</p>
+            </div>
+          </div>
+
+          <div class="upcoming-events">
+            <h3>Upcoming Events</h3>
+
+            <!-- Wenn keine Events vorhanden sind -->
+            <div
+              *ngIf="!upcomingEvents || upcomingEvents.length === 0"
+              class="no-events-div"
+            >
+              <p class="no-events-placeholder">No upcoming events</p>
+            </div>
+
+            <!-- Wenn Events vorhanden sind -->
+            <div
+              *ngIf="upcomingEvents && upcomingEvents.length > 0"
+              class="events-wrapper"
+            >
+              <li
+                *ngFor="let event of upcomingEvents; let i = index"
+                (click)="openEventDetails(event)"
+                [ngClass]="getEventClass(event.type)"
+                [matTooltip]="
+                  isEventToday(event.date) && event.id
+                    ? 'Starts in: ' + (countdowns[event.id] || 'Ended')
+                    : ''
+                "
+                matTooltipPosition="above"
+              >
+                <div class="event-item">
+                  <h4>{{ event.type }}</h4>
+                  <mat-icon>event</mat-icon>
+                </div>
+                <div class="date-div">
+                  <p>{{ event.date | date : "MMMM d, y" }}</p>
+                </div>
+                <div>
+                  <p>{{ event.time }}</p>
+                </div>
+              </li>
+
+              <div class="button-div">
+                <button class="go-calendar" routerLink="/calendar-angular">
+                  Go to Calendar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-section-noti">
+      <div class="threads-container">
+        <h1>Latest Announcements</h1>
+
+        <div class="threads">
+          <div
+            class="singel-threads"
+            *ngFor="let thread of threads.slice(0, 4)"
+          >
+            <div class="thread-header">
+              <div class="user">
+                <div class="image-wrapper">
+                  <img
+                    [src]="thread.profilePicture || '/assets/img/user.png'"
+                    class="profile-picture"
+                    alt="Profile Picture"
+                  />
+                </div>
+                <span>{{ thread.createdBy }}</span>
+              </div>
+
+              <small>{{ thread.createdAt | date : "MMM d, y" }}</small>
+            </div>
+            <p>{{ thread.description | slice : 0 : 30 }}...</p>
+          </div>
+        </div>
+
+        <button class="go-class" routerLink="/threads">View All</button>
+      </div>
+
+      <div class="logs-section-wrapper">
+        <div class="logs-section" #logsSection>
+          <h3>Recent Activity Logs</h3>
+          <ul>
+            <li
+              class="list-elements"
+              *ngFor="let log of logs.slice(0, 5)"
+              [ngClass]="
+                'entity-' + (log.entityType?.toLowerCase() || 'unknown')
+              "
+            >
+              <div class="log-message">
+                <strong [innerHTML]="generateLogMessage(log)"></strong>
+              </div>
+            </li>
+          </ul>
+          <button
+            *ngIf="logs.length > visibleLogs.length"
+            class="go-class"
+            (click)="navigateToAllLogs()"
+          >
+            View All Logs
+          </button>
+        </div>
+      </div>
+
+      <!-- Upcoming Events -->
+    </div>
   </div>
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
 </div>
