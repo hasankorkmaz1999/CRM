@@ -3,7 +3,7 @@
   padding: 36px;
   justify-content: center;
   align-items: center;
-
+  background-color: #0f0f0f
  
 }
 
@@ -47,7 +47,7 @@ align-items: flex-start;
   height: 600px;
   background-color: transparent;
  
-  margin-bottom: 30px;
+  
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -57,6 +57,8 @@ align-items: flex-start;
   will-change: transform, opacity; /* Optimierung */
  border-bottom: 1px solid rgba(95, 93, 93, 0.4);
   h1 {
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
     color: white;
     margin-bottom: 30px;
   }
@@ -288,7 +290,7 @@ overflow-x: hidden;
     transform: translateY(-200px) scale(0.5); /* Start weit oben und kleiner */
     opacity: 0;
   }
-  20% {
+  50% {
     transform: translateY(-20px) scale(1.1); /* Kurz nach vorne (überziehen) */
     opacity: 0.5;
   }
@@ -570,9 +572,10 @@ overflow-x: hidden;
 
 
 .no-events-div {
-  height: 280px;
-  background-color: rgba(135, 218, 246, 0.1);
-  width: 450px;
+  height: 600px;
+  background-color: rgba(41, 97, 158, 0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+  width: 630px !important;
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -585,7 +588,7 @@ overflow-x: hidden;
   vertical-align: middle;
 
   font-size: 30px;
-  color: #4f9dff;
+  color: #ffffff;
 }
 
 /* Upcoming Events */
@@ -608,10 +611,11 @@ overflow-x: hidden;
   .events-wrapper {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     list-style: none;
     padding: 0;
     flex-wrap: wrap;
+    height: 650px;
     width: 630px !important;
 
     li {
@@ -659,32 +663,58 @@ justify-content: space-between;
   transform: scale(1); /* Standardgröße */
   transition: transform 0.5s ease, box-shadow 0.5s ease, background-color 0.5s ease;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Leichter Schatten */
+  overflow: hidden; /* Verhindert, dass das Pseudo-Element aus der Karte herausragt */
 }
 
 .event-webinar:hover,
 .event-meeting:hover,
 .event-workshop:hover,
 .event-other:hover {
-  background-color: transparent; /* Bleibt transparent, bis der Hover-Effekt kommt */
   transform: scale(1.05); /* Vergrößerung beim Hover */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); /* Größerer Schatten beim Hover */
 }
 
-.event-webinar:hover {
-  background: #3f51b5; /* Hintergrund für Webinar */
+/* Gemeinsamer Stil für das Pseudo-Element */
+.event-webinar::before,
+.event-meeting::before,
+.event-workshop::before,
+.event-other::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%; /* Nur obere linke Ecke initial einfärben */
+  height: 30%;
+  transition: width 0.5s ease, height 0.5s ease, background-color 0.5s ease;
+  z-index: -1; /* Hinter dem eigentlichen Inhalt */
 }
 
-.event-meeting:hover {
-  background: #68d391; /* Hintergrund für Meeting */
+/* Hintergrundfarben für die Pseudo-Elemente */
+.event-webinar::before {
+  background: #3f51b5; /* Hintergrundfarbe für Webinar */
 }
 
-.event-workshop:hover {
-  background: #ee00ff; /* Hintergrund für Workshop */
+.event-meeting::before {
+  background: #68d391; /* Hintergrundfarbe für Meeting */
 }
 
-.event-other:hover {
-  background: #e9bc09; /* Hintergrund für andere Events */
+.event-workshop::before {
+  background: #ee00ff; /* Hintergrundfarbe für Workshop */
 }
+
+.event-other::before {
+  background: #e9bc09; /* Hintergrundfarbe für andere Events */
+}
+
+/* Hover-Effekt: Füllt die gesamte Karte mit der Hintergrundfarbe */
+.event-webinar:hover::before,
+.event-meeting:hover::before,
+.event-workshop:hover::before,
+.event-other:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
 
 
 /* Logs Section */
@@ -706,8 +736,9 @@ justify-content: space-between;
   will-change: transform, opacity; /* Optimierung */
 
   > h3 {
+    font-size: 20px;
     color: #ffffff;
-    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
     margin-bottom: 20px;
   }
 
@@ -722,7 +753,7 @@ justify-content: space-between;
       padding-top: 10px;
       padding-left: 10px;
       padding-right: 10px;
-      padding-bottom: 0;
+      padding-bottom: 10px;
       display: flex;
       justify-content: space-between;
 

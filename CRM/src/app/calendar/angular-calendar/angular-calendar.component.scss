@@ -39,11 +39,11 @@
   
 
 ::ng-deep .cal-month-view {
-    background-color: #181818 !important;
+  background-color: #0f0f0f !important;
 }
 
  ::ng-deep .cal-month-view .cal-cell {
-    background-color: #181818 !important; 
+  background-color: #0f0f0f!important; 
     color: rgb(255, 255, 255) !important; 
     border: none !important;
   } 
@@ -184,10 +184,11 @@ margin-right: 10px;
     border-radius: 10px;
     position: relative;
     width: 300px; // Breite der Sidebar
-    background-color: rgba(107, 107, 107, 0.2);
+    background-color: transparent;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
     color: white;
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); // Schatten für die Sidebar
+   
     height: 800px; // Volle Höhe für die Sidebar
     overflow-y: auto; // Scrollbar für Inhalte
 overflow-x: hidden;

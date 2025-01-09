@@ -43,24 +43,39 @@
   </div>
 
   <div class="event-row">
-    <div class="icon-wrapper">
-      <mat-icon>group</mat-icon>
-    </div>
+   
     <div class="details">
       <span class="label">Participants:</span>
-      <p *ngIf="data.users?.length > 0">{{ data.users.join(', ') }}</p>
+      <div *ngIf="data.users?.length > 0" class="participants-list">
+        <div *ngFor="let user of data.users" class="participant-item">
+          <div class="participant-details">
+            <div class="image-wrapper">
+              <img [src]="user.profilePicture" class="profile-picture" alt="Profile Picture" />
+            </div>
+            <span class="participant-name">{{ user.name }}</span>
+          </div>
+        </div>
+      </div>
+     
     </div>
   </div>
-
+  
   <div class="event-row">
-    <div class="icon-wrapper">
-      <mat-icon>account_circle</mat-icon>
-    </div>
     <div class="details">
       <span class="label">Created By:</span>
-      <p>{{ data.createdBy }}</p>
+
+
+      <div class="participant-details">
+
+      <div class="image-wrapper">
+      <img [src]="data.createdBy.profilePicture" class="profile-picture" alt="Creator Profile Picture" />
+    </div>
+    <span class="participant-name">{{ data.createdBy.name }}</span>
+  </div>
+      
     </div>
   </div>
+  
 </div>
 
 

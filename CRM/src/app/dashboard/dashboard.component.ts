@@ -20,7 +20,7 @@ import { Thread } from '../../models/thread.class';
   imports: [SharedModule, EventDetailsComponent, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+ 
 })
 export class DashboardComponent implements OnInit {
   events: Event[] = [];
@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
       private router: Router,
       private fb: FormBuilder,
       private authService: AuthService,
-      private cdr: ChangeDetectorRef
+   
     ) {
       this.todoForm = this.fb.group({
         title: ['', [Validators.required, Validators.minLength(1)]],
@@ -93,9 +93,9 @@ export class DashboardComponent implements OnInit {
       this.startLiveCountdown();
       this.loadRecentLogs();
       this.loadTodos();
-      this.todos$.subscribe(() => {
+     
         this.updateProgressBar();
-      });
+  
    
     }
     
