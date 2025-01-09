@@ -278,21 +278,26 @@ overflow-x: hidden;
 }
 
 .todo-item.new-todo {
-  animation: fadeIn 0.8s ease-out;
+  animation: slideInFromTop 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   animation-fill-mode: forwards;
   will-change: transform, opacity;
 }
 
-@keyframes fadeIn {
+@keyframes slideInFromTop {
   0% {
+    transform: translateY(-200px) scale(0.5); /* Start weit oben und kleiner */
     opacity: 0;
-    transform: translateY(-10px); /* Leichte Verschiebung nach oben */
+  }
+  20% {
+    transform: translateY(-20px) scale(1.1); /* Kurz nach vorne (überziehen) */
+    opacity: 0.5;
   }
   100% {
+    transform: translateY(0) scale(1); /* Endzustand */
     opacity: 1;
-    transform: translateY(0);
   }
 }
+
 
 
 

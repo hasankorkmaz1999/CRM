@@ -94,10 +94,12 @@
             <!-- Display To-Dos -->
             <div class="todo-list">
               <div
-              *ngFor="let todo of todos; let i = index; trackBy: trackByTodoId"
-              [ngClass]="{ 'new-todo': isNewTodo && i === 0 }"
+              *ngFor="let todo of todos$ | async; let i = index; trackBy: trackByTodoId"
+              [ngClass]="{ 'new-todo': i === 0 && isNewTodo }"
               class="todo-item"
             >
+            
+            
                    
                 <div class="wrapper">
                   <label>

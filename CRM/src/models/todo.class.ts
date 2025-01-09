@@ -6,6 +6,7 @@ export class Todo {
   createdAt: string ; // Erstellungsdatum kann ein String oder Date sein
   userId: string; // ID des Benutzers, dem die Aufgabe gehört
   priority: string;
+  
 
   constructor(obj?: any) {
     this.id = obj?.id;

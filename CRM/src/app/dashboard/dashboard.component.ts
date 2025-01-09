@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Firestore, addDoc, collection, collectionData, deleteDoc, updateDoc, doc } from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Event } from '../../models/events.class';
 import { EventDetailsComponent } from '../calendar/event-details/event-details.component';
 import { MatDialog } from '@angular/material/dialog';
-import { interval } from 'rxjs';
+import { BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LogDetailsComponent } from './log-details/log-details.component';
 import { UserDetailComponent } from '../user/user-detail/user-detail.component';
@@ -20,6 +20,7 @@ import { Thread } from '../../models/thread.class';
   imports: [SharedModule, EventDetailsComponent, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
   events: Event[] = [];
@@ -62,7 +63,8 @@ export class DashboardComponent implements OnInit {
      private dialog: MatDialog,
       private router: Router,
       private fb: FormBuilder,
-      private authService: AuthService
+      private authService: AuthService,
+      private cdr: ChangeDetectorRef
     ) {
       this.todoForm = this.fb.group({
         title: ['', [Validators.required, Validators.minLength(1)]],
@@ -86,13 +88,15 @@ export class DashboardComponent implements OnInit {
     
         console.log('Benutzerdetails:', details);
       });
-    
+      this.loadThreads();
       this.loadEvents();
       this.startLiveCountdown();
       this.loadRecentLogs();
       this.loadTodos();
-      this.updateProgressBar();
-      this.loadThreads();
+      this.todos$.subscribe(() => {
+        this.updateProgressBar();
+      });
+   
     }
     
 
@@ -136,23 +140,35 @@ export class DashboardComponent implements OnInit {
     
     
     updateProgressBar(): void {
-      this.totalTasks = this.todos.length; // Gesamtanzahl der Aufgaben
-      this.completedTasks = this.todos.filter((todo) => todo.completed).length; // Anzahl der erledigten Aufgaben
-      this.progressValue = this.totalTasks > 0 ? (this.completedTasks / this.totalTasks) * 100 : 0;
+      const todos = this.todos$.getValue(); // Hole die aktuelle Liste aus todos$
+      this.totalTasks = todos.length; // Gesamtanzahl der Aufgaben
+      this.completedTasks = todos.filter((todo) => todo.completed).length; // Anzahl der erledigten Aufgaben
+      this.progressValue = this.totalTasks > 0 ? (this.completedTasks / this.totalTasks) * 100 : 0; // Fortschrittswert berechnen
     }
-  
+    
     
     
 
 
-    loadTodos() {
+    todos$ = new BehaviorSubject<Todo[]>([]);
+
+    async loadTodos() {
       const todosCollection = collection(this.firestore, 'todos');
       collectionData(todosCollection, { idField: 'id' }).subscribe((data) => {
-        // Hier stellen wir sicher, dass jedes Todo korrekt die ID zugewiesen bekommt
-        this.todos = (data as Todo[]).filter((todo) => todo.userId === this.userId);
-        this.updateProgressBar();
+        const newTodos = (data as Todo[])
+          .filter((todo) => todo.userId === this.userId)
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    
+        const currentTodos = this.todos$.getValue();
+    
+        // Aktualisiere nur, wenn sich die Liste geändert hat
+        if (JSON.stringify(newTodos) !== JSON.stringify(currentTodos)) {
+          this.todos$.next(newTodos);
+          this.updateProgressBar();
+        }
       });
     }
+    
     
     
     
@@ -168,15 +184,7 @@ export class DashboardComponent implements OnInit {
     newTodo: Partial<Todo> = { description: '' };
 
     addTodo() {
-      if (!this.userId) {
-        console.error('Benutzer-ID nicht verfügbar. Task kann nicht hinzugefügt werden.');
-        return;
-      }
-    
-      if (!this.todoInputValue.trim()) {
-        console.warn('Leerer Text. Task kann nicht hinzugefügt werden.');
-        return;
-      }
+      if (!this.userId || !this.todoInputValue.trim()) return;
     
       const newTodo: Omit<Todo, 'id'> = {
         description: this.todoInputValue.trim(),
@@ -187,32 +195,17 @@ export class DashboardComponent implements OnInit {
       };
     
       const todosCollection = collection(this.firestore, 'todos');
-      addDoc(todosCollection, newTodo).then((docRef) => {
-        // Eingabefeld und Priorität zurücksetzen
+      addDoc(todosCollection, newTodo).then(() => {
+        
+    
         this.todoInputValue = '';
         this.selectedPriority = 'medium';
     
-        // Neues Todo mit ID erstellen
-        const newTodoWithId = new Todo({
-          ...newTodo,
-          id: docRef.id, // ID des Dokuments
-        });
+        // Füge das neue Todo lokal an den Anfang hinzu
+       
     
-        // Neues Todo oben in der Liste hinzufügen
-        this.todos = [newTodoWithId, ...this.todos];
-    
-        // Animations-Flag setzen
-        this.isNewTodo = true;
-        setTimeout(() => {
-          this.isNewTodo = false; // Flag nach der Animation zurücksetzen
-        }, 800); // Dauer der Animation
-    
-        console.log('Neues Todo erfolgreich hinzugefügt:', docRef.id);
-    
-        // Fortschrittsanzeige aktualisieren
-        this.updateProgressBar();
-      }).catch((error) => {
-        console.error('Fehler beim Hinzufügen des Todos:', error);
+        this.isNewTodo = true; // Animation aktivieren
+        setTimeout(() => (this.isNewTodo = false), 800);
       });
     }
     
@@ -222,10 +215,14 @@ export class DashboardComponent implements OnInit {
     
     
     
+    
+    
     trackByTodoId(index: number, todo: any): string {
-      return todo.id; // Eindeutige ID für jedes To-Do
+      return todo.id; // Nutzt die eindeutige ID des Todos
     }
-   
+    
+    
+
     
     
     
