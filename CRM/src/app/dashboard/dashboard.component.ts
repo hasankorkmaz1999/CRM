@@ -1,16 +1,24 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, deleteDoc, updateDoc, doc } from '@angular/fire/firestore';
+import {Component,OnInit,} from '@angular/core';
+import {
+  Firestore,
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  updateDoc,
+  doc,
+  query,
+  where,
+  getDocs,
+} from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Event } from '../../models/events.class';
 import { EventDetailsComponent } from '../calendar/event-details/event-details.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LogDetailsComponent } from './log-details/log-details.component';
-import { UserDetailComponent } from '../user/user-detail/user-detail.component';
 import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../shared/auth.service';
 import { Todo } from '../../models/todo.class';
 import { Thread } from '../../models/thread.class';
 
@@ -20,7 +28,6 @@ import { Thread } from '../../models/thread.class';
   imports: [SharedModule, EventDetailsComponent, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
- 
 })
 export class DashboardComponent implements OnInit {
   events: Event[] = [];
@@ -32,9 +39,6 @@ export class DashboardComponent implements OnInit {
   logs: any[] = [];
   visibleLogs: any[] = []; // Logs, die aktuell angezeigt werden
   maxVisibleLogs: number = 0; // Maximale Logs, die in den Bereich passen
- 
-
-
 
   todos: any[] = []; // To-Do-Liste
   todoForm: FormGroup; // Formular für neue Aufgaben
@@ -43,217 +47,173 @@ export class DashboardComponent implements OnInit {
   completedTasks: number = 0; // Erledigte Aufgaben
   totalTasks: number = 0;
 
-
   currentUserName: string = 'Unknown User'; // Name des aktuellen Benutzers
   currentUserRole: string = 'Unknown Role'; // Rolle des aktuellen Benutzers
   currentUserProfilePicture: string = '/assets/img/user.png'; // Profilbild des aktuellen Benutzers
 
-
   isNewTodo: boolean = false;
-  todoInputValue: string = ''; 
-  selectedPriority: string = 'medium'; 
+  todoInputValue: string = '';
+  selectedPriority: string = 'medium';
 
-
-  threads: Thread[] = []; 
-
-
+  threads: Thread[] = [];
 
   constructor(
     private firestore: Firestore,
-     private dialog: MatDialog,
-      private router: Router,
-      private fb: FormBuilder,
-      private authService: AuthService,
+    private dialog: MatDialog,
+    private router: Router,
+    private fb: FormBuilder,
    
-    ) {
-      this.todoForm = this.fb.group({
-        title: ['', [Validators.required, Validators.minLength(1)]],
-      });
-    }
+  ) {
+    this.todoForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(1)]],
+    });
+  }
 
-    ngOnInit(): void {
-      // Benutzerinformationen abonnieren
-      this.authService.currentUser$.subscribe((currentUser) => {
-        if (currentUser) {
-          this.userId = currentUser.uid;
-          console.log('Benutzer-ID abgerufen:', this.userId);
-        } 
-      });
-    
-      // Benutzerdetails abonnieren
-      this.authService.currentUserDetails$.subscribe((details) => {
-        this.currentUserName = details.name;
-        this.currentUserRole = details.role;
-        this.currentUserProfilePicture = details.profilePicture;
-    
-        console.log('Benutzerdetails:', details);
-      });
-      this.loadThreads();
-      this.loadEvents();
-      this.startLiveCountdown();
-      this.loadRecentLogs();
-      this.loadTodos();
-     
-        this.updateProgressBar();
+  ngOnInit(): void {
+    // Benutzerinformationen direkt aus localStorage laden
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser) {
+      this.userId = currentUser.uid;
+      this.currentUserName = currentUser.name;
+      this.currentUserRole = currentUser.role;
+      this.currentUserProfilePicture = currentUser.profilePicture;
   
-   
+      console.log('Benutzerdetails aus localStorage:', currentUser);
     }
-    
+    this.updateCurrentUser();
+    this.loadThreads();
+    this.loadEvents();
+    this.startLiveCountdown();
+    this.loadRecentLogs();
+    this.loadTodos();
+    this.updateProgressBar();
+  }
 
+  updateCurrentUser(): void {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser) {
+      this.userId = currentUser.uid;
+      this.currentUserName = currentUser.name;
+      this.currentUserRole = currentUser.role;
+      this.currentUserProfilePicture = currentUser.profilePicture;
+  
+      console.log('Benutzerdetails aktualisiert aus localStorage:', currentUser);
+    } else {
+      console.warn('Kein Benutzer in localStorage gefunden.');
+    }
+  }
+  
+  
 
-   
-
-    
-
-    loadThreads() {
-      const threadCollection = collection(this.firestore, 'threads');
-      collectionData(threadCollection, { idField: 'threadId' }).subscribe((data) => {
+  loadThreads() {
+    const threadCollection = collection(this.firestore, 'threads');
+    collectionData(threadCollection, { idField: 'threadId' }).subscribe(
+      (data) => {
         // Sortiere die Threads nach Erstellungsdatum
         this.threads = (data as Thread[]).sort(
-          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-      });
-    }
-    
+      }
+    );
+  }
 
+  loadRecentLogs() {
+    const logsCollection = collection(this.firestore, 'logs');
+    collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
+      const allLogs = data.map((log: any) => ({
+        ...log,
+        timestamp: log.timestamp ? new Date(log.timestamp) : null,
+      }));
 
-    loadRecentLogs() {
-      const logsCollection = collection(this.firestore, 'logs');
-      collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
-        const allLogs = data.map((log: any) => ({
-          ...log,
-          timestamp: log.timestamp ? new Date(log.timestamp) : null,
-        }));
-    
-        // Sortiere nach Timestamp (neueste zuerst)
-        const sortedLogs = allLogs.sort(
-          (a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
+      // Sortiere nach Timestamp (neueste zuerst)
+      const sortedLogs = allLogs.sort(
+        (a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
+      );
+
+      this.logs = sortedLogs; // Speichere alle Logs
+    });
+  }
+
+  updateProgressBar(): void {
+    const todos = this.todos$.getValue(); // Hole die aktuelle Liste aus todos$
+    this.totalTasks = todos.length; // Gesamtanzahl der Aufgaben
+    this.completedTasks = todos.filter((todo) => todo.completed).length; // Anzahl der erledigten Aufgaben
+    this.progressValue =
+      this.totalTasks > 0 ? (this.completedTasks / this.totalTasks) * 100 : 0; // Fortschrittswert berechnen
+  }
+
+  todos$ = new BehaviorSubject<Todo[]>([]);
+
+  async loadTodos() {
+    const todosCollection = collection(this.firestore, 'todos');
+    collectionData(todosCollection, { idField: 'id' }).subscribe((data) => {
+      const newTodos = (data as Todo[])
+        .filter((todo) => todo.userId === this.userId)
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-    
-        this.logs = sortedLogs; // Speichere alle Logs
-      
-      });
-    }
-    
-    
-    
-    
-    
-    updateProgressBar(): void {
-      const todos = this.todos$.getValue(); // Hole die aktuelle Liste aus todos$
-      this.totalTasks = todos.length; // Gesamtanzahl der Aufgaben
-      this.completedTasks = todos.filter((todo) => todo.completed).length; // Anzahl der erledigten Aufgaben
-      this.progressValue = this.totalTasks > 0 ? (this.completedTasks / this.totalTasks) * 100 : 0; // Fortschrittswert berechnen
-    }
-    
-    
-    
 
+      const currentTodos = this.todos$.getValue();
 
-    todos$ = new BehaviorSubject<Todo[]>([]);
+      // Aktualisiere nur, wenn sich die Liste geändert hat
+      if (JSON.stringify(newTodos) !== JSON.stringify(currentTodos)) {
+        this.todos$.next(newTodos);
+        this.updateProgressBar();
+      }
+    });
+  }
 
-    async loadTodos() {
-      const todosCollection = collection(this.firestore, 'todos');
-      collectionData(todosCollection, { idField: 'id' }).subscribe((data) => {
-        const newTodos = (data as Todo[])
-          .filter((todo) => todo.userId === this.userId)
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    
-        const currentTodos = this.todos$.getValue();
-    
-        // Aktualisiere nur, wenn sich die Liste geändert hat
-        if (JSON.stringify(newTodos) !== JSON.stringify(currentTodos)) {
-          this.todos$.next(newTodos);
-          this.updateProgressBar();
-        }
-      });
-    }
-    
-    
-    
-    
-    
-    
-    setPriority(priority: string): void {
-      this.selectedPriority = priority;
-    }
-    
-    
-    
-   
-    newTodo: Partial<Todo> = { description: '' };
+  setPriority(priority: string): void {
+    this.selectedPriority = priority;
+  }
 
-    addTodo() {
-      if (!this.userId || !this.todoInputValue.trim()) return;
-    
-      const newTodo: Omit<Todo, 'id'> = {
-        description: this.todoInputValue.trim(),
-        completed: false,
-        userId: this.userId,
-        createdAt: new Date().toISOString(),
-        priority: this.selectedPriority,
-      };
-    
-      const todosCollection = collection(this.firestore, 'todos');
-      addDoc(todosCollection, newTodo).then(() => {
-        
-    
-        this.todoInputValue = '';
-        this.selectedPriority = 'medium';
-    
-        // Füge das neue Todo lokal an den Anfang hinzu
-       
-    
-        this.isNewTodo = true; // Animation aktivieren
-        setTimeout(() => (this.isNewTodo = false), 800);
-      });
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    trackByTodoId(index: number, todo: any): string {
-      return todo.id; // Nutzt die eindeutige ID des Todos
-    }
-    
-    
+  newTodo: Partial<Todo> = { description: '' };
 
-    
-    
-    
-    
-    
-  
+  addTodo() {
+    if (!this.userId || !this.todoInputValue.trim()) return;
+
+    const newTodo: Omit<Todo, 'id'> = {
+      description: this.todoInputValue.trim(),
+      completed: false,
+      userId: this.userId,
+      createdAt: new Date().toISOString(),
+      priority: this.selectedPriority,
+    };
+
+    const todosCollection = collection(this.firestore, 'todos');
+    addDoc(todosCollection, newTodo).then(() => {
+      this.todoInputValue = '';
+      this.selectedPriority = 'medium';
+
+      // Füge das neue Todo lokal an den Anfang hinzu
+
+      this.isNewTodo = true; // Animation aktivieren
+      setTimeout(() => (this.isNewTodo = false), 800);
+    });
+  }
+
+  trackByTodoId(index: number, todo: any): string {
+    return todo.id; // Nutzt die eindeutige ID des Todos
+  }
 
   // Aufgabe als erledigt markieren
   toggleTodoCompletion(todo: any) {
     const todoDoc = doc(this.firestore, `todos/${todo.id}`);
     updateDoc(todoDoc, { completed: !todo.completed });
   }
-  
 
   // Aufgabe löschen
   deleteTodo(todoId: string) {
     const todoDoc = doc(this.firestore, `todos/${todoId}`);
     deleteDoc(todoDoc);
-    this.updateProgressBar(); 
+    this.updateProgressBar();
   }
-
- 
 
   navigateToAllLogs() {
-    this.router.navigate(['/logs']); 
+    this.router.navigate(['/logs']);
   }
-  
-
-
- 
-
 
   generateLogMessage(log: any): string {
     const entityType = log.entityType
@@ -279,40 +239,75 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  loadEvents() {
+  async loadEvents(): Promise<void> {
     const eventCollection = collection(this.firestore, 'events');
-    collectionData(eventCollection, { idField: 'id' }).subscribe((data) => {
-      const events = data.map((eventData: any) => {
-        const parsedDate = this.combineDateTime(eventData.date, eventData.time); // Datum & Zeit kombinieren
-        return new Event({ ...eventData, date: parsedDate });
-      });
+    const userCollection = collection(this.firestore, 'users');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
   
-      const now = new Date(); // Aktuelle Zeit berücksichtigen
+    if (!currentUser.uid) {
+      console.warn('Kein Benutzer gefunden, Events werden nicht geladen.');
+      return;
+    }
   
-      const startOfWeek = new Date(now);
-      startOfWeek.setDate(now.getDate() - now.getDay() + 1);
+    collectionData(eventCollection, { idField: 'id' }).subscribe(async (data) => {
+      const eventsWithDetails = await Promise.all(
+        data.map(async (eventData: any) => {
+          const parsedDate = this.combineDateTime(eventData.date, eventData.time);
   
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6);
+          const formattedUsers = await Promise.all(
+            (eventData.users || []).map(async (userName: string) => {
+              try {
+                const userQuery = query(
+                  userCollection,
+                  where('firstName', '==', userName.split(' ')[0]),
+                  where('lastName', '==', userName.split(' ')[1])
+                );
+                const userSnapshot = await getDocs(userQuery);
   
-      this.totalEvents = events.length;
+                if (!userSnapshot.empty) {
+                  const userData = userSnapshot.docs[0].data();
+                  return {
+                    name: `${userData['firstName']} ${userData['lastName']}`.trim(),
+                    profilePicture: userData['profilePicture'] || '/assets/img/user.png',
+                  };
+                } else {
+                  return { name: userName, profilePicture: '/assets/img/user.png' };
+                }
+              } catch (error) {
+                console.error(`Error fetching user with name ${userName}:`, error);
+                return { name: userName, profilePicture: '/assets/img/user.png' };
+              }
+            })
+          );
   
-      this.eventsToday = events.filter((event) =>
-        this.isEventToday(event.date)
-      ).length;
+          const creatorQuery = query(
+            userCollection,
+            where('firstName', '==', eventData.createdBy.split(' ')[0]),
+            where('lastName', '==', eventData.createdBy.split(' ')[1])
+          );
+          const creatorSnapshot = await getDocs(creatorQuery);
+          const creatorDetails = !creatorSnapshot.empty
+            ? creatorSnapshot.docs[0].data()
+            : { profilePicture: '/assets/img/user.png' };
   
-      this.eventsThisWeek = events.filter(
-        (event) => event.date >= startOfWeek && event.date <= endOfWeek
-      ).length;
+          return {
+            ...eventData,
+            date: parsedDate,
+            users: formattedUsers,
+            createdBy: {
+              name: eventData.createdBy || 'Unknown',
+              profilePicture: creatorDetails['profilePicture'] || '/assets/img/user.png',
+            },
+          };
+        })
+      );
   
-      this.upcomingEvents = events
-        .filter((event) => event.date >= now) // Hier "now" statt "today" verwenden
-        .sort((a, b) => a.date.getTime() - b.date.getTime())
-        .slice(0, 6);
+      this.upcomingEvents = eventsWithDetails;
+      console.log('Events with user and creator details:', this.upcomingEvents);
     });
   }
   
-  
+
   combineDateTime(dateString: string, timeString: string): Date {
     try {
       if (!dateString || !timeString) return new Date(NaN);
@@ -324,16 +319,13 @@ export class DashboardComponent implements OnInit {
       return new Date(NaN);
     }
   }
-  
-  
-  
 
   isEventToday(eventDate: Date): boolean {
     if (!(eventDate instanceof Date) || isNaN(eventDate.getTime())) {
       console.warn('Invalid eventDate:', eventDate);
       return false;
     }
-  
+
     const today = new Date();
     return (
       eventDate.getFullYear() === today.getFullYear() &&
@@ -341,7 +333,6 @@ export class DashboardComponent implements OnInit {
       eventDate.getDate() === today.getDate()
     );
   }
-  
 
   startLiveCountdown() {
     interval(1000)
@@ -376,50 +367,18 @@ export class DashboardComponent implements OnInit {
     this.dialog.open(EventDetailsComponent, {
       data: {
         id: event.id,
-        type: event.type, // Typ des Events
+        type: event.type,
         description: event.description,
         date: event.date,
-        users: event.users,
+        users: event.users, // Benutzerinformationen mit Profilbildern
         time: event.time,
-        createdBy: event.createdBy,
+        createdBy: event.createdBy, // Creator mit Profilbild
         source: 'dashboard',
       },
-      width: '500px',
+     
       autoFocus: false,
     });
   }
-
-  openLogDetails(log: any) {
-    this.dialog.open(LogDetailsComponent, {
-      data: log,
-      width: '500px',
-      autoFocus: false,
-    });
-  }
-
-  
-  openAddedEventDetails(log: any) {
-    console.log('Log details:', log.details); // Prüfe, was in log.details enthalten ist
-    const event = {
-      id: log.details?.id || '',
-      type: log.details?.type || 'Unknown',
-      description: log.details?.description || '',
-      date: log.details?.date || '',
-      time: log.details?.time || '',
-      users: log.details?.users || [],
-      createdBy: log.details?.createdBy || '',
-    };
-    
-    this.dialog.open(EventDetailsComponent, {
-      data: {
-        ...event,
-        source: 'dashboard', // Hier als Indikator für Anzeige ohne Bearbeiten/Löschen
-      },
-      width: '500px',
-      autoFocus: false,
-    });
-  }
-  
   
 
   navigateToUserDetails(log: any) {
@@ -431,7 +390,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
   navigateToCustomerDetails(log: any) {
     if (log.entityType === 'customer' && log.details?.id) {
       // Navigiere zur Kunden-Detailansicht
@@ -440,7 +398,6 @@ export class DashboardComponent implements OnInit {
       console.warn('Log does not contain valid customer details or ID.');
     }
   }
-  
 
   getEventClass(eventType: string): string {
     switch (eventType?.toLowerCase()) {
@@ -455,21 +412,20 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
   goToUserAndOpenDialog(): void {
     this.router.navigate(['/user'], { queryParams: { addUser: true } });
   }
-  
 
   goToCustomerAndOpenDialog(): void {
-    this.router.navigate(['/customer'], { queryParams: { addCustomer: 'true' } });
+    this.router.navigate(['/customer'], {
+      queryParams: { addCustomer: 'true' },
+    });
   }
-  
+
   // Methode für Add New Event
   goToEventAndOpenDialog(): void {
-    this.router.navigate(['/calendar-angular'], { queryParams: { addEvent: 'true' } });
+    this.router.navigate(['/calendar-angular'], {
+      queryParams: { addEvent: 'true' },
+    });
   }
-  
-  
-  
 }

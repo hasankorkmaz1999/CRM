@@ -63,14 +63,20 @@ export class ThreadsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // Abonniere die aktuellen Benutzerdetails
-    this.authService.currentUserDetails$.subscribe((details) => {
-      this.currentUserName = details.name || 'Unknown User';
-      this.currentUserProfilePicture = details.profilePicture || '/assets/img/user.png';
-      console.log('Current User:', this.currentUserName, this.currentUserProfilePicture);
-    });
-
+    // Benutzerinformationen direkt aus localStorage laden
+    this.loadCurrentUser();
     this.loadThreads();
+  }
+
+  loadCurrentUser(): void {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser) {
+      this.currentUserName = currentUser.name || 'Unknown User';
+      this.currentUserProfilePicture = currentUser.profilePicture || '/assets/img/user.png';
+      console.log('Benutzerdetails aus localStorage geladen:', this.currentUserName, this.currentUserProfilePicture);
+    } else {
+      console.warn('Kein Benutzer in localStorage gefunden.');
+    }
   }
 
 

@@ -1,9 +1,10 @@
 .dashboard-component {
   display: flex;
   padding: 36px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background-color: #0f0f0f
+  background-color: #0f0f0f;
+  
  
 }
 
@@ -19,13 +20,13 @@ align-items: flex-start;
 
 .right-section-noti {
   width: 350px;
-  height: 1080px;
+  height: 980px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: transparent;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9); /* Box-shadow hinzufügen */
+  background-color: rgba(39, 39, 39, 0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
 }
 
 
@@ -131,11 +132,13 @@ align-items: flex-start;
 .quick-actions-container {
   width: 100%;
   height: 70px;
-  background-color: transparent;
+  background-color: rgba(39, 39, 39, 0.2);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
   border-radius: 30px;
   margin-bottom: 30px;
   padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
   display: flex;
 
   justify-content: space-between;
@@ -157,12 +160,14 @@ align-items: flex-start;
     border: none;
     transition: box-shadow 0.3s ease, transform 0.3s ease; /* Weiche Animation */
 
+    background-color: rgba(26, 26, 26, 0.4);
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
-
+  
     border-radius: 8px;
     -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5); /* Gleichmäßiger Schatten */
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
+  
 
     &:hover {
       -webkit-box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); /* Größerer & heller Schatten */
@@ -191,9 +196,9 @@ align-items: flex-start;
 
 
 .todos-section {
-  width: 750px;
-  height: 980px;
-  background-color: transparent;
+  width: 650px;
+  height: 880px;
+  background-color: rgba(39, 39, 39, 0.2);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
   border-radius: 30px;
 overflow-x: hidden;
@@ -248,12 +253,12 @@ overflow-x: hidden;
   color: rgb(169, 169, 169);
   overflow-y: auto;
   height: 200px !important;
-  background-color: transparent;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  background-color: rgba(14, 14, 14, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
   width: 100%; /* Füllt den verfügbaren Platz */
   resize: none; /* Entfernt den Resize-Griff */
   font-size: 18px;
-  padding: 10px;
+  padding: 15px;
   line-height: 1.5; /* Verbessert die Lesbarkeit */
   border: none;
   border-radius: 14px; /* Optional: Abgerundete Ecken */
@@ -271,8 +276,8 @@ overflow-x: hidden;
   justify-content: space-between;
   align-items: center;  
   margin-bottom: 20px;
-  background-color: transparent;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  background-color: rgba(14, 14, 14, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
   padding: 10px;
   border-radius: 5px;
   width: 100%;
@@ -280,25 +285,23 @@ overflow-x: hidden;
 }
 
 .todo-item.new-todo {
-  animation: slideInFromTop 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation: fadeIn 1s ease-in-out;
   animation-fill-mode: forwards;
   will-change: transform, opacity;
 }
 
-@keyframes slideInFromTop {
+@keyframes fadeIn {
   0% {
-    transform: translateY(-200px) scale(0.5); /* Start weit oben und kleiner */
-    opacity: 0;
+    opacity: 1; /* Start völlig transparent */
   }
   50% {
-    transform: translateY(-20px) scale(1.1); /* Kurz nach vorne (überziehen) */
-    opacity: 0.5;
+    opacity: 0.1; /* Halbtransparent in der Mitte */
   }
   100% {
-    transform: translateY(0) scale(1); /* Endzustand */
-    opacity: 1;
+    opacity: 1; /* Vollständig sichtbar */
   }
 }
+
 
 
 
@@ -465,9 +468,9 @@ overflow-x: hidden;
 
 
 .events-container {
-  width: 750px;
-  height: 980px;
-  background-color: transparent;
+  width: 650px;
+  height: 880px;
+  background-color: rgba(39, 39, 39, 0.2);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
   border-radius: 30px;
   margin-bottom: 30px;
@@ -503,7 +506,7 @@ overflow-x: hidden;
 /* KPI Cards */
 .kpi-cards {
   display: flex;
-  gap: 20px;
+  
   margin-bottom: 20px;
 
   .kpi-card {
@@ -514,7 +517,7 @@ overflow-x: hidden;
     flex-direction: column;
     width: 200px;
     padding: 15px;
-    
+    border-radius: 10px;
     background-color: transparent;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 
@@ -534,17 +537,16 @@ overflow-x: hidden;
 
 
 .go-calendar {
-  margin-top: 20px;
-  font-size: 20px;
+  margin-top: 0px;
+  font-size: 18px;
   padding: 15px;
-  background-color: transparent;
+  background-color: rgba(26, 26, 26, 0.4);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
 
   border-radius: 8px;
-  -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
-  box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
-
+  -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5); /* Gleichmäßiger Schatten */
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
   transition: box-shadow 0.3s ease, transform 0.3s ease; /* Weiche Animation */
@@ -572,7 +574,7 @@ overflow-x: hidden;
 
 
 .no-events-div {
-  height: 600px;
+  height: 550px;
   background-color: rgba(41, 97, 158, 0.1);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
   width: 630px !important;
@@ -615,8 +617,8 @@ overflow-x: hidden;
     list-style: none;
     padding: 0;
     flex-wrap: wrap;
-    height: 650px;
-    width: 630px !important;
+    height: 580px;
+    width: 600px !important;
 
     li {
 display: flex;
@@ -626,10 +628,12 @@ justify-content: space-between;
       margin-bottom: 20px;
      margin-left: 10px;
       border-radius: 15px;
-      width: 140px;
-      padding: 20px;
-      height: 200px;
-      width: 300px;
+     padding-top: 10px;
+     padding-left: 15px;
+     padding-right: 10px;
+     padding-bottom: 10px;
+      height: 150px;
+      width: 250px;
 
       p {
         color: #ffffff;
@@ -659,10 +663,10 @@ justify-content: space-between;
   background-color: transparent; /* Standardfarbe für alle Karten */
   border-radius: 12px;
   color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
   transform: scale(1); /* Standardgröße */
   transition: transform 0.5s ease, box-shadow 0.5s ease, background-color 0.5s ease;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Leichter Schatten */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9); /* Leichter Schatten */
   overflow: hidden; /* Verhindert, dass das Pseudo-Element aus der Karte herausragt */
 }
 
@@ -683,10 +687,12 @@ justify-content: space-between;
   position: absolute;
   top: 0;
   left: 0;
-  width: 45%; /* Nur obere linke Ecke initial einfärben */
-  height: 30%;
+  width: 50%; /* Nur obere linke Ecke initial einfärben */
+  height: 35%;
   transition: width 0.5s ease, height 0.5s ease, background-color 0.5s ease;
   z-index: -1; /* Hinter dem eigentlichen Inhalt */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  border-radius: 12px;
 }
 
 /* Hintergrundfarben für die Pseudo-Elemente */
@@ -713,6 +719,7 @@ justify-content: space-between;
 .event-other:hover::before {
   width: 100%;
   height: 100%;
+  clip-path: inset(0);
 }
 
 
@@ -822,13 +829,13 @@ justify-content: space-between;
  
   font-size: 14px;
   padding: 15px;
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: rgba(26, 26, 26, 0.4);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
 
   border-radius: 8px;
-  -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
-  box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
+  -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5); /* Gleichmäßiger Schatten */
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.5);
 
   color: white;
   border: none;

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Auth, User, onAuthStateChanged } from '@angular/fire/auth';
 import { collection, Firestore, getDocs, query, where } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 
@@ -7,108 +6,80 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
-
   private currentUserDetailsSubject = new BehaviorSubject<{
+    uid: string;
     name: string;
     role: string;
     profilePicture: string;
-  }>({
-    name: 'Unknown User',
-    role: 'Unknown Role',
-    profilePicture: '/assets/img/user.png',
-  });
+    email: string;
+  }>(
+    JSON.parse(localStorage.getItem('currentUserDetails') || `{
+      "uid": "",
+      "name": "Unknown User",
+      "role": "Unknown Role",
+      "profilePicture": "/assets/img/user.png",
+      "email": ""
+    }`)
+  );
   currentUserDetails$ = this.currentUserDetailsSubject.asObservable();
 
-  constructor(private auth: Auth, private firestore: Firestore) {
+  constructor(private firestore: Firestore) {}
 
-
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        console.log('Firebase Auth Current User:', {
-          uid: user.uid,
-          email: user.email || 'No Email',
-          displayName: user.displayName || 'No Display Name',
-        });
-    
-        this.currentUserSubject.next(user);
-    
-        this.fetchUserDetails(user.uid).then((details) => {
-          if (details) {
-            console.log('Benutzername aus Firestore:', details.name);
-            console.log('Benutzername aus Firestore:', details.role);
-            this.currentUserDetailsSubject.next(details);
-          } else {
-            console.warn('Benutzerdetails konnten nicht aus Firestore geladen werden.');
-            this.resetCurrentUserDetails();
-          }
-        });
-      } else {
-        console.warn('Kein Benutzer angemeldet.');
-        this.currentUserSubject.next(null);
-        this.resetCurrentUserDetails();
-      }
-    });
-    
-  }
-
-
-  // Lädt Benutzerinformationen aus Firestore
-  public async fetchUserDetails(uid: string): Promise<{
+  public async fetchUserDetails(email: string): Promise<{
+    uid: string;
     name: string;
     role: string;
     profilePicture: string;
+    email: string;
   } | null> {
     const userCollection = collection(this.firestore, 'users');
-    const userQuery = query(userCollection, where('uid', '==', uid));
+    const userQuery = query(userCollection, where('email', '==', email));
 
     try {
       const querySnapshot = await getDocs(userQuery);
       if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data();
-        const firstName = userData['firstName'] || '';
-        const lastName = userData['lastName'] || '';
-        const role = userData['role'] || 'Unknown Role';
-        const profilePicture = userData['profilePicture'] || '/assets/img/user.png';
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
 
-        return {
-          name: `${firstName} ${lastName}`.trim(),
-          role: role,
-          profilePicture: profilePicture,
+        const userDetails = {
+          uid: userDoc.id,
+          name: `${userData['firstName']} ${userData['lastName']}`.trim(),
+          role: userData['role'] || 'Unknown Role',
+          profilePicture: userData['profilePicture'] || '/assets/img/user.png',
+          email: userData['email'],
         };
-      } else {
-        console.warn('No user found with this UID.');
-        return null;
+
+        this.currentUserDetailsSubject.next(userDetails);
+        localStorage.setItem('currentUserDetails', JSON.stringify(userDetails));
+
+        return userDetails;
       }
+      return null;
     } catch (error) {
       console.error('Error fetching user details:', error);
       return null;
     }
   }
 
-  // Setzt die Benutzerinformationen auf die Standardwerte zurück
-  private resetCurrentUserDetails() {
-    this.currentUserDetailsSubject.next({
+  resetCurrentUserDetails() {
+    const defaultDetails = {
+      uid: '',
       name: 'Unknown User',
       role: 'Unknown Role',
       profilePicture: '/assets/img/user.png',
-    });
+      email: '',
+    };
+    this.currentUserDetailsSubject.next(defaultDetails);
+    localStorage.setItem('currentUserDetails', JSON.stringify(defaultDetails));
   }
 
-  // Gibt den aktuellen Benutzer synchron zurück
-  getCurrentUserSync(): User | null {
-    return this.currentUserSubject.value;
-  }
-
-  // Gibt die aktuellen Benutzerdetails synchron zurück
   getCurrentUserDetailsSync(): {
+    uid: string;
     name: string;
     role: string;
     profilePicture: string;
+    email: string;
   } {
     return this.currentUserDetailsSubject.value;
   }
-  
-  
 }

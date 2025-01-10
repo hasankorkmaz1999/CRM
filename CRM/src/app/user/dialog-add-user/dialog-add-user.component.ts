@@ -2,32 +2,32 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { User } from '../../../models/user.class';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
-import { Firestore, collection, addDoc,  doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, setDoc, doc } from '@angular/fire/firestore';
 import { LoggingService } from '../../shared/logging.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { MatDialog } from '@angular/material/dialog';
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-dialog-add-user',
   standalone: true,
-  imports: [SharedModule, FormsModule, MatOptionModule,FormsModule, ReactiveFormsModule, MatSelectModule],
+  imports: [SharedModule, FormsModule, MatOptionModule, ReactiveFormsModule, MatSelectModule],
   templateUrl: './dialog-add-user.component.html',
-  styleUrl: './dialog-add-user.component.scss',
+  styleUrls: ['./dialog-add-user.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class DialogAddUserComponent {
   user = new User();
-  birthDate: Date = new Date();
-  password: string = '';
   userForm: FormGroup;
   hidePassword: boolean = true;
+  birthDate: Date = new Date();
 
   constructor(
     private firestore: Firestore,
-    private auth: Auth,
     private loggingService: LoggingService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public dialog: MatDialog
   ) {
     this.userForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -35,60 +35,57 @@ export class DialogAddUserComponent {
       email: ['', [Validators.required, Validators.email]],
       role: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      phone: [''], // Keine Validatoren
-      birthDate: [''], // Keine Validatoren
-      street: [''], // Keine Validatoren
-      zipCode: [''], // Keine Validatoren
-      city: [''], // Keine Validatoren
+      phone: [''],
+      birthDate: [''],
+      street: [''],
+      zipCode: [''],
+      city: [''],
     });
   }
-
 
   togglePasswordVisibility() {
     this.hidePassword = !this.hidePassword;
   }
 
-  saveUser() {
+  async saveUser() {
     if (this.userForm.invalid) {
       return;
     }
 
-    const formValue = this.userForm.getRawValue();
-    const formattedDate = this.birthDate.toLocaleDateString('en-US');
+    try {
+      const formValue = this.userForm.getRawValue();
+      const hashedPassword = bcrypt.hashSync(formValue.password, 10); // Hash the password
+      const uid = this.generateUID(); // Generate a unique ID for the user
+      
+      const newUser = {
+        ...formValue,
+        password: hashedPassword, // Store hashed password
+        uid,
+        birthDate: this.birthDate.toLocaleDateString('en-US'),
+      };
 
-    this.user = {
-      ...formValue,
-      birthDate: formattedDate,
-    };
+      // Save the new user to Firestore
+      const userRef = doc(this.firestore, `users/${uid}`);
+      await setDoc(userRef, newUser);
 
-    createUserWithEmailAndPassword(this.auth, this.user.email, formValue.password)
-      .then((userCredential) => {
-        const uid = userCredential.user.uid;
+      console.log('User added successfully:', newUser);
+      this.logUserAction('add', uid);
 
-        const userRef = doc(this.firestore, `users/${uid}`);
-        setDoc(userRef, {
-          ...this.user,
-          uid,
-        })
-          .then(() => {
-            console.log('User added successfully:', this.user);
-            this.logUserAction('add', uid);
-          })
-          .catch((error) => {
-            console.error('Error saving user to Firestore:', error);
-          });
-      })
-      .catch((error) => {
-        console.error('Error creating user in Firebase Authentication:', error);
-      });
+    } catch (error) {
+      console.error('Error saving user:', error);
+    }
   }
 
   logUserAction(action: string, userId: string) {
     this.loggingService.log(action, 'user', {
       id: userId,
-      firstName: this.user.firstName,
-      lastName: this.user.lastName,
-      email: this.user.email,
+      firstName: this.userForm.get('firstName')?.value,
+      lastName: this.userForm.get('lastName')?.value,
+      email: this.userForm.get('email')?.value,
     });
+  }
+
+  generateUID(): string {
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
   }
 }

@@ -13,38 +13,38 @@
 
 <div class="event-details">
   <div class="event-row">
-    <div class="icon-wrapper">
-      <mat-icon>event</mat-icon>
-    </div>
+   
     <div class="details">
-      <span class="label">Date:</span>
+      <div class="icon-wrapper">
+        <mat-icon>event</mat-icon>
+      </div>
       <p>{{ data.date | date: 'MMMM d, y' }}</p>
-    </div>
-  </div>
-
-  <div class="event-row">
-    <div class="icon-wrapper">
-      <mat-icon>schedule</mat-icon>
-    </div>
-    <div class="details">
-      <span class="label">Time:</span>
-      <p>{{ data.time }}</p>
-    </div>
-  </div>
-
-  <div class="event-row">
-    <div class="icon-wrapper">
-      <mat-icon>description</mat-icon>
-    </div>
-    <div class="details">
-      <span class="label">Description:</span>
-      <p>{{ data.description }}</p>
     </div>
   </div>
 
   <div class="event-row">
    
     <div class="details">
+      <div class="icon-wrapper">
+        <mat-icon>schedule</mat-icon>
+      </div>
+      <p>{{ data.time }}</p>
+    </div>
+  </div>
+
+  <div class="event-row">
+   
+    <div class="details">
+      <div class="icon-wrapper">
+        <mat-icon>description</mat-icon>
+      </div>
+      <p>{{ data.description }}</p>
+    </div>
+  </div>
+
+  <div class="event-row">
+   
+    <div class="details-user">
       <span class="label">Participants:</span>
       <div *ngIf="data.users?.length > 0" class="participants-list">
         <div *ngFor="let user of data.users" class="participant-item">
@@ -61,7 +61,7 @@
   </div>
   
   <div class="event-row">
-    <div class="details">
+    <div class="details-user">
       <span class="label">Created By:</span>
 
 

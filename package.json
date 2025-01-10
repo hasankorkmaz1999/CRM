@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "@angular/cdk": "^19.0.5"
+    "@angular/cdk": "^19.0.5",
+    "bcryptjs": "^2.4.3"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6"
   }
 }

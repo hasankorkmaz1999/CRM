@@ -1,96 +1,87 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, onAuthStateChanged } from '@angular/fire/auth';
-import { Firestore, doc, getDoc, collection, query, where, getDocs } from '@angular/fire/firestore';
+import { Component } from '@angular/core';
+import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import * as bcrypt from 'bcryptjs';
 import { SharedModule } from '../shared/shared.module';
-import {MatProgressSpinner, MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
-import { UserService } from '../shared/user.service';
-
 
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [SharedModule, MatProgressSpinner],
+  imports: [MatProgressSpinner, SharedModule],
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
+  loginForm: FormGroup;
+  isLoading: boolean = false;
   errorMessage: string = '';
-  isLoading: boolean = true;
-  hidePassword: boolean = true; // Neu: Zustand zum Laden der Seite
+  hidePassword: boolean = true;
 
   constructor(
-    private auth: Auth,
-     private firestore: Firestore,
-      private router: Router,
-      private userService: UserService
-    ) {
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        // Benutzer ist authentifiziert
-        this.checkUserRoleAndRedirect(user.uid);
-      } else {
-        // Kein Benutzer eingeloggt -> Ladezustand beenden
-        this.isLoading = false;
-        console.log('No user is currently logged in.');
-      }
+    private firestore: Firestore,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
-  
-  
-  
 
+  async onLogin(): Promise<void> {
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Please fill in all required fields.';
+      return;
+    }
 
-  onLogin() {
+    const { email, password } = this.loginForm.value;
     this.isLoading = true;
-    signInWithEmailAndPassword(this.auth, this.email, this.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        this.userService.setUserRole(''); 
-        this.checkUserRoleAndRedirect(user.uid);
-      })
-      .catch((error) => {
-        this.errorMessage = 'Invalid login credentials.';
-        this.isLoading = false;
-      });
-  }
-  
+    this.errorMessage = '';
 
-  private checkUserRoleAndRedirect(uid: string) {
-    const userCollection = collection(this.firestore, 'users');
-    const q = query(userCollection, where('uid', '==', uid));
-    getDocs(q)
-      .then((querySnapshot) => {
-        if (!querySnapshot.empty) {
-          const docSnap = querySnapshot.docs[0];
-          const userData = docSnap.data();
-          const role = userData['role'];
-          const name = `${userData['firstName']} ${userData['lastName']}`;
+    try {
+      const userCollection = collection(this.firestore, 'users');
+      const userQuery = query(userCollection, where('email', '==', email));
+      const querySnapshot = await getDocs(userQuery);
 
-          if (role) {
-            this.userService.setUserRole(role);
-            this.userService.setUserName(name);
-            this.router.navigate(['/dashboard']);
-          } else {
-            this.errorMessage = 'User role not found.';
-            this.auth.signOut();
-          }
-        } else {
-          this.errorMessage = 'User not found in database.';
-          this.auth.signOut();
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching user data:', error);
-        this.errorMessage = 'An error occurred while fetching user data.';
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
+      if (querySnapshot.empty) {
+        throw new Error('User not found.');
+      }
+
+      const userDoc = querySnapshot.docs[0];
+      const userData = userDoc.data();
+
+      // Überprüfe das Passwort
+      const isPasswordValid = bcrypt.compareSync(password, userData['password']);
+      if (!isPasswordValid) {
+        throw new Error('Invalid credentials.');
+      }
+
+      // Speichere die Benutzerdetails in localStorage
+      const loggedInUser = {
+        uid: userDoc.id,
+        name: `${userData['firstName']} ${userData['lastName']}`.trim(),
+        role: userData['role'],
+        email: userData['email'],
+        profilePicture: userData['profilePicture'] || '/assets/img/user.png',
+      };
+
+      localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
+      console.log('User logged in successfully:', loggedInUser);
+
+      // Weiterleitung zum Dashboard
+      this.router.navigate(['/dashboard']);
+    } catch (error) {
+      console.error('Login error:', error);
+      if (error instanceof Error) {
+        this.errorMessage = error.message || 'An error occurred during login.';
+      } else {
+        this.errorMessage = 'An unexpected error occurred during login.';
+      }
+      
+    } finally {
+      this.isLoading = false;
+    }
   }
 }
-  
-  
-

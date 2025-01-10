@@ -10,7 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AuthService } from '../../shared/auth.service';
+
 import { LoggingService } from '../../shared/logging.service';
 
 
@@ -44,7 +44,7 @@ export class SelectUserComponent implements OnInit {
     private firestore: Firestore,
     private dialogRef: MatDialogRef<SelectUserComponent>,
     private fb: FormBuilder,
-    private authService: AuthService,
+   
     private loggingService: LoggingService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -57,20 +57,27 @@ export class SelectUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Abonniere die aktuellen Benutzerdetails
-    this.authService.currentUserDetails$.subscribe((details) => {
-      this.currentUserName = details.name; // Name des aktuellen Benutzers
-      console.log('Current User Name:', this.currentUserName);
-    });
-  
-    // Lade die Benutzerliste
+    // Benutzerinformationen aus localStorage laden
+    this.loadCurrentUser();
+
+    // Benutzerliste laden
     const userCollection = collection(this.firestore, 'users');
     collectionData(userCollection, { idField: 'id' }).subscribe((data) => {
       this.users = data as User[];
     });
-  
+
     // Generiere Zeitoptionen
     this.generateUSTimeOptions();
+  }
+
+  loadCurrentUser() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser && currentUser.name) {
+      this.currentUserName = currentUser.name;
+      console.log('Aktueller Benutzername aus localStorage:', this.currentUserName);
+    } else {
+      console.warn('Kein aktueller Benutzer in localStorage gefunden.');
+    }
   }
   
 
