@@ -3,8 +3,9 @@ import { Firestore, collection, query, where, getDocs } from '@angular/fire/fire
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import * as bcrypt from 'bcryptjs';
+
 import { SharedModule } from '../shared/shared.module';
+import { UserService } from '../shared/user.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent {
   constructor(
     private firestore: Firestore,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private userService: UserService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -35,30 +37,27 @@ export class LoginComponent {
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
-
+  
     const { email, password } = this.loginForm.value;
     this.isLoading = true;
     this.errorMessage = '';
-
+  
     try {
       const userCollection = collection(this.firestore, 'users');
       const userQuery = query(userCollection, where('email', '==', email));
       const querySnapshot = await getDocs(userQuery);
-
+  
       if (querySnapshot.empty) {
         throw new Error('User not found.');
       }
-
+  
       const userDoc = querySnapshot.docs[0];
       const userData = userDoc.data();
-
-      // Überprüfe das Passwort
-      const isPasswordValid = bcrypt.compareSync(password, userData['password']);
-      if (!isPasswordValid) {
+  
+      if (password !== userData['password']) {
         throw new Error('Invalid credentials.');
       }
-
-      // Speichere die Benutzerdetails in localStorage
+  
       const loggedInUser = {
         uid: userDoc.id,
         name: `${userData['firstName']} ${userData['lastName']}`.trim(),
@@ -66,11 +65,10 @@ export class LoginComponent {
         email: userData['email'],
         profilePicture: userData['profilePicture'] || '/assets/img/user.png',
       };
-
-      localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
+  
+      this.userService.setCurrentUser(loggedInUser); // Benutzer im Service setzen
       console.log('User logged in successfully:', loggedInUser);
-
-      // Weiterleitung zum Dashboard
+  
       this.router.navigate(['/dashboard']);
     } catch (error) {
       console.error('Login error:', error);
@@ -79,9 +77,8 @@ export class LoginComponent {
       } else {
         this.errorMessage = 'An unexpected error occurred during login.';
       }
-      
     } finally {
       this.isLoading = false;
     }
   }
-}
+}  

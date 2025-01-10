@@ -1,4 +1,5 @@
 .buttons {
+  margin-top: 50px;
     display: flex;
     justify-content: flex-end;
 
@@ -35,11 +36,15 @@
 
   .mat-mdc-dialog-container .mdc-dialog__surface {
     padding: 20px !important;
-    background-color: rgba(31, 31, 31, 0.9);
+    background-color: rgba(23, 23, 23, 0.9);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
   border-radius: 10px;
   width: 300px;
-  height: 700px;
+  height: 730px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+overflow-y: auto;
   }
 
 
@@ -53,24 +58,28 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  height: 800px;
+  height: 730px;
 }
 
 
 .event-container {
   padding: 20px;
-  font-family: 'Roboto', sans-serif;
+ 
   color: #fff;
-  height: 750px;
+  height: 650px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: flex-start;
   flex-direction: column;
+ 
+
 
 
   p {
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
     margin-left: 15px;
     margin-bottom: 0;
-    color: #b0bec5; /* Grau */
+    color: #ffffff; /* Grau */
     white-space: normal; /* Standard-Zeilenumbruch aktivieren */
     word-break: break-word; /* Lange Wörter umbrechen */
     overflow-wrap: break-word; /* Alternative für alte Browser */
@@ -87,7 +96,7 @@
 .header h1 {
   font-size: 1.5rem;
   font-weight: bold;
-  margin: 0;
+  margin-left: 10px;
 }
 
 
@@ -103,10 +112,11 @@
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
+
 }
 
 .icon-wrapper {
-  background-color: rgba(70, 70, 70, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   padding: 10px;
   display: flex;
@@ -125,6 +135,7 @@
 }
 
 .label {
+  margin-left: 10px;
   margin-bottom: 10px;
   font-weight: bold;
   font-size: 1rem;
@@ -138,7 +149,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-color: rgba(70, 70, 70, 0.2);
+  background-color: transparent;
+  overflow-y: auto;
  
 }
 
@@ -157,6 +169,14 @@
   overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
   background-color: #f0f0f0; /* Hintergrundfarbe */
  margin-right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.details-descrip {
+  overflow-y: auto;
   display: flex;
   justify-content: center;
   align-items: center;

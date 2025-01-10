@@ -66,6 +66,7 @@ export class AngularCalendarComponent implements OnInit {
         this.openAddEventDialog();
       }
     });
+    
   }
 
   async loadEvents(): Promise<void> {
@@ -89,7 +90,14 @@ export class AngularCalendarComponent implements OnInit {
           const formattedUsers = await Promise.all(
             (eventData.users || []).map(async (userName: string) => {
               try {
-                const userQuery = query(userCollection, where('firstName', '==', userName.split(' ')[0]), where('lastName', '==', userName.split(' ')[1]));
+                const trimmedFirstName = userName.split(' ')[0].trim();
+                const trimmedLastName = userName.split(' ')[1]?.trim() || '';
+                
+                const userQuery = query(
+                  userCollection,
+                  where('firstName', '==', trimmedFirstName),
+                  where('lastName', '==', trimmedLastName)
+                );
                 const userSnapshot = await getDocs(userQuery);
   
                 if (!userSnapshot.empty) {
@@ -109,7 +117,11 @@ export class AngularCalendarComponent implements OnInit {
           );
   
           // Benutzerinformationen für `createdBy` abrufen
-          const creatorQuery = query(userCollection, where('firstName', '==', eventData.createdBy.split(' ')[0]), where('lastName', '==', eventData.createdBy.split(' ')[1]));
+          const creatorQuery = query(
+            userCollection,
+            where('firstName', '==', eventData.createdBy.split(' ')[0]),
+            where('lastName', '==', eventData.createdBy.split(' ')[1])
+          );
           const creatorSnapshot = await getDocs(creatorQuery);
           const creatorDetails = !creatorSnapshot.empty
             ? creatorSnapshot.docs[0].data()
@@ -135,10 +147,13 @@ export class AngularCalendarComponent implements OnInit {
         })
       );
   
-      this.events = eventsWithDetails;
-      console.log('Final Event Data with Creator Details:', this.events);
+      // Sortiere die Events nach der Startzeit
+      this.events = eventsWithDetails.sort((a, b) => a.start.getTime() - b.start.getTime());
+  
+      console.log('Final Event Data sorted by Time:', this.events);
     });
   }
+  
   
   
   

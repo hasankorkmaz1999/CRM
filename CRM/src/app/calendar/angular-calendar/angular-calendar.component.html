@@ -59,6 +59,7 @@
       <ng-template #customCellTemplate let-day="day">
           <div class="custom-cell">
             <div class="day-number">{{ day.date | date: 'd' }}</div>
+            <div class="events-wrapper">
             <div
               *ngFor="let event of day.events"
               class="custom-event"
@@ -68,6 +69,7 @@
               <span class="event-time">{{ event.start | date: 'h:mm a' }}</span>
               <span class="event-title">{{ event.title }}</span>
             </div>
+          </div>
           </div>
         </ng-template>
     

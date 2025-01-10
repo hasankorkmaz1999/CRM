@@ -302,8 +302,17 @@ export class DashboardComponent implements OnInit {
         })
       );
   
-      this.upcomingEvents = eventsWithDetails;
-      console.log('Events with user and creator details:', this.upcomingEvents);
+      // Sortiere nach dem nächstgelegenen Datum
+      const sortedEvents = eventsWithDetails.sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return dateA - dateB;
+      });
+  
+      // Beschränke auf die ersten 6 Events
+      this.upcomingEvents = sortedEvents.slice(0, 6);
+  
+      console.log('Sorted and limited upcoming events:', this.upcomingEvents);
     });
   }
   

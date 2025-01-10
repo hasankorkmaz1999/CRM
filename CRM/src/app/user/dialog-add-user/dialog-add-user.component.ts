@@ -7,7 +7,7 @@ import { LoggingService } from '../../shared/logging.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
-import * as bcrypt from 'bcryptjs';
+
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -51,30 +51,39 @@ export class DialogAddUserComponent {
     if (this.userForm.invalid) {
       return;
     }
-
+  
     try {
       const formValue = this.userForm.getRawValue();
-      const hashedPassword = bcrypt.hashSync(formValue.password, 10); // Hash the password
       const uid = this.generateUID(); // Generate a unique ID for the user
-      
+  
+      // Trim all string fields
       const newUser = {
         ...formValue,
-        password: hashedPassword, // Store hashed password
+        firstName: formValue.firstName.trim(), // Trim first name
+        lastName: formValue.lastName.trim(),   // Trim last name
+        email: formValue.email.trim(),         // Trim email
+        role: formValue.role.trim(),           // Trim role
+        password: formValue.password.trim(),   // Trim password
+        phone: formValue.phone ? formValue.phone.trim() : '', // Optional field
+        street: formValue.street ? formValue.street.trim() : '', // Optional field
+        city: formValue.city ? formValue.city.trim() : '',       // Optional field
+        zipCode: formValue.zipCode ? formValue.zipCode.trim() : '', // Optional field
         uid,
-        birthDate: this.birthDate.toLocaleDateString('en-US'),
+        birthDate: this.birthDate.toLocaleDateString('en-US'), // Optional: Format birthDate
       };
-
+  
       // Save the new user to Firestore
       const userRef = doc(this.firestore, `users/${uid}`);
       await setDoc(userRef, newUser);
-
+  
       console.log('User added successfully:', newUser);
       this.logUserAction('add', uid);
-
     } catch (error) {
       console.error('Error saving user:', error);
     }
   }
+  
+  
 
   logUserAction(action: string, userId: string) {
     this.loggingService.log(action, 'user', {

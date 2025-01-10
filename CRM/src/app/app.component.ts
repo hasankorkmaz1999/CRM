@@ -12,6 +12,7 @@ import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { AuthService } from './shared/auth.service';
 import { SharedModule } from './shared/shared.module';
 import { CalendarModule } from 'angular-calendar';
+import { UserService } from './shared/user.service';
 
 @Component({
   selector: 'app-root',
@@ -33,15 +34,15 @@ import { CalendarModule } from 'angular-calendar';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   isLoginRoute: boolean = false;
   userName: string = 'Unknown User'; // Benutzername für den Header
   userRole: string = ''; // Benutzerrolle
 
   constructor(
     private router: Router,
-    private auth: Auth,
-    private authService: AuthService,
+    private userService: UserService,
+  
     private dialog: MatDialog
   ) {
     this.router.events.subscribe(() => {
@@ -50,46 +51,27 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // Abonnieren der aktuellen Benutzerdetails aus dem AuthService
-    this.authService.currentUserDetails$.subscribe((details) => {
-      this.userName = details.name;
-      this.userRole = details.role;
-    });
-  
-    // Überprüfen, ob der Benutzer eingeloggt ist
-    const isLoggedIn = !!localStorage.getItem('userRole');
-    if (!isLoggedIn) {
-      this.router.navigate(['/login']);
-    }
-  
-    // Dialog Cleanup
-    this.dialog.afterAllClosed.subscribe(() => {
-      const appRoot = document.querySelector('app-root');
-      if (appRoot?.hasAttribute('aria-hidden')) {
-        appRoot.removeAttribute('aria-hidden');
+    // Benutzer aus dem Service abonnieren
+    this.userService.currentUser$.subscribe((user) => {
+      if (user) {
+        this.userName = user.name || 'Unknown User';
+        this.userRole = user.role || '';
+        console.log('Aktueller Benutzer:', user);
+      } else {
+        this.userName = 'Unknown User';
+        this.userRole = '';
       }
     });
+  
+    // Benutzer aus localStorage laden (nur beim Initialisieren)
+    this.userService.loadUserFromStorage();
   }
   
-  
-
-  ngAfterViewInit(): void {
-    const appRoot = document.querySelector('app-root');
-    if (appRoot?.hasAttribute('aria-hidden')) {
-      appRoot.removeAttribute('aria-hidden');
-    }
-  }
-
+  // Logout-Funktion
   logout() {
-    this.auth.signOut()
-      .then(() => {
-        localStorage.removeItem('userName');
-        localStorage.removeItem('userRole');
-        this.router.navigate(['/login']);
-        console.log('User logged out successfully');
-      })
-      .catch((error) => {
-        console.error('Error during logout:', error);
-      });
+    this.userService.clearCurrentUser(); // Benutzer im Service löschen
+    console.log('Benutzer wurde erfolgreich ausgeloggt.');
+    this.router.navigate(['/login']);
   }
+
 }

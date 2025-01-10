@@ -172,7 +172,8 @@ export class ThreadsComponent implements OnInit {
       const threadCollection = collection(this.firestore, 'threads');
   
       if (!this.selectedFile) {
-        this.saveThread(threadCollection, null, this.currentUserProfilePicture);
+        // Profilbild wird direkt aus `currentUserProfilePicture` genutzt
+        this.saveThread(threadCollection, null, this.currentUserProfilePicture); // Geänderte Funktion
         return;
       }
   
@@ -182,7 +183,8 @@ export class ThreadsComponent implements OnInit {
   
       this.http.post('https://api.cloudinary.com/v1_1/drzrzowgj/image/upload', formData).subscribe({
         next: (response: any) => {
-          this.saveThread(threadCollection, response.secure_url, this.currentUserProfilePicture);
+          // Profilbild wird aus `currentUserProfilePicture` genutzt
+          this.saveThread(threadCollection, response.secure_url, this.currentUserProfilePicture); // Geänderte Funktion
         },
         error: (error) => {
           console.error('Error uploading image:', error);
@@ -196,14 +198,15 @@ export class ThreadsComponent implements OnInit {
   private saveThread(
     threadCollection: any,
     imageUrl: string | null,
-    profilePicture: string | null
+    profilePicture: string | null // Geändert: Profilbild direkt als Parameter übergeben
   ): void {
+    // NEU: Profilbild aus `currentUserProfilePicture` und Benutzername aus `currentUserName` verwenden
     const threadToSave = {
-      description: this.newThread.description || '', // Fallback auf leeren String
-      createdBy: this.currentUserName,
-      createdAt: new Date().toISOString(), // ISO-String für Firebase
+      description: this.newThread.description || '',
+      createdBy: this.currentUserName, // Benutzername aus `loadCurrentUser`
+      createdAt: new Date().toISOString(),
       commentCount: 0,
-      profilePicture: profilePicture,
+      profilePicture: profilePicture, // Profilbild direkt übergeben
       imageUrl: imageUrl,
     };
   
@@ -215,7 +218,7 @@ export class ThreadsComponent implements OnInit {
         const newThread: Thread = new Thread({
           threadId: docRef.id,
           ...threadToSave,
-          createdAt: new Date(), // Lokale Darstellung als Date
+          createdAt: new Date(),
         });
   
         this.threads.unshift(newThread); // Neuen Thread an den Anfang der Liste einfügen
@@ -224,7 +227,7 @@ export class ThreadsComponent implements OnInit {
         this.isNewThread = true; // Animation für neuen Thread auslösen
         setTimeout(() => {
           this.isNewThread = false; // Zustand nach Animation zurücksetzen
-        }, 1000); // Nach 1 Sekunde zurücksetzen
+        }, 1000);
       })
       .catch((error) => {
         console.error('Error creating/updating thread:', error);
@@ -236,10 +239,6 @@ export class ThreadsComponent implements OnInit {
         this.selectedFilePreview = null;
       });
   }
-  
-  
-  
-  
   
 
 

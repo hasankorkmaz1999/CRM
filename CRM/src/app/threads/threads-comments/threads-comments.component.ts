@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SharedModule } from '../../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../shared/auth.service';
 import { Comment } from '../../../models/comment.class';
 
 @Component({
@@ -26,7 +25,6 @@ export class ThreadsCommentsComponent implements OnInit {
   constructor(
     private firestore: Firestore,
     private fb: FormBuilder,
-    private authService: AuthService,
     private dialogRef: MatDialogRef<ThreadsCommentsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { threadId: string; threadDescription: string }
   ) {
@@ -39,17 +37,17 @@ export class ThreadsCommentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Hole aktuelle Benutzerdetails aus dem AuthService
-    const userDetails = this.authService.getCurrentUserDetailsSync();
-    this.currentUserName = userDetails.name;
-    this.currentUserProfilePicture = userDetails.profilePicture;
+    // Benutzerinformationen aus localStorage abrufen
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.currentUserName = currentUser.name || 'Unknown User';
+    this.currentUserProfilePicture = currentUser.profilePicture || '/assets/img/user.png';
 
     this.loadComments();
   }
 
   loadComments(): void {
     const commentsCollection = collection(this.firestore, `threads/${this.data.threadId}/comments`);
-  
+
     collectionData(commentsCollection, { idField: 'commentId' }).subscribe(
       (data: any[]) => {
         this.comments = data
@@ -59,12 +57,11 @@ export class ThreadsCommentsComponent implements OnInit {
               threadId: this.data.threadId,
               message: commentData.message || '',
               createdBy: commentData.createdBy || 'Unknown',
-              createdAt: commentData.createdAt ? new Date(commentData.createdAt) : new Date(), // Konvertiere createdAt zu Date
+              createdAt: commentData.createdAt ? new Date(commentData.createdAt) : new Date(),
               profilePicture: commentData.profilePicture || '/assets/img/user.png',
             });
           })
           .sort((a, b) => {
-            // Konvertiere createdAt zu Date-Objekten und vergleiche
             const dateA = new Date(a.createdAt).getTime();
             const dateB = new Date(b.createdAt).getTime();
             return dateB - dateA; // Neueste zuerst
@@ -75,8 +72,6 @@ export class ThreadsCommentsComponent implements OnInit {
       }
     );
   }
-  
-  
 
   addComment(): void {
     if (this.commentForm.valid) {

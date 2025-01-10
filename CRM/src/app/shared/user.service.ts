@@ -5,27 +5,24 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class UserService {
-  private userNameSubject = new BehaviorSubject<string | null>(localStorage.getItem('userName'));
-  private userRoleSubject = new BehaviorSubject<string | null>(localStorage.getItem('userRole'));
+  private currentUserSubject = new BehaviorSubject<any>(null); // Aktueller Benutzer
+  currentUser$ = this.currentUserSubject.asObservable(); // Observable für den Benutzer
 
-  userName$ = this.userNameSubject.asObservable();
-  userRole$ = this.userRoleSubject.asObservable();
-
-  setUserName(userName: string | null) {
-    this.userNameSubject.next(userName);
-    if (userName) {
-      localStorage.setItem('userName', userName);
-    } else {
-      localStorage.removeItem('userName');
-    }
+  // Benutzer im Service setzen
+  setCurrentUser(user: any) {
+    this.currentUserSubject.next(user);
+    localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
-  setUserRole(userRole: string | null) {
-    this.userRoleSubject.next(userRole);
-    if (userRole) {
-      localStorage.setItem('userRole', userRole);
-    } else {
-      localStorage.removeItem('userRole');
-    }
+  // Benutzer aus dem Service löschen
+  clearCurrentUser() {
+    this.currentUserSubject.next(null);
+    localStorage.removeItem('currentUser');
+  }
+
+  // Benutzer aus localStorage laden
+  loadUserFromStorage() {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.currentUserSubject.next(user);
   }
 }

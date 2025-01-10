@@ -1,5 +1,6 @@
 .calendar-angular {
     padding: 46px;
+    position: relative;
 }
 
 
@@ -40,12 +41,14 @@
 
 ::ng-deep .cal-month-view {
   background-color: #0f0f0f !important;
+  overflow-y: auto;
 }
 
  ::ng-deep .cal-month-view .cal-cell {
   background-color: #0f0f0f!important; 
     color: rgb(255, 255, 255) !important; 
     border: none !important;
+    overflow-y: auto !important;
   } 
  
 
@@ -109,43 +112,75 @@
 
 
 
-.add-event-button {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-}
+
 
 
 .custom-cell {
     background-color: rgba(107, 107, 107, 0.2); /* Gelb für Debugging */
     color: white;
     min-height: 150px;
+    max-height: 150px;
     margin: 5px;
+    padding: 5px;
     border-radius: 10px;
+    display: flex;
+   flex-direction: row-reverse;
+   justify-content: space-between;
+  
+    
+ 
+    
+}
+
+.events-wrapper {
+
+ margin-top: 10px;
+  min-height: 120px;
+  max-height: 120px;
+  max-width: 180px;
+  width: 180px;
+  overflow-y: auto;
+  display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    overflow-x: hidden;
 }
  
  
   
   .day-number {
     font-weight: bold;
-    padding-top: 5px;
+   
     padding-right: 5px;
-    margin-bottom: 5px;
+    margin-top: 5px;
     font-size: 14px;
     text-align: right;
+    width: 20px;
   }
   
   .custom-event {
-    margin-bottom: 5px;
-    padding: 5px;
+    width: 160px;
+    padding: 2px;
+    margin-bottom: 10px;
     border-radius: 3px;
-    overflow-y: auto;
-    transition: transform 0.2s ease-in-out; /* Animation für sanften Übergang */
+    transition: transform 0.2s ease-in-out; /* Animation für Skalierung */
   }
   
   .custom-event:hover {
     transform: scale(1.05); /* Leicht vergrößern beim Hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Schatten hinzufügen */
+  }
+  
+  .custom-event .event-time,
+  .custom-event .event-title {
+    color: #000000; /* Standardfarbe */
+    transition: color 0.2s ease-in-out; /* Sanfter Übergang der Textfarbe */
+  }
+  
+  .custom-event:hover .event-time,
+  .custom-event:hover .event-title {
+    color: white; /* Farbe ändern beim Hover */
   }
   
 
@@ -181,6 +216,9 @@ margin-right: 10px;
   }
   
   .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     border-radius: 10px;
     position: relative;
     width: 300px; // Breite der Sidebar
@@ -229,6 +267,6 @@ overflow-x: hidden;
 
   .event-button {
     position: absolute;
-    bottom: 36px;
+    bottom: -10px;
     left: 50px;
   }
