@@ -1,126 +1,182 @@
 <div class="user-component">
-
-<div class="back-button">
-  <button mat-icon-button (click)="goBack()">
+  <div class="back-button">
+    <button mat-icon-button (click)="goBack()">
       <mat-icon class="large-icon">arrow_back</mat-icon>
     </button>
   </div>
 
+  <mat-card class="user-detail-header">
+    <div class="heading-wrapper">
+      <div class="line"></div>
+    <h1> Details User </h1>
+  </div>
+    <div class="user-content">
+      <div class="left-section">
+        <div class="profile-picture-container">
+          <div class="image-wrapper">
+            <img
+              [src]="user.profilePicture || '/assets/img/user.png'"
+              [ngClass]="{
+                'default-picture': !user.profilePicture,
+                'uploaded-picture': user.profilePicture
+              }"
+              alt="Profile Picture"
+            />
+          </div>
+
+          <button
+            (click)="addOrEditProfilePicture()"
+            class="add-picture-button"
+            mat-fab
+            color="primary"
+            matTooltip="Add/Edit picture"
+            matTooltipPosition="above"
+          >
+            <mat-icon *ngIf="!user.profilePicture">add</mat-icon>
+            <mat-icon *ngIf="user.profilePicture">edit</mat-icon>
+          </button>
+        </div>
+      </div>
 
 
-<mat-card class="user-detail-header">
- 
-  <div class="left-section">
-    <div class="profile-picture-container">
 
-      <div class="image-wrapper">
-      <img
-        [src]="user.profilePicture || '/assets/img/user.png'"
-        [ngClass]="{
-          'default-picture': !user.profilePicture,
-          'uploaded-picture': user.profilePicture
-        }"
-        alt="Profile Picture"
-      />
+
+
+
+
+
+      <div class="middle-section">
+        <div class="user-details">
+          <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+
+          <div class="user-details-under">
+
+
+
+
+
+
+
+
+<div class="user-left">
+
+            <div class="role-container">
+              <span class="thin-role">Role</span>
+
+              <span class="user-role">
+                {{ user.role }}
+
+                <mat-icon *ngIf="user.role === 'Admin'" class="icon admin-icon"
+                  >admin_panel_settings</mat-icon
+                >
+                <mat-icon
+                  *ngIf="user.role === 'Employee'"
+                  class="icon employee-icon"
+                  >work</mat-icon
+                >
+                <mat-icon *ngIf="user.role === 'Guest'" class="icon guest-icon"
+                  >person_outline</mat-icon
+                >
+                <mat-icon *ngIf="!user.role" class="icon default-icon"
+                  >help_outline</mat-icon
+                >
+              </span>
+            </div>
+
+         
+            <div class="role-container">
+              <span class="thin-role"> E-mail </span>
+  
+  
+              <a href="mailto:{{ user.email }}" class="email-link">
+                {{ user.email }}
+              </a>
+  
+  
+               </div>
+              </div>
+
+
+           
+
+        
+
+            <div class="user-right">
+
+           
+              <div class="role-container">
+                <span class="thin-role">Birth Date</span>
+  
+                <span class="birthdate"
+                  >{{ user.birthDate | date : "MMMM d, y" }}
+                </span>
+              </div>
+
+              <div class="role-container">
+                <span class="thin-role">Phone </span>
+                <a href="tel:{{ user.phone.toString() }}" class="email-link">
+                  {{ user.phone }}
+                </a>
+             
+                </div>
+  
+            </div>
+         
+            
+
+
+
+       
+
+
+    
+
+
+
+          </div>
+        </div>
+      </div>
     </div>
 
+
+
+
+
+
+
+
+
+    <div class="edit-container">
       <button
-        (click)="addOrEditProfilePicture()"
-        class="add-picture-button"
-        mat-fab
-        color="primary"
-        matTooltip="Add/Edit picture"
-        matTooltipPosition="above"
+        mat-icon-button
+        class="custom-edit-icon"
+        (click)="editUserDetails()"
       >
-        <mat-icon *ngIf="!user.profilePicture">add</mat-icon>
-        <mat-icon *ngIf="user.profilePicture">edit</mat-icon>
+        <mat-icon>edit_square</mat-icon>
       </button>
     </div>
-  </div>
+  </mat-card>
 
+  <mat-card class="user-detail-address">
+    <mat-card-header>
+      <mat-card-title>Address</mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header>
 
+    <mat-card-content class="address-content">
+      <span>Street: {{ user.street }}</span>
+      <span>City: {{ user.zipCode }} {{ user.city }}</span>
+    </mat-card-content>
+  </mat-card>
 
-  
+  <mat-card class="user-detail-address">
+    <mat-card-header>
+      <mat-card-title>Contact</mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header>
 
-  
-
-
-  <div class="middle-section">
-    <div class="user-details">
-      <h2>{{ user.firstName }} {{ user.lastName }}</h2>
-
-      <span class="birthdate">
-        <strong>Birth Date:</strong> {{ user.birthDate | date: "MMMM d, y" }}
-      </span>
-
-      <div class="role-container">
-      <span class="user-role">
-      {{ user.role }}
-       </span>
-      <mat-icon *ngIf="user.role === 'Admin'" class="icon admin-icon">admin_panel_settings</mat-icon>
-      <mat-icon *ngIf="user.role === 'Employee'" class="icon employee-icon">work</mat-icon>
-      <mat-icon *ngIf="user.role === 'Guest'" class="icon guest-icon">person_outline</mat-icon>
-      <mat-icon *ngIf="!user.role" class="icon default-icon">help_outline</mat-icon>
-    
-  </div>
-
-    </div>
-  </div>
-
-
-
-
-<div class="edit-container">
-  <button mat-icon-button class="custom-edit-icon" (click)="editUserDetails()">
-    <mat-icon>edit_square</mat-icon>
-  </button>
-
-</div>
-
-
-</mat-card>
-
-
-
-
-<mat-card class="user-detail-address">
-  <mat-card-header>
-    <mat-card-title>Address</mat-card-title>
-    <mat-card-subtitle></mat-card-subtitle>
-  </mat-card-header>
-
-  <mat-card-content class="address-content">
-    <span>Street: {{ user.street }}</span>
-    <span>City: {{ user.zipCode }} {{ user.city }}</span>
-  </mat-card-content>
-</mat-card>
-
-
-
-
-
-
-<mat-card class="user-detail-address">
-  
-  <mat-card-header>
-    <mat-card-title>Contact</mat-card-title>
-    <mat-card-subtitle></mat-card-subtitle>
-  </mat-card-header>
-
-  <mat-card-content class="address-content">
-    <span></span>
-    <span
-      >E-mail:
-      <a href="mailto:{{ user.email }}" class="email-link">
-        {{ user.email }}
-      </a></span
-    >
-    <span
-      >Phone:
-      <a href="tel:{{ user.phone.toString() }}" class="phone-link">
-        {{ user.phone }}
-      </a>
-    </span>
-  </mat-card-content>
-</mat-card>
+    <mat-card-content class="address-content">
+     
+    </mat-card-content>
+  </mat-card>
 </div>
