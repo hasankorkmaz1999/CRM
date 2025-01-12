@@ -202,13 +202,7 @@
                 *ngFor="let event of upcomingEvents; let i = index"
                 (click)="openEventDetails(event)"
                 [ngClass]="getEventClass(event.type)"
-                [matTooltip]="
-                  isEventToday(event.date) && event.id
-                    ? 'Starts in: ' + (countdowns[event.id] || 'Ended')
-                    : ''
-                "
-                matTooltipPosition="above"
-              >
+                             >
                 <div class="event-item">
                   <h4>{{ event.type }}</h4>
                   <mat-icon>event</mat-icon>

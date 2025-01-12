@@ -22,44 +22,39 @@
 </div>
 
 <mat-card>
-  <!-- Benutzer-Tabelle -->
-  <table class="user-table">
-    <thead> <!-- Kopfzeile umschlossen von thead -->
-      <tr class="header-row">
-        <th>Role</th>
-        <th>Name</th>
-        <th>E-mail</th>
-        <th>City</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody> 
-      <!-- Datenzeilen in tbody -->
-      <tr class="under-tr" *ngFor="let user of filteredUsers">
+  <!-- Benutzer-Liste -->
+  <div class="user-list">
+    <!-- Kopfzeile -->
+    <div class="header-row">
+      <div>Role</div>
+      <div>Name</div>
+      <div>E-mail</div>
+      <div>Phone</div>
+      <div>Actions</div>
+    </div>
 
-        <td [routerLink]="['/user', user.uid]" class="icon-container">
-          <!-- Abhängig von der Rolle ein Icon anzeigen -->
-          <mat-icon *ngIf="user.role === 'Admin'" class="icon admin-icon">admin_panel_settings</mat-icon>
-          <mat-icon *ngIf="user.role === 'Employee'" class="icon employee-icon">work</mat-icon>
-          <mat-icon *ngIf="user.role === 'Guest'" class="icon guest-icon">person_outline</mat-icon>
-          <mat-icon *ngIf="!user.role" class="icon default-icon">help_outline</mat-icon>
-        </td>
-        
-
-        <td [routerLink]="['/user', user.uid]">{{ user.firstName }} {{ user.lastName }}</td>
-        <td [routerLink]="['/user', user.uid]">{{ user.email }}</td>
-        <td [routerLink]="['/user', user.uid]">{{ user.city }}</td>
-        <td>
-
-
-          <button mat-icon-button color="warn" (click)="openDeleteDialog(user)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <!-- Benutzerzeilen -->
+    <div class="under-tr" *ngFor="let user of filteredUsers" (click)="navigateToUser(user.uid)">
+      <div class="icon-container">
+        <mat-icon *ngIf="user.role === 'Admin'" class="icon admin-icon">admin_panel_settings</mat-icon>
+        <mat-icon *ngIf="user.role === 'Employee'" class="icon employee-icon">work</mat-icon>
+        <mat-icon *ngIf="user.role === 'Guest'" class="icon guest-icon">person_outline</mat-icon>
+        <mat-icon *ngIf="!user.role" class="icon default-icon">help_outline</mat-icon>
+      </div>
+      <div class="user-stats">{{ user.firstName }} {{ user.lastName }}</div>
+      <div class="user-stats">{{ user.email }}</div>
+      <div class="user-stats">{{ user.phone }}</div>
+      <div>
+        <!-- Stop Event-Bubbling hier -->
+        <button mat-icon-button color="warn" (click)="openDeleteDialog($event, user)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    
+  </div>
 </mat-card>
+
 
 
 <!-- Hinzufügen-Button -->

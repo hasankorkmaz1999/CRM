@@ -1,9 +1,17 @@
-<div class="user-component">
+<div class="user-detail-component">
   <div class="back-button">
     <button mat-icon-button (click)="goBack()">
       <mat-icon class="large-icon">arrow_back</mat-icon>
     </button>
   </div>
+
+
+
+
+  <div class="mat-cards-wrapper">
+
+
+    <div class="mat-cards-wrapper-left">
 
   <mat-card class="user-detail-header">
     <div class="heading-wrapper">
@@ -159,24 +167,67 @@
 
   <mat-card class="user-detail-address">
     <mat-card-header>
-      <mat-card-title>Address</mat-card-title>
+      <div class="heading-wrapper">
+        <div class="line"></div>
+      <h1>Address </h1>
+    </div>
       <mat-card-subtitle></mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content class="address-content">
-      <span>Street: {{ user.street }}</span>
-      <span>City: {{ user.zipCode }} {{ user.city }}</span>
+
+
+      <div class="role-container-address">
+      <span class="thin-role">Street </span>
+      <span  class="birthdate"> {{ user.street }}</span>
+      </div>
+
+      <div class="role-container-address">
+
+      <span class="thin-role">City </span>
+      <span  class="birthdate"> {{ user.zipCode }} {{ user.city }}</span>
+    </div>
+
+
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="user-detail-address">
-    <mat-card-header>
-      <mat-card-title>Contact</mat-card-title>
-      <mat-card-subtitle></mat-card-subtitle>
-    </mat-card-header>
+</div>
 
-    <mat-card-content class="address-content">
-     
-    </mat-card-content>
+
+  <mat-card class="user-events">
+   
+      <div class="heading-wrapper">
+       
+        <h1>
+         Upcoming  Events for {{ user.firstName }}
+        </h1>
+      </div>
+   
+
+
+   
+      <div class="events-wrapper-user" *ngIf="userEvents.length > 0">
+        <div *ngFor="let event of userEvents" class="event-item">
+          <h3>{{ event.type }}</h3>
+          <p><strong>Date:</strong> {{ event.date | date: 'MMMM d, y' }}</p>
+          <p><strong>Time:</strong> {{ event.time }}</p>
+          <p><strong>Description:</strong> {{ event.description || 'No description provided' }}</p>
+        </div>
+      </div>
+      <div *ngIf="userEvents.length === 0" class="no-events">
+        <p>No events found for this user.</p>
+      </div>
+   
+
+
+
   </mat-card>
+  
+
+</div>
+
+
+
+   
 </div>

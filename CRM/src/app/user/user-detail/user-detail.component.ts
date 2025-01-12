@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
-import { Firestore, doc, docData } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { User } from '../../../models/user.class';
 import {MatMenuModule} from '@angular/material/menu'; 
@@ -24,6 +24,8 @@ export class UserDetailComponent implements OnInit {
 
   userId = '';
   user: User = new User ;
+  userEvents: any[] = []; // Liste aller Events des aktuellen Benutzers
+
 
   constructor(private route: ActivatedRoute,
      private firestore: Firestore,
@@ -31,13 +33,15 @@ export class UserDetailComponent implements OnInit {
       private location: Location
     ) {}
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(paramMap => {
-      this.userId = paramMap.get('id') ?? '';
-      console.log('Got ID:', this.userId);
-      this.getUser();
-    });
-  }
+    ngOnInit(): void {
+      this.route.paramMap.subscribe((paramMap) => {
+        this.userId = paramMap.get('id') ?? '';
+        console.log('Got ID:', this.userId);
+        this.getUser();
+        this.loadUserEvents(); // Events laden
+      });
+    }
+    
 
   getUser() {
     const userDoc = doc(this.firestore, `users/${this.userId}`);
@@ -46,6 +50,54 @@ export class UserDetailComponent implements OnInit {
       console.log('Fetched user data:', this.user);
     });
   }
+
+
+  loadUserEvents(): void {
+    const eventsCollection = collection(this.firestore, 'events');
+    const now = new Date(); // Aktuelles Datum und Uhrzeit
+  
+    collectionData(eventsCollection, { idField: 'id' }).subscribe((events: any[]) => {
+      // Filtere Events, bei denen der Benutzer ein Teilnehmer ist und die noch in der Zukunft liegen
+      const filteredEvents = events.filter((event) => {
+        const eventDateTime = this.parseAndCombineDateTime(event.date, event.time);
+        return (
+          event.users.some(
+            (participant: string) =>
+              participant === `${this.user.firstName} ${this.user.lastName}`
+          ) && eventDateTime > now
+        );
+      });
+  
+      // Sortiere die Events nach Datum und Uhrzeit
+      this.userEvents = filteredEvents.sort((a, b) => {
+        const dateA = this.parseAndCombineDateTime(a.date, a.time).getTime();
+        const dateB = this.parseAndCombineDateTime(b.date, b.time).getTime();
+        return dateA - dateB; // Aufsteigende Reihenfolge (früheste Events zuerst)
+      });
+  
+      console.log('Upcoming and Sorted User Events:', this.userEvents);
+    });
+  }
+  
+  parseAndCombineDateTime(dateString: string, timeString: string): Date {
+    try {
+      const [time, meridiem] = timeString.split(' ');
+      const [hours, minutes] = time.split(':').map(Number);
+      const isPM = meridiem === 'PM';
+  
+      const parsedDate = new Date(dateString);
+      parsedDate.setHours(isPM && hours !== 12 ? hours + 12 : hours === 12 ? 0 : hours);
+      parsedDate.setMinutes(minutes || 0);
+      parsedDate.setSeconds(0);
+      parsedDate.setMilliseconds(0);
+  
+      return parsedDate;
+    } catch (error) {
+      console.error('Error parsing and combining date and time:', error);
+      return new Date(NaN);
+    }
+  }
+  
 
   
 

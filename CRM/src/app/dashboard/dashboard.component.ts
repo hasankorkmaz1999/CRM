@@ -80,12 +80,14 @@ export class DashboardComponent implements OnInit {
   
       console.log('Benutzerdetails aus localStorage:', currentUser);
     }
+    
     this.updateCurrentUser();
     this.loadThreads();
     this.loadEvents();
     this.startLiveCountdown();
     this.loadRecentLogs();
     this.loadTodos();
+    this.updateKPICards();
     this.updateProgressBar();
   }
 
@@ -250,9 +252,14 @@ export class DashboardComponent implements OnInit {
     }
   
     collectionData(eventCollection, { idField: 'id' }).subscribe(async (data) => {
+      const now = new Date(); // Aktuelles Datum und Uhrzeit
+  
       const eventsWithDetails = await Promise.all(
         data.map(async (eventData: any) => {
           const parsedDate = this.combineDateTime(eventData.date, eventData.time);
+  
+          // Nur Events in der Zukunft
+          if (parsedDate < now) return null;
   
           const formattedUsers = await Promise.all(
             (eventData.users || []).map(async (userName: string) => {
@@ -302,8 +309,11 @@ export class DashboardComponent implements OnInit {
         })
       );
   
+      // Filtere ungültige Events heraus
+      const validEvents = eventsWithDetails.filter((event) => event !== null);
+  
       // Sortiere nach dem nächstgelegenen Datum
-      const sortedEvents = eventsWithDetails.sort((a, b) => {
+      const sortedEvents = validEvents.sort((a, b) => {
         const dateA = new Date(a.date).getTime();
         const dateB = new Date(b.date).getTime();
         return dateA - dateB;
@@ -315,6 +325,54 @@ export class DashboardComponent implements OnInit {
       console.log('Sorted and limited upcoming events:', this.upcomingEvents);
     });
   }
+
+  updateKPICards(): void {
+    const eventCollection = collection(this.firestore, 'events');
+    const now = new Date(); // Aktuelles Datum und Uhrzeit
+  
+    collectionData(eventCollection, { idField: 'id' }).subscribe((events: any[]) => {
+      // Filtere Events basierend auf ihren Daten
+      const validEvents = events.map((event) => ({
+        ...event,
+        date: this.combineDateTime(event.date, event.time),
+      })).filter((event) => event.date instanceof Date && !isNaN(event.date.getTime()));
+  
+      // Aktualisiere die KPI-Variablen
+      this.totalEvents = validEvents.length;
+  
+      this.eventsToday = validEvents.filter((event) => this.isEventToday(event.date)).length;
+  
+      this.eventsThisWeek = validEvents.filter((event) => this.isEventInThisWeek(event.date)).length;
+  
+      console.log('KPI Cards Updated:', {
+        totalEvents: this.totalEvents,
+        eventsToday: this.eventsToday,
+        eventsThisWeek: this.eventsThisWeek,
+      });
+    });
+  }
+
+  isEventToday(eventDate: Date): boolean {
+    const today = new Date();
+    return (
+      eventDate.getFullYear() === today.getFullYear() &&
+      eventDate.getMonth() === today.getMonth() &&
+      eventDate.getDate() === today.getDate()
+    );
+  }
+  
+
+  isEventInThisWeek(eventDate: Date): boolean {
+    const today = new Date();
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay());
+    const endOfWeek = new Date(today);
+    endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
+  
+    return eventDate >= startOfWeek && eventDate <= endOfWeek;
+  }
+  
+  
   
 
   combineDateTime(dateString: string, timeString: string): Date {
@@ -329,19 +387,8 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  isEventToday(eventDate: Date): boolean {
-    if (!(eventDate instanceof Date) || isNaN(eventDate.getTime())) {
-      console.warn('Invalid eventDate:', eventDate);
-      return false;
-    }
-
-    const today = new Date();
-    return (
-      eventDate.getFullYear() === today.getFullYear() &&
-      eventDate.getMonth() === today.getMonth() &&
-      eventDate.getDate() === today.getDate()
-    );
-  }
+  
+  
 
   startLiveCountdown() {
     interval(1000)
