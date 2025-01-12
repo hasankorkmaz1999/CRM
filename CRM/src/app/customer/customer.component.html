@@ -18,45 +18,42 @@
 </div>
 
   
-  <mat-card>
-    <table class="customer-table">
-      <thead> 
-      <tr class="header-row">
-        <th>Status</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>E-mail</th>
-        <th>Phone</th>
-        
-        <th>Actions</th>
-      </tr>
-    </thead>
+<mat-card>
+  <!-- Kunden-Liste -->
+  <div class="customer-list">
+    <!-- Kopfzeile -->
+    <div class="header-row">
+      <div>Status</div>
+      <div> Name</div>
+  
+      <div>E-mail</div>
+      <div>Phone</div>
+      <div>Actions</div>
+    </div>
 
-    <tbody>
-      <tr class="under-tr" *ngFor="let customer of filteredCustomers">
+    <!-- Kundenzeilen -->
+    <div
+      class="under-tr"
+      *ngFor="let customer of filteredCustomers"
+      (click)="navigateToCustomer(customer.id)"
+    >
+      <div class="status-column">
+        <span class="status-circle status-{{ customer.status }}"></span>
+      </div>
+      <div class="customer-stats">{{ customer.firstName }} {{ customer.lastName }}</div>
+    
+      <div class="customer-stats">{{ customer.email }}</div>
+      <div class="customer-stats">{{ customer.phone }}</div>
+      <div>
+        <!-- Stop Event-Bubbling hier -->
+        <button mat-icon-button color="warn" (click)="openDeleteDialog($event, customer)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-card>
 
-        <td [routerLink]="['/customer', customer.id]" class="status-column">
-          <span class="status-circle status-{{ customer.status }}">
-
-          
-          </span>
-        </td>
-
-        <td [routerLink]="['/customer', customer.id]">{{ customer.firstName }}</td>
-        <td [routerLink]="['/customer', customer.id]">{{ customer.lastName }}</td>
-        <td  [routerLink]="['/customer', customer.id]">{{ customer.email }}</td>
-        <td  [routerLink]="['/customer', customer.id]">{{ customer.phone }}</td>
-        
-        <td>
-         
-          <button mat-icon-button color="warn" (click)="openDeleteDialog(customer)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-    </table>
-  </mat-card>
   
   <!-- Add Customer Button -->
   <button

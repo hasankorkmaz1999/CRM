@@ -6,7 +6,7 @@ import { Firestore, collection, collectionData, doc, deleteDoc } from '@angular/
 import { Customer } from '../../models/customer.class';
 import { LoggingService } from '../shared/logging.service';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer',
@@ -26,6 +26,7 @@ export class CustomerComponent implements OnInit {
      private dialog: MatDialog,
      private loggingService: LoggingService,
      private route: ActivatedRoute,
+     private router: Router
     ) {}
 
   ngOnInit(): void {
@@ -38,6 +39,16 @@ export class CustomerComponent implements OnInit {
       }
     });
   }
+
+
+  navigateToCustomer(customerId: string): void {
+    if (customerId) {
+      this.router.navigate(['/customer', customerId]);
+    } else {
+      console.error('Invalid customer ID.');
+    }
+  }
+  
 
   loadCustomers() {
     const customerCollection = collection(this.firestore, 'customers');
@@ -74,30 +85,28 @@ export class CustomerComponent implements OnInit {
 
  
 
-  openDeleteDialog(customer: Customer) {
+  openDeleteDialog(event: Event, customer: any): void {
+    event.stopPropagation(); // Verhindert das Auslösen von navigateToCustomer
+    // Öffne den Delete-Dialog
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      autoFocus: false, 
-      data: {
-        type: 'customer',
-        name: `${customer.firstName} ${customer.lastName}`,
-      },
+      data: { type: 'customer', name: `${customer.firstName} ${customer.lastName}` },
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        const customerDoc = doc(this.firestore, `customers/${customer.id}`);
-        deleteDoc(customerDoc)
-          .then(() => {
-            console.log(`Customer ${customer.firstName} ${customer.lastName} deleted`);
-            this.logCustomerDeletion(customer); // Logge die Löschaktion
-            this.loadCustomers(); // Aktualisiere die Liste nach dem Löschen
-          })
-          .catch((error) => {
-            console.error('Error deleting customer:', error);
-          });
+        this.deleteCustomer(customer.id);
       }
     });
   }
+
+  deleteCustomer(customerId: string): void {
+    const customerDoc = doc(this.firestore, `customers/${customerId}`);
+    deleteDoc(customerDoc)
+      .then(() => console.log('Customer deleted successfully'))
+      .catch((error) => console.error('Error deleting customer:', error));
+  }
+  
+  
 
   logCustomerDeletion(customer: Customer) {
     // Logge die Löschaktion
