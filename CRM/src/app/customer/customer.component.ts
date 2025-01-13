@@ -74,21 +74,11 @@ export class CustomerComponent implements OnInit {
       .sort((a, b) => a.firstName.localeCompare(b.firstName)); // Alphabetisch sortieren
   }
 
-  openAddDialog() {
-    const dialogRef = this.dialog.open(DialogAddCustomerComponent);
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.loadCustomers(); // Aktualisiere die Liste nach dem Hinzufügen
-      }
-    });
-  }
-
- 
-
   openDeleteDialog(event: Event, customer: any): void {
     event.stopPropagation(); // Verhindert das Auslösen von navigateToCustomer
     // Öffne den Delete-Dialog
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      autoFocus: false, // Deaktiviert Autofokus
       data: { type: 'customer', name: `${customer.firstName} ${customer.lastName}` },
     });
   
@@ -98,6 +88,19 @@ export class CustomerComponent implements OnInit {
       }
     });
   }
+  
+  openAddDialog() {
+    const dialogRef = this.dialog.open(DialogAddCustomerComponent, {
+      autoFocus: false, // Deaktiviert Autofokus
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadCustomers(); // Aktualisiere die Liste nach dem Hinzufügen
+      }
+    });
+  }
+  
 
   deleteCustomer(customerId: string): void {
     const customerDoc = doc(this.firestore, `customers/${customerId}`);

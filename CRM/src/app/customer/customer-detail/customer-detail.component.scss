@@ -199,6 +199,12 @@ h1 {
   }
 }
 
+.status-container {
+  display: flex;
+  flex-direction: column;
+  margin-right: 70px;
+}
+
   
   
 
@@ -271,8 +277,11 @@ h1 {
 
 
   .back-button {
+    width: 100%;
     height: 70px;
-    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
     color: #ffffff;
 
   
@@ -288,16 +297,13 @@ h1 {
   }
   
 
-  .label-status{
-        color: white;
-        font-size: 18px;
-        margin-right: 10px;
-      }
+  
   
       .selectbar {
+        height: 40px;
         width: 170px;
-       font-size: 18px;
-        padding: 10px;
+       font-size: 16px;
+        padding: 5px;
         background-color: rgba(0, 0, 0, 0.3);
         border-radius: 10px;
         color: white;
@@ -306,14 +312,22 @@ h1 {
       }
 
       .selectbar option {
-        background-color: rgba(40, 40, 40, 0.5) !important; /* Hintergrundfarbe der Optionen */
+        background-color: rgba(22, 22, 22, 0.9) !important; /* Hintergrundfarbe der Optionen */
         color: rgb(255, 255, 255); /* Textfarbe */
         font-size: 16px;
         padding: 10px;
+        cursor: pointer !important;
         border: none !important;
         appearance: none; /* Entfernt Standard-Styling des Browsers */
         -webkit-appearance: none; /* Für Safari */
         -moz-appearance: none; /* Für Firefox */
+      }
+
+      .thin-role-select{
+        margin-bottom: 5px;
+        padding-left: 3px;
+        color: #bababa;
+font-size: 16px;
       }
 
 
@@ -346,3 +360,136 @@ h1 {
       
     
     
+
+
+
+
+
+
+      .notes-section {
+        margin-top: 20px;
+      }
+      
+      .notes-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: none;
+        margin-bottom: 10px;
+        background-color: transparent;
+        color: white;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Animation hinzufügen */
+      
+        &:focus {
+          border-color: #4250A9; /* Farbe der Umrandung beim Fokus */
+          box-shadow: 0 0 5px rgba(66, 80, 169, 0.5); /* Optional: Schattierung hinzufügen */
+          outline: none; /* Entfernt den Standard-Fokusrahmen */
+        }
+      }
+      
+
+      .add-note {
+        margin-bottom: 30px;
+      }
+      
+      button {
+        float: right;
+      }
+
+
+      .content {
+        width: 100%;
+        display: flex !important;
+        flex-direction: column;
+        justify-content: space-around !important;
+      }
+
+      .notes-list {
+display: flex;
+flex-wrap: wrap;
+      }
+
+      .note-item {
+        position: relative;
+        color: white;
+        background-color: rgba(39, 39, 39, 0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+        border-radius: 20px;
+        margin-right: 20px;
+        width: 300px;
+        height: 230px;
+        margin-bottom: 20px;
+        padding-top: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+
+
+       
+
+      }
+
+      .createdBy-wrapper {
+        display: flex;
+        justify-content: space-between;
+      }
+      
+
+      .image-wrapper-notes {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
+        overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
+        background-color: #f0f0f0; /* Hintergrundfarbe */
+        margin-right: 10px;
+        
+      }
+
+      .createdBy {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+      
+     
+      
+      
+        .profile-picture {
+           
+            width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+          }
+
+
+          .delete-note {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            color: red;
+            background-color: transparent;
+            border: none;
+            transition: all 0.3s ease-in-out;
+            &:hover {
+              cursor: pointer;
+              transform: scale(1.1);
+            }
+
+          }
+
+
+
+          .note-text {
+            max-height: 100px;
+            overflow-y: auto;
+            font-size: 16px;
+            white-space: normal; /* Standard-Zeilenumbruch aktivieren */
+            word-break: break-word; /* Lange Wörter umbrechen */
+            overflow-wrap: break-word;
+            padding: 5px; /* Alternative für alte Browser */
+          }
+      

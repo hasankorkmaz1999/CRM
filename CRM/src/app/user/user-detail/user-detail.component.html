@@ -117,7 +117,7 @@
               <div class="role-container">
                 <span class="thin-role">Phone </span>
                 <a href="tel:{{ user.phone.toString() }}" class="email-link">
-                  {{ user.phone }}
+                  {{ user.phone || 'No phone number provided' }}
                 </a>
              
                 </div>
@@ -163,13 +163,13 @@
 
       <div class="role-container-address">
       <span class="thin-role">Street </span>
-      <span  class="birthdate"> {{ user.street }}</span>
+      <span  class="birthdate"> {{ user.street  || 'No street provided' }}</span>
       </div>
 
       <div class="role-container-address">
 
       <span class="thin-role">City </span>
-      <span  class="birthdate"> {{ user.zipCode }} {{ user.city }}</span>
+      <span  class="birthdate"> {{ user.zipCode }} {{ user.city || 'No city provided' }}</span>
     </div>
 
 

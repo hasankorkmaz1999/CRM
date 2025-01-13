@@ -42,7 +42,7 @@ export class EditCustomerDetailsComponent implements OnInit {
       city: [customer.address.city],
       zipCode: [customer.address.zipCode],
       country: [customer.address.country],
-      notes: [customer.notes],
+     
     });
   }
 

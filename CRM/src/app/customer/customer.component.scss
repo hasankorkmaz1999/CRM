@@ -124,7 +124,9 @@ font-size: 20px;
   
 /* Standardstatus-Styles */
 /* Standardstatus-Styles */
-
+.status-column {
+  
+}
 
 
 .status-circle {
@@ -133,6 +135,7 @@ font-size: 20px;
   height: 10px;
   border-radius: 50%;
   margin-right: 5px;
+  margin-left: 30px;
 }
 
 .status-new {

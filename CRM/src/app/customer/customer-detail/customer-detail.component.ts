@@ -9,7 +9,6 @@ import { Location } from '@angular/common';
 import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-picture.component';
 import { EditCustomerDetailsComponent } from '../edit-customer-details/edit-customer-details.component';
 
-
 @Component({
   selector: 'app-customer-detail',
   standalone: true,
@@ -21,7 +20,7 @@ import { EditCustomerDetailsComponent } from '../edit-customer-details/edit-cust
 export class CustomerDetailComponent implements OnInit {
   customerId = '';
   customer: Customer = new Customer(); 
-
+  
   constructor(
     private route: ActivatedRoute,
     private firestore: Firestore,
@@ -40,10 +39,13 @@ export class CustomerDetailComponent implements OnInit {
   getCustomer() {
     const customerDoc = doc(this.firestore, `customers/${this.customerId}`);
     docData(customerDoc).subscribe((data: any) => {
-      this.customer = new Customer(data);
-     
+      this.customer = new Customer(data); // Kundeninformationen laden
+      console.log('Customer loaded:', this.customer); // Optional: Debugging
     });
   }
+  
+  
+
 
   editCustomerDetails() {
     const dialogRef = this.dialog.open(EditCustomerDetailsComponent, {
@@ -56,7 +58,7 @@ export class CustomerDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log('Customer details updated.');
-        this.getCustomer(); // Aktualisiere die Anzeige
+        this.getCustomer();
       }
     });
   }
@@ -74,7 +76,7 @@ export class CustomerDetailComponent implements OnInit {
     updateDoc(customerDoc, { status: newStatus })
       .then(() => {
         console.log('Customer status updated to:', newStatus);
-        this.customer.status = newStatus; // Lokale Kopie aktualisieren
+        this.customer.status = newStatus;
       })
       .catch((error) => {
         console.error('Error updating customer status:', error);
@@ -83,19 +85,18 @@ export class CustomerDetailComponent implements OnInit {
   
   
   
-  
-  
+   
 
  
 
   addOrEditProfilePicture() {
     const dialogRef = this.dialog.open(DialogAddPictureComponent, {
-      data: { id: this.customerId, type: 'customer' } // Typ ist 'customer'
+      data: { id: this.customerId, type: 'customer' }
     });
   
     dialogRef.afterClosed().subscribe((imageUrl: string) => {
       if (imageUrl) {
-        this.customer.profilePicture = imageUrl; // Aktualisiere das lokale Kundenobjekt
+        this.customer.profilePicture = imageUrl;
         console.log('Customer profile picture updated:', imageUrl);
       }
     });

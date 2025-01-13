@@ -31,7 +31,7 @@ export class DialogAddCustomerComponent {
       city: [''], // Adresse: Stadt
       zipCode: [''], // Adresse: Postleitzahl
       country: [''], // Adresse: Land
-      notes: [''], // Zusätzliche Notizen
+     
     });
   }
 
@@ -51,7 +51,7 @@ export class DialogAddCustomerComponent {
           zipCode: formData.zipCode,
           country: formData.country,
         },
-        notes: formData.notes,
+       
         createdAt: new Date().toISOString(),
         status: 'new',
       };

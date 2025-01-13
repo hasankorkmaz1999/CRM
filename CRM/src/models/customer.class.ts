@@ -11,7 +11,7 @@ export class Customer {
     country: string;
   };
   createdAt: Date;
-  notes?: string;
+  
   profilePicture?: string;
   status: 'active' | 'inactive' | 'pending' | 'new'; // Status mit festgelegten Werten
 
@@ -28,7 +28,7 @@ export class Customer {
       country: '',
     };
     this.createdAt = obj?.createdAt ? new Date(obj.createdAt) : new Date();
-    this.notes = obj?.notes || '';
+   
     this.profilePicture = obj?.profilePicture || '';
     this.status = obj?.status || 'new'; // Standardstatus
   }

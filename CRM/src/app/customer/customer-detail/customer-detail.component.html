@@ -56,8 +56,12 @@
     <h2>{{ customer.firstName }} {{ customer.lastName }}</h2>
 
 
+    
 
     <div class="customer-details-under">
+
+
+      <div class="left-customer">
     <div class="role-container">
       <span class="thin-role">Customer Since</span>
 
@@ -65,33 +69,63 @@
     </div>
 
 
+    <div class="role-container">
+      <span class="thin-role"> Country</span>
+      <span class="since">{{ customer.address.country || 'No country provided' }}</span> 
+     </div>
 
+    </div>
+
+
+
+
+
+
+    <div class="middle-customer">
     <div class="role-container">
     <span class="thin-role">E-mail </span>
      <a 
       href="mailto:{{ customer.email }}" 
       class="email-link">
-      {{ customer.email }}
+      {{ customer.email || 'No email provided' }}
     </a>
     </div>
 
 
+    <div class="role-container">
+      <span class="thin-role"> City </span>
+      <span class="since"> {{ customer.address.zipCode  }} {{ customer.address.city || 'No city provided' }} </span>
+       </div>
+    
+      </div>
+
+
+
+
+
+
+      <div class="middle-customer">
 
     <div class="role-container">
     <span  class="thin-role">Phone </span>
      <a 
       href="tel:{{ customer.phone.toString() }}" 
       class="phone-link">
-      {{ customer.phone }}
+      {{ customer.phone || 'No phone number provided' }}
     </a>
-    
-
     </div>
+
+    <div class="role-container">
+      <span class="thin-role"> Street </span>
+      <span class="since">{{ customer.address.street || 'No street provided' }}</span>
+    </div>
+  </div>
+
 
 
 
     <div class="status-container">
-      <label class="label-status" for="status-select">Status:</label>
+      <label class="thin-role-select" for="status-select">Status</label>
       <select class = "selectbar"
 
         id="status-select"
@@ -104,15 +138,11 @@
         <option value="pending">Pending</option>
       </select>
     </div>
-    
+
+
+
    
-  </div>
 
-
-    
-
-
-    
   
   </div>
 
@@ -129,7 +159,7 @@
   
   </div>
 
- 
+</div>
 
 
 </mat-card>
@@ -137,52 +167,14 @@
 
 
 
-<mat-card class="customer-detail-address" >
- 
-  <mat-card-header>
-    <mat-card-title>Address</mat-card-title>
-    <mat-card-subtitle></mat-card-subtitle>
-  </mat-card-header>
-
-  <mat-card-content class="address-content">
-    <span> Street: {{ customer.address.street }}</span>
-    <span> City:  {{ customer.address.city }} {{ customer.address.zipCode }}</span>
-    <span> Country: {{ customer.address.country }}</span>
-  </mat-card-content>
-</mat-card>
 
 
 
-<mat-card class="customer-detail-address" >
-    <mat-menu #addressMenu="matMenu">
-      <button mat-menu-item>Edit</button>
-      <button mat-menu-item>Item 2</button>
-    </mat-menu>
-  
-    <mat-card-header>
-      <mat-card-title>Contact</mat-card-title>
-      <mat-card-subtitle></mat-card-subtitle>
-    </mat-card-header>
-  
-    <mat-card-content class="address-content">
-      
-      
-    </mat-card-content>
-  </mat-card>
 
 
-<mat-card class="customer-detail-address" >
-  
 
-  <mat-card-header>
-    <mat-card-title>Notes</mat-card-title>
-    <mat-card-subtitle></mat-card-subtitle>
-  </mat-card-header>
 
-  <mat-card-content class="address-content">
-    <span>{{ customer.notes }}</span>
-  </mat-card-content>
-</mat-card>
+
 
 
 
