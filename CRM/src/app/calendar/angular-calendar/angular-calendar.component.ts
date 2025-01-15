@@ -226,7 +226,7 @@ export class AngularCalendarComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'reload') {
-        console.log('Reloading events after dialog close.'); // Optional logging
+       
         this.loadEvents(); // Reload events
       }
     });

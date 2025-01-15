@@ -43,8 +43,7 @@ export class EditEventDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Dialog data:', this.data);
-
+   
     // Daten aus Firestore laden
     const userCollection = collection(this.firestore, 'users');
     collectionData(userCollection, { idField: 'id' }).subscribe((data) => {

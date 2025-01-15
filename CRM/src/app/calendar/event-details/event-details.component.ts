@@ -70,7 +70,7 @@ export class EventDetailsComponent {
         const eventRef = doc(this.firestore, `events/${updatedEvent.id}`);
         updateDoc(eventRef, updatedEvent)
           .then(() => {
-            console.log('Event updated successfully in Firestore!');
+           
 
             this.data.type = updatedEvent.type;
             this.data.description = updatedEvent.description;
@@ -122,10 +122,10 @@ export class EventDetailsComponent {
         const eventRef = doc(this.firestore, `events/${this.data.id}`);
         deleteDoc(eventRef)
           .then(() => {
-            console.log('Event deleted successfully from Firestore!');
+           
 
-            // Log-Eintrag für die Löschaktion
-            this.logEventAction('delete', this.data.id, this.data);
+        
+           
 
             if (!this.isDialog) {
               this.closeSidebarEvent.emit();
@@ -138,31 +138,7 @@ export class EventDetailsComponent {
     });
   }
 
-  logEventAction(action: string, eventId: string, eventDetails: any) {
-    if (action !== 'delete') {
-      console.log('LogEventAction skipped: Only delete actions are logged.');
-      return;
-    }
-
-    const logEntry = {
-      action: action,
-      entityType: 'event',
-      timestamp: new Date().toISOString(),
-      details: {
-        id: eventId,
-        type: eventDetails.type || 'Unknown',
-        description: eventDetails.description || 'No description provided',
-        date: formatDateToLong(new Date(eventDetails.date)) || 'Unknown', // Datum formatieren
-        time: formatTimeTo12Hour(eventDetails.time) || 'Unknown', // Zeit formatieren
-        users: eventDetails.users?.map((user: any) => user.name || user).join(', ') || 'Unknown',
-      },
-    };
-
-    const logsCollection = collection(this.firestore, 'logs');
-    addDoc(logsCollection, logEntry)
-      .then(() => console.log(`Log created successfully for delete action: ${eventId}`))
-      .catch((error) => console.error('Error creating log:', error));
-  }
+ 
 
   closeSidebar(): void {
     if (!this.isDialog) {
