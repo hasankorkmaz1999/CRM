@@ -5,6 +5,7 @@ export class Purchase {
     purchaseDate: Date; 
     quantity: number; 
     totalPrice: number; 
+    purchaseType: 'Online' | 'In-Store' | 'Subscription';
     createdBy: string; 
     createdByProfilePicture?: string; 
   
@@ -13,6 +14,7 @@ export class Purchase {
       this.productName = obj?.productName || 'Product A'; 
       this.price = this.getPrice(obj?.productName || 'Product A');
       this.purchaseDate = obj?.purchaseDate ? new Date(obj.purchaseDate) : new Date();
+      this.purchaseType = obj?.purchaseType || 'Online';
       this.quantity = obj?.quantity || 1;
       this.totalPrice = this.price * this.quantity;
       this.createdBy = obj?.createdBy || 'Unknown User';

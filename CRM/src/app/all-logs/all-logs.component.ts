@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Router, RouterModule } from '@angular/router';
-import { LogDetailsComponent } from '../dashboard/log-details/log-details.component';
+import { LogDetailsComponent } from './log-details/log-details.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { EventDetailsComponent } from '../calendar/event-details/event-details.component';
@@ -142,6 +142,8 @@ export class AllLogsComponent implements OnInit {
 
 
   openAddedEventDetails(log: any) {
+    const defaultProfilePicture = '/assets/img/user.png'; // Standardbild für Teilnehmer ohne Profilbild
+  
     const event = {
       id: log.details?.id || '',
       type: log.details?.type || 'Unknown',
@@ -150,15 +152,45 @@ export class AllLogsComponent implements OnInit {
       time: log.details?.time || '',
       users: log.details?.users || [],
       createdBy: log.details?.createdBy || '',
+      source: 'logs',
     };
   
-    this.dialog.open(EventDetailsComponent, {
-      data: {
-        ...event,
-        readOnly: true // Hier als Indikator für Anzeige ohne Bearbeiten/Löschen
-      },
-      width: '500px',
-      autoFocus: false,
+    // Benutzerinformationen aus Firestore laden
+    const userCollection = collection(this.firestore, 'users');
+    collectionData(userCollection, { idField: 'id' }).subscribe((users: any[]) => {
+      // Teilnehmerdaten anreichern
+      const participants = event.users.map((name: string) => {
+        const user = users.find(
+          (u) => `${u.firstName} ${u.lastName}` === name
+        );
+        return {
+          name,
+          profilePicture: user?.profilePicture || defaultProfilePicture,
+        };
+      });
+  
+      // `createdBy`-Information anreichern
+      const creator = users.find(
+        (u) => `${u.firstName} ${u.lastName}` === event.createdBy
+      );
+      const createdByDetails = {
+        name: event.createdBy,
+        profilePicture: creator?.profilePicture || defaultProfilePicture,
+      };
+  
+      // Eventdetails mit vollständigen Benutzerinformationen öffnen
+      this.dialog.open(EventDetailsComponent, {
+        data: {
+          ...event,
+          users: participants, // Angereicherte Teilnehmerdaten
+          createdBy: createdByDetails, // Angereicherte `createdBy`-Information
+          readOnly: true, // Als schreibgeschützt markieren
+        },
+        width: '500px',
+        autoFocus: false,
+      });
     });
   }
+  
+  
 }

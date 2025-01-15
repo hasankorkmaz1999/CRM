@@ -1,118 +1,122 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Firestore, doc, updateDoc, collection, collectionData, addDoc } from '@angular/fire/firestore';
+import { Firestore, doc, updateDoc, collection, collectionData } from '@angular/fire/firestore';
 import { User } from '../../../../models/user.class';
 import { MatListModule, MatListOption } from '@angular/material/list';
 
 @Component({
   selector: 'app-edit-event-dialog',
   standalone: true,
-  imports: [SharedModule, ReactiveFormsModule, MatListOption , MatListModule],
+  imports: [SharedModule, ReactiveFormsModule, MatListOption, MatListModule],
   templateUrl: './edit-event-dialog.component.html',
   styleUrl: './edit-event-dialog.component.scss',
-  encapsulation: ViewEncapsulation.None ,
+  encapsulation: ViewEncapsulation.None,
 })
 export class EditEventDialogComponent implements OnInit {
   editForm: FormGroup;
   users: User[] = []; // Alle Benutzer aus Firestore
   selectedUsers: string[] = [];
-  eventTypes: string[] = ['Meeting', 'Webinar', 'Workshop', 'Other']; // Liste der Event-Typen // Benutzer, die bereits im Event ausgewählt sind
+  eventTypes: string[] = ['Meeting', 'Webinar', 'Workshop', 'Other']; // Liste der Event-Typen
   usTimeOptions: string[] = [];
-  
-
 
   constructor(
     private fb: FormBuilder,
     private firestore: Firestore,
     private dialogRef: MatDialogRef<EditEventDialogComponent>,
-    
-
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    const parsedDate = this.data.date
-    ? new Date(this.data.date).toISOString().split('T')[0] // Konvertierung in YYYY-MM-DD
-    : '';
+    // Prüfen, ob das Datum vorhanden ist, und korrekt formatieren
+    const localDate = this.data.date
+      ? new Date(this.data.date).toLocaleDateString('en-CA') // Format 'YYYY-MM-DD'
+      : null;
   
-  this.editForm = this.fb.group({
-    type: [this.data.type || 'Other', Validators.required],
-    description: [this.data.description || '', Validators.maxLength(200)],
-    date: [parsedDate, Validators.required],
-    time: [this.data.time || '08:00 AM', Validators.required],
-  });
-  
+    this.editForm = this.fb.group({
+      type: [this.data.type || 'Other', Validators.required],
+      description: [this.data.description || '', Validators.maxLength(200)],
+      date: [localDate, Validators.required], // Lokales Datum korrekt übergeben
+      time: [this.data.time || '08:00 AM', Validators.required],
+    });
   
     this.selectedUsers = this.data.users || [];
   }
   
-  
-  
-  
-  
 
   ngOnInit(): void {
-    console.log('Original data.users:', this.data.users); // Debugging
-    this.selectedUsers = [...(this.data.users || [])];
-    console.log('Initialized selectedUsers:', this.selectedUsers);
-  
+    console.log('Dialog data:', this.data);
+
+    // Daten aus Firestore laden
     const userCollection = collection(this.firestore, 'users');
     collectionData(userCollection, { idField: 'id' }).subscribe((data) => {
       this.users = data as User[];
-      console.log('Loaded users from Firestore:', this.users);
-    });
-    this.generateUSTimeOptions(); 
-  }
-  
 
-  toggleUserSelection(user: string): void {
-    console.log('Toggle user:', user); // Debugging: Welcher Benutzer wird bearbeitet?
-  
-    if (this.selectedUsers.includes(user)) {
-      this.selectedUsers = this.selectedUsers.filter((u: string) => u !== user);
-      console.log('User removed. Updated selectedUsers:', this.selectedUsers); // Debugging: Benutzer entfernt
+      // Initialisiere die Auswahl basierend auf den übergebenen Daten
+      this.selectedUsers = this.data.users.map((user: any) => user.name);
+    });
+
+    this.generateUSTimeOptions();
+  }
+
+  onSelectionChange(event: any): void {
+    event.options.forEach((option: any) => {
+      const user: User = option.value;
+      const fullName = `${user.firstName} ${user.lastName}`;
+
+      if (option.selected) {
+        if (!this.selectedUsers.includes(fullName)) {
+          this.selectedUsers.push(fullName);
+        }
+      } else {
+        this.selectedUsers = this.selectedUsers.filter((name) => name !== fullName);
+      }
+    });
+  }
+
+  isUserSelected(user: User): boolean {
+    const fullName = `${user.firstName} ${user.lastName}`;
+    return this.selectedUsers.includes(fullName);
+  }
+
+  toggleUserSelection(user: User, isSelected: boolean): void {
+    const fullName = `${user.firstName} ${user.lastName}`;
+    if (isSelected) {
+      if (!this.selectedUsers.includes(fullName)) {
+        this.selectedUsers.push(fullName);
+      }
     } else {
-      this.selectedUsers.push(user);
-      console.log('User added. Updated selectedUsers:', this.selectedUsers); // Debugging: Benutzer hinzugefügt
+      this.selectedUsers = this.selectedUsers.filter((name) => name !== fullName);
     }
   }
-  
-  
-  isUserSelected(user: string): boolean {
-    return this.selectedUsers.includes(user);
-  }
-  
 
   saveChanges() {
+    if (!this.data?.id) {
+      console.error('Event ID is undefined or missing!');
+      return;
+    }
+  
     const formValue = this.editForm.value;
   
-    // Datum und Uhrzeit formatieren wie beim Erstellen
-    const updatedDate = new Date(formValue.date).toLocaleString('en-US', {
+    // Datum und Zeit ins Firestore-kompatible Format bringen
+    const updatedDate = new Date(formValue.date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
   
-    const updatedTime = formValue.time; // Uhrzeit bleibt wie eingegeben
-  
-    // Aktualisiertes Event-Objekt erstellen
     const updatedEvent = {
       id: this.data.id,
       type: formValue.type,
       description: formValue.description,
-      date: updatedDate, // Formatiertes Datum
-      time: updatedTime, // Uhrzeit
+      date: updatedDate, // Formatiertes Datum speichern
+      time: formValue.time, // Zeit unverändert speichern
       users: [...this.selectedUsers],
     };
   
-    console.log('--- Updated Event ---', updatedEvent);
-  
-    // Event in Firestore aktualisieren
     const eventRef = doc(this.firestore, `events/${this.data.id}`);
     updateDoc(eventRef, updatedEvent)
       .then(() => {
-        console.log('Event updated successfully:', updatedEvent);
-        this.dialogRef.close({ updatedEvent, changes: this.getChanges(updatedEvent) });
+        this.dialogRef.close(updatedEvent);
       })
       .catch((error) => {
         console.error('Error updating event in Firestore:', error);
@@ -120,105 +124,22 @@ export class EditEventDialogComponent implements OnInit {
   }
   
 
-  getChanges(updatedEvent: any): any {
-    const changes: any = {};
-    const originalEvent = this.data;
-  
-    // Hilfsfunktion für präzisen Vergleich
-    const normalizeDate = (date: string): string => {
-      return new Date(date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    };
-  
-    // Vergleich des Typs
-    if (originalEvent.type !== updatedEvent.type) {
-      changes.type = { old: originalEvent.type, new: updatedEvent.type };
-    }
-  
-    // Vergleich der Beschreibung
-    if (originalEvent.description !== updatedEvent.description) {
-      changes.description = { old: originalEvent.description, new: updatedEvent.description };
-    }
-  
-    // Vergleich des Datums (normalisieren vor dem Vergleich)
-    if (normalizeDate(originalEvent.date) !== normalizeDate(updatedEvent.date)) {
-      changes.date = {
-        old: normalizeDate(originalEvent.date),
-        new: normalizeDate(updatedEvent.date),
-      };
-    }
-  
-    // Vergleich der Uhrzeit
-    if (originalEvent.time !== updatedEvent.time) {
-      changes.time = { old: originalEvent.time, new: updatedEvent.time };
-    }
-  
-    // Vergleich der Benutzer (Arrays vergleichen)
-    const originalUsers = JSON.stringify(originalEvent.users || []);
-    const updatedUsers = JSON.stringify(updatedEvent.users || []);
-    if (originalUsers !== updatedUsers) {
-      changes.users = {
-        old: originalEvent.users || [],
-        new: updatedEvent.users || [],
-      };
-    }
-  
-    return changes;
-  }
-  
-  
-  
-  
-  
   generateUSTimeOptions() {
     const times: string[] = [];
-    const startHour = 8; // 08:00 AM
-    const endHour = 17; // 05:00 PM (17 Uhr im 24-Stunden-Format)
-  
+    const startHour = 8;
+    const endHour = 17;
+
     for (let hour = startHour; hour <= endHour; hour++) {
-      const displayHour = hour > 12 ? hour - 12 : hour; // 12-Stunden-Format
-      const meridiem = hour >= 12 ? 'PM' : 'AM'; // AM/PM bestimmen
-  
+      const displayHour = hour > 12 ? hour - 12 : hour;
+      const meridiem = hour >= 12 ? 'PM' : 'AM';
+
       ['00', '15', '30', '45'].forEach((minute) => {
         times.push(`${displayHour}:${minute} ${meridiem}`);
       });
     }
-  
+
     this.usTimeOptions = times;
   }
-  
-
-  
-  
-
-  logChanges(eventId: string, changes: any) {
-    const log = {
-      timestamp: new Date().toISOString(),
-      action: 'edit',
-      entityType: 'event',
-      details: {
-        id: eventId,
-        changes: changes,
-      },
-    };
-  
-    const logsCollection = collection(this.firestore, 'logs');
-    addDoc(logsCollection, log)
-      .then(() => {
-        console.log('Changes successfully logged:', log);
-      })
-      .catch((error) => {
-        console.error('Error logging changes:', error);
-      });
-  }
-  
-  
-  
-  
-  
 
   cancel() {
     this.dialogRef.close(); // Dialog schließen ohne Änderungen

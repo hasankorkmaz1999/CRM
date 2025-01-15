@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef  } from '@angular/material/dia
 import { SharedModule } from '../../shared/shared.module';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { EditEventDialogComponent } from './edit-event-dialog/edit-event-dialog.component';
-import { Firestore, doc, updateDoc, deleteDoc, collection, addDoc } from '@angular/fire/firestore';
+import { Firestore, doc, updateDoc, deleteDoc, collection, addDoc, collectionData } from '@angular/fire/firestore';
 import { LoggingService } from '../../shared/logging.service';
 import { DeleteDialogComponent } from '../../delete-dialog/delete-dialog.component';
 
@@ -24,7 +24,6 @@ export class EventDetailsComponent {
   constructor(
     private firestore: Firestore,
     private dialog: MatDialog,
-    private loggingService: LoggingService,
     @Optional() public dialogRef?: MatDialogRef<EventDetailsComponent>, // Optional für Dialog
     @Optional() @Inject(MAT_DIALOG_DATA) public dialogData?: any // Optional für Dialog
   ) {
@@ -32,10 +31,7 @@ export class EventDetailsComponent {
       this.data = this.dialogData; // Daten aus dem Dialog setzen
       this.isDialog = true; // Bestimmen, ob es als Dialog verwendet wird
     }
-
-   
   }
-
 
   close(): void {
     if (this.isDialog && this.dialogRef) {
@@ -46,38 +42,39 @@ export class EventDetailsComponent {
   }
 
   editEvent() {
-    const eventDate = new Date(this.data.date);
-
-  // Datum und Uhrzeit separat extrahieren
-  const formattedDate = eventDate.toISOString().split('T')[0]; // "YYYY-MM-DD"
-  const hours = eventDate.getHours();
-  const minutes = eventDate.getMinutes().toString().padStart(2, '0');
-  const period = hours >= 12 ? 'PM' : 'AM';
-  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  const formattedTime = `${formattedHours}:${minutes} ${period}`; // "12:30 PM"
-
-  // Öffne den Dialog mit getrennten Feldern
-  const dialogRef = this.dialog.open(EditEventDialogComponent, {
-    autoFocus: false, // AutoFocus auf false setzen
-    data: { 
-      id: this.data.id,            
-      type: this.data.type,
-      description: this.data.description,
-      date: formattedDate,   // Sicherstellen, dass nur das Datum übergeben wird
-      time: this.data.time, // Fallback für Zeit, falls undefined
-      users: this.data.users
+    const buttonElement = document.activeElement as HTMLElement;
+    if (buttonElement) {
+      buttonElement.blur();
     }
-  });
-
   
-
-  dialogRef.afterClosed().subscribe((result) => {
+    const formattedDate = this.data.date; // Datum direkt aus Firestore übernehmen
+    const formattedTime = this.data.time; // Zeit direkt aus Firestore übernehmen
+  
+    // Prüfe den ursprünglichen Zustand der Teilnehmer
+    console.log('Original participants:', this.data.users);
+  
+    // Lade die Teilnehmerdetails
+    this.loadParticipants(this.data.users?.map((user: any) => user.name) || []);
+  
+    const dialogRef = this.dialog.open(EditEventDialogComponent, {
+      autoFocus: false,
+      data: {
+        id: this.data.id,
+        type: this.data.type,
+        description: this.data.description,
+        date: formattedDate, // Datum unverändert übernehmen
+        time: formattedTime, // Zeit unverändert übernehmen
+        users: this.data.users, // Bereits aktualisierte Benutzer übergeben
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        const { updatedEvent, changes } = result;
+        const updatedEvent = result;
   
-        // Uhrzeit aktualisieren
+        console.log('Updated event from dialog:', updatedEvent); // Logge das aktualisierte Event
+  
         const eventRef = doc(this.firestore, `events/${updatedEvent.id}`);
-  
         updateDoc(eventRef, updatedEvent)
           .then(() => {
             console.log('Event updated successfully in Firestore!');
@@ -86,46 +83,62 @@ export class EventDetailsComponent {
             this.data.type = updatedEvent.type;
             this.data.description = updatedEvent.description;
             this.data.date = updatedEvent.date;
-            this.data.time = updatedEvent.time; // Uhrzeit aktualisieren
+            this.data.time = updatedEvent.time;
             this.data.users = updatedEvent.users;
   
-            console.log('Updated event details:', this.data);
-  
-            this.logEventAction(
-              'edit',
-              updatedEvent.id,
-              updatedEvent.type,
-              new Date().toISOString(),
-              changes
-            );
-  
-            dialogRef.close('reload');
+            console.log('Updated event details after save:', this.data);
+            this.loadParticipants(updatedEvent.users); // Logge aktualisierte Event-Daten
           })
           .catch((error) => console.error('Error updating Firestore:', error));
+          
       }
     });
   }
   
   
-  
-  
-  
 
+   loadParticipants(userNames: string[]) {
+    const userCollection = collection(this.firestore, 'users');
+  
+    collectionData(userCollection, { idField: 'id' }).subscribe((users: any[]) => {
+      console.log('Fetched users from Firestore:', users); // Logge alle Benutzer aus Firestore
+  
+      const defaultProfilePicture = '/assets/img/user.png'; // Pfad zum Standardbild
+  
+      // Aktualisiere `this.data.users`
+      this.data.users = userNames.map((name) => {
+        const user = users.find(
+          (u) => `${u.firstName} ${u.lastName}` === name
+        );
+  
+        if (!user) {
+          console.warn(`User not found for name: ${name}`); // Warnung für fehlende Benutzer
+        }
+  
+        return {
+          name,
+          profilePicture: user?.profilePicture || defaultProfilePicture, // Füge Standardprofilbild hinzu, falls keines vorhanden ist
+        };
+      });
+  
+      console.log('Updated participants with full data:', this.data.users); // Logge aktualisierte Benutzer
+    });
+  }
+  
 
   deleteEvent() {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       autoFocus: false,
       data: { type: 'event', name: this.data.type },
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const eventRef = doc(this.firestore, `events/${this.data.id}`);
         deleteDoc(eventRef)
           .then(() => {
             console.log('Event deleted successfully from Firestore!');
-            this.logEventAction('delete', this.data.id, this.data.type, new Date().toISOString());
-  
+
             // Emit the closeSidebarEvent if this is not a dialog
             if (!this.isDialog) {
               this.closeSidebarEvent.emit(); // Inform parent to close the sidebar
@@ -137,28 +150,6 @@ export class EventDetailsComponent {
       }
     });
   }
-  
-  
-
-
-  logEventAction(action: string, eventId: string, type: string, timestamp: string, changes?: any) {
-    const log = {
-      action,
-      entityType: 'event',
-      timestamp,
-      details: {
-        id: eventId,
-        type,
-        changes: changes || {}, // Zusätzliche Änderungen
-      },
-    };
-  
-    const logsCollection = collection(this.firestore, 'logs');
-    addDoc(logsCollection, log)
-      .then(() => console.log('Log saved successfully:', log))
-      .catch((error) => console.error('Error saving log:', error));
-  }
-  
 
   closeSidebar(): void {
     if (!this.isDialog) {
@@ -166,6 +157,4 @@ export class EventDetailsComponent {
       this.data = null;
     }
   }
-  
-  
 }

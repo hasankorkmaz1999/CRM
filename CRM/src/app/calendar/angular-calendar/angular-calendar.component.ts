@@ -150,7 +150,7 @@ export class AngularCalendarComponent implements OnInit {
       // Sortiere die Events nach der Startzeit
       this.events = eventsWithDetails.sort((a, b) => a.start.getTime() - b.start.getTime());
   
-      console.log('Final Event Data sorted by Time:', this.events);
+     
     });
   }
   
@@ -219,16 +219,23 @@ export class AngularCalendarComponent implements OnInit {
 
 
   openAddEventDialog(): void {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    if (buttonElement) {
+      buttonElement.blur(); // Remove focus from the button
+    }
+  
     const dialogRef = this.dialog.open(SelectUserComponent, {
-      autoFocus: false, 
+      autoFocus: false,
     });
   
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'reload') {
-        this.loadEvents();
+        console.log('Reloading events after dialog close.'); // Optional logging
+        this.loadEvents(); // Reload events
       }
     });
   }
+  
 
 
   

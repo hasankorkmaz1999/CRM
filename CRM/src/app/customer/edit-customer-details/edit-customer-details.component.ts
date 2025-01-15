@@ -41,7 +41,7 @@ export class EditCustomerDetailsComponent implements OnInit {
       street: [customer.address.street],
       city: [customer.address.city],
       zipCode: [customer.address.zipCode],
-      country: [customer.address.country],
+      
      
     });
   }
@@ -57,7 +57,7 @@ export class EditCustomerDetailsComponent implements OnInit {
           street: formValue.street,
           city: formValue.city,
           zipCode: formValue.zipCode,
-          country: formValue.country,
+        
         },
       };
   

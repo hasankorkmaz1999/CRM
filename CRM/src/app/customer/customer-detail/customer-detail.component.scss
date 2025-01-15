@@ -304,7 +304,8 @@ h1 {
         width: 170px;
        font-size: 16px;
         padding: 5px;
-        background-color: rgba(0, 0, 0, 0.3);
+        background-color: transparent;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9);
         border-radius: 10px;
         color: white;
         border: none !important;
@@ -493,3 +494,229 @@ flex-wrap: wrap;
             padding: 5px; /* Alternative für alte Browser */
           }
       
+
+
+
+
+
+          /* section für käufe  */
+
+.inside-card {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+          .add-purchase-section {
+            display: flex !important;
+            padding: 35px;
+margin-top: 30px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          }
+
+          .add-pchase-sec {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+          }
+          
+          .heading-wrapper-p {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+          }
+          
+         
+          h1 {
+            font-size: 1.5rem;
+            color: white;
+            margin: 0;
+          }
+
+          .form-group-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+           
+
+          }
+          
+          .form-group {
+            margin-bottom: 15px;
+          }
+          
+          label {
+            display: block;
+            font-size: 18px;
+            color: #bababa;
+            margin-bottom: 10px;
+          }
+          
+          .input-field {
+            margin-bottom: 15px;
+            width: 150px;
+            height: 50px;
+            padding: 8px;
+            font-size: 1rem;
+            border:none;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: transparent;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9);
+            color: white;
+            cursor: pointer;
+
+            option {
+              background-color: rgb(45, 45, 45);
+            }
+              
+            
+          }
+
+          .input-field-number {
+            margin-bottom: 15px;
+            width: 150px;
+            height: 50px;
+            padding: 8px;
+            font-size: 16px;
+            border:none;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: transparent;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9);
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            &:focus {
+              cursor: pointer;
+              border-color: #4250a9;
+              outline: none;
+              box-shadow: 0 0 4px rgba(66, 80, 169, 0.6);
+            }
+          }
+          
+          .input-field:focus {
+            cursor: pointer;
+            border-color: #4250a9;
+            outline: none;
+            box-shadow: 0 0 4px rgba(66, 80, 169, 0.6);
+          }
+          
+          .add-button {
+          
+            padding: 10px 15px;
+            width: 150px;
+            height: 50px;
+            font-size: 1rem;
+            color: white;
+            background-color: #4250a9;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          }
+          
+          .add-button:hover {
+            background-color: #33408f;
+          }
+          
+          .add-button:active {
+            background-color: #27316c;
+          }
+                   
+
+
+
+
+          .dashboard-section {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #1e1e2f;
+            color: white;
+          }
+          
+          .dashboard-header h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+          }
+          
+          .dashboard-grid {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+             
+            gap: 20px;
+          }
+          
+          .dashboard-item {
+            background-color: transparent;
+
+            padding: 0px;
+            border-radius: 8px;
+            text-align: center;
+            height: 80px;
+
+           
+          }
+          
+          .dashboard-item label {
+            color: #bababa;
+            font-size: 18px;
+            margin-bottom: 10px;
+            padding: 0;
+          }
+          
+          .dashboard-item p {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+          }
+          
+
+
+
+          .snackbar {
+            position: fixed;
+            bottom: 25%; /* Im unteren Viertel des Bildschirms */
+            left: 50%; /* Zentriert horizontal */
+            transform: translateX(-50%) translateY(100%); /* Genau mittig ausrichten */
+            background-color: #33408f; /* Snackbar-Hintergrundfarbe */
+            color: white; /* Textfarbe */
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            opacity: 0;
+            visibility: hidden; /* Unsichtbar, solange nicht aktiviert */
+            z-index: 1000;
+          }
+          
+          .snackbar.show {
+            opacity: 1;
+            visibility: visible; /* Zeige die Snackbar an */
+            transform: translateX(-50%) translateY(0); /* Slidet nach oben rein */
+          }
+          
+
+
+
+
+
+          .ngx-charts text {
+            
+            fill: #fff;
+           }
+
+
+           .ngx-charts .gridline-path {
+            stroke: rgba(255, 255, 255, 0.1) !important;
+        }

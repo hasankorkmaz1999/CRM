@@ -30,7 +30,7 @@ export class DialogAddCustomerComponent {
       street: [''], // Adresse: Straße
       city: [''], // Adresse: Stadt
       zipCode: [''], // Adresse: Postleitzahl
-      country: [''], // Adresse: Land
+     
      
     });
   }
@@ -49,7 +49,7 @@ export class DialogAddCustomerComponent {
           street: formData.street,
           city: formData.city,
           zipCode: formData.zipCode,
-          country: formData.country,
+         
         },
        
         createdAt: new Date().toISOString(),

@@ -83,16 +83,16 @@
   <div class="buttons">
    
 
-    <div class="two-buttons" *ngIf="data.source !== 'dashboard'">
+    <div class="two-buttons" *ngIf="data.source !== 'dashboard' && data.source !== 'logs'">
       <button (click)="editEvent()" mat-icon-button color="primary" matTooltip="Edit" matTooltipPosition="above">
         <mat-icon>edit</mat-icon>
       </button>
-  
+    
       <button (click)="deleteEvent()" mat-icon-button color="warn" matTooltip="Delete" matTooltipPosition="above">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
-  </div>
+    
 
 </div>
 

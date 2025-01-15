@@ -104,6 +104,11 @@ export class UserDetailComponent implements OnInit {
  
 
   editUserDetails() {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    if (buttonElement) {
+      buttonElement.blur(); // Remove focus from the button
+    }
+  
     const dialog = this.dialog.open(DialogEditUserComponent, {
       data: {
         user: { ...this.user }, // Kopiere die Benutzerdaten
@@ -118,6 +123,7 @@ export class UserDetailComponent implements OnInit {
       }
     });
   }
+  
   
 
 

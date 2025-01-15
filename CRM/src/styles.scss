@@ -38,3 +38,8 @@ body {
 *::after {
   font-family: "DM Sans", serif;
 }
+
+
+.ngx-charts-axis-label .ng-reflect-label text {
+  fill: white !important; /* Ändert die Textfarbe auf Weiß */
+}
