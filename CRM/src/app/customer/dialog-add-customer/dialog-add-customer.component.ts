@@ -66,7 +66,6 @@ export class DialogAddCustomerComponent {
         console.log('Customer successfully saved with ID:', customerDocRef.id);
   
         // Logge die Aktion mit der hinzugefügten ID
-        this.logCustomerAction('add', customerDocRef.id, { ...customerData, id: customerDocRef.id });
   
         // Schließe den Dialog und signalisiere dem Aufrufer, dass der Kunde hinzugefügt wurde
         this.dialogRef.close(true);
@@ -80,12 +79,5 @@ export class DialogAddCustomerComponent {
   
 
 
-  logCustomerAction(action: string, customerId: string, customerData: any) {
-    this.loggingService.log(action, 'customer', {
-      id: customerId,
-      firstName: customerData.firstName,
-      lastName: customerData.lastName,
-      email: customerData.email,
-    });
-  }
+ 
 }

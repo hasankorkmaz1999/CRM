@@ -66,8 +66,7 @@ export class EditCustomerDetailsComponent implements OnInit {
         await updateDoc(customerDoc, updatedCustomer); // Update in Firestore
         console.log('Customer updated:', updatedCustomer);
   
-        // Logge die Aktion
-        this.logCustomerAction('edit', this.data.customerId, updatedCustomer);
+       
   
         this.dialogRef.close(true); // Schließe den Dialog
       } catch (error) {
@@ -77,12 +76,5 @@ export class EditCustomerDetailsComponent implements OnInit {
   }
   
 
-  logCustomerAction(action: string, customerId: string, updatedCustomer: any) {
-    this.loggingService.log(action, 'customer', {
-      id: customerId,
-      firstName: updatedCustomer.firstName,
-      lastName: updatedCustomer.lastName,
-      email: updatedCustomer.email,
-    });
-  }
+ 
 }

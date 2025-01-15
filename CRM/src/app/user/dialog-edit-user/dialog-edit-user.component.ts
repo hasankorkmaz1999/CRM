@@ -68,8 +68,8 @@ export class DialogEditUserComponent implements OnInit {
     try {
       const userDocRef = doc(this.firestore, `users/${this.data.userId}`);
       await updateDoc(userDocRef, updatedUser);
-      console.log('User updated successfully:', updatedUser);
-      this.logUserAction('edit', this.data.userId);
+     
+     
       this.dialogRef.close(true);
     } catch (error) {
       console.error('Error updating user:', error);
@@ -77,13 +77,5 @@ export class DialogEditUserComponent implements OnInit {
   }
 
 
-  logUserAction(action: string, userId: string) {
-    this.loggingService.log(action, 'user', {
-      id: userId,
-      firstName: this.userForm.value.firstName,
-      lastName: this.userForm.value.lastName,
-      email: this.userForm.value.email,
-      role: this.userForm.value.role ,
-    });
-  }
+ 
 }  

@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit {
       this.currentUserRole = currentUser.role;
       this.currentUserProfilePicture = currentUser.profilePicture;
   
-      console.log('Benutzerdetails aus localStorage:', currentUser);
+     
     }
     
     this.updateCurrentUser();
@@ -99,7 +99,7 @@ export class DashboardComponent implements OnInit {
       this.currentUserRole = currentUser.role;
       this.currentUserProfilePicture = currentUser.profilePicture;
   
-      console.log('Benutzerdetails aktualisiert aus localStorage:', currentUser);
+    
     } else {
       console.warn('Kein Benutzer in localStorage gefunden.');
     }
@@ -322,7 +322,7 @@ export class DashboardComponent implements OnInit {
       // Beschränke auf die ersten 6 Events
       this.upcomingEvents = sortedEvents.slice(0, 6);
   
-      console.log('Sorted and limited upcoming events:', this.upcomingEvents);
+     
     });
   }
 
@@ -344,11 +344,7 @@ export class DashboardComponent implements OnInit {
   
       this.eventsThisWeek = validEvents.filter((event) => this.isEventInThisWeek(event.date)).length;
   
-      console.log('KPI Cards Updated:', {
-        totalEvents: this.totalEvents,
-        eventsToday: this.eventsToday,
-        eventsThisWeek: this.eventsThisWeek,
-      });
+     
     });
   }
 

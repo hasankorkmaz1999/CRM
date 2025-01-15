@@ -75,6 +75,12 @@ export class CustomerComponent implements OnInit {
   }
 
   openDeleteDialog(event: Event, customer: any): void {
+    // Entferne den Fokus vom aktuellen Button
+    const buttonElement = document.activeElement as HTMLElement;
+    if (buttonElement) {
+      buttonElement.blur();
+    }
+  
     event.stopPropagation(); // Verhindert das Auslösen von navigateToCustomer
     // Öffne den Delete-Dialog
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
@@ -89,7 +95,13 @@ export class CustomerComponent implements OnInit {
     });
   }
   
-  openAddDialog() {
+  openAddDialog(): void {
+    // Entferne den Fokus vom aktuellen Button
+    const buttonElement = document.activeElement as HTMLElement;
+    if (buttonElement) {
+      buttonElement.blur();
+    }
+  
     const dialogRef = this.dialog.open(DialogAddCustomerComponent, {
       autoFocus: false, // Deaktiviert Autofokus
     });
@@ -101,6 +113,7 @@ export class CustomerComponent implements OnInit {
     });
   }
   
+  
 
   deleteCustomer(customerId: string): void {
     const customerDoc = doc(this.firestore, `customers/${customerId}`);
@@ -111,13 +124,5 @@ export class CustomerComponent implements OnInit {
   
   
 
-  logCustomerDeletion(customer: Customer) {
-    // Logge die Löschaktion
-    this.loggingService.log('delete', 'customer', {
-      id: customer.id,
-      firstName: customer.firstName,
-      lastName: customer.lastName,
-      email: customer.email,
-    });
-  }
+ 
 }

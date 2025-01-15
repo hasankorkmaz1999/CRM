@@ -68,7 +68,7 @@ export class UserComponent implements OnInit {
         email: currentUser.email,
         name: currentUser.name || 'Unknown User',
       };
-      console.log('Aktueller Benutzer aus localStorage geladen:', this.currentUser);
+     
     } else {
       console.warn('Kein Benutzer in localStorage gefunden.');
       this.currentUser = null;
@@ -83,15 +83,24 @@ export class UserComponent implements OnInit {
     }
   }
 
-  openDialog() {
+  openDialog(): void {
+    const buttonElement = document.activeElement as HTMLElement; // Aktuelles aktive Element abrufen
+    if (buttonElement) {
+      buttonElement.blur(); // Fokus entfernen
+    }
+  
     this.dialog.open(DialogAddUserComponent, {
       autoFocus: false,
     });
   }
-
+  
   openDeleteDialog(event: Event, user: User): void {
-    // Verhindere, dass das Ereignis das `click`-Event des übergeordneten Elements auslöst
-    event.stopPropagation();
+    event.stopPropagation(); // Verhindert das Auslösen des `click`-Events des übergeordneten Elements
+  
+    const buttonElement = document.activeElement as HTMLElement; // Aktuelles aktive Element abrufen
+    if (buttonElement) {
+      buttonElement.blur(); // Fokus entfernen
+    }
   
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       autoFocus: false,
@@ -100,7 +109,7 @@ export class UserComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleteUser(user);
+        this.deleteUser(user); // Benutzer löschen, falls Dialog bestätigt wurde
       }
     });
   }
@@ -117,10 +126,8 @@ export class UserComponent implements OnInit {
     const userDocRef = doc(this.firestore, `users/${user.uid}`);
     deleteDoc(userDocRef)
       .then(() => {
-        console.log(
-          `Benutzer ${user.firstName} ${user.lastName} erfolgreich aus Firestore gelöscht!`
-        );
-        this.logUserDeletion(user);
+       
+      
       })
       .catch((error) =>
         console.error('Fehler beim Löschen des Benutzers aus Firestore:', error)
@@ -138,12 +145,5 @@ export class UserComponent implements OnInit {
       .sort((a, b) => a.firstName.localeCompare(b.firstName));
   }
 
-  logUserDeletion(user: User) {
-    this.loggingService.log('delete', 'user', {
-      id: user.uid,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    });
-  }
+ 
 }

@@ -36,7 +36,7 @@ export class UserDetailComponent implements OnInit {
     ngOnInit(): void {
       this.route.paramMap.subscribe((paramMap) => {
         this.userId = paramMap.get('id') ?? '';
-        console.log('Got ID:', this.userId);
+       
         this.getUser();
         this.loadUserEvents(); // Events laden
       });
@@ -47,7 +47,7 @@ export class UserDetailComponent implements OnInit {
     const userDoc = doc(this.firestore, `users/${this.userId}`);
     docData(userDoc).subscribe((user: any) => {
       this.user = new User (user);
-      console.log('Fetched user data:', this.user);
+     
     });
   }
 
@@ -75,7 +75,7 @@ export class UserDetailComponent implements OnInit {
         return dateA - dateB; // Aufsteigende Reihenfolge (früheste Events zuerst)
       });
   
-      console.log('Upcoming and Sorted User Events:', this.userEvents);
+     
     });
   }
   
@@ -135,7 +135,7 @@ export class UserDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((imageUrl: string) => {
       if (imageUrl) {
         this.user.profilePicture = imageUrl; // Aktualisiere das lokale Benutzerobjekt
-        console.log('User profile picture updated:', imageUrl);
+        
       }
     });
   }

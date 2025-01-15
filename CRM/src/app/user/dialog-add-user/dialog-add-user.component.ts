@@ -76,8 +76,8 @@ export class DialogAddUserComponent {
       const userRef = doc(this.firestore, `users/${uid}`);
       await setDoc(userRef, newUser);
   
-      console.log('User added successfully:', newUser);
-      this.logUserAction('add', uid);
+     
+     
     } catch (error) {
       console.error('Error saving user:', error);
     }
@@ -85,14 +85,7 @@ export class DialogAddUserComponent {
   
   
 
-  logUserAction(action: string, userId: string) {
-    this.loggingService.log(action, 'user', {
-      id: userId,
-      firstName: this.userForm.get('firstName')?.value,
-      lastName: this.userForm.get('lastName')?.value,
-      email: this.userForm.get('email')?.value,
-    });
-  }
+ 
 
   generateUID(): string {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
