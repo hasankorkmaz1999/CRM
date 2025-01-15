@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 import { LoggingService } from '../../shared/logging.service';
+import { formatTimeTo12Hour, formatDateToLong } from '../../shared/formattime.service';
 
 
 @Component({
@@ -124,17 +125,26 @@ export class SelectUserComponent implements OnInit {
   prepareEventData() {
     const formValue = this.eventForm.value;
   
-    // Validierung: Stelle sicher, dass Datum und Zeit vorhanden sind
-    if (!formValue.date || !formValue.time) return null;
+    if (!formValue.date || !formValue.time) {
+      console.error('Date or time is missing:', formValue);
+      return null;
+    }
+  
+    const formattedTime = formatTimeTo12Hour(formValue.time);
+    if (formattedTime === 'Invalid time') {
+      console.error('Invalid time detected during event preparation:', formValue.time);
+      return null;
+    }
   
     return {
-      type: formValue.type || 'Other',           // Event-Typ
-      description: formValue.description || '',  // Beschreibung
-      date: formValue.date,                      // Nur das Datum (im 'YYYY-MM-DD'-Format)
-      time: formValue.time,                      // Nur die Uhrzeit (im 'HH:MM AM/PM'-Format)
-      users: this.selectedUsers,                 // Ausgewählte Benutzer
+      type: formValue.type || 'Other',
+      description: formValue.description || '',
+      date: formatDateToLong(new Date(formValue.date)),
+      time: formattedTime,
+      users: this.selectedUsers,
     };
   }
+  
   
   
   
@@ -145,39 +155,23 @@ export class SelectUserComponent implements OnInit {
     const eventToSave = {
       type: eventData.type || 'Other',
       description: eventData.description || '',
-      date: new Date(eventData.date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }),
-      time: eventData.time || '',
+      date: formatDateToLong(new Date(eventData.date)), // Formatiere Datum in das gewünschte Format
+      time: formatTimeTo12Hour(eventData.time), // Formatiere Zeit in das 12-Stunden-Format
       users: eventData.users.map((user: any) => `${user.firstName} ${user.lastName}`),
-      createdAt: currentDate.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      }),
+      createdAt: formatDateToLong(currentDate), // Formatiere das Erstellungsdatum
       createdBy: this.currentUserName || 'Unknown',
     };
-
+  
     addDoc(eventCollection, eventToSave)
       .then((docRef) => {
         console.log('Event saved successfully with ID:', docRef.id);
-        this.logEventAction('add', docRef.id, eventToSave);
-        updateDoc(docRef, { id: docRef.id })
-          .then(() => {
-            console.log('Document updated with ID:', docRef.id);
-            this.dialogRef.close('reload');
-          })
-          .catch((error) => console.error('Error updating document ID:', error));
+        this.dialogRef.close('reload');
       })
       .catch((error) => {
         console.error('Error saving event:', error);
       });
   }
+  
   
   
   logEventAction(action: string, eventId: string, eventData: any) {

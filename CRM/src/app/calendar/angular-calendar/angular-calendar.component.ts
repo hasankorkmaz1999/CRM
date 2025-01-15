@@ -18,8 +18,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { SharedModule } from '../../shared/shared.module';
 import { EventDetailsComponent } from '../event-details/event-details.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { ActivatedRoute } from '@angular/router';
+import { formatTimeTo12Hour } from '../../shared/formattime.service';
 
 @Component({
   selector: 'app-angular-calendar',
@@ -76,15 +77,21 @@ export class AngularCalendarComponent implements OnInit {
     collectionData(eventCollection, { idField: 'id' }).subscribe(async (data) => {
       const eventsWithDetails = await Promise.all(
         data.map(async (eventData: any) => {
+          // Datum und Zeit kombinieren
           const eventDateTime = this.parseAndCombineDateTime(eventData.date, eventData.time);
           const eventType = eventData.type;
   
           // Farben basierend auf Event-Typ
           let eventColor = { primary: '#3f51b5', secondary: '#7986cb' };
-          if (eventType === 'Meeting') eventColor = { primary: '#68d391', secondary: '#ff80ab' };
-          else if (eventType === 'Webinar') eventColor = { primary: '#3f51b5', secondary: '#81c784' };
-          else if (eventType === 'Workshop') eventColor = { primary: '#ee00ff', secondary: '#ffb74d' };
-          else if (eventType === 'Other') eventColor = { primary: '#e9bc09', secondary: '#ba68c8' };
+          if (eventType === 'Meeting') {
+            eventColor = { primary: '#68d391', secondary: '#ff80ab' };
+          } else if (eventType === 'Webinar') {
+            eventColor = { primary: '#3f51b5', secondary: '#81c784' };
+          } else if (eventType === 'Workshop') {
+            eventColor = { primary: '#ee00ff', secondary: '#ffb74d' };
+          } else if (eventType === 'Other') {
+            eventColor = { primary: '#e9bc09', secondary: '#ba68c8' };
+          }
   
           // Benutzerinformationen für die Teilnehmer abrufen
           const formattedUsers = await Promise.all(
@@ -92,7 +99,7 @@ export class AngularCalendarComponent implements OnInit {
               try {
                 const trimmedFirstName = userName.split(' ')[0].trim();
                 const trimmedLastName = userName.split(' ')[1]?.trim() || '';
-                
+  
                 const userQuery = query(
                   userCollection,
                   where('firstName', '==', trimmedFirstName),
@@ -127,6 +134,9 @@ export class AngularCalendarComponent implements OnInit {
             ? creatorSnapshot.docs[0].data()
             : { profilePicture: '/assets/img/user.png' };
   
+          // Zeit formatieren
+          const formattedTime = formatTimeTo12Hour(eventData.time || 'No time provided');
+  
           return {
             id: eventData.id,
             title: eventData.type,
@@ -141,7 +151,7 @@ export class AngularCalendarComponent implements OnInit {
                 profilePicture: creatorDetails['profilePicture'] || '/assets/img/user.png',
               },
               createdAt: eventData.createdAt || '',
-              time: eventData.time || 'No time provided',
+              time: formattedTime, // Zeit formatiert setzen
             },
           } as CalendarEvent;
         })
@@ -149,8 +159,6 @@ export class AngularCalendarComponent implements OnInit {
   
       // Sortiere die Events nach der Startzeit
       this.events = eventsWithDetails.sort((a, b) => a.start.getTime() - b.start.getTime());
-  
-     
     });
   }
   
@@ -159,45 +167,33 @@ export class AngularCalendarComponent implements OnInit {
   
   
   parseAndCombineDateTime(dateString: string, timeString: string): Date {
-   
-  
-    // Konvertiere das Firestore-Datum ins ISO-Format
     const parsedDate = new Date(dateString); // Datum wird geparst
     if (isNaN(parsedDate.getTime())) {
       console.error('Invalid date format:', dateString);
       return new Date(); // Rückgabe des aktuellen Datums bei ungültigem Format
     }
   
-    // Extrahiere Jahr, Monat und Tag
     const year = parsedDate.getFullYear();
     const month = parsedDate.getMonth(); // 0-basiert
     const day = parsedDate.getDate();
   
-    // Validierung der Zeit
     if (!/^\d{1,2}:\d{2} (AM|PM)$/.test(timeString)) {
       console.error('Invalid time format:', timeString);
       return new Date(); // Rückgabe des aktuellen Datums bei ungültigem Format
     }
   
-    try {
-      // Verarbeite Zeit im Format HH:mm AM/PM
-      const [time, meridiem] = timeString.split(' ');
-      let [hours, minutes] = time.split(':').map(Number);
+    const formattedTime = formatTimeTo12Hour(timeString); // Zeit formatieren
+    const [time, meridiem] = formattedTime.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
   
-      if (meridiem === 'PM' && hours !== 12) {
-        hours += 12;
-      } else if (meridiem === 'AM' && hours === 12) {
-        hours = 0;
-      }
-  
-      // Erstelle ein Datum unter Berücksichtigung von UTC
-      const combinedDate = new Date(Date.UTC(year, month, day, hours, minutes));
-     
-      return combinedDate;
-    } catch (error) {
-      console.error('Error parsing date/time:', error);
-      return new Date(); // Rückgabe des aktuellen Datums bei Fehler
+    if (meridiem === 'PM' && hours !== 12) {
+      hours += 12;
+    } else if (meridiem === 'AM' && hours === 12) {
+      hours = 0;
     }
+  
+    const combinedDate = new Date(year, month, day, hours, minutes);
+    return combinedDate;
   }
   
   
@@ -241,27 +237,27 @@ export class AngularCalendarComponent implements OnInit {
   
 
   handleEventClick(event: any): void {
-    this.selectedEvent = null; // Entferne das aktuelle Event für die Animation
+    this.selectedEvent = null;
   
     setTimeout(() => {
-      // Überprüfe, ob Benutzerinformationen in den Metadaten verfügbar sind
       const users = event?.meta?.users || [];
       const formattedUsers = users.map((user: any) => ({
         name: user.name || 'Unknown User',
-        profilePicture: user.profilePicture || '/assets/img/user.png', // Standardbild verwenden
+        profilePicture: user.profilePicture || '/assets/img/user.png',
       }));
   
-      // Setze das ausgewählte Event mit den Benutzerinformationen
+      const formattedTime = formatTimeTo12Hour(event?.meta?.time || 'No time provided');
+  
       this.selectedEvent = {
         id: event?.id || 'Unknown ID',
         type: event?.title || 'Unknown Type',
         description: event?.meta?.description || 'No description provided',
         date: event?.start || new Date(),
-        time: event?.meta?.time || 'No time provided',
-        users: formattedUsers, // Benutzerinformationen setzen
+        time: formattedTime, // Zeit formatiert setzen
+        users: formattedUsers,
         createdBy: event?.meta?.createdBy || 'Unknown',
       };
-    }, 50); // Verzögerung, um die Animation korrekt zu triggern
+    }, 50);
   }
   
 

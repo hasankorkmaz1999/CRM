@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Firestore, doc, updateDoc, collection, collectionData } from '@angular/fire/firestore';
 import { User } from '../../../../models/user.class';
 import { MatListModule, MatListOption } from '@angular/material/list';
+import { formatTimeTo12Hour, formatDateToLong } from '../../../shared/formattime.service';
 
 @Component({
   selector: 'app-edit-event-dialog',
@@ -27,21 +28,19 @@ export class EditEventDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<EditEventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    // Prüfen, ob das Datum vorhanden ist, und korrekt formatieren
     const localDate = this.data.date
-      ? new Date(this.data.date).toLocaleDateString('en-CA') // Format 'YYYY-MM-DD'
+      ? new Date(this.data.date).toLocaleDateString('en-CA') // Format 'YYYY-MM-DD' für den Dialog
       : null;
-  
+
     this.editForm = this.fb.group({
       type: [this.data.type || 'Other', Validators.required],
       description: [this.data.description || '', Validators.maxLength(200)],
-      date: [localDate, Validators.required], // Lokales Datum korrekt übergeben
-      time: [this.data.time || '08:00 AM', Validators.required],
+      date: [localDate, Validators.required],
+      time: [formatTimeTo12Hour(this.data.time || '08:00 AM'), Validators.required], // Zeit formatieren
     });
-  
+
     this.selectedUsers = this.data.users || [];
   }
-  
 
   ngOnInit(): void {
     console.log('Dialog data:', this.data);
@@ -50,9 +49,7 @@ export class EditEventDialogComponent implements OnInit {
     const userCollection = collection(this.firestore, 'users');
     collectionData(userCollection, { idField: 'id' }).subscribe((data) => {
       this.users = data as User[];
-
-      // Initialisiere die Auswahl basierend auf den übergebenen Daten
-      this.selectedUsers = this.data.users.map((user: any) => user.name);
+      this.selectedUsers = this.data.users.map((user: any) => user.name); // Benutzer setzen
     });
 
     this.generateUSTimeOptions();
@@ -94,25 +91,22 @@ export class EditEventDialogComponent implements OnInit {
       console.error('Event ID is undefined or missing!');
       return;
     }
-  
+
     const formValue = this.editForm.value;
-  
+
     // Datum und Zeit ins Firestore-kompatible Format bringen
-    const updatedDate = new Date(formValue.date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  
+    const updatedDate = formatDateToLong(new Date(formValue.date)); // Datum formatieren
+    const updatedTime = formatTimeTo12Hour(formValue.time); // Zeit formatieren
+
     const updatedEvent = {
       id: this.data.id,
       type: formValue.type,
       description: formValue.description,
       date: updatedDate, // Formatiertes Datum speichern
-      time: formValue.time, // Zeit unverändert speichern
+      time: updatedTime, // Formatiertes Zeitformat speichern
       users: [...this.selectedUsers],
     };
-  
+
     const eventRef = doc(this.firestore, `events/${this.data.id}`);
     updateDoc(eventRef, updatedEvent)
       .then(() => {
@@ -122,7 +116,6 @@ export class EditEventDialogComponent implements OnInit {
         console.error('Error updating event in Firestore:', error);
       });
   }
-  
 
   generateUSTimeOptions() {
     const times: string[] = [];
