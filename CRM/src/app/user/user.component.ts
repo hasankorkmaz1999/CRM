@@ -10,6 +10,7 @@ import { User } from '../../models/user.class';
 import { LoggingService } from '../shared/logging.service';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SnackbarService } from '../shared/snackbar.service';
 
 @Component({
   selector: 'app-user',
@@ -32,6 +33,7 @@ export class UserComponent implements OnInit {
   currentUser: { email: string; name: string } | null = null; // Aktuell angemeldeter Benutzer
 
   constructor(
+    private snackbarService: SnackbarService,
     public dialog: MatDialog,
     private firestore: Firestore,
     private loggingService: LoggingService,
@@ -116,23 +118,26 @@ export class UserComponent implements OnInit {
   
 
   deleteUser(user: User) {
-    // Überprüfen, ob der Benutzer sich selbst löschen möchte
     if (this.currentUser && this.currentUser.email === user.email) {
-      console.warn('Du kannst dich nicht selbst löschen.');
       alert('Du kannst dich nicht selbst löschen, während du eingeloggt bist.');
       return;
     }
-
+  
     const userDocRef = doc(this.firestore, `users/${user.uid}`);
     deleteDoc(userDocRef)
       .then(() => {
+        // Benutzeraktion loggen
+        this.loggingService.logUserAction('delete', user);
+
+        this.snackbarService.showActionSnackbar('user', 'delete');
        
-      
       })
-      .catch((error) =>
-        console.error('Fehler beim Löschen des Benutzers aus Firestore:', error)
-      );
+      .catch((error) => {
+        console.error('Fehler beim Löschen des Benutzers aus Firestore:', error);
+      });
   }
+  
+  
 
   filterUsers() {
     const query = this.searchQuery.toLowerCase();
@@ -145,5 +150,7 @@ export class UserComponent implements OnInit {
       .sort((a, b) => a.firstName.localeCompare(b.firstName));
   }
 
+
+ 
  
 }

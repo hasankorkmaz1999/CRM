@@ -62,7 +62,7 @@
     
       <!-- Buttons innerhalb des Formulars -->
       <mat-dialog-actions class="buttons">
-        <button mat-button (click)="goBack()">Back</button>
+        <button mat-button  type="button" (click)="goBack()">Back</button>
         <button mat-button 
         [disabled]="!eventForm.valid" 
         (click)="handleEventCreation()" 

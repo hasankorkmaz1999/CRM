@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LoggingService } from '../../shared/logging.service';
+import { SnackbarService } from '../../shared/snackbar.service';
 
 @Component({
   selector: 'app-dialog-add-customer',
@@ -20,7 +21,8 @@ export class DialogAddCustomerComponent {
     private fb: FormBuilder,
     private firestore: Firestore,
     private dialogRef: MatDialogRef<DialogAddCustomerComponent>,
-    private loggingService: LoggingService
+    private snackbarService: SnackbarService,
+   
   ) {
     this.customerForm = this.fb.group({
       firstName: [''], // Vorname
@@ -69,6 +71,8 @@ export class DialogAddCustomerComponent {
   
         // Schließe den Dialog und signalisiere dem Aufrufer, dass der Kunde hinzugefügt wurde
         this.dialogRef.close(true);
+
+        this.snackbarService.showActionSnackbar('customer', 'add');
       } catch (error) {
         console.error('Error saving customer:', error);
       }

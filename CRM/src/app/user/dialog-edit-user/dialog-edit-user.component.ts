@@ -5,6 +5,7 @@ import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LoggingService } from '../../shared/logging.service';
+import { SnackbarService } from '../../shared/snackbar.service';
 
 @Component({
   selector: 'app-dialog-edit-user',
@@ -22,7 +23,7 @@ export class DialogEditUserComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { user: User; userId: string },
     private fb: FormBuilder,
     private firestore: Firestore,
-    private loggingService: LoggingService
+    private snackbarService: SnackbarService,
   ) {}
 
   ngOnInit(): void {
@@ -69,12 +70,14 @@ export class DialogEditUserComponent implements OnInit {
       const userDocRef = doc(this.firestore, `users/${this.data.userId}`);
       await updateDoc(userDocRef, updatedUser);
      
-     
+      this.snackbarService.showActionSnackbar('user', 'update');
       this.dialogRef.close(true);
     } catch (error) {
       console.error('Error updating user:', error);
     }
   }
+
+
 
 
  

@@ -180,14 +180,14 @@ export class CustomerDetailComponent implements OnInit {
            this.resetForm();
 
 
-      this.showSnackbar();
+      this.showSnackbarPurchase();
     })
     .catch((error) => console.error('Error adding purchase:', error));
   }
 
 
-  showSnackbar(): void {
-    const snackbar = document.getElementById('snackbar');
+  showSnackbarPurchase(): void {
+    const snackbar = document.getElementById('snackbar-purchase');
     if (snackbar) {
       snackbar.classList.add('show');
       setTimeout(() => {

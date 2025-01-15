@@ -6,6 +6,7 @@ import { Firestore, doc, updateDoc, collection, collectionData } from '@angular/
 import { User } from '../../../../models/user.class';
 import { MatListModule, MatListOption } from '@angular/material/list';
 import { formatTimeTo12Hour, formatDateToLong } from '../../../shared/formattime.service';
+import { SnackbarService } from '../../../shared/snackbar.service';
 
 @Component({
   selector: 'app-edit-event-dialog',
@@ -23,6 +24,7 @@ export class EditEventDialogComponent implements OnInit {
   usTimeOptions: string[] = [];
 
   constructor(
+    private snackbarService: SnackbarService,
     private fb: FormBuilder,
     private firestore: Firestore,
     private dialogRef: MatDialogRef<EditEventDialogComponent>,
@@ -110,6 +112,7 @@ export class EditEventDialogComponent implements OnInit {
     updateDoc(eventRef, updatedEvent)
       .then(() => {
         this.dialogRef.close(updatedEvent);
+        this.snackbarService.showActionSnackbar('event', 'update');
       })
       .catch((error) => {
         console.error('Error updating event in Firestore:', error);

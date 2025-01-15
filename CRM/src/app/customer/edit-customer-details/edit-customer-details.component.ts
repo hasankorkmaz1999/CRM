@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { Customer } from '../../../models/customer.class';
 import { LoggingService } from '../../shared/logging.service';
+import { SnackbarService } from '../../shared/snackbar.service';
 
 @Component({
   selector: 'app-edit-customer-details',
@@ -22,7 +23,7 @@ export class EditCustomerDetailsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { customer: Customer; customerId: string },
     private fb: FormBuilder,
     private firestore: Firestore,
-    private loggingService: LoggingService
+    private snackbarService: SnackbarService,
   ) {}
 
   ngOnInit(): void {
@@ -68,7 +69,9 @@ export class EditCustomerDetailsComponent implements OnInit {
   
        
   
-        this.dialogRef.close(true); // Schließe den Dialog
+        this.dialogRef.close(true);
+        
+        this.snackbarService.showActionSnackbar('customer', 'update');// Schließe den Dialog
       } catch (error) {
         console.error('Error updating customer:', error);
       }

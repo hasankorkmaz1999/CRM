@@ -222,22 +222,17 @@ export class DashboardComponent implements OnInit {
       ? log.entityType.charAt(0).toUpperCase() + log.entityType.slice(1)
       : 'Entity';
     const action = log.action || 'updated';
-    const type = log.details?.type || '';
-    const firstName = log.details?.firstName || '';
-    const lastName = log.details?.lastName || '';
-    const fullName = [firstName, lastName].filter(Boolean).join(' ');
-
-    const displayName = type || fullName || 'Unknown';
-
+    const name = log.details?.name || 'Unknown'; // Prüfe, ob `details.name` korrekt verarbeitet wird
+  
     switch (action) {
       case 'add':
-        return `New ${entityType} ${displayName} has been added.`;
+        return `New ${entityType} ${name} has been added.`;
       case 'edit':
-        return `${entityType} ${displayName} has been edited.`;
+        return `${entityType} ${name} has been edited.`;
       case 'delete':
-        return `${entityType} ${displayName} has been deleted.`;
+        return `${entityType} ${name} has been deleted.`;
       default:
-        return `${entityType} ${displayName} has been updated.`;
+        return `${entityType} ${name} has been updated.`;
     }
   }
 
@@ -433,23 +428,7 @@ export class DashboardComponent implements OnInit {
   }
   
 
-  navigateToUserDetails(log: any) {
-    if (log.entityType === 'user' && log.details?.id) {
-      // Navigiere zur Benutzer-Detailansicht
-      this.router.navigate(['/user-details', log.details.id]);
-    } else {
-      console.warn('Log does not contain valid user details or ID.');
-    }
-  }
-
-  navigateToCustomerDetails(log: any) {
-    if (log.entityType === 'customer' && log.details?.id) {
-      // Navigiere zur Kunden-Detailansicht
-      this.router.navigate(['/customer-details', log.details.id]);
-    } else {
-      console.warn('Log does not contain valid customer details or ID.');
-    }
-  }
+ 
 
   getEventClass(eventType: string): string {
     switch (eventType?.toLowerCase()) {

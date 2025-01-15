@@ -8,6 +8,7 @@ import { Firestore, doc, updateDoc, deleteDoc, collection, addDoc, collectionDat
 import { LoggingService } from '../../shared/logging.service';
 import { DeleteDialogComponent } from '../../delete-dialog/delete-dialog.component';
 import { formatTimeTo12Hour, formatDateToLong } from '../../shared/formattime.service';
+import { SnackbarService } from '../../shared/snackbar.service';
 
 @Component({
   selector: 'app-event-details',
@@ -23,6 +24,8 @@ export class EventDetailsComponent {
   isDialog: boolean = false;
 
   constructor(
+    private snackbarService: SnackbarService,
+    private loggingService: LoggingService,
     private firestore: Firestore,
     private dialog: MatDialog,
     @Optional() public dialogRef?: MatDialogRef<EventDetailsComponent>, // Optional für Dialog
@@ -111,22 +114,24 @@ export class EventDetailsComponent {
     if (buttonElement) {
       buttonElement.blur();
     }
-
+  
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       autoFocus: false,
       data: { type: 'event', name: this.data.type },
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const eventRef = doc(this.firestore, `events/${this.data.id}`);
         deleteDoc(eventRef)
           .then(() => {
+            // Log-Eintrag erstellen
+            this.loggingService.logEventAction('delete', { id: this.data.id, type: this.data.type });
            
 
-        
-           
 
+            this.snackbarService.showActionSnackbar('event', 'delete');
+  
             if (!this.isDialog) {
               this.closeSidebarEvent.emit();
             } else {
@@ -137,6 +142,7 @@ export class EventDetailsComponent {
       }
     });
   }
+  
 
  
 

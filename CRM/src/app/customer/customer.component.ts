@@ -7,6 +7,7 @@ import { Customer } from '../../models/customer.class';
 import { LoggingService } from '../shared/logging.service';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SnackbarService } from '../shared/snackbar.service';
 
 @Component({
   selector: 'app-customer',
@@ -20,13 +21,15 @@ export class CustomerComponent implements OnInit {
   customers: Customer[] = [];
   filteredCustomers: Customer[] = [];
   searchQuery: string = '';
+  
 
   constructor(
     private firestore: Firestore,
      private dialog: MatDialog,
      private loggingService: LoggingService,
      private route: ActivatedRoute,
-     private router: Router
+     private router: Router,
+     private snackbarService: SnackbarService,
     ) {}
 
   ngOnInit(): void {
@@ -82,6 +85,7 @@ export class CustomerComponent implements OnInit {
     }
   
     event.stopPropagation(); // Verhindert das Auslösen von navigateToCustomer
+  
     // Öffne den Delete-Dialog
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       autoFocus: false, // Deaktiviert Autofokus
@@ -90,10 +94,12 @@ export class CustomerComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleteCustomer(customer.id);
+        // Übergibt sowohl die ID als auch den Namen des Kunden
+        this.deleteCustomer(customer.id, `${customer.firstName} ${customer.lastName}`);
       }
     });
   }
+  
   
   openAddDialog(): void {
     // Entferne den Fokus vom aktuellen Button
@@ -115,12 +121,20 @@ export class CustomerComponent implements OnInit {
   
   
 
-  deleteCustomer(customerId: string): void {
+  deleteCustomer(customerId: string, customerName: string): void {
     const customerDoc = doc(this.firestore, `customers/${customerId}`);
     deleteDoc(customerDoc)
-      .then(() => console.log('Customer deleted successfully'))
-      .catch((error) => console.error('Error deleting customer:', error));
+      .then(() => {
+        // Log-Eintrag erstellen
+        this.loggingService.logCustomerAction('delete', { id: customerId, name: customerName });
+        console.log('Customer deleted successfully');
+        this.snackbarService.showActionSnackbar('customer', 'delete');
+      })
+      .catch((error) => {
+        console.error('Error deleting customer:', error);
+      });
   }
+  
   
   
 

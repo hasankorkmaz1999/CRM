@@ -40,45 +40,11 @@
         <strong [innerHTML]="generateLogMessage(log)"></strong>
       </div>
       <div class="buttons-comtainer">
-        <small *ngIf="log.timestamp">{{
-          log.timestamp | date : "MMMM d, y"
-        }}</small>
-        <a
-          *ngIf="
-            log.entityType === 'customer' &&
-            (log.action === 'edit' || log.action === 'add')
-          "
-          (click)="navigateToCustomerDetails(log)"
-          class="see-details-link"
-        >
-          View Customer Details
-        </a>
-        <a
-          *ngIf="
-            log.entityType === 'user' &&
-            (log.action === 'edit' || log.action === 'add')
-          "
-          (click)="navigateToUserDetails(log)"
-          class="see-details-link"
-        >
-          View User Details
-        </a>
-
-        <a
-          *ngIf="log.entityType === 'event' && log.action === 'add'"
-          (click)="openAddedEventDetails(log)"
-          class="see-details-link"
-        >
-          View Event Details
-        </a>
-
-        <a
-          *ngIf="log.entityType === 'event' && log.action === 'edit'"
-          (click)="openLogDetails(log)"
-          class="see-details-link"
-        >
-          See Details
-        </a>
+        <small *ngIf="log.timestamp">
+          {{ log.timestamp | date: "MMMM d, y, h:mm a" }}
+        </small>
+        
+        
       </div>
     </li>
   </ul>

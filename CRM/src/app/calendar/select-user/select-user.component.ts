@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import { LoggingService } from '../../shared/logging.service';
 import { formatTimeTo12Hour, formatDateToLong } from '../../shared/formattime.service';
+import { SnackbarService } from '../../shared/snackbar.service';
 
 
 @Component({
@@ -42,11 +43,13 @@ export class SelectUserComponent implements OnInit {
   currentUserName: string = 'Unknown User';
 
   constructor(
+    private snackbarService: SnackbarService,
     private firestore: Firestore,
     private dialogRef: MatDialogRef<SelectUserComponent>,
     private fb: FormBuilder,
-   
     private loggingService: LoggingService,
+   
+    
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.eventForm = this.fb.group({
@@ -114,7 +117,7 @@ export class SelectUserComponent implements OnInit {
     const formValue = this.prepareEventData();
     
     if (formValue) {
-      console.log('Prepared Event Data:', formValue);
+     
       this.saveEventToFirestore(formValue); // Event speichern
     } else {
       console.error('Invalid event data. Cannot save event.');
@@ -164,7 +167,12 @@ export class SelectUserComponent implements OnInit {
   
     addDoc(eventCollection, eventToSave)
       .then((docRef) => {
-        console.log('Event saved successfully with ID:', docRef.id);
+        
+        this.loggingService.logEventAction('add', {
+          id: docRef.id,
+          type: eventToSave.type,
+        });
+        this.snackbarService.showActionSnackbar('event', 'add');
         this.dialogRef.close('reload');
       })
       .catch((error) => {
