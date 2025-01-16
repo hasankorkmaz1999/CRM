@@ -1,144 +1,143 @@
-
-
-
 <div class="floating-todo-container">
+    <!-- Overlay -->
+    <div
+      class="overlay"
+      *ngIf="isTodoSectionVisible"
+      (click)="toggleTodoSection()"
+    ></div>
+  
     <!-- Floating Icon -->
     <button class="floating-icon" (click)="toggleTodoSection()">
       <mat-icon>fact_check</mat-icon>
     </button>
-
-
-
-
-    <div class="todos-section" (click)="$event.stopPropagation()" *ngIf="isTodoSectionVisible">
-    <div class="todo-header">
-
-
+  
+    <!-- To-Do Section -->
+    <div
+    class="todos-section"
+    [class.visible]="isTodoSectionVisible"
+    [class.hidden]="!isTodoSectionVisible && wasSectionVisible"
+    *ngIf="isTodoSectionVisible || wasSectionVisible"
+    (click)="$event.stopPropagation()"
+  >
+      <div class="todo-header">
         <div class="header-wrap">
-         
-      <h3>To-Dos</h3>
-     
-    </div>
-      <div class="task-div">
-        <!-- Eingabefeld für das To-Do -->
-        <div class="textarea-container">
-          <textarea
-            [(ngModel)]="todoInputValue"
-            placeholder="Enter a new task..."
-            name="title"
-            required
-            cdkTextareaAutosize
-            matInput
-            #autosize="cdkTextareaAutosize"
-            (input)="autosize.resizeToFitContent(true)"
-            class="todo-textarea"
-          ></textarea>
-          <!-- Button innerhalb des Containers -->
-          <button
-            (click)="addTodo()"
-            [disabled]="!todoInputValue"
-            class="add-todo-btn"
-          >
-            <mat-icon class="add-button-todo">add</mat-icon>
-          </button>
-        </div>             <!-- Buttons für Prioritäten -->
-        <div class="priority-buttons">
-          <h2>Priority</h2>
-          <button
-            type="button"
-            [class.selected]="selectedPriority === 'high'"
-            (click)="setPriority('high')" class="priority-button high">
-            <img src="/assets/img/iconPrioUrgent.svg" alt="" />
-          </button>
-          <button
-            type="button"
-            [class.selected]="selectedPriority === 'medium'"
-            (click)="setPriority('medium')"
-            class="priority-button medium">
-            <img src="/assets/img/iconPrioMedium.svg" alt="" />
-          </button>
-          <button
-            type="button"
-            [class.selected]="selectedPriority === 'low'"
-            (click)="setPriority('low')"
-            class="priority-button low">
-            <img src="/assets/img/iconPrioLow.svg" alt="" />
-          </button>
+          <h3>To-Dos</h3>
         </div>
-      </div>
-    </div>
-
-    <div class="todo-bottom"></div>
-
-    <div class="todo-wrapper">
-      <!-- Display To-Dos -->
-      <div class="todo-list">
-        <div
-        *ngFor="let todo of todos$ | async; let i = index; trackBy: trackByTodoId"
-        [ngClass]="{ 'new-todo': i === 0 && isNewTodo }"
-        class="todo-item"
-      >
-      
-      
-             
-          <div class="wrapper">
-            <label>
-              <input
-                type="checkbox"
-                [checked]="todo.completed"
-                (change)="toggleTodoCompletion(todo)"
-                class="custom-checkbox"
-              />
-            </label>
+        <div class="task-div">
+          <!-- Eingabefeld für das To-Do -->
+          <div class="textarea-container">
+            <textarea
+              [(ngModel)]="todoInputValue"
+              placeholder="Enter a new task..."
+              name="title"
+              required
+              cdkTextareaAutosize
+              matInput
+              #autosize="cdkTextareaAutosize"
+              (input)="autosize.resizeToFitContent(true)"
+              class="todo-textarea"
+            ></textarea>
+            <!-- Button -->
+            <button
+              (click)="addTodo()"
+              [disabled]="!todoInputValue"
+              class="add-todo-btn"
+            >
+              <mat-icon class="add-button-todo">add</mat-icon>
+            </button>
           </div>
-    
-          <!-- Anzeige der Priorität -->
-          <div class="description-wrapper">
-            <span class="todo-descrip">{{ todo.description }}</span>
-          </div>
-    
-          <div class="li-right">
-            <span class="priority-label">
-              <img
-                *ngIf="todo.priority === 'high'"
-                src="/assets/img/iconPrioUrgent.svg"
-                alt="High Priority"
-                class="priority-icon"
-              />
-              <img
-                *ngIf="todo.priority === 'medium'"
-                src="/assets/img/iconPrioMedium.svg"
-                alt="Medium Priority"
-                class="priority-icon"
-              />
-              <img
-                *ngIf="todo.priority === 'low'"
-                src="/assets/img/iconPrioLow.svg"
-                alt="Low Priority"
-                class="priority-icon"
-              />
-            </span>
-    
-            <button (click)="deleteTodo(todo.id)" class="delete-btn">
-              <mat-icon>delete</mat-icon>
+  
+          <!-- Buttons für Prioritäten -->
+          <div class="priority-buttons">
+            <h2>Priority</h2>
+            <button
+              type="button"
+              [class.selected]="selectedPriority === 'high'"
+              (click)="setPriority('high')"
+              class="priority-button high"
+            >
+              <img src="/assets/img/iconPrioUrgent.svg" alt="" />
+            </button>
+            <button
+              type="button"
+              [class.selected]="selectedPriority === 'medium'"
+              (click)="setPriority('medium')"
+              class="priority-button medium"
+            >
+              <img src="/assets/img/iconPrioMedium.svg" alt="" />
+            </button>
+            <button
+              type="button"
+              [class.selected]="selectedPriority === 'low'"
+              (click)="setPriority('low')"
+              class="priority-button low"
+            >
+              <img src="/assets/img/iconPrioLow.svg" alt="" />
             </button>
           </div>
         </div>
       </div>
+  
+      <div class="todo-wrapper">
+        <!-- Display To-Dos -->
+        <div class="todo-list">
+          <div
+            *ngFor="let todo of todos$ | async; let i = index; trackBy: trackByTodoId"
+            [ngClass]="{ 'new-todo': i === 0 && isNewTodo }"
+            class="todo-item"
+          >
+            <div class="wrapper">
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="todo.completed"
+                  (change)="toggleTodoCompletion(todo)"
+                  class="custom-checkbox"
+                />
+              </label>
+            </div>
+            <!-- Anzeige der Priorität -->
+            <div class="description-wrapper">
+              <span class="todo-descrip">{{ todo.description }}</span>
+            </div>
+            <div class="li-right">
+              <span class="priority-label">
+                <img
+                  *ngIf="todo.priority === 'high'"
+                  src="/assets/img/iconPrioUrgent.svg"
+                  alt="High Priority"
+                  class="priority-icon"
+                />
+                <img
+                  *ngIf="todo.priority === 'medium'"
+                  src="/assets/img/iconPrioMedium.svg"
+                  alt="Medium Priority"
+                  class="priority-icon"
+                />
+                <img
+                  *ngIf="todo.priority === 'low'"
+                  src="/assets/img/iconPrioLow.svg"
+                  alt="Low Priority"
+                  class="priority-icon"
+                />
+              </span>
+              <button (click)="deleteTodo(todo.id)" class="delete-btn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="progress-div">
+        <mat-progress-bar
+          mode="determinate"
+          [value]="progressValue"
+        ></mat-progress-bar>
+        <p class="progress-text">
+          {{ completedTasks }}/{{ totalTasks }} completed
+        </p>
+      </div>
     </div>
-
-    <div class="progress-div">
-      <mat-progress-bar
-        mode="determinate"
-        [value]="progressValue"
-      ></mat-progress-bar>
-      <p class="progress-text">
-        {{ completedTasks }}/{{ totalTasks }} completed
-      </p>
-    </div>
-  </div>    
-
-
-
-
-</div>
+  </div>
+  

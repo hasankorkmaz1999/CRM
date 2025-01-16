@@ -2,8 +2,11 @@
 .main-container {
     display: flex;
     height: 100vh;
-    overflow: hidden;
+    position: relative;
+   
     background-color: #0f0f0f;
+    z-index: 1000;
+
   }
   
   /* Sidebar */
@@ -165,42 +168,6 @@ height: 102px;
 
 
 
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: transparent; /* Unsichtbar, aber klickbar */
-    z-index: 200; /* Zwischen Blur und Inhalt */
-    pointer-events: auto;
-  }
-
-
-
-app-todo-floating {
-    z-index: 300;
-}
-
-.blur-wrapper {
-    height: 100vh;
-    width: 100%;
-    position: relative;
-    transition: filter 0.3s ease, background-color 0.3s ease;
-    z-index: 100;
-   pointer-events: none;
-  }
-  
-  .blur-wrapper.blur-active {
-    filter: blur(10px); /* Unscharf machen */
-    background-color: rgba(0, 0, 0, 0.32);
-    /* Sicherstellen, dass es über dem Inhalt liegt */
-    position: absolute;
-    top: 0;
-    left: 0;
-   pointer-events: auto;
-  }
-  
 
 
 

@@ -2,13 +2,9 @@
  
     <div class="main-container">
 
-      <div
-      class="overlay"
-      *ngIf="isTodoSectionVisible"
-      (click)="closeTodoSection($event)"
-    ></div>
-
-      <div class="blur-wrapper"  [class.blur-active]="isTodoSectionVisible">
+     
+     
+  
       <!-- Sidebar -->
       <div class="sidebar">
         <div class="logo-container">
@@ -68,9 +64,9 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <app-todo-floating (toggleTodo)="handleTodoToggle($event)"></app-todo-floating>
+
+  <app-todo-floating></app-todo-floating>
 </ng-container>
 
 <ng-container *ngIf="isLoginRoute">

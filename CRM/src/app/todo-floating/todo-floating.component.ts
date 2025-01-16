@@ -28,7 +28,8 @@ export class TodoFloatingComponent  implements OnInit {
   todoInputValue: string = '';
   selectedPriority: string = 'medium';
 
-  isTodoSectionVisible: boolean = false;
+  isTodoSectionVisible = false;
+  wasSectionVisible = false; 
 
   constructor(
     private firestore: Firestore,
@@ -57,8 +58,21 @@ export class TodoFloatingComponent  implements OnInit {
   }
 
   toggleTodoSection(): void {
-    this.isTodoSectionVisible = !this.isTodoSectionVisible;
-    this.toggleTodo.emit(this.isTodoSectionVisible); // Aktuellen Zustand emittieren
+    if (this.isTodoSectionVisible) {
+      // Schließen der To-Do-Sektion
+      this.isTodoSectionVisible = false;
+
+      // Warten, bis die Animation abgeschlossen ist
+      setTimeout(() => {
+        this.wasSectionVisible = false;
+      }, 300); // Zeitdauer der Animation in ms
+    } else {
+      // Öffnen der To-Do-Sektion
+      this.wasSectionVisible = true;
+      setTimeout(() => {
+        this.isTodoSectionVisible = true;
+      }, 10); // Kurze Verzögerung, um die Animation zu starten
+    }
   }
   
   
