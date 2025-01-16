@@ -32,6 +32,7 @@ export class ThreadsComponent implements OnInit {
 
 
 
+  newThreadId: string | null = null; // Speichert die ID des neuen Threads
 
   threads: Thread[] = [];
   newThread: Partial<Thread> = { description: '' };
@@ -198,15 +199,14 @@ export class ThreadsComponent implements OnInit {
   private saveThread(
     threadCollection: any,
     imageUrl: string | null,
-    profilePicture: string | null // Geändert: Profilbild direkt als Parameter übergeben
+    profilePicture: string | null
   ): void {
-    // NEU: Profilbild aus `currentUserProfilePicture` und Benutzername aus `currentUserName` verwenden
     const threadToSave = {
       description: this.newThread.description || '',
-      createdBy: this.currentUserName, // Benutzername aus `loadCurrentUser`
+      createdBy: this.currentUserName,
       createdAt: new Date().toISOString(),
       commentCount: 0,
-      profilePicture: profilePicture, // Profilbild direkt übergeben
+      profilePicture: profilePicture,
       imageUrl: imageUrl,
     };
   
@@ -214,19 +214,19 @@ export class ThreadsComponent implements OnInit {
       .then((docRef) => {
         console.log('Thread successfully created with ID:', docRef.id);
   
-        // Füge den neuen Thread lokal hinzu
         const newThread: Thread = new Thread({
           threadId: docRef.id,
           ...threadToSave,
           createdAt: new Date(),
         });
   
-        this.threads.unshift(newThread); // Neuen Thread an den Anfang der Liste einfügen
-        this.groupedThreads = this.groupThreadsByDate(this.threads); // Threads neu gruppieren
+        this.threads.unshift(newThread);
+        this.groupedThreads = this.groupThreadsByDate(this.threads);
   
-        this.isNewThread = true; // Animation für neuen Thread auslösen
+        // Nur den neuen Thread animieren
+        this.newThreadId = docRef.id;
         setTimeout(() => {
-          this.isNewThread = false; // Zustand nach Animation zurücksetzen
+          this.newThreadId = null; // Animation zurücksetzen, wenn sie abgeschlossen ist
         }, 1000);
       })
       .catch((error) => {
@@ -234,11 +234,12 @@ export class ThreadsComponent implements OnInit {
       })
       .finally(() => {
         this.loading = false;
-        this.newThread = { description: '' }; // Form zurücksetzen
+        this.newThread = { description: '' };
         this.selectedFile = null;
         this.selectedFilePreview = null;
       });
   }
+  
   
 
 

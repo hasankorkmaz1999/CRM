@@ -9,6 +9,7 @@ import { Purchase } from '../../../models/purchase.class';
 import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-picture.component';
 import { EditCustomerDetailsComponent } from '../edit-customer-details/edit-customer-details.component';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-customer-detail',
@@ -26,6 +27,7 @@ export class CustomerDetailComponent implements OnInit {
 
   
   constructor(
+    private loggingService: LoggingService,
     private route: ActivatedRoute,
     private firestore: Firestore,
     public dialog: MatDialog,
@@ -35,7 +37,7 @@ export class CustomerDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap) => {
       this.customerId = paramMap.get('id') ?? '';
-      console.log('Got Customer ID:', this.customerId);
+     
       this.getCustomer();
     });
   }
@@ -52,7 +54,7 @@ export class CustomerDetailComponent implements OnInit {
     const customerDoc = doc(this.firestore, `customers/${this.customerId}`);
     docData(customerDoc).subscribe((data: any) => {
       this.customer = new Customer(data);
-      console.log('Customer loaded:', this.customer);
+      
       this.generateBarChartData();
     });
   }
@@ -75,7 +77,7 @@ export class CustomerDetailComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Customer details updated.');
+       
         this.getCustomer();
       }
     });
@@ -94,7 +96,7 @@ export class CustomerDetailComponent implements OnInit {
     const customerDoc = doc(this.firestore, `customers/${this.customer.id}`);
     updateDoc(customerDoc, { status: newStatus })
       .then(() => {
-        console.log('Customer status updated to:', newStatus);
+       
         this.customer.status = newStatus;
       })
       .catch((error) => {
@@ -116,7 +118,7 @@ export class CustomerDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((imageUrl: string) => {
       if (imageUrl) {
         this.customer.profilePicture = imageUrl;
-        console.log('Customer profile picture updated:', imageUrl);
+      
       }
     });
   }
@@ -149,42 +151,50 @@ export class CustomerDetailComponent implements OnInit {
   
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     const createdBy = currentUser?.name || 'Unknown User';
-    const createdByProfilePicture = currentUser?.profilePicture || '/assets/img/default-profile.png';
   
-   
+    console.log('Current User:', currentUser); // Debug: Prüfen, ob der Benutzer korrekt geladen wurde
+  
+    const customerName = `${this.customer.firstName || 'Unknown'} ${this.customer.lastName || ''}`.trim();
+    console.log('Customer Name:', customerName); // Debug: Prüfen, ob der Kundenname korrekt geladen wurde
+  
     const newPurchase = {
       id: this.generateUniqueId(),
       productName: productName,
       quantity: quantity,
       purchaseType: purchaseType,
       createdBy: createdBy,
-      createdByProfilePicture: createdByProfilePicture,
+      
       price: this.getPrice(productName), 
       purchaseDate: new Date().toISOString(), 
       totalPrice: this.getPrice(productName) * quantity,
     };
   
-    
     if (!this.customer.purchases) {
       this.customer.purchases = [];
     }
     this.customer.purchases.push(newPurchase);
   
-    
-    
-  const customerDoc = doc(this.firestore, `customers/${this.customerId}`);
-  updateDoc(customerDoc, { purchases: this.customer.purchases })
-    .then(() => {
-      console.log('Purchase successfully added:', newPurchase);
-
-           this.resetForm();
-
-
-      this.showSnackbarPurchase();
-    })
-    .catch((error) => console.error('Error adding purchase:', error));
+    const customerDoc = doc(this.firestore, `customers/${this.customerId}`);
+    updateDoc(customerDoc, { purchases: this.customer.purchases })
+      .then(async () => {
+        console.log('Purchase successfully added:', newPurchase);
+  
+        // Log über LoggingService erstellen
+        await this.loggingService.logPurchaseAction('add', newPurchase, customerName, createdBy);
+  
+        // Snackbar anzeigen
+        this.showSnackbarPurchase();
+  
+        // Formular zurücksetzen
+        this.resetForm();
+      })
+      .catch((error) => console.error('Error adding purchase:', error));
   }
+  
 
+
+
+  
 
   showSnackbarPurchase(): void {
     const snackbar = document.getElementById('snackbar-purchase');

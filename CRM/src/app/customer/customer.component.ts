@@ -127,7 +127,7 @@ export class CustomerComponent implements OnInit {
       .then(() => {
         // Log-Eintrag erstellen
         this.loggingService.logCustomerAction('delete', { id: customerId, name: customerName });
-        console.log('Customer deleted successfully');
+       
         this.snackbarService.showActionSnackbar('customer', 'delete');
       })
       .catch((error) => {

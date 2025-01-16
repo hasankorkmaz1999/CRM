@@ -80,8 +80,9 @@ export class DialogAddUserComponent {
   
       // Log-Eintrag erstellen
       this.loggingService.logUserAction('add', {
-        id: uid,
-        name: `${newUser.firstName} ${newUser.lastName}`,
+        uid,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
       });
 
 

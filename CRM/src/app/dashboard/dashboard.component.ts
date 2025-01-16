@@ -10,6 +10,8 @@ import {
   query,
   where,
   getDocs,
+  orderBy,
+  limit,
 } from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Event } from '../../models/events.class';
@@ -89,6 +91,7 @@ export class DashboardComponent implements OnInit {
     this.loadTodos();
     this.updateKPICards();
     this.updateProgressBar();
+    this.loadLogsForDashboard();
   }
 
   updateCurrentUser(): void {
@@ -217,23 +220,16 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/logs']);
   }
 
-  generateLogMessage(log: any): string {
-    const entityType = log.entityType
-      ? log.entityType.charAt(0).toUpperCase() + log.entityType.slice(1)
-      : 'Entity';
-    const action = log.action || 'updated';
-    const name = log.details?.name || 'Unknown'; // Prüfe, ob `details.name` korrekt verarbeitet wird
-  
-    switch (action) {
-      case 'add':
-        return `New ${entityType} ${name} has been added.`;
-      case 'edit':
-        return `${entityType} ${name} has been edited.`;
-      case 'delete':
-        return `${entityType} ${name} has been deleted.`;
-      default:
-        return `${entityType} ${name} has been updated.`;
-    }
+  loadLogsForDashboard(): void {
+    const logsCollection = collection(this.firestore, 'logs');
+    const logsQuery = query(logsCollection, orderBy('timestamp', 'desc'), limit(5)); // Neuesten 5 Logs abrufen
+
+    collectionData(logsQuery, { idField: 'id' }).subscribe((data) => {
+      this.logs = data.map((log) => ({
+        ...log,
+        timestamp: log['timestamp'] ? new Date(log['timestamp']) : null,
+      }));
+    });
   }
 
   async loadEvents(): Promise<void> {

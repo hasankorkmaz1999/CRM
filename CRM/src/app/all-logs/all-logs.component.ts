@@ -2,11 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Router, RouterModule } from '@angular/router';
-import { LogDetailsComponent } from './log-details/log-details.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
-import { EventDetailsComponent } from '../calendar/event-details/event-details.component';
-import { Log } from '../../models/logs.class';
 
 @Component({
   selector: 'app-all-logs',
@@ -18,7 +15,7 @@ import { Log } from '../../models/logs.class';
 export class AllLogsComponent implements OnInit {
   logs: any[] = [];
   filteredLogs: any[] = [];
-  selectedSort: string = 'newest'; 
+  selectedSort: string = 'newest';
 
   constructor(
     private firestore: Firestore,
@@ -35,28 +32,20 @@ export class AllLogsComponent implements OnInit {
   loadAllLogs() {
     const logsCollection = collection(this.firestore, 'logs');
     collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
-      console.log('Raw log data:', data); // Debug-Ausgabe
-  
-      this.logs = data.map((log) => {
-        console.log('Processing log:', log); // Debug-Ausgabe für jedes Log
-        return {
-          ...log,
-          timestamp: log['timestamp'] ? new Date(log['timestamp']) : null,
-        };
-      });
-  
+      console.log('Raw log data:', data); // Debugging
+
+      this.logs = data.map((log) => ({
+        ...log,
+        timestamp: log['timestamp'] ? new Date(log['timestamp']) : null,
+      }));
+
       this.applySortAndFilter();
     });
   }
-  
-  
-  
-  
 
   applySortAndFilter() {
     let sortedLogs = [...this.logs];
 
-    
     switch (this.selectedSort) {
       case 'newest':
         sortedLogs.sort(
@@ -83,48 +72,26 @@ export class AllLogsComponent implements OnInit {
           (log) => log.entityType?.toLowerCase() === 'event'
         );
         break;
+      case 'purchases': // Added filter for "purchase" entity type
+        sortedLogs = sortedLogs.filter(
+          (log) => log.entityType?.toLowerCase() === 'purchase'
+        );
+        break;
     }
 
-   
     this.filteredLogs = sortedLogs.map((log, index) => ({
       ...log,
-      animationDelay: `${index * 50}ms`, 
+      animationDelay: `${index * 50}ms`,
     }));
 
-    this.cdr.detectChanges(); 
+    this.cdr.detectChanges();
   }
 
   onSortChange() {
-    this.applySortAndFilter(); 
+    this.applySortAndFilter();
   }
-
-  generateLogMessage(log: any): string {
-    const entityType = log.entityType
-      ? log.entityType.charAt(0).toUpperCase() + log.entityType.slice(1)
-      : 'Entity';
-    const action = log.action || 'updated';
-    const name = log.details?.name || 'Unknown'; // Prüfe, ob `details.name` korrekt verarbeitet wird
-  
-    switch (action) {
-      case 'add':
-        return `New ${entityType} ${name} has been added.`;
-      case 'edit':
-        return `${entityType} ${name} has been edited.`;
-      case 'delete':
-        return `${entityType} ${name} has been deleted.`;
-      default:
-        return `${entityType} ${name} has been updated.`;
-    }
-  }
-  
 
   goBack() {
     this.location.back();
   }
-
-  
-
-  
-  
-  
 }

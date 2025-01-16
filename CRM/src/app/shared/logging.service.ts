@@ -32,28 +32,88 @@ export class LoggingService {
       name: `${user.firstName || 'Unknown'} ${user.lastName || 'User'}`.trim(),
     };
 
-    await this.log(action, 'user', logDetails); // Nutzt die allgemeine Log-Methode
+    const actionText = this.getActionText(action);
+    const logMessage = `User ${logDetails.name} has been ${actionText}.`;
+    await this.log(action, 'user', { ...logDetails, message: logMessage });
   }
 
-
+  // Spezifische Methode für Kundenaktionen
   async logCustomerAction(action: 'add' | 'edit' | 'delete', customer: { id: string; name: string }) {
     const logDetails = {
       id: customer.id || 'unknown',
       name: customer.name || 'Unknown Customer',
     };
-  
-    await this.log(action, 'customer', logDetails);
+
+    const actionText = this.getActionText(action);
+    const logMessage = `Customer ${logDetails.name} has been ${actionText}.`;
+    await this.log(action, 'customer', { ...logDetails, message: logMessage });
   }
 
-
+  // Spezifische Methode für Event-Aktionen
   async logEventAction(action: 'add' | 'edit' | 'delete', event: { id: string; type: string }) {
     const logDetails = {
       id: event.id || 'unknown',
       name: event.type || 'Unknown Event',
     };
+
+    const actionText = this.getActionText(action);
+    const logMessage = `Event ${logDetails.name} has been ${actionText}.`;
+    await this.log(action, 'event', { ...logDetails, message: logMessage });
+  }
+
+  // Spezifische Methode für Kaufaktionen
+  async logPurchaseAction(action: 'add' | 'edit' | 'delete', purchase: any, customerName: string, createdBy: string) {
+    const logDetails = {
+      purchaseId: purchase.id,
+      productName: purchase.productName,
+      quantity: purchase.quantity,
+      purchaseType: purchase.purchaseType,
+      totalPrice: purchase.totalPrice,
+      customerName: customerName,
+      createdBy: createdBy,
+    };
   
-    await this.log(action, 'event', logDetails);
+    // Extract the first names
+    const customerFirstName = customerName.split(' ')[0]; // Take the first word from the customer's name
+    const createdByFirstName = createdBy.split(' ')[0]; // Take the first word from the creator's name
+  
+    const actionText = this.getActionText(action);
+    const logMessage = `New purchase of ${purchase.quantity}x ${purchase.productName} ${actionText} by ${createdByFirstName} for ${customerFirstName}.`;
+  
+    await this.log(action, 'purchase', { ...logDetails, message: logMessage });
   }
   
-  
+
+  // Hilfsmethode zum Übersetzen der Aktion in lesbaren Text
+  private getActionText(action: 'add' | 'edit' | 'delete'): string {
+    switch (action) {
+      case 'add':
+        return 'added';
+      case 'edit':
+        return 'edited';
+      case 'delete':
+        return 'deleted';
+      default:
+        return 'updated';
+    }
+  }
+
+  // Methode zum Generieren einer Log-Nachricht (Fallback)
+  generateLogMessage(log: any): string {
+    if (log.details?.message) {
+      return log.details.message;
+    }
+
+    const entityType = log.entityType
+      ? log.entityType.charAt(0).toUpperCase() + log.entityType.slice(1)
+      : 'Entity';
+    const action = log.action || 'updated';
+    const name = log.details?.name || 'Unknown';
+
+    const actionText = this.getActionText(action as 'add' | 'edit' | 'delete');
+    return `${entityType} ${name} has been ${actionText}.`;
+  }
 }
+
+  
+

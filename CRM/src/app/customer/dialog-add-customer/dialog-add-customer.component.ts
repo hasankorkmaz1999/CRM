@@ -18,6 +18,7 @@ export class DialogAddCustomerComponent {
   customerForm: FormGroup;
 
   constructor(
+    private loggingService: LoggingService,
     private fb: FormBuilder,
     private firestore: Firestore,
     private dialogRef: MatDialogRef<DialogAddCustomerComponent>,
@@ -64,15 +65,20 @@ export class DialogAddCustomerComponent {
   
         // Die generierte ID zum gespeicherten Dokument hinzufügen
         await updateDoc(customerDocRef, { id: customerDocRef.id });
-  
+
         console.log('Customer successfully saved with ID:', customerDocRef.id);
   
         // Logge die Aktion mit der hinzugefügten ID
+        await this.loggingService.logCustomerAction('add', {
+          id: customerDocRef.id,
+          name: `${customerData.firstName} ${customerData.lastName}`,
+        });
+  
+        // Snackbar anzeigen
+        this.snackbarService.showActionSnackbar('customer', 'add');
   
         // Schließe den Dialog und signalisiere dem Aufrufer, dass der Kunde hinzugefügt wurde
         this.dialogRef.close(true);
-
-        this.snackbarService.showActionSnackbar('customer', 'add');
       } catch (error) {
         console.error('Error saving customer:', error);
       }

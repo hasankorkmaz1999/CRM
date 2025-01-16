@@ -86,10 +86,11 @@
         <h3>{{ groupKey }}</h3>
         
         <div
-  *ngFor="let thread of groupedThreads[groupKey]; let i = index"
-  [ngClass]="{ 'new-thread': i === 0 && isNewThread }"
-  class="thread-item"
->
+        *ngFor="let thread of groupedThreads[groupKey]; let i = index"
+        [ngClass]="{ 'new-thread': thread.threadId === newThreadId }"
+        class="thread-item"
+      >
+      
 
           <div class="thread-header">
             <div class="user">

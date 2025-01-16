@@ -259,23 +259,23 @@
       </div>
 
       <div class="logs-section-wrapper">
-        <div class="logs-section" #logsSection>
+        <div class="logs-section">
           <h3>Recent Activity Logs</h3>
           <ul>
             <li
               class="list-elements"
-              *ngFor="let log of logs.slice(0, 5)"
+              *ngFor="let log of logs"
               [ngClass]="
                 'entity-' + (log.entityType?.toLowerCase() || 'unknown')
               "
             >
               <div class="log-message">
-                <strong [innerHTML]="generateLogMessage(log)"></strong>
+                <strong>{{ log.details?.message }}</strong> <!-- Direkt gespeicherte Nachricht verwenden -->
               </div>
             </li>
           </ul>
           <button
-            *ngIf="logs.length > visibleLogs.length"
+            *ngIf="logs.length > 0"
             class="go-class"
             (click)="navigateToAllLogs()"
           >
@@ -283,6 +283,7 @@
           </button>
         </div>
       </div>
+      
 
       <!-- Upcoming Events -->
     </div>

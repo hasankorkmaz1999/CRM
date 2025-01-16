@@ -1,52 +1,47 @@
 <div class="all-logs-comp">
-
-<div class="back-button">
+  <div class="back-button">
     <button mat-icon-button (click)="goBack()">
-        <mat-icon class="large-icon">arrow_back</mat-icon>
-      </button>
-    </div>
-  
+      <mat-icon class="large-icon">arrow_back</mat-icon>
+    </button>
+  </div>
 
-
-
-<div class="logs-section">
-
-    
-
+  <div class="logs-section">
     <div class="header-top">
-        <h3>All Activity Logs</h3>
-        <div class="sort-options">
-          <label for="sort" class="form-label">Sort by</label>
-          <select id="sort" class="custom-select" [(ngModel)]="selectedSort" (change)="onSortChange()">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="users">Users</option>
-            <option value="customers">Customers</option>
-            <option value="events">Events</option>
-          </select>
+      <h3>All Activity Logs</h3>
+      <div class="sort-options">
+        <label for="sort" class="form-label">Sort by</label>
+        <select
+          id="sort"
+          class="custom-select"
+          [(ngModel)]="selectedSort"
+          (change)="onSortChange()"
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="users">Users</option>
+          <option value="customers">Customers</option>
+          <option value="events">Events</option>
+          <option value="purchases">Purchase</option>
+        </select>
+      </div>
+    </div>
+
+    <ul>
+      <li
+        class="list-elements"
+        *ngFor="let log of filteredLogs"
+        [ngClass]="'entity-' + (log.entityType?.toLowerCase() || 'unknown')"
+        [style.animationDelay]="log.animationDelay"
+      >
+        <div class="log-message">
+          <strong [innerHTML]="log.details?.message || 'No message available'"></strong>
         </div>
-      </div>
-      
-
-
-<ul>
-    <li
-      class="list-elements"
-      *ngFor="let log of filteredLogs"
-      [ngClass]="'entity-' + (log.entityType?.toLowerCase() || 'unknown')"
-      [style.animationDelay]="log.animationDelay"
-    >
-      <div class="log-message">
-        <strong [innerHTML]="generateLogMessage(log)"></strong>
-      </div>
-      <div class="buttons-comtainer">
-        <small *ngIf="log.timestamp">
-          {{ log.timestamp | date: "MMMM d, y, h:mm a" }}
-        </small>
-        
-        
-      </div>
-    </li>
-  </ul>
-  
+        <div class="buttons-container">
+          <small *ngIf="log.timestamp">
+            {{ log.timestamp | date: "MMMM d, y, h:mm a" }}
+          </small>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
