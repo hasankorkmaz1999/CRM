@@ -42,21 +42,15 @@ export class DashboardComponent implements OnInit {
   visibleLogs: any[] = []; // Logs, die aktuell angezeigt werden
   maxVisibleLogs: number = 0; // Maximale Logs, die in den Bereich passen
 
-  todos: any[] = []; // To-Do-Liste
-  todoForm: FormGroup; // Formular für neue Aufgaben
+ 
   userId: string = ''; // ID des aktuellen Benutzers
-  progressValue: number = 0; // Fortschrittswert für die Progress-Bar
-  completedTasks: number = 0; // Erledigte Aufgaben
-  totalTasks: number = 0;
+ 
 
   currentUserName: string = 'Unknown User'; // Name des aktuellen Benutzers
   currentUserRole: string = 'Unknown Role'; // Rolle des aktuellen Benutzers
   currentUserProfilePicture: string = '/assets/img/user.png'; // Profilbild des aktuellen Benutzers
 
-  isNewTodo: boolean = false;
-  todoInputValue: string = '';
-  selectedPriority: string = 'medium';
-
+ 
   threads: Thread[] = [];
 
   constructor(
@@ -65,11 +59,7 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
    
-  ) {
-    this.todoForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(1)]],
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     // Benutzerinformationen direkt aus localStorage laden
@@ -88,9 +78,9 @@ export class DashboardComponent implements OnInit {
     this.loadEvents();
     this.startLiveCountdown();
     this.loadRecentLogs();
-    this.loadTodos();
+   
     this.updateKPICards();
-    this.updateProgressBar();
+   
     this.loadLogsForDashboard();
   }
 
@@ -140,81 +130,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  updateProgressBar(): void {
-    const todos = this.todos$.getValue(); // Hole die aktuelle Liste aus todos$
-    this.totalTasks = todos.length; // Gesamtanzahl der Aufgaben
-    this.completedTasks = todos.filter((todo) => todo.completed).length; // Anzahl der erledigten Aufgaben
-    this.progressValue =
-      this.totalTasks > 0 ? (this.completedTasks / this.totalTasks) * 100 : 0; // Fortschrittswert berechnen
-  }
-
-  todos$ = new BehaviorSubject<Todo[]>([]);
-
-  async loadTodos() {
-    const todosCollection = collection(this.firestore, 'todos');
-    collectionData(todosCollection, { idField: 'id' }).subscribe((data) => {
-      const newTodos = (data as Todo[])
-        .filter((todo) => todo.userId === this.userId)
-        .sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-
-      const currentTodos = this.todos$.getValue();
-
-      // Aktualisiere nur, wenn sich die Liste geändert hat
-      if (JSON.stringify(newTodos) !== JSON.stringify(currentTodos)) {
-        this.todos$.next(newTodos);
-        this.updateProgressBar();
-      }
-    });
-  }
-
-  setPriority(priority: string): void {
-    this.selectedPriority = priority;
-  }
-
-  newTodo: Partial<Todo> = { description: '' };
-
-  addTodo() {
-    if (!this.userId || !this.todoInputValue.trim()) return;
-
-    const newTodo: Omit<Todo, 'id'> = {
-      description: this.todoInputValue.trim(),
-      completed: false,
-      userId: this.userId,
-      createdAt: new Date().toISOString(),
-      priority: this.selectedPriority,
-    };
-
-    const todosCollection = collection(this.firestore, 'todos');
-    addDoc(todosCollection, newTodo).then(() => {
-      this.todoInputValue = '';
-      this.selectedPriority = 'medium';
-
-      // Füge das neue Todo lokal an den Anfang hinzu
-
-      this.isNewTodo = true; // Animation aktivieren
-      setTimeout(() => (this.isNewTodo = false), 800);
-    });
-  }
-
-  trackByTodoId(index: number, todo: any): string {
-    return todo.id; // Nutzt die eindeutige ID des Todos
-  }
-
-  // Aufgabe als erledigt markieren
-  toggleTodoCompletion(todo: any) {
-    const todoDoc = doc(this.firestore, `todos/${todo.id}`);
-    updateDoc(todoDoc, { completed: !todo.completed });
-  }
-
-  // Aufgabe löschen
-  deleteTodo(todoId: string) {
-    const todoDoc = doc(this.firestore, `todos/${todoId}`);
-    deleteDoc(todoDoc);
-    this.updateProgressBar();
-  }
+ 
+ 
 
   navigateToAllLogs() {
     this.router.navigate(['/logs']);

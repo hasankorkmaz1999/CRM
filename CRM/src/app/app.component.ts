@@ -13,6 +13,7 @@ import { AuthService } from './shared/auth.service';
 import { SharedModule } from './shared/shared.module';
 import { CalendarModule } from 'angular-calendar';
 import { UserService } from './shared/user.service';
+import { TodoFloatingComponent } from "./todo-floating/todo-floating.component";
 
 @Component({
   selector: 'app-root',
@@ -30,7 +31,8 @@ import { UserService } from './shared/user.service';
     HttpClientModule,
     SharedModule,
     CalendarModule,
-  ],
+    TodoFloatingComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

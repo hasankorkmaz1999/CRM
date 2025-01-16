@@ -93,7 +93,7 @@
           </mat-toolbar-row>
         </mat-toolbar>
 
-
+        <app-todo-floating></app-todo-floating>
         <router-outlet></router-outlet>
       </div>
     </div>
@@ -102,5 +102,6 @@
 
 <!-- Login-Ansicht -->
 <ng-container *ngIf="isLoginRoute">
+  
   <router-outlet></router-outlet>
 </ng-container>
