@@ -1,107 +1,78 @@
 <ng-container *ngIf="!isLoginRoute">
-  <mat-drawer-container class="mat-drawer-container" >
-    <mat-drawer #drawer class="sidenav" [opened]="true" mode="side">
-      <div class="logo-container">
-        <img src="/assets/img/crm_logo.png" alt="">
-      </div>
+ 
+    <div class="main-container">
 
-      <div class="links-container">
+      <div
+      class="overlay"
+      *ngIf="isTodoSectionVisible"
+      (click)="closeTodoSection($event)"
+    ></div>
 
-       
-       
-        <ul class="menu-items">
-          <li class="links" routerLink="/dashboard">
-            <mat-icon>fact_check</mat-icon> Dashboard
-          </li>
-          <li class="links" routerLink="/user">
-            <mat-icon>perm_identity</mat-icon> User
-          </li>
-       
-          <li class="links" routerLink="/customer">
-            <mat-icon>people</mat-icon> Customer
-          </li>
-          <li class="links" routerLink="/statistics">
-            <mat-icon>insert_chart</mat-icon> Statistics
-          </li>
-          <li class="links" routerLink="/calendar-angular">
-            <mat-icon>calendar_today</mat-icon> Calendar 
-          </li>
-
-          <li class="links" routerLink="/threads">
-            <mat-icon>forum</mat-icon> InfoDesk
-          </li>
-        </ul>
-
-        <!-- Privacy and Legal Links at the bottom -->
-        <div class="privacy-links">
-          <ul>
-          
-            <li class="links-privacy" routerLink="/privacy-policy">
-              Privacy Policy
+      <div class="blur-wrapper"  [class.blur-active]="isTodoSectionVisible">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo-container">
+          <img src="/assets/img/crm_logo.png" alt="Logo">
+        </div>
+        <div class="links-container">
+          <ul class="menu-items">
+            <li class="links" routerLink="/dashboard">
+              <mat-icon>fact_check</mat-icon> Dashboard
             </li>
-            <li class="links-privacy" routerLink="/legal-notice">
-              Legal Notice
+            <li class="links" routerLink="/user">
+              <mat-icon>perm_identity</mat-icon> User
+            </li>
+            <li class="links" routerLink="/customer">
+              <mat-icon>people</mat-icon> Customer
+            </li>
+            <li class="links" routerLink="/statistics">
+              <mat-icon>insert_chart</mat-icon> Statistics
+            </li>
+            <li class="links" routerLink="/calendar-angular">
+              <mat-icon>calendar_today</mat-icon> Calendar
+            </li>
+            <li class="links" routerLink="/threads">
+              <mat-icon>forum</mat-icon> InfoDesk
             </li>
           </ul>
+          <div class="privacy-links">
+            <ul>
+              <li class="links-privacy" routerLink="/privacy-policy">Privacy Policy</li>
+              <li class="links-privacy" routerLink="/legal-notice">Legal Notice</li>
+            </ul>
+          </div>
         </div>
-        
       </div>
-    </mat-drawer>
 
-
-    <div class="snackbar" id="snackbar"></div>
-
-
-    
-    <div class="example-sidenav-content">
-     
-      <div class="router-container">
-
+      <!-- Hauptinhalt -->
+      <div class="content-wrapper">
+        <!-- Header -->
         <mat-toolbar class="header">
-          <mat-toolbar-row class="mat-toolbar-div">
-  
-            <div class="left-section">
-            <mat-icon (click)="drawer.toggle()" class="menu">menu</mat-icon>
-           
-          </div>
-  
-  
           <div class="user-status">
-          <div class="user-name"><mat-icon class="person-icon">person</mat-icon>
-             <span class="username">{{ userName }}</span></div>
-         <!--  <mat-chip color="primary" selected>{{ userRole }}</mat-chip> -->
-          </div>
-  
-  
-          
-             
-             
-           
-          
-  
-  
-          <div class="right-section">
-          
-            <div>
-              <span class="spacer"></span>
-              <button mat-button (click)="logout()" *ngIf="!isLoginRoute">
-                <mat-icon class="logout-icon">logout</mat-icon> <span class="logout">Logout</span> 
-              </button>
+            <div class="user-name">
+              <mat-icon class="person-icon">person</mat-icon>
+              <span class="username">{{ userName }}</span>
             </div>
           </div>
-            
-          </mat-toolbar-row>
+          <div class="right-section">
+            <button mat-button (click)="logout()" *ngIf="!isLoginRoute">
+              <mat-icon class="logout-icon">logout</mat-icon>
+              <span class="logout">Logout</span>
+            </button>
+          </div>
         </mat-toolbar>
 
-        <app-todo-floating></app-todo-floating>
-        <router-outlet></router-outlet>
+        <!-- Seiteninhalt -->
+        <div class="page-content">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </div>
-  </mat-drawer-container>
+  </div>
+
+  <app-todo-floating (toggleTodo)="handleTodoToggle($event)"></app-todo-floating>
 </ng-container>
 
-<!-- Login-Ansicht -->
 <ng-container *ngIf="isLoginRoute">
-  
   <router-outlet></router-outlet>
 </ng-container>

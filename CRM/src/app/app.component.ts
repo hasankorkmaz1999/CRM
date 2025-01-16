@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -41,6 +41,10 @@ export class AppComponent implements OnInit {
   userName: string = 'Unknown User'; // Benutzername für den Header
   userRole: string = ''; // Benutzerrolle
 
+  isTodoSectionVisible: boolean = false;
+
+  @ViewChild(TodoFloatingComponent) todoFloatingComponent!: TodoFloatingComponent;
+
   constructor(
     private router: Router,
     private userService: UserService,
@@ -75,5 +79,27 @@ export class AppComponent implements OnInit {
     console.log('Benutzer wurde erfolgreich ausgeloggt.');
     this.router.navigate(['/login']);
   }
+
+ 
+
+  closeTodoSection(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+
+    // Überprüfen, ob außerhalb der To-Do-Sektion geklickt wurde
+    if (!target.closest('.todos-section') && this.isTodoSectionVisible) {
+      this.isTodoSectionVisible = false;
+
+      // Direkter Zugriff auf die Methode der To-Do-Komponente
+      if (this.todoFloatingComponent) {
+        this.todoFloatingComponent.toggleTodoSection();
+      }
+    }
+  }
+
+  handleTodoToggle(isVisible: boolean): void {
+    this.isTodoSectionVisible = isVisible;
+  }
+  
+  
 
 }

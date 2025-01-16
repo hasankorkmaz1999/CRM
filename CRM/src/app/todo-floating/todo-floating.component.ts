@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
@@ -48,32 +48,25 @@ export class TodoFloatingComponent  implements OnInit {
 
 
   todos$ = new BehaviorSubject<Todo[]>([]);
+  @Output() toggleTodo = new EventEmitter<boolean>();
 
   ngOnInit(): void {
-    console.log('Initializing TodoFloatingComponent...'); // Debugging
+   
     this.loadTodos();
     this.updateProgressBar();
   }
 
   toggleTodoSection(): void {
-    const todoSection = document.querySelector('.todos-section');
-    if (this.isTodoSectionVisible) {
-      // Schließen mit Animation
-      todoSection?.classList.add('hidden');
-      setTimeout(() => {
-        this.isTodoSectionVisible = false; // Nach der Animation wirklich ausblenden
-        todoSection?.classList.remove('hidden');
-      }, 300); // Entspricht der Animationsdauer in ms
-    } else {
-      // Öffnen
-      this.isTodoSectionVisible = true;
-    }
+    this.isTodoSectionVisible = !this.isTodoSectionVisible;
+    this.toggleTodo.emit(this.isTodoSectionVisible); // Aktuellen Zustand emittieren
   }
+  
+  
 
   async loadTodos() {
     const todosCollection = collection(this.firestore, 'todos');
     collectionData(todosCollection, { idField: 'id' }).subscribe((data) => {
-      console.log('Loaded raw todos from Firestore:', data); // Debugging
+     
   
       const newTodos = (data as Todo[])
         .filter((todo) => todo.userId === this.userId) // Filter nach Benutzer-ID
@@ -82,7 +75,7 @@ export class TodoFloatingComponent  implements OnInit {
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
   
-      console.log('Filtered todos for user:', this.userId, newTodos); // Debugging
+     
   
       const currentTodos = this.todos$.getValue();
   
@@ -115,12 +108,12 @@ export class TodoFloatingComponent  implements OnInit {
       priority: this.selectedPriority,
     };
   
-    console.log('Adding new Todo:', newTodo); // Debugging
+   
   
     const todosCollection = collection(this.firestore, 'todos');
     addDoc(todosCollection, newTodo)
       .then((docRef) => {
-        console.log('Todo added with ID:', docRef.id); // Debugging
+       
         this.todoInputValue = '';
         this.selectedPriority = 'medium';
   

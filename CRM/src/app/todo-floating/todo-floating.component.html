@@ -1,13 +1,16 @@
+
+
+
 <div class="floating-todo-container">
     <!-- Floating Icon -->
     <button class="floating-icon" (click)="toggleTodoSection()">
-      <mat-icon>task_alt</mat-icon>
+      <mat-icon>fact_check</mat-icon>
     </button>
 
 
 
 
-    <div class="todos-section" *ngIf="isTodoSectionVisible">
+    <div class="todos-section" (click)="$event.stopPropagation()" *ngIf="isTodoSectionVisible">
     <div class="todo-header">
 
 

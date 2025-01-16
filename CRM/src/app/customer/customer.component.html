@@ -1,7 +1,19 @@
 <div class="customer-component">
 <div class="headercontainer">
+  <div class="button-margin">
 <h1>Customers</h1>
 
+  <button
+    (click)="openAddDialog()"
+    class="add-customer-button"
+    mat-fab
+    color="primary"
+    matTooltip="Add customer"
+    matTooltipPosition="above"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
 
 <div class="search-container">
  
@@ -56,14 +68,8 @@
 
   
   <!-- Add Customer Button -->
-  <button
-    (click)="openAddDialog()"
-    class="add-customer-button"
-    mat-fab
-    color="primary"
-    matTooltip="Add customer"
-    matTooltipPosition="above"
-  >
-    <mat-icon>add</mat-icon>
-  </button>
+  
+
+
+
 </div>

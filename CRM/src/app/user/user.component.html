@@ -2,8 +2,12 @@
 <div class="user-component">
 
 <div class="header-top">
-
+  <div class="button-margin">
   <h1> Users </h1>
+  <button (click)="openDialog()" class="add-user-button" mat-fab color="primary" matTooltip="Add user" matTooltipPosition="above">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
 
 <div class="search-container">
  
@@ -26,30 +30,47 @@
   <div class="user-list">
     <!-- Kopfzeile -->
     <div class="header-row">
-      <div>Role</div>
+     
       <div>Name</div>
+     
       <div>E-mail</div>
       <div>Phone</div>
-      <div>Actions</div>
+      <div>Action</div>
+     
     </div>
 
     <!-- Benutzerzeilen -->
     <div class="under-tr" *ngFor="let user of filteredUsers" (click)="navigateToUser(user.uid)">
-      <div class="icon-container">
-        <mat-icon *ngIf="user.role === 'Admin'" class="icon admin-icon">admin_panel_settings</mat-icon>
+     
+
+     <div class="user-pic">
+      <div class="image-wrapper-user">
+        <img
+          [src]="user.profilePicture || '/assets/img/user.png'"
+          class="profile-picture-user"
+          alt="Profile Picture"
+        />
+      </div>
+      <div class="user-stats">{{ user.firstName }} {{ user.lastName }}
+         <mat-icon *ngIf="user.role === 'Admin'" class="icon admin-icon">admin_panel_settings</mat-icon>
         <mat-icon *ngIf="user.role === 'Employee'" class="icon employee-icon">work</mat-icon>
         <mat-icon *ngIf="user.role === 'Guest'" class="icon guest-icon">person_outline</mat-icon>
-        <mat-icon *ngIf="!user.role" class="icon default-icon">help_outline</mat-icon>
-      </div>
-      <div class="user-stats">{{ user.firstName }} {{ user.lastName }}</div>
+        <mat-icon *ngIf="!user.role" class="icon default-icon">help_outline</mat-icon></div>
+    </div>
+
+   
+
+
       <div class="user-stats">{{ user.email }}</div>
       <div class="user-stats">{{ user.phone }}</div>
+
       <div>
-        <!-- Stop Event-Bubbling hier -->
         <button mat-icon-button color="warn" (click)="openDeleteDialog($event, user)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
+
+
     </div>
     
   </div>
@@ -58,9 +79,7 @@
 
 
 <!-- Hinzufügen-Button -->
-<button (click)="openDialog()" class="add-user-button" mat-fab color="primary" matTooltip="Add user" matTooltipPosition="above">
-  <mat-icon>add</mat-icon>
-</button>
+
 
 
 

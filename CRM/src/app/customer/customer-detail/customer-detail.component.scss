@@ -1,6 +1,23 @@
 .customer-component {
     padding: 46px;
     background-color: #0f0f0f;
+    animation: fadeIn 0.5s ease-out;
+    animation-fill-mode: forwards;
+    will-change: transform, opacity;
+    
+  }
+  
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0; /* Start völlig transparent */
+    }
+    50% {
+      opacity: 0.5; /* Halbtransparent in der Mitte */
+    }
+    100% {
+      opacity: 1; /* Vollständig sichtbar */
+    }
   }
 
 .customer-detail-header {
@@ -681,7 +698,10 @@ margin-top: 30px;
           }
           
 
-
+.name {
+  color: white;
+  padding-left: 16px;
+}
 
           .snackbar {
             position: fixed;
