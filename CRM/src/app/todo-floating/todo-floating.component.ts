@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { Todo } from '../../models/todo.class';
+import { TodoService } from '../shared/todo.service';
 
 @Component({
   selector: 'app-todo-floating',
@@ -35,7 +36,8 @@ export class TodoFloatingComponent  implements OnInit {
     private firestore: Firestore,
     private dialog: MatDialog,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private todoService: TodoService
   ) {
     this.todoForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(1)]],
@@ -80,8 +82,6 @@ export class TodoFloatingComponent  implements OnInit {
   async loadTodos() {
     const todosCollection = collection(this.firestore, 'todos');
     collectionData(todosCollection, { idField: 'id' }).subscribe((data) => {
-     
-  
       const newTodos = (data as Todo[])
         .filter((todo) => todo.userId === this.userId) // Filter nach Benutzer-ID
         .sort(
@@ -89,16 +89,16 @@ export class TodoFloatingComponent  implements OnInit {
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
   
-     
-  
       const currentTodos = this.todos$.getValue();
   
       if (JSON.stringify(newTodos) !== JSON.stringify(currentTodos)) {
         this.todos$.next(newTodos);
         this.updateProgressBar();
+        this.prepareChartData(newTodos); // Hier den richtigen Parameter übergeben
       }
     });
   }
+  
   
   
 
@@ -166,4 +166,30 @@ export class TodoFloatingComponent  implements OnInit {
     deleteDoc(todoDoc);
     this.updateProgressBar();
   }
+
+  chartData: any[] = []; // Daten für das Donut-Chart
+
+  prepareChartData(todos: Todo[]) {
+    const priorityCount: Record<'high' | 'medium' | 'low', number> = {
+      high: 0,
+      medium: 0,
+      low: 0,
+    };
+
+    todos.forEach((todo) => {
+      if (todo.priority && (todo.priority === 'high' || todo.priority === 'medium' || todo.priority === 'low')) {
+        priorityCount[todo.priority]++;
+      }
+    });
+
+    const chartData = [
+      { name: 'High Priority', value: priorityCount.high },
+      { name: 'Medium Priority', value: priorityCount.medium },
+      { name: 'Low Priority', value: priorityCount.low },
+    ];
+
+    this.todoService.updateChartData(chartData); // Aktualisiere den Service
+  }
 }
+  
+

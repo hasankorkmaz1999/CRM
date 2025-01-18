@@ -23,11 +23,14 @@ import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Todo } from '../../models/todo.class';
 import { Thread } from '../../models/thread.class';
+import { TodoService } from '../shared/todo.service';
+import { NgxChartsModule,  Color, ScaleType } from '@swimlane/ngx-charts';
+import { TimerComponent } from "./timer/timer.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SharedModule, EventDetailsComponent, RouterModule],
+  imports: [SharedModule, EventDetailsComponent, RouterModule, NgxChartsModule, TimerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -45,7 +48,14 @@ export class DashboardComponent implements OnInit {
  
   userId: string = ''; // ID des aktuellen Benutzers
  
-
+  customColorScheme: Color = {
+    name: 'custom',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#FF5733', '#FFC300', '#28A745'], // Beispiel-Farben
+  };
+  
+  
   currentUserName: string = 'Unknown User'; // Name des aktuellen Benutzers
   currentUserRole: string = 'Unknown Role'; // Rolle des aktuellen Benutzers
   currentUserProfilePicture: string = '/assets/img/user.png'; // Profilbild des aktuellen Benutzers
@@ -53,36 +63,40 @@ export class DashboardComponent implements OnInit {
  
   threads: Thread[] = [];
 
+  chartData: any[] = [];
+
   constructor(
     private firestore: Firestore,
     private dialog: MatDialog,
     private router: Router,
     private fb: FormBuilder,
-   
+    private todoService: TodoService
   ) {}
 
   ngOnInit(): void {
-    // Benutzerinformationen direkt aus localStorage laden
+    // Lade Benutzerinformationen
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (currentUser) {
       this.userId = currentUser.uid;
       this.currentUserName = currentUser.name;
       this.currentUserRole = currentUser.role;
       this.currentUserProfilePicture = currentUser.profilePicture;
-  
-     
     }
-    
+  
     this.updateCurrentUser();
     this.loadThreads();
     this.loadEvents();
     this.startLiveCountdown();
     this.loadRecentLogs();
-   
     this.updateKPICards();
-   
     this.loadLogsForDashboard();
+  
+    // Abonniere die Chart-Daten
+    this.todoService.chartData$.subscribe((data) => {
+      this.chartData = data;
+    });
   }
+  
 
   updateCurrentUser(): void {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -372,4 +386,11 @@ export class DashboardComponent implements OnInit {
       queryParams: { addEvent: 'true' },
     });
   }
+
+
+
+
+
+
+  
 }

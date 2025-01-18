@@ -1,0 +1,27 @@
+.timer-comp {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-container {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    p{
+        color: white;
+    }
+  }
+  
+  .timer-display {
+
+    p {
+        color: white;
+    }
+  }
+  
+  

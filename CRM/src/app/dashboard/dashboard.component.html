@@ -27,11 +27,34 @@
 
 
 
+        <div class="left-section-wrapper">
+
+        <div class="chart-wrapper"> 
+          <span>Task Distribution by Priority</span>
+        <div class="chart-container">
+          <ngx-charts-advanced-pie-chart
+            [results]="chartData"
+            [view]="[600, 300]" 
+            [gradient]="true"
+            [tooltipDisabled]="false"
+            [animations]="true"
+            [scheme]="customColorScheme"
+            
+          >
+          </ngx-charts-advanced-pie-chart>
+        </div>
+      </div>
 
 
 
 
-   
+<div class="timer-section">
+  <app-timer></app-timer>
+</div>
+     
+
+</div>
+
 
 
 
@@ -99,8 +122,43 @@
             </div>
           </div>
         </div>
-      </div>
+      
+
+
+
+
+    
+      
+
     </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <div class="right-section-noti">
       <div class="threads-container">
