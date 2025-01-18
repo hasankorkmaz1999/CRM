@@ -1,77 +1,55 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { MatSliderModule } from '@angular/material/slider';
+import { Component, OnDestroy, OnInit} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-timer',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule, MatSliderModule, FormsModule],
+  imports: [CommonModule],
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss'],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  
 })
-export class TimerComponent {
-  duration: number = 1; // Initialdauer in Minuten
-  remainingTime: number = 1; // Verbleibende Zeit in Minuten
-  elapsed: number = 0; // Verstrichene Zeit in Minuten
-  interval: any;
-  isRunning: boolean = false;
-
-  colorScheme = {
-    name: 'custom',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#FF6347', '#90EE90'], // Farben für das Diagramm
-  };
-
-  chartData = [
-    { name: 'Verbleibende Zeit', value: this.remainingTime },
-    { name: 'Abgelaufene Zeit', value: this.elapsed },
+export class TimerComponent implements OnInit, OnDestroy {
+  timeZones = [
+    { name: 'Deutschland', timeZone: 'Europe/Berlin' },
+    { name: 'USA (New York)', timeZone: 'America/New_York' },
+    { name: 'Indien', timeZone: 'Asia/Kolkata' }, // Optional: Weitere Zeitzonen hinzufügen
+    { name: 'Australien', timeZone: 'Australia/Sydney' },
   ];
+  currentIndex: number = 0;
+  currentZoneName: string = this.timeZones[0].name;
+  currentTime: string = '';
+  interval: any;
 
-  // Timer starten
-  startTimer() {
-    if (this.isRunning) return;
-
-    this.isRunning = true;
-    this.interval = setInterval(() => {
-      if (this.remainingTime > 0) {
-        this.remainingTime = Math.max(0, this.remainingTime - 1 / 60); // Zeit reduzieren
-        this.elapsed = this.duration - this.remainingTime; // Verstrichene Zeit berechnen
-        this.updateChartData();
-      } else {
-        this.pauseTimer(); // Timer stoppen, wenn Zeit abgelaufen ist
-      }
-    }, 1000);
+  ngOnInit() {
+    this.updateTime();
+    this.interval = setInterval(() => this.updateTime(), 1000); // Zeit jede Sekunde aktualisieren
   }
 
-  // Timer pausieren
-  pauseTimer() {
-    clearInterval(this.interval);
-    this.isRunning = false;
+  ngOnDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval); // Timer entfernen
+    }
   }
 
-  // Timer zurücksetzen
-  resetTimer() {
-    this.pauseTimer();
-    this.remainingTime = this.duration; // Verbleibende Zeit anpassen
-    this.elapsed = 0; // Verstrichene Zeit zurücksetzen
-    this.updateChartData();
+  updateTime() {
+    const now = new Date();
+    this.currentTime = now.toLocaleTimeString('en-US', {
+      timeZone: this.timeZones[this.currentIndex].timeZone,
+    });
+    this.currentZoneName = this.timeZones[this.currentIndex].name;
   }
 
-  // Aktualisiert die Diagrammdaten
-  updateChartData() {
-    this.chartData = [
-      { name: 'Verbleibende Zeit', value: Math.max(0, this.remainingTime) },
-      { name: 'Abgelaufene Zeit', value: Math.max(0, this.elapsed) },
-    ];
+  nextZone() {
+    this.currentIndex = (this.currentIndex + 1) % this.timeZones.length; // Zum nächsten Land wechseln
+    this.updateTime();
   }
 
-  // Slider-Änderung verarbeiten
-  onSliderChange(): void {
-    this.remainingTime = this.duration; // Verbleibende Zeit anpassen
-    this.resetTimer(); // Timer zurücksetzen
+  previousZone() {
+    this.currentIndex =
+      (this.currentIndex - 1 + this.timeZones.length) % this.timeZones.length; // Zum vorherigen Land wechseln
+    this.updateTime();
   }
 }

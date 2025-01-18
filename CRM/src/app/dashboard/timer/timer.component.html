@@ -1,32 +1,19 @@
-<div class="timer-comp">
-    <div class="timer-container">
-      <mat-slider
-        [min]="1"
-        [max]="60"
-        [step]="1"
-        [(ngModel)]="duration"
-        discrete
-        showTickMarks
-        (change)="onSliderChange()"
-      >
-      </mat-slider>
-      <p>Gesamtdauer: {{ duration }} Minuten</p>
+<div class="world-clock">
+    <button class="nav-arrow" (click)="previousZone()">&#8592;</button> <!-- Pfeil nach links -->
+    
+    <div class="time-zone">
+      <h3>{{ currentZoneName }}</h3>
+      <p>{{ currentTime }}</p>
     </div>
+    
+    <button class="nav-arrow" (click)="nextZone()">&#8594;</button> <!-- Pfeil nach rechts -->
+  </div>
   
-    <div class="timer-display">
-      <button mat-raised-button color="primary" (click)="startTimer()">Start</button>
-      <button mat-raised-button color="warn" (click)="pauseTimer()">Pause</button>
-      <button mat-raised-button color="accent" (click)="resetTimer()">Reset</button>
-      <p>Verbleibende Zeit: {{ remainingTime.toFixed(2) }} Minuten</p>
-    </div>
-  
-    <div class="chart-container">
-      <ngx-charts-pie-chart
-        [view]="[400, 400]"
-        [scheme]="colorScheme"
-        [results]="chartData"
-        [doughnut]="true"
-      ></ngx-charts-pie-chart>
-    </div>
+  <div class="indicator">
+    <span
+      *ngFor="let zone of timeZones; let i = index"
+      [class.active]="i === currentIndex"
+      class="dot"
+    ></span>
   </div>
   

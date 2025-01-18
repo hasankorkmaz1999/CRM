@@ -1,27 +1,56 @@
-.timer-comp {
+.world-clock {
     display: flex;
-    flex-direction: row-reverse;
     align-items: center;
     justify-content: center;
-}
-
-.timer-container {
+    padding: 10px;
+    background: #252525;
+    border-radius: 10px;
+    color: #fff;
+  }
+  
+  .time-zone {
+    text-align: center;
+    margin: 0 20px;
+  }
+  
+  .time-zone h3 {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+  }
+  
+  .time-zone p {
+    font-size: 1.2em;
+    margin: 0;
+  }
+  
+  .nav-arrow {
+    font-size: 1.5em;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .nav-arrow:hover {
+    color: #90caf9;
+  }
+  
+  .indicator {
     display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
     justify-content: center;
-    gap: 20px;
-
-    p{
-        color: white;
-    }
+    margin-top: 10px;
   }
   
-  .timer-display {
-
-    p {
-        color: white;
-    }
+  .dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background: #555;
+    border-radius: 50%;
+    display: inline-block;
   }
   
+  .dot.active {
+    background: #fff;
+  }
   
