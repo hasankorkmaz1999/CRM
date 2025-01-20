@@ -1,4 +1,4 @@
-import {Component,OnInit,} from '@angular/core';
+import {Component,OnInit, ViewEncapsulation,} from '@angular/core';
 import {
   Firestore,
   addDoc,
@@ -33,6 +33,7 @@ import { TimerComponent } from "./timer/timer.component";
   imports: [SharedModule, EventDetailsComponent, RouterModule, NgxChartsModule, TimerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class DashboardComponent implements OnInit {
   events: Event[] = [];
@@ -48,14 +49,7 @@ export class DashboardComponent implements OnInit {
  
   userId: string = ''; // ID des aktuellen Benutzers
  
-  customColorScheme: Color = {
-    name: 'custom',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#FF5733', '#FFC300', '#28A745'], // Beispiel-Farben
-  };
-  
-  
+ 
   currentUserName: string = 'Unknown User'; // Name des aktuellen Benutzers
   currentUserRole: string = 'Unknown Role'; // Rolle des aktuellen Benutzers
   currentUserProfilePicture: string = '/assets/img/user.png'; // Profilbild des aktuellen Benutzers
@@ -63,8 +57,7 @@ export class DashboardComponent implements OnInit {
  
   threads: Thread[] = [];
 
-  chartData: any[] = [];
-
+  
   constructor(
     private firestore: Firestore,
     private dialog: MatDialog,
@@ -97,6 +90,20 @@ export class DashboardComponent implements OnInit {
     });
   }
   
+
+  
+  customColorScheme: Color = {
+    name: 'custom',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#E6511E', '#EFAB35', '#98DE4C'], // Beispiel-Farben
+  };
+  
+  
+  chartData: any[] = [];
+
+
+
 
   updateCurrentUser(): void {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');

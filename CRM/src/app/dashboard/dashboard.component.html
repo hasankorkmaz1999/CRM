@@ -30,18 +30,22 @@
         <div class="left-section-wrapper">
 
         <div class="chart-wrapper"> 
-          <span>Task Distribution by Priority</span>
+          <h1 class="chart-h1">Task Distribution by Priority</h1>
         <div class="chart-container">
-          <ngx-charts-advanced-pie-chart
-            [results]="chartData"
-            [view]="[600, 300]" 
-            [gradient]="true"
-            [tooltipDisabled]="false"
-            [animations]="true"
-            [scheme]="customColorScheme"
-            
-          >
-          </ngx-charts-advanced-pie-chart>
+          <ngx-charts-bar-vertical
+          [results]="chartData"
+          [view]="[500, 250]" 
+          [scheme]="customColorScheme"
+          [gradient]="true"
+          [animations]="true"
+          [barPadding]="30"
+          [xAxis]="true"
+          
+          
+        >
+        </ngx-charts-bar-vertical>
+        
+        
         </div>
       </div>
 
@@ -80,7 +84,7 @@
           </div>
 
           <div class="upcoming-events">
-            <h3>Upcoming Events</h3>
+            <h1>Upcoming Events</h1>
 
             <!-- Wenn keine Events vorhanden sind -->
             <div
@@ -192,7 +196,7 @@
 
       <div class="logs-section-wrapper">
         <div class="logs-section">
-          <h3>Recent Activity Logs</h3>
+          <h1>Recent Activity Logs</h1>
           <ul>
             <li
               class="list-elements"

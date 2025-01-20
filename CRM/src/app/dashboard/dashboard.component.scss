@@ -57,7 +57,7 @@ align-items: flex-start;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  margin-right: 30px;
+  margin-right: 40px;
 }
 
 .threads-container {
@@ -93,6 +93,7 @@ align-items: flex-start;
   }
 
   p {
+    font-size: 14px;
     color: white;
     background-color: #161616;
     padding: 5px;
@@ -152,7 +153,7 @@ align-items: flex-start;
   background-color: #161616;
   
   border-radius: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   padding: 10px;
   padding-left: 30px;
   padding-right: 30px;
@@ -449,10 +450,10 @@ justify-content: space-between;
 .logs-section {
  
   width: 350px;
-  height: 450px;
+  height: 480px;
   background-color: transparent;
   border-radius: 30px;
-  margin-bottom: 30px;
+
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -460,7 +461,7 @@ justify-content: space-between;
   align-items: center;
   
 
-  > h3 {
+  > h1 {
     font-size: 20px;
     color: #ffffff;
     font-family: "DM Sans", serif;
@@ -565,7 +566,7 @@ justify-content: space-between;
 
 .chart-wrapper {
   width: 650px;
-  height: 380px;
+  height: 400px;
   background-color: #161616;
  padding: 20px;
   border-radius: 30px;
@@ -573,7 +574,7 @@ justify-content: space-between;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   span {
     width: 100%;
     text-align: center;
@@ -582,66 +583,44 @@ justify-content: space-between;
   }
 }
 
-
-.advanced-pie-legend {
-  overflow: visible;
-
-}
-
-/* styles.scss */
-::ng-deep .advanced-pie-legend .total-value  {
-  font-size: 24px !important;
-  color: white !important;
-  margin-bottom: 5px !important;
+.chart-container {
+  transform: scale(1.2); /* Skaliert das gesamte Diagramm um 150% */
+  transform-origin: center; /* Zentriert die Skalierung */
 }
 
 
-::ng-deep .advanced-pie-legend .total-label  {
-  font-size: 20px !important;
-  color: white !important;
-}
-
-
-
-
-::ng-deep .advanced-pie-legend .item-label  {
-  font-size: 36px;
-  height: 30px;
-  margin-top: 5px !important;
-  color: white !important;
-
-
-}
-
-
-
-
-::ng-deep .advanced-pie-legend .item-percent {
-  font-size: 36px;
-  color: white !important;
-}
-
-
-::ng-deep .advanced-pie-legend .legend-items-container .legend-items .legend-item .item-value {
+.chart-h1 {
   font-size: 24px;
-  margin-top: 0 !important;
-  margin-left: 11px;
-}
-
-
-::ng-deep .advanced-pie-legend .legend-item {
-  font-size: 36px;
-  color: white !important;
-  overflow: visible; /* Verhindert das Abschneiden */
-  white-space: normal; /* Zeilenumbruch bei Bedarf */
-  overflow-y: hidden;
-  max-width: 100%; /* Passt die Breite an */
-    width: auto; /* Lässt den Inhalt flexibel bleiben */
-   height: 100px;
+  font-family: "DM Sans", serif;
+  color: white;
+  margin-bottom: 0px;
+  padding-bottom: 30px;
+font-weight: 600;
 }
 
 
 
+.ngx-charts text {
+            
+  fill: #fff;
+ }
+
+
+ .ngx-charts .gridline-path {
+  stroke: rgba(255, 255, 255, 0.1) !important;
+}
+
+
+
+
+h1 {
+  font-size: 24px;
+  font-family: "DM Sans", serif;
+  color: white;
+  margin-bottom: 30px;
+font-weight: 600;
+
+}
 
 
 
