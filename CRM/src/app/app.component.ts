@@ -39,6 +39,8 @@ export class AppComponent implements OnInit {
   isLoginRoute: boolean = false;
   userName: string = 'Unknown User'; // Benutzername für den Header
   userRole: string = ''; // Benutzerrolle
+  userProfilePicture: string = ''; // Profilbild des Benutzers
+
 
   
    constructor(
@@ -58,16 +60,22 @@ export class AppComponent implements OnInit {
       if (user) {
         this.userName = user.name || 'Unknown User';
         this.userRole = user.role || '';
+        this.userProfilePicture = user.profilePicture || '/assets/img/default-profile.png'; // Fallback für Standardbild
         console.log('Aktueller Benutzer:', user);
       } else {
         this.userName = 'Unknown User';
         this.userRole = '';
+        this.userProfilePicture = '/assets/img/default-profile.png'; // Fallback für Standardbild
       }
     });
   
     // Benutzer aus localStorage laden (nur beim Initialisieren)
     this.userService.loadUserFromStorage();
   }
+  
+
+
+
   
   // Logout-Funktion
   logout() {

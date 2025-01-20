@@ -3,10 +3,10 @@
 
  
   <div class="header">
-  <h1>{{ data.type }}</h1>
-  <button class="close-button" (click)="close()">
+  <h1 class="h1-data-type">{{ data.type }}</h1>
+  <!-- <button class="close-button" (click)="close()">
     &#10006;
-  </button>
+  </button> -->
 </div>
 
 <div class="events-wrapper"> 
@@ -38,13 +38,13 @@
       <div class="icon-wrapper">
         <mat-icon>description</mat-icon>
       </div>
-      <p>{{ data.description || 'No description provided' }}</p>
+      <p class="descripi">{{ data.description || 'No description provided' }}</p>
     </div>
   </div>
 
   <div class="event-row">
    
-    <div class="details-user">
+    <div class="details-user-participants">
       <span class="label">Participants:</span>
       <div *ngIf="data.users?.length > 0" class="participants-list">
         <div *ngFor="let user of data.users" class="participant-item">

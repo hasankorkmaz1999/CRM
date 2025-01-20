@@ -13,19 +13,20 @@ import { CommonModule } from '@angular/common';
 })
 export class TimerComponent implements OnInit, OnDestroy {
   timeZones = [
-    { name: 'Deutschland', timeZone: 'Europe/Berlin' },
+    { name: 'Germany', timeZone: 'Europe/Berlin' },
     { name: 'USA (New York)', timeZone: 'America/New_York' },
-    { name: 'Indien', timeZone: 'Asia/Kolkata' },
-    { name: 'Australien', timeZone: 'Australia/Sydney' },
+    { name: 'India', timeZone: 'Asia/Kolkata' },
+    { name: 'Australia', timeZone: 'Australia/Sydney' },
   ];
   currentIndex: number = 0;
   currentZoneName: string = this.timeZones[0].name;
   hours: string = '';
   minutes: string = '';
   seconds: string = '';
-  period: string = ''; // AM oder PM
-  currentDate: string = ''; // Neues Feld für Datum und Wochentag
-  isDaytime: boolean = true;
+  period: string = '';
+  currentDate: string = '';
+  animationState: string = ''; // Dynamisch festlegen, ob 'entering' oder 'exiting'
+  animationDirection: string = ''; // 'left' oder 'right'
   interval: any;
 
   ngOnInit() {
@@ -44,12 +45,11 @@ export class TimerComponent implements OnInit, OnDestroy {
     const timeString = now.toLocaleTimeString('en-US', {
       timeZone: this.timeZones[this.currentIndex].timeZone,
     });
-
     const [hours, minutes, secondsWithPeriod] = timeString.split(':');
     this.hours = hours;
     this.minutes = minutes;
-    this.seconds = secondsWithPeriod.split(' ')[0]; // Sekunden
-    this.period = secondsWithPeriod.split(' ')[1]; // AM/PM
+    this.seconds = secondsWithPeriod.split(' ')[0];
+    this.period = secondsWithPeriod.split(' ')[1];
 
     this.currentDate = now.toLocaleDateString('en-US', {
       timeZone: this.timeZones[this.currentIndex].timeZone,
@@ -59,25 +59,31 @@ export class TimerComponent implements OnInit, OnDestroy {
       day: 'numeric',
     });
 
-    // Bestimmen, ob es Tag oder Nacht ist
-    const currentHour = now.toLocaleTimeString('en-US', {
-      timeZone: this.timeZones[this.currentIndex].timeZone,
-      hour: '2-digit',
-      hour12: false,
-    });
-    this.isDaytime = +currentHour >= 6 && +currentHour < 18;
-
     this.currentZoneName = this.timeZones[this.currentIndex].name;
   }
 
   nextZone() {
-    this.currentIndex = (this.currentIndex + 1) % this.timeZones.length;
-    this.updateTime();
+    this.triggerAnimation('exiting', 'right');
+    setTimeout(() => {
+      this.currentIndex = (this.currentIndex + 1) % this.timeZones.length;
+      this.triggerAnimation('entering', 'right');
+      this.updateTime();
+    }, 200);
   }
 
   previousZone() {
-    this.currentIndex =
-      (this.currentIndex - 1 + this.timeZones.length) % this.timeZones.length;
-    this.updateTime();
+    this.triggerAnimation('exiting', 'left');
+    setTimeout(() => {
+      this.currentIndex = (this.currentIndex - 1 + this.timeZones.length) % this.timeZones.length;
+      this.triggerAnimation('entering', 'left');
+      this.updateTime();
+    }, 200);
+  }
+
+  triggerAnimation(state: string, direction: string) {
+    this.animationState = `${state} ${direction}`;
+    setTimeout(() => {
+      this.animationState = ''; // Animation zurücksetzen
+    }, 200);
   }
 }

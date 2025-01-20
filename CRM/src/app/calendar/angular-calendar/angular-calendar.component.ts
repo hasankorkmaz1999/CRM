@@ -58,7 +58,8 @@ export class AngularCalendarComponent implements OnInit {
   events: CalendarEvent[] = [];
   selectedEvent: any = null;
 
-  constructor(private firestore: Firestore,private route: ActivatedRoute, public dialog: MatDialog) {}
+  constructor(private firestore: Firestore,private route: ActivatedRoute,
+     public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadEvents(); 
@@ -69,6 +70,8 @@ export class AngularCalendarComponent implements OnInit {
     });
     
   }
+
+ 
 
   async loadEvents(): Promise<void> {
     const eventCollection = collection(this.firestore, 'events');
@@ -82,15 +85,15 @@ export class AngularCalendarComponent implements OnInit {
           const eventType = eventData.type;
   
           // Farben basierend auf Event-Typ
-          let eventColor = { primary: '#3f51b5', secondary: '#7986cb' };
+          let eventColor = { primary: '#3f51b5' };
           if (eventType === 'Meeting') {
-            eventColor = { primary: '#68d391', secondary: '#ff80ab' };
+            eventColor = { primary: '#57b143' };
           } else if (eventType === 'Webinar') {
-            eventColor = { primary: '#3f51b5', secondary: '#81c784' };
+            eventColor = { primary: '#3f51b5' };
           } else if (eventType === 'Workshop') {
-            eventColor = { primary: '#ee00ff', secondary: '#ffb74d' };
+            eventColor = { primary: '#cc4ad5' };
           } else if (eventType === 'Other') {
-            eventColor = { primary: '#e9bc09', secondary: '#ba68c8' };
+            eventColor = { primary: '#53504f' };
           }
   
           // Benutzerinformationen für die Teilnehmer abrufen

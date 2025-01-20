@@ -30,7 +30,8 @@ import { TimerComponent } from "./timer/timer.component";
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SharedModule, EventDetailsComponent, RouterModule, NgxChartsModule, TimerComponent],
+  imports: [SharedModule, EventDetailsComponent,
+     RouterModule, NgxChartsModule, TimerComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -56,6 +57,16 @@ export class DashboardComponent implements OnInit {
 
  
   threads: Thread[] = [];
+
+  customColorScheme: Color = {
+    name: 'custom',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#E6511E', '#EFAB35', '#98DE4C'], // Beispiel-Farben
+  };
+  
+  
+  chartData: any[] = [];
 
   
   constructor(
@@ -92,15 +103,7 @@ export class DashboardComponent implements OnInit {
   
 
   
-  customColorScheme: Color = {
-    name: 'custom',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#E6511E', '#EFAB35', '#98DE4C'], // Beispiel-Farben
-  };
-  
-  
-  chartData: any[] = [];
+ 
 
 
 
@@ -160,7 +163,7 @@ export class DashboardComponent implements OnInit {
 
   loadLogsForDashboard(): void {
     const logsCollection = collection(this.firestore, 'logs');
-    const logsQuery = query(logsCollection, orderBy('timestamp', 'desc'), limit(5)); // Neuesten 5 Logs abrufen
+    const logsQuery = query(logsCollection, orderBy('timestamp', 'desc'), limit(4)); // Neuesten 5 Logs abrufen
 
     collectionData(logsQuery, { idField: 'id' }).subscribe((data) => {
       this.logs = data.map((log) => ({

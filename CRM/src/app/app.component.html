@@ -40,13 +40,22 @@
         </div>
       </div>
 
+
+      <div class="snackbar" id="snackbar"></div>
+
       <!-- Hauptinhalt -->
       <div class="content-wrapper">
         <!-- Header -->
         <mat-toolbar class="header">
           <div class="user-status">
             <div class="user-name">
-              <mat-icon class="person-icon">person</mat-icon>
+              <div class="image-wrapper-header">
+                <img
+                [src]="userProfilePicture  || '/assets/img/user.png'"
+                  class="profile-picture-header"
+                  alt="Profile Picture"
+                />
+              </div>
               <span class="username">{{ userName }}</span>
             </div>
           </div>
