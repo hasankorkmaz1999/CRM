@@ -111,6 +111,11 @@ export class CustomerDetailComponent implements OnInit {
  
 
   addOrEditProfilePicture() {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    if (buttonElement) {
+      buttonElement.blur(); // Remove focus from the button
+    }
+  
     const dialogRef = this.dialog.open(DialogAddPictureComponent, {
       data: { id: this.customerId, type: 'customer' }
     });
@@ -118,10 +123,10 @@ export class CustomerDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((imageUrl: string) => {
       if (imageUrl) {
         this.customer.profilePicture = imageUrl;
-      
       }
     });
   }
+  
   
   
 

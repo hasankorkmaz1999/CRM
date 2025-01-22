@@ -58,11 +58,15 @@ export class DialogAddUserComponent {
       const formValue = this.userForm.getRawValue();
       const uid = this.generateUID(); // Generate a unique ID for the user
   
-      // Trim all string fields
+      // Funktion für Großbuchstaben der Anfangsbuchstaben
+      const capitalize = (str: string) => 
+        str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  
+      // Trim alle String-Felder und transformiere Vor- und Nachnamen
       const newUser = {
         ...formValue,
-        firstName: formValue.firstName.trim(),
-        lastName: formValue.lastName.trim(),
+        firstName: capitalize(formValue.firstName.trim()),
+        lastName: capitalize(formValue.lastName.trim()),
         email: formValue.email.trim(),
         role: formValue.role.trim(),
         password: formValue.password.trim(),
@@ -84,15 +88,15 @@ export class DialogAddUserComponent {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
       });
-
-
+  
       this.snackbarService.showActionSnackbar('user', 'add');
-     
+  
       console.log('User saved and log created successfully!');
     } catch (error) {
       console.error('Error saving user:', error);
     }
   }
+  
   
   
 

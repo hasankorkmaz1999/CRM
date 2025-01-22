@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
         this.userName = user.name || 'Unknown User';
         this.userRole = user.role || '';
         this.userProfilePicture = user.profilePicture || '/assets/img/default-profile.png'; // Fallback für Standardbild
-        console.log('Aktueller Benutzer:', user);
+       
       } else {
         this.userName = 'Unknown User';
         this.userRole = '';
@@ -72,8 +72,21 @@ export class AppComponent implements OnInit {
     // Benutzer aus localStorage laden (nur beim Initialisieren)
     this.userService.loadUserFromStorage();
   }
-  
 
+
+  menuPositionX: 'before' | 'after' = 'after'; // Standardposition: rechts
+menuPositionY: 'above' | 'below' = 'below'; // Standardposition: unten
+
+changeMenuPosition(): void {
+  // Beispiel: Position basierend auf einer Bedingung ändern
+  this.menuPositionX = 'before';
+  this.menuPositionY = 'above';
+}
+
+  
+  navigateToHelp(): void {
+    this.router.navigate(['/help']); // Navigation zur Hilfeseite
+  }
 
 
   

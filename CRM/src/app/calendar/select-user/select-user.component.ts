@@ -133,20 +133,18 @@ export class SelectUserComponent implements OnInit {
       return null;
     }
   
-    const formattedTime = formatTimeTo12Hour(formValue.time);
-    if (formattedTime === 'Invalid time') {
-      console.error('Invalid time detected during event preparation:', formValue.time);
-      return null;
-    }
+    // Directly use the selected time without formatting
+    const selectedTime = formValue.time;
   
     return {
       type: formValue.type || 'Other',
       description: formValue.description || '',
       date: formatDateToLong(new Date(formValue.date)),
-      time: formattedTime,
+      time: selectedTime,  // Use the time as it is without formatting
       users: this.selectedUsers,
     };
   }
+  
   
   
   
@@ -158,16 +156,15 @@ export class SelectUserComponent implements OnInit {
     const eventToSave = {
       type: eventData.type || 'Other',
       description: eventData.description || '',
-      date: formatDateToLong(new Date(eventData.date)), // Formatiere Datum in das gewünschte Format
-      time: formatTimeTo12Hour(eventData.time), // Formatiere Zeit in das 12-Stunden-Format
+      date: formatDateToLong(new Date(eventData.date)), // Keep date formatting
+      time: eventData.time, // No formatting for the time; use it as is
       users: eventData.users.map((user: any) => `${user.firstName} ${user.lastName}`),
-      createdAt: formatDateToLong(currentDate), // Formatiere das Erstellungsdatum
+      createdAt: formatDateToLong(currentDate), // Keep creation date formatting
       createdBy: this.currentUserName || 'Unknown',
     };
   
     addDoc(eventCollection, eventToSave)
       .then((docRef) => {
-        
         this.loggingService.logEventAction('add', {
           id: docRef.id,
           type: eventToSave.type,
@@ -182,9 +179,9 @@ export class SelectUserComponent implements OnInit {
   
   
   
+  
  
 
 
 
 }
-

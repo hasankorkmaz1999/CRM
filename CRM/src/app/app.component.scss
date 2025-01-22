@@ -12,11 +12,12 @@
   /* Sidebar */
   .sidebar {
     width: 240px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
     background-color: #161616; /* Beispiel: dunkler Hintergrund */
     color: white;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 0px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 0;
@@ -35,8 +36,9 @@
   .links-container .links {
     display: flex;
     align-items: center;
-    padding: 10px 15px;
+    padding: 40px ;
     cursor: pointer;
+    width: 100%;
     transition: background-color 0.3s;
   }
   
@@ -61,12 +63,13 @@
   /* Header */
   .header {
     background-color: #161616;
-    border-bottom: 1px solid rgba(68, 68, 68, 0.2); /* Beispiel: dunkler Hintergrund */
+    border-bottom:1px solid rgba(255, 255, 255, 0.1);
+     /* Beispiel: dunkler Hintergrund */
     color: white;
     display: flex;
     align-items: center;
     position: fixed;
-    height: 100px;
+    height: 102px;
     top: 0;
     width: calc(100% - 240px); /* Platz für die Sidebar berücksichtigen */
     z-index: 1000;
@@ -103,7 +106,9 @@
       }
 
 
-
+      .mat-mdc-menu-content  {
+        background-color: #0f0f0f !important;
+      }
 
 
 
@@ -117,6 +122,7 @@
 
 
 .username {
+
     color: #ffffff;
 }
 
@@ -136,11 +142,11 @@
 }
 
 .logo-container {
-    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+    
     padding-left: 16px;
     padding-right: 16px;
 height: 102px;
-  
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -215,27 +221,14 @@ height: 102px;
   
   }
 
-  .links::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 0;
-    background: rgba(255, 255, 255, 0.1);
-    transition: height 0.3s ease;
-    z-index: -1; /* Hinter dem Text */
-  }
-  
-  .links:hover::after {
-    height: 100%;
-  }
+ 
   
 
  .privacy-links {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: flex-start;
    position: absolute;
    bottom: 50px;
    ul {
@@ -244,9 +237,10 @@ height: 102px;
  }
 
  .links-privacy {
+    padding-left: 40px;
     list-style: none;
     margin-bottom: 10px;
-    text-align: center;
+    text-align: start;
     color: rgb(184, 183, 183);
     transition: filter 0.3s ease;
 
@@ -263,6 +257,7 @@ height: 102px;
 
 
 .user-name {
+    margin-left: 30px;
     display: flex;
     align-items: center;
 

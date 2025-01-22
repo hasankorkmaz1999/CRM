@@ -9,13 +9,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 import { DialogAddPictureComponent } from '../../dialog-add-picture/dialog-add-picture.component';
 import { Location } from '@angular/common';
+import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 
 
 
 @Component({
   selector: 'app-user-detail',
   standalone: true,
-  imports: [SharedModule, MatMenuModule],
+  imports: [SharedModule, MatMenuModule, NgxChartsModule],
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -38,7 +39,8 @@ export class UserDetailComponent implements OnInit {
         this.userId = paramMap.get('id') ?? '';
        
         this.getUser();
-        this.loadUserEvents(); // Events laden
+        this.loadUserEvents();
+        this.loadUserPurchases(); 
       });
     }
     
@@ -52,32 +54,7 @@ export class UserDetailComponent implements OnInit {
   }
 
 
-  loadUserEvents(): void {
-    const eventsCollection = collection(this.firestore, 'events');
-    const now = new Date(); // Aktuelles Datum und Uhrzeit
-  
-    collectionData(eventsCollection, { idField: 'id' }).subscribe((events: any[]) => {
-      // Filtere Events, bei denen der Benutzer ein Teilnehmer ist und die noch in der Zukunft liegen
-      const filteredEvents = events.filter((event) => {
-        const eventDateTime = this.parseAndCombineDateTime(event.date, event.time);
-        return (
-          event.users.some(
-            (participant: string) =>
-              participant === `${this.user.firstName} ${this.user.lastName}`
-          ) && eventDateTime > now
-        );
-      });
-  
-      // Sortiere die Events nach Datum und Uhrzeit
-      this.userEvents = filteredEvents.sort((a, b) => {
-        const dateA = this.parseAndCombineDateTime(a.date, a.time).getTime();
-        const dateB = this.parseAndCombineDateTime(b.date, b.time).getTime();
-        return dateA - dateB; // Aufsteigende Reihenfolge (früheste Events zuerst)
-      });
-  
-     
-    });
-  }
+ 
   
   parseAndCombineDateTime(dateString: string, timeString: string): Date {
     try {
@@ -124,10 +101,42 @@ export class UserDetailComponent implements OnInit {
     });
   }
   
+
+  loadUserEvents(): void {
+    const eventsCollection = collection(this.firestore, 'events');
+    const now = new Date(); // Aktuelles Datum und Uhrzeit
+  
+    collectionData(eventsCollection, { idField: 'id' }).subscribe((events: any[]) => {
+      // Filtere Events, bei denen der Benutzer ein Teilnehmer ist und die noch in der Zukunft liegen
+      const filteredEvents = events.filter((event) => {
+        const eventDateTime = this.parseAndCombineDateTime(event.date, event.time);
+        return (
+          event.users.some(
+            (participant: string) =>
+              participant === `${this.user.firstName} ${this.user.lastName}`
+          ) && eventDateTime > now
+        );
+      });
+  
+      // Sortiere die Events nach Datum und Uhrzeit
+      this.userEvents = filteredEvents.sort((a, b) => {
+        const dateA = this.parseAndCombineDateTime(a.date, a.time).getTime();
+        const dateB = this.parseAndCombineDateTime(b.date, b.time).getTime();
+        return dateA - dateB; // Aufsteigende Reihenfolge (früheste Events zuerst)
+      });
+  
+     
+    });
+  }
   
 
 
   addOrEditProfilePicture() {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    if (buttonElement) {
+      buttonElement.blur(); // Remove focus from the button
+    }
+  
     const dialogRef = this.dialog.open(DialogAddPictureComponent, {
       data: { id: this.userId, type: 'user' } // Typ ist 'user'
     });
@@ -135,10 +144,10 @@ export class UserDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((imageUrl: string) => {
       if (imageUrl) {
         this.user.profilePicture = imageUrl; // Aktualisiere das lokale Benutzerobjekt
-        
       }
     });
   }
+  
   
 
   getProfilePictureButtonLabel(): string {
@@ -150,6 +159,102 @@ export class UserDetailComponent implements OnInit {
   goBack() {
     this.location.back();
   }
+
+
+
+
+  lineChartData: any[] = []; 
+view: [number, number] = [1200, 400]; 
+
+colorScheme = {
+  name: 'customScheme',
+  selectable: true, 
+  group: ScaleType.Ordinal,
+  domain: ['#3BADEB', '#fff', '#F0365F'], 
+};
+legend: boolean = true;
+showLabels: boolean = true;
+animations = false;
+xAxis: boolean = true;
+yAxis: boolean = true;
+showYAxisLabel: boolean = true;
+showXAxisLabel: boolean = true;
+xAxisLabel: string = 'Date';
+yAxisLabel: string = 'Total Quantity';
+
+timeline: boolean = true;
+
+loadUserPurchases(): void {
+  const customersCollection = collection(this.firestore, 'customers');
+  collectionData(customersCollection, { idField: 'id' }).subscribe((customers: any[]) => {
+    const allPurchases: any[] = [];
+
+   
+    customers.forEach((customer) => {
+      if (customer.purchases && customer.purchases.length > 0) {
+        allPurchases.push(
+          ...customer.purchases.filter(
+            (purchase: any) =>
+              purchase.createdBy === `${this.user.firstName} ${this.user.lastName}`
+          )
+        );
+      }
+    });
+
+    if (allPurchases.length > 0) {
+      this.formatChartData(allPurchases);
+    } else {
+           this.lineChartData = []; 
+    }
+  });
+}
+
+formatChartData(purchases: any[]): void {
+  const productMap: { [key: string]: { [key: string]: number } } = {};
+
+ 
+  purchases.forEach((purchase) => {
+    const productName = purchase.productName;
+    const date = new Date(purchase.purchaseDate).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    }); 
+
+    if (!productMap[productName]) {
+      productMap[productName] = {};
+    }
+
+    if (!productMap[productName][date]) {
+      productMap[productName][date] = 0;
+    }
+
+    productMap[productName][date] += purchase.quantity;
+  });
+
+  
+  this.lineChartData = Object.keys(productMap).map((productName) => {
+    let cumulativeTotal = 0;
+    const series = Object.keys(productMap[productName])
+      .sort((a, b) => new Date(a).getTime() - new Date(b).getTime()) 
+      .map((date) => {
+        cumulativeTotal += productMap[productName][date];
+        return {
+          name: date,
+          value: cumulativeTotal,
+        };
+      });
+
+    return {
+      name: productName,
+      series,
+    };
+  });
+}
+
+
+
+
 
   
 

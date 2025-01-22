@@ -4,6 +4,8 @@
   }
 
 
+ 
+
   
   
   .header-todo {
@@ -21,7 +23,8 @@
     z-index: 1000;
   
     .floating-icon {
-      background-color: #000000;
+      
+      background-color: transparent;
       border: none;
       border-radius: 50%;
       width: 60px;
@@ -30,17 +33,23 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0px 0px 9px 5px rgba(255, 255, 255, 0.2);
       cursor: pointer;
   
       mat-icon {
-        font-size: 34px; /* Schriftgröße des Icons */
+        font-size: 34px; /* Standardgröße des Icons */
         color: white;
         display: inline-flex;
         align-items: center; /* Zentrierung des Inhalts */
         justify-content: center; /* Zentrierung des Inhalts */
         height: 100%; /* Füllt den Elterncontainer aus */
         width: 100%; /* Füllt den Elterncontainer aus */
+        transition: font-size 0.2s ease; /* Animation für die Vergrößerung */
+      }
+    
+      /* Hover-Effekt auf das mat-icon */
+      &:hover mat-icon {
+        font-size: 40px; /* Größe beim Hovern */
       }
     }
 
@@ -115,12 +124,7 @@
         }
       }
   
-  .description-wrapper {
-    padding: 10px;
-    overflow-y: auto;
-    
-    max-width: 500px;
-  }
+  
   
   .textarea-container {
     position: relative;
@@ -128,6 +132,9 @@
   }
   
   .todo-textarea {
+    padding-right: 60px;
+    padding-left: 15px;
+    padding-top: 15px;
     color: rgb(169, 169, 169);
     overflow-y: auto;
     height: 200px !important;
@@ -136,7 +143,7 @@
     width: 100%; /* Füllt den verfügbaren Platz */
     resize: none; /* Entfernt den Resize-Griff */
     font-size: 18px;
-    padding: 15px;
+   
     line-height: 1.5; /* Verbessert die Lesbarkeit */
     border: none;
     border-radius: 14px; /* Optional: Abgerundete Ecken */
@@ -196,12 +203,21 @@
   
   
   
-  
+  .description-wrapper {
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 250px;
+    max-width: 400px;
+  }
   
   .todo-descrip {
     color: white;
     font-size: 16px;
-    width: 200px;
+    white-space: normal; /* Standard-Zeilenumbruch aktivieren */
+    word-break: break-word; /* Lange Wörter umbrechen */
+    overflow-wrap: break-word; /* Alternative für alte Browser */
+   
   }
   
   
@@ -282,9 +298,7 @@
     margin-bottom: 40px;
     overflow-y: auto;
     padding: 10px;
-    scrollbar-width: thin; /* Für Firefox */
-    scrollbar-color: rgb(83, 82, 82) transparent; /* Für Firefox */
-  }
+    }
   
   .wrapper {
     display: flex;

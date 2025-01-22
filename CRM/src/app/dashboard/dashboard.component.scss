@@ -413,7 +413,7 @@ justify-content: space-between;
   top: 0;
   left: 0;
   width: 50%; /* Nur obere linke Ecke initial einfärben */
-  height: 35%;
+  height: 30%;
   transition: width 0.5s ease, height 0.5s ease, background-color 0.5s ease;
   z-index: -1; /* Hinter dem eigentlichen Inhalt */
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
@@ -426,11 +426,11 @@ justify-content: space-between;
 }
 
 .event-meeting::before {
-  background: #57b143; /* Hintergrundfarbe für Meeting */
+  background: #9bd414; /* Hintergrundfarbe für Meeting */
 }
 
 .event-workshop::before {
-  background: #cc4ad5; /* Hintergrundfarbe für Workshop */
+  background: #3BADEB; /* Hintergrundfarbe für Workshop */
 }
 
 .event-other::before {

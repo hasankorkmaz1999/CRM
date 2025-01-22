@@ -41,12 +41,14 @@
 
   .mat-mdc-dialog-container .mdc-dialog__surface {
     padding: 20px !important;
+    padding-left: 40px !important;
     background-color: rgba(23, 23, 23, 0.9);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
   border-radius: 10px;
-  width: 350px;
-  height: 700px;
-  display: flex;
+  width: 300px;
+  height: 800px;
+  display: flex !important;
+  justify-content: center !important;
   overflow-x: hidden !important;
  overflow-y: hidden !important;
   align-items: center;

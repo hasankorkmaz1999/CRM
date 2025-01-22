@@ -21,9 +21,7 @@
             <li class="links" routerLink="/customer">
               <mat-icon>people</mat-icon> Customer
             </li>
-            <li class="links" routerLink="/statistics">
-              <mat-icon>insert_chart</mat-icon> Statistics
-            </li>
+           
             <li class="links" routerLink="/calendar-angular">
               <mat-icon>calendar_today</mat-icon> Calendar
             </li>
@@ -51,21 +49,40 @@
             <div class="user-name">
               <div class="image-wrapper-header">
                 <img
-                [src]="userProfilePicture  || '/assets/img/user.png'"
+                  [src]="userProfilePicture || '/assets/img/user.png'"
                   class="profile-picture-header"
                   alt="Profile Picture"
                 />
               </div>
               <span class="username">{{ userName }}</span>
+              <button
+              mat-icon-button
+              mat-icon-button
+        [matMenuTriggerFor]="userMenu"
+        matMenuTriggerData="{ positionX: 'before', positionY: 'below' }"
+        aria-label="User Options"
+        class="user-options-button"
+      >
+                <mat-icon>arrow_drop_down</mat-icon>
+              </button>
             </div>
           </div>
-          <div class="right-section">
-            <button mat-button (click)="logout()" *ngIf="!isLoginRoute">
-              <mat-icon class="logout-icon">logout</mat-icon>
-              <span class="logout">Logout</span>
-            </button>
-          </div>
+        
+         
         </mat-toolbar>
+        
+        <!-- Dropdown Menü -->
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="logout()"  *ngIf="!isLoginRoute">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+          <button mat-menu-item (click)="navigateToHelp()">
+            <mat-icon>help_outline</mat-icon>
+            <span>Help</span>
+          </button>
+        </mat-menu>
+        
 
         <!-- Seiteninhalt -->
         <div class="page-content">

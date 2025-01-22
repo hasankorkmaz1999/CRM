@@ -58,7 +58,7 @@ h1 {
   padding: 20px;
   border-radius: 20px;
   background-color: #101010;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+  
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -69,7 +69,7 @@ h1 {
   grid-template-columns: 1fr  1fr 1fr 0.3fr; /* Passe die Spaltenbreite an */
   align-items: center;
   background-color: #161616;
-  border-bottom: 1px solid #343434;/* Kopfzeilenfarbe */
+  border-bottom: 1px solid #000000;/* Kopfzeilenfarbe */
   color: white;
   padding: 20px; /* Innenabstand */
   font-size: 20px;
@@ -112,8 +112,8 @@ font-size: 20px;
 }
 
 .image-wrapper-user {
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
   overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
   background-color: #f0f0f0; /* Hintergrundfarbe */

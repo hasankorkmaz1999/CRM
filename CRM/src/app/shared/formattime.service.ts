@@ -1,3 +1,5 @@
+
+
 export function formatTimeTo12Hour(time: string): string {
     if (!time) {
       console.error('Invalid time input:', time);
@@ -26,3 +28,27 @@ export function formatTimeTo12Hour(time: string): string {
     });
   }
   
+
+
+  export function extractTimeFromString(time: string): [number, number] {
+    if (!time) {
+      console.error('Invalid time input:', time);
+      return [0, 0]; // Standardwert für ungültige Eingabe
+    }
+  
+    const [hourMinute, meridiem] = time.split(' ');
+    let [hours, minutes] = hourMinute.split(':').map((value) => parseInt(value, 10));
+  
+    if (isNaN(hours) || isNaN(minutes)) {
+      console.error('Time parsing failed:', time);
+      return [0, 0]; // Standardwert für ungültige Eingabe
+    }
+  
+    if (meridiem === 'PM' && hours !== 12) {
+      hours += 12;
+    } else if (meridiem === 'AM' && hours === 12) {
+      hours = 0;
+    }
+  
+    return [hours, minutes];
+  }
