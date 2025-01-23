@@ -288,6 +288,54 @@ height: 102px;
     transform: translateX(-50%) translateY(0); /* Slidet nach oben rein */
   }
   
+  .burger-menu {
+    display: none;
+  }
+
+
+  @media (max-width: 1430px){
+    .sidebar {
+        width: 200px;
+    }
+
+    .header {
+        width: calc(100% - 200px);
+    }
+
+    .content-wrapper {
+        margin-left: 200px; /* Platz für die Sidebar */
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 200px); 
+    }
+
+    .links-container .links {
+        display: flex;
+        align-items: center;
+        padding: 20px ;
+    }
+  }
 
 
 
+
+  @media (max-width: 1380px) {
+    .sidebar {
+      display: none;
+    }
+    .burger-menu {
+      display: block; /* Burger-Menü anzeigen */
+    }
+
+    .header {
+        width: 100% ;
+    }
+
+    .content-wrapper {
+        margin-left: 0px; /* Platz für die Sidebar */
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 0px); 
+    }
+
+  }

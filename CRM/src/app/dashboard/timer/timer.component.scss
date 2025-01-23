@@ -30,7 +30,7 @@
   .time-display {
    position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     margin-top: 10px;
   }
@@ -88,7 +88,7 @@
   .time {
     display: flex;
     justify-content: space-between;
-    width: 490px;
+    width: 390px;
     height: 50px;
     font-size: 56px;
     font-weight: bold;
@@ -107,7 +107,9 @@
   }
 
   .period {
-    
+    padding-left: 10px;
+   
+margin-left: 10px;
   }
 
   .date {
@@ -160,3 +162,53 @@
     background: #fff;
   }
   
+
+
+  @media (max-width: 2000px){
+    .world-clock {
+        width: 450px;
+        height: 280px;
+      }
+
+       .time {
+        display: flex;
+        justify-content: space-between;
+        width: 320px;
+        height: 50px;
+        font-size: 56px;
+        font-weight: bold;
+        margin: 0;
+        background-color: transparent;
+      }
+
+      .seconds {
+        width: 70px;
+    
+      }
+  }
+
+
+  @media (max-width: 1750px){
+    .world-clock {
+        width: 280px;
+        height: 280px;
+      }
+
+       .time {
+        display: flex;
+        justify-content: space-between;
+        width: 180px;
+        height: 50px;
+        font-size: 36px;
+        font-weight: bold;
+        margin: 0;
+        background-color: transparent;
+      }
+
+      .seconds {
+        width: 50px;
+    
+      }
+
+     
+  }

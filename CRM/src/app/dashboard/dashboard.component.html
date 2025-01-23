@@ -6,17 +6,17 @@
       <div class="quick-actions-container">
         <button (click)="goToUserAndOpenDialog()">
           <mat-icon>person_add</mat-icon>
-          Add New User
+          <p class="d-nonen">Add New User</p>
         </button>
 
         <button (click)="goToCustomerAndOpenDialog()">
           <mat-icon>group_add</mat-icon>
-          Add New Customer
+           <p class="d-nonen">Add New Customer</p>
         </button>
 
         <button (click)="goToEventAndOpenDialog()">
           <mat-icon>event</mat-icon>
-          Add New Event
+           <p class="d-nonen" >Add New Event</p>
         </button>
       </div>
 
@@ -30,7 +30,7 @@
         <div class="left-section-wrapper">
 
         <div class="chart-wrapper"> 
-          <h1 class="chart-h1">Task Distribution by Priority</h1>
+          <p class="chart-h1er">Task Distribution by Priority</p>
         <div class="chart-container">
           <ngx-charts-bar-vertical
           [results]="chartData"
@@ -38,7 +38,7 @@
           [scheme]="customColorScheme"
           [gradient]="true"
           [animations]="true"
-          [barPadding]="50"
+          [barPadding]="100"
           [xAxis]="true"
           [roundEdges]="false"
           
@@ -84,7 +84,7 @@
           </div>
 
           <div class="upcoming-events">
-            <h1>Upcoming Events</h1>
+            <h1 class="chart-h1">Upcoming Events</h1>
 
             <!-- Wenn keine Events vorhanden sind -->
             <div
@@ -99,14 +99,14 @@
               *ngIf="upcomingEvents && upcomingEvents.length > 0"
               class="events-wrapper"
             >
-              <li
+              <li class="events-up"
                 *ngFor="let event of upcomingEvents; let i = index"
                 (click)="openEventDetails(event)"
                 [ngClass]="getEventClass(event.type)"
                              >
                 <div class="event-item">
                   <h4>{{ event.type }}</h4>
-                  <mat-icon>event</mat-icon>
+                  <mat-icon class="icon-event">event</mat-icon>
                 </div>
                 <div class="date-div">
                   <p>{{ event.date | date : "MMMM d, y" }}</p>
@@ -166,7 +166,7 @@
 
     <div class="right-section-noti">
       <div class="threads-container">
-        <h1>Latest Announcements</h1>
+        <h1 class="chart-h1">Latest Announcements</h1>
 
         <div class="threads">
           <div
@@ -196,7 +196,7 @@
 
       <div class="logs-section-wrapper">
         <div class="logs-section">
-          <h1>Recent Activity Logs</h1>
+          <h1 class="chart-h1">Recent Activity Logs</h1>
           <ul>
             <li
               class="list-elements"

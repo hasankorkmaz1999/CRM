@@ -36,7 +36,7 @@
             </ul>
           </div>
         </div>
-      </div>
+      </div> 
 
 
       <div class="snackbar" id="snackbar"></div>
@@ -45,6 +45,20 @@
       <div class="content-wrapper">
         <!-- Header -->
         <mat-toolbar class="header">
+
+
+          <button
+          mat-icon-button
+          class="burger-menu"
+          [matMenuTriggerFor]="burgerMenu"
+          aria-label="Open Menu"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+
+
+
+
           <div class="user-status">
             <div class="user-name">
               <div class="image-wrapper-header">
@@ -70,6 +84,43 @@
         
          
         </mat-toolbar>
+
+
+
+
+
+
+
+
+
+
+        <mat-menu #burgerMenu="matMenu">
+          <button mat-menu-item routerLink="/dashboard">
+            <mat-icon>fact_check</mat-icon> Dashboard
+          </button>
+          <button mat-menu-item routerLink="/user">
+            <mat-icon>perm_identity</mat-icon> User
+          </button>
+          <button mat-menu-item routerLink="/customer">
+            <mat-icon>people</mat-icon> Customer
+          </button>
+          <button mat-menu-item routerLink="/calendar-angular">
+            <mat-icon>calendar_today</mat-icon> Calendar
+          </button>
+          <button mat-menu-item routerLink="/threads">
+            <mat-icon>forum</mat-icon> InfoDesk
+          </button>
+        
+          <button mat-menu-item routerLink="/privacy-policy">Privacy Policy</button>
+          <button mat-menu-item routerLink="/legal-notice">Legal Notice</button>
+        </mat-menu>
+    
+
+
+
+
+
+
         
         <!-- Dropdown Menü -->
         <mat-menu #userMenu="matMenu">

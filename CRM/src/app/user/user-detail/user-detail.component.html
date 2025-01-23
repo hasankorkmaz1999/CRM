@@ -223,7 +223,7 @@
         </h1>
       </div>
       <div class="events-wrapper-user" *ngIf="userEvents.length > 0">
-        <div *ngFor="let event of userEvents" class="event-item">
+        <div *ngFor="let event of userEvents" class="event-item-user ">
           <h3>{{ event.type }}</h3>
           <p><strong>Date:</strong> {{ event.date | date: 'MMMM d, y' }}</p>
           <p><strong>Time:</strong> {{ event.time }}</p>
