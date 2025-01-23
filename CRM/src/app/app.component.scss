@@ -259,7 +259,8 @@ height: 102px;
 .user-name {
     position: absolute;
     top: 30px;
-    left: 100px;
+    left: 50%; /* Positioniere das Element horizontal in der Mitte */
+    transform: translateX(-50%); 
     margin-left: 10px;
     display: flex;
     align-items: center;
@@ -345,15 +346,17 @@ height: 102px;
   }
 
 
-  @media (max-width: 400px) {
+  @media (max-width: 460px) {
 .username {
-    font-size: 16px;
+    font-size: 18px;
    
 }
 
+
+
 .user-name {
-    font-size: 16px;
-    margin-left: 10px ;
+    font-size: 18px;
+    margin-left: 0px ;
 }
 
 .user-status {
@@ -375,4 +378,16 @@ height: 102px;
     display: flex;
     
   }
+  }
+
+
+  @media (max-width: 390px) {
+    .image-wrapper-header {
+        display: none;
+    }
+
+    .user-name {
+        font-size: 18px;
+        margin-left: 00px ;
+    }
   }

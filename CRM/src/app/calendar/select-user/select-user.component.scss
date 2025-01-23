@@ -188,3 +188,23 @@ mat-dialog-actions button {
     backdrop-filter: blur(10px); /* Unscharf machen */
     -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
 }
+
+
+
+
+
+
+@media (max-width: 330px) { 
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    padding: 20px !important;
+    background-color: rgba(25, 25, 25, 0.9);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+  overflow-x: hidden;
+  
+  }
+
+ 
+
+}
+
+

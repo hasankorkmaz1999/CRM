@@ -601,6 +601,7 @@ min-height: 200px ;
 
     .calendar-component {
       width: 550px;
+      margin-right: 0;
     }
 
     h2 {
@@ -612,7 +613,29 @@ min-height: 200px ;
   @media (max-width: 600px) { 
    
 
-    
+    .event-day {
+      width: 400px;
+    }
+
+    .calendar-component {
+      width: 400px;
+    }
+
+
+   
+  }
+
+
+  @media (max-width: 430px) { 
+   
+
+    .event-day {
+      width: 290px;
+    }
+
+    .calendar-component {
+      width: 290px;
+    }
 
 
    
