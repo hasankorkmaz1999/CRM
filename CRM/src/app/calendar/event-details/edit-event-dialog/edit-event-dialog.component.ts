@@ -106,6 +106,9 @@ export class EditEventDialogComponent implements OnInit {
         console.error('Error updating event in Firestore:', error);
       });
   }
+
+
+  
   
 
   generateUSTimeOptions() {

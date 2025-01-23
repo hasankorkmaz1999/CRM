@@ -35,6 +35,12 @@
  
 }
 
+
+.d-nonen {
+  display: block;
+  margin-bottom: 0px !important;
+}
+
 .right-section-noti {
   margin-left: 10px;
   width: 350px;
@@ -981,6 +987,7 @@ width: 500px;
 
   .d-nonen {
     display: none;
+    margin-bottom: 0px;
   }
 
   .events-container {

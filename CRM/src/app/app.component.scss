@@ -257,7 +257,10 @@ height: 102px;
 
 
 .user-name {
-    margin-left: 30px;
+    position: absolute;
+    top: 30px;
+    left: 100px;
+    margin-left: 10px;
     display: flex;
     align-items: center;
 
@@ -279,10 +282,11 @@ height: 102px;
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
     opacity: 0;
     visibility: hidden; /* Unsichtbar, solange nicht aktiviert */
-    z-index: 1000;
+    z-index: 9999999;
   }
   
   .snackbar.show {
+    z-index: 9999999;
     opacity: 1;
     visibility: visible; /* Zeige die Snackbar an */
     transform: translateX(-50%) translateY(0); /* Slidet nach oben rein */
@@ -338,4 +342,37 @@ height: 102px;
         width: calc(100% - 0px); 
     }
 
+  }
+
+
+  @media (max-width: 400px) {
+.username {
+    font-size: 16px;
+   
+}
+
+.user-name {
+    font-size: 16px;
+    margin-left: 10px ;
+}
+
+.user-status {
+    width: 190px;
+}
+
+.image-wrapper-header {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
+    overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
+    background-color: #f0f0f0; /* Hintergrundfarbe */
+    margin-right: 10px;
+    
+  }
+
+  .header {
+    padding: 0;
+    display: flex;
+    
+  }
   }

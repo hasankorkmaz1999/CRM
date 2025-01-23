@@ -423,6 +423,61 @@
   
   
 
+   @media (max-width: 690px) { 
+    .todos-section  {
+width: 300px;
+right: 10px;
+    }
+
+    .priority-buttons {
+        h2 {
+            font-size: 16px;
+        }
+    }
+   }
+
+
+   @media (max-width: 400px) {
+    .floating-todo-container {
+        position: fixed;
+        top: 30px;
+        right: 20px;
+        z-index: 1000;
+      
+        .floating-icon {
+          
+          background-color: transparent;
+          border: none;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          overflow: visible;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          box-shadow: 0px 0px 9px 5px rgba(255, 255, 255, 0.2);
+          cursor: pointer;
+      
+          mat-icon {
+            font-size: 24px; /* Standardgröße des Icons */
+            color: white;
+            display: inline-flex;
+            align-items: center; /* Zentrierung des Inhalts */
+            justify-content: center; /* Zentrierung des Inhalts */
+            height: 100%; /* Füllt den Elterncontainer aus */
+            width: 100%; /* Füllt den Elterncontainer aus */
+            transition: font-size 0.2s ease; /* Animation für die Vergrößerung */
+          }
+        
+          /* Hover-Effekt auf das mat-icon */
+          &:hover mat-icon {
+            font-size: 30px; /* Größe beim Hovern */
+          }
+        }
+    
+    }
+   }
+
 
 
   

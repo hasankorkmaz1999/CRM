@@ -42,3 +42,28 @@ body {
 .ngx-charts-axis-label .ng-reflect-label text {
   fill: white !important; /* Ändert die Textfarbe auf Weiß */
 }
+
+
+.snackbar {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  background-color: #33408f;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 9999999; /* Sehr hoher Wert */
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.snackbar.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
