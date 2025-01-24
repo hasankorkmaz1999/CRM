@@ -33,8 +33,8 @@
      
       <div>Name</div>
      
-      <div>E-mail</div>
-      <div>Phone</div>
+      <div class="over-email">E-mail</div>
+      <div class="over-phone">Phone</div>
       <div>Action</div>
      
     </div>
@@ -58,8 +58,8 @@
    
 
 
-      <div class="user-stats">{{ user.email }}</div>
-      <div class="user-stats">{{ user.phone }}</div>
+      <div class="user-stats-email">{{ user.email }}</div>
+      <div class="user-stats-phone">{{ user.phone }}</div>
 
       <div>
         <button mat-icon-button color="warn" (click)="openDeleteDialog($event, user)">
