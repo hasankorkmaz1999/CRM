@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
 import { Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
@@ -28,6 +28,30 @@ export class UserDetailComponent implements OnInit {
   userEvents: any[] = []; // Liste aller Events des aktuellen Benutzers
 
 
+
+  lineChartData: any[] = []; 
+  view: [number, number] = [1200, 400]; 
+  
+  colorScheme = {
+    name: 'customScheme',
+    selectable: true, 
+    group: ScaleType.Ordinal,
+    domain: ['#3BADEB', '#fff', '#F0365F'], 
+  };
+ 
+  showLabels: boolean = true;
+  animations = false;
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showYAxisLabel: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Date';
+  yAxisLabel: string = 'Total Quantity';
+  
+  timeline: boolean = true;
+
+
+
   constructor(private route: ActivatedRoute,
      private firestore: Firestore,
       public dialog: MatDialog,
@@ -41,6 +65,7 @@ export class UserDetailComponent implements OnInit {
         this.getUser();
         this.loadUserEvents();
         this.loadUserPurchases(); 
+        this.updateChartView(); 
       });
     }
     
@@ -53,7 +78,40 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
+  @HostListener('window:resize', ['$event']) // Überwache die Fenstergröße
+  onResize(): void {
+    this.updateChartView();
+  }
 
+  updateChartView(): void {
+    const screenWidth = window.innerWidth;
+  
+    // Breakpoints für die Chart-Breite
+    if (screenWidth <= 380) {
+      this.view = [260, 400]; // Maximale Breite für kleine Geräte
+    } else if (screenWidth <= 600) {
+      this.view = [300, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 680) {
+      this.view = [400, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 820) {
+      this.view = [450, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 930) {
+      this.view = [550, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 1020) {
+      this.view = [650, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 1200) {
+      this.view = [750, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 1550) {
+      this.view = [900, 400]; // Standardbreite für Desktops bis 1770px
+    } else if (screenWidth <= 1700) {
+      this.view = [1000, 400]; // Große Desktops bis 1920px
+    } else if (screenWidth <= 2040) {
+      this.view = [1150, 400]; // Sehr große Desktops bis 2070px
+    } else {
+      this.view = [1200, 400]; // Extra große Geräte (über 2070px)
+    }
+  }
+  
  
   
   parseAndCombineDateTime(dateString: string, timeString: string): Date {
@@ -163,26 +221,7 @@ export class UserDetailComponent implements OnInit {
 
 
 
-  lineChartData: any[] = []; 
-view: [number, number] = [1200, 400]; 
-
-colorScheme = {
-  name: 'customScheme',
-  selectable: true, 
-  group: ScaleType.Ordinal,
-  domain: ['#3BADEB', '#fff', '#F0365F'], 
-};
-legend: boolean = true;
-showLabels: boolean = true;
-animations = false;
-xAxis: boolean = true;
-yAxis: boolean = true;
-showYAxisLabel: boolean = true;
-showXAxisLabel: boolean = true;
-xAxisLabel: string = 'Date';
-yAxisLabel: string = 'Total Quantity';
-
-timeline: boolean = true;
+ 
 
 loadUserPurchases(): void {
   const customersCollection = collection(this.firestore, 'customers');

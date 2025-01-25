@@ -182,7 +182,7 @@
         [gradient]="false"
         [xAxis]="xAxis"
         [yAxis]="yAxis"
-        [legend]="legend"
+       
         [showXAxisLabel]="showXAxisLabel"
         [showYAxisLabel]="showYAxisLabel"
         [xAxisLabel]="xAxisLabel"
@@ -227,7 +227,7 @@
           <h3>{{ event.type }}</h3>
           <p><strong>Date:</strong> {{ event.date | date: 'MMMM d, y' }}</p>
           <p><strong>Time:</strong> {{ event.time }}</p>
-          <p><strong>Description:</strong> {{ event.description || 'No description provided' }}</p>
+          
         </div>
       </div>
       <div *ngIf="userEvents.length === 0" class="no-events">
