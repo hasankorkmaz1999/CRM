@@ -92,12 +92,14 @@
 
          
             <div class="role-container">
-              <span class="thin-role"> E-mail </span>
+              <span class="thin-role">Birth Date</span>
   
-  
-              <a href="mailto:{{ user.email }}" class="email-link">
-                {{ user.email }}
-              </a>
+              <span class="birthdate"
+                >{{ user.birthDate | date : "MMMM d, y" }}
+              </span>
+
+
+             
   
   
                </div>
@@ -107,11 +109,12 @@
 
            
               <div class="role-container">
-                <span class="thin-role">Birth Date</span>
+                <span class="thin-role"> E-mail </span>
   
-                <span class="birthdate"
-                  >{{ user.birthDate | date : "MMMM d, y" }}
-                </span>
+  
+              <a href="mailto:{{ user.email }}" class="email-link">
+                {{ user.email }}
+              </a>
               </div>
 
               <div class="role-container">
