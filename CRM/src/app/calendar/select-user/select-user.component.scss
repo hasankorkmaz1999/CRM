@@ -189,6 +189,10 @@ mat-dialog-actions button {
     -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
 }
 
+.mdc-list-item__primary-text {
+  white-space: normal !important; /* Standard-Zeilenumbruch aktivieren */
+              
+}
 
 
 

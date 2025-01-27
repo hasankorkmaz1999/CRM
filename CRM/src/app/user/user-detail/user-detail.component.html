@@ -5,246 +5,184 @@
     </button>
   </div>
 
-
-
-
   <div class="mat-cards-wrapper">
-
-
     <div class="mat-cards-wrapper-left">
+      <mat-card class="user-detail-header">
+        <div class="heading-wrapper">
+          <div class="line"></div>
+          <h1>Details User</h1>
+        </div>
+        <div class="user-content">
+          <div class="left-section">
+            <div class="profile-picture-container">
+              <div class="image-wrapper">
+                <img
+                  [src]="user.profilePicture || '/assets/img/user.png'"
+                  [ngClass]="{
+                    'default-picture': !user.profilePicture,
+                    'uploaded-picture': user.profilePicture
+                  }"
+                  alt="Profile Picture"
+                />
+              </div>
 
-
-
-
-
-  <mat-card class="user-detail-header">
-    <div class="heading-wrapper">
-      <div class="line"></div>
-    <h1> Details User </h1>
-  </div>
-    <div class="user-content">
-      <div class="left-section">
-        <div class="profile-picture-container">
-          <div class="image-wrapper">
-            <img
-              [src]="user.profilePicture || '/assets/img/user.png'"
-              [ngClass]="{
-                'default-picture': !user.profilePicture,
-                'uploaded-picture': user.profilePicture
-              }"
-              alt="Profile Picture"
-            />
+              <button
+                (click)="addOrEditProfilePicture()"
+                class="add-picture-button"
+                mat-fab
+                color="primary"
+                matTooltip="Add/Edit picture"
+                matTooltipPosition="above"
+              >
+                <mat-icon *ngIf="!user.profilePicture">add</mat-icon>
+                <mat-icon *ngIf="user.profilePicture">edit</mat-icon>
+              </button>
+            </div>
           </div>
 
+          <div class="middle-section">
+            <div class="user-details">
+              <h2 class="name">{{ user.firstName }} {{ user.lastName }}</h2>
+
+              <div class="user-details-under">
+                <div class="user-left">
+                  <div class="role-container">
+                    <span class="thin-role">Role</span>
+
+                    <span class="user-role">
+                      {{ user.role }}
+
+                      <mat-icon
+                        *ngIf="user.role === 'Admin'"
+                        class="icon admin-icon"
+                        >admin_panel_settings</mat-icon
+                      >
+                      <mat-icon
+                        *ngIf="user.role === 'Employee'"
+                        class="icon employee-icon"
+                        >work</mat-icon
+                      >
+                      <mat-icon
+                        *ngIf="user.role === 'Guest'"
+                        class="icon guest-icon"
+                        >person_outline</mat-icon
+                      >
+                      <mat-icon *ngIf="!user.role" class="icon default-icon"
+                        >help_outline</mat-icon
+                      >
+                    </span>
+                  </div>
+
+                  <div class="role-container">
+                    <span class="thin-role">Birth Date</span>
+
+                    <span class="birthdate"
+                      >{{ user.birthDate | date : "MMMM d, y" }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="user-right">
+                  <div class="role-container">
+                    <span class="thin-role"> E-mail </span>
+
+                    <a href="mailto:{{ user.email }}" class="email-link">
+                      {{ user.email }}
+                    </a>
+                  </div>
+
+                  <div class="role-container">
+                    <span class="thin-role">Phone </span>
+                    <a
+                      href="tel:{{ user.phone.toString() }}"
+                      class="email-link"
+                    >
+                      {{ user.phone || "No phone number provided" }}
+                    </a>
+                  </div>
+                </div>
+
+                <div class="user-rightest">
+                  <div class="role-container-address">
+                    <span class="thin-role">Street </span>
+                    <span class="birthdate">
+                      {{ user.street || "No street provided" }}</span
+                    >
+                  </div>
+
+                  <div class="role-container-address">
+                    <span class="thin-role">City </span>
+                    <span class="birthdate">
+                      {{ user.zipCode }}
+                      {{ user.city || "No city provided" }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="edit-container">
           <button
-            (click)="addOrEditProfilePicture()"
-            class="add-picture-button"
-            mat-fab
-            color="primary"
-            matTooltip="Add/Edit picture"
-            matTooltipPosition="above"
+            mat-icon-button
+            class="custom-edit-icon"
+            (click)="editUserDetails()"
           >
-            <mat-icon *ngIf="!user.profilePicture">add</mat-icon>
-            <mat-icon *ngIf="user.profilePicture">edit</mat-icon>
+            <mat-icon>edit_square</mat-icon>
           </button>
         </div>
-      </div>
+      </mat-card>
 
-
-
-
-
-
-
-
-      <div class="middle-section">
-        <div class="user-details">
-          <h2 class="name">{{ user.firstName }} {{ user.lastName }}</h2>
-
-          <div class="user-details-under">
-
-
-
-<div class="user-left">
-
-            <div class="role-container">
-              <span class="thin-role">Role</span>
-
-              <span class="user-role">
-                {{ user.role }}
-
-                <mat-icon *ngIf="user.role === 'Admin'" class="icon admin-icon"
-                  >admin_panel_settings</mat-icon
-                >
-                <mat-icon
-                  *ngIf="user.role === 'Employee'"
-                  class="icon employee-icon"
-                  >work</mat-icon
-                >
-                <mat-icon *ngIf="user.role === 'Guest'" class="icon guest-icon"
-                  >person_outline</mat-icon
-                >
-                <mat-icon *ngIf="!user.role" class="icon default-icon"
-                  >help_outline</mat-icon
-                >
-              </span>
-            </div>
-
-         
-            <div class="role-container">
-              <span class="thin-role">Birth Date</span>
-  
-              <span class="birthdate"
-                >{{ user.birthDate | date : "MMMM d, y" }}
-              </span>
-
-
-             
-  
-  
-               </div>
-              </div>
-
-            <div class="user-right">
-
-           
-              <div class="role-container">
-                <span class="thin-role"> E-mail </span>
-  
-  
-              <a href="mailto:{{ user.email }}" class="email-link">
-                {{ user.email }}
-              </a>
-              </div>
-
-              <div class="role-container">
-                <span class="thin-role">Phone </span>
-                <a href="tel:{{ user.phone.toString() }}" class="email-link">
-                  {{ user.phone || 'No phone number provided' }}
-                </a>
-             
-                </div>
-
-
-                
-  
-            </div>
-
-
-            <div class="user-rightest">
-              <div class="role-container-address">
-                <span class="thin-role">Street </span>
-                <span  class="birthdate"> {{ user.street  || 'No street provided' }}</span>
-                </div>
-          
-                <div class="role-container-address">
-          
-                <span class="thin-role">City </span>
-                <span  class="birthdate"> {{ user.zipCode }} {{ user.city || 'No city provided' }}</span>
-              </div>
-            </div>
-         
-            
-          </div>
+      <mat-card class="user-detail-purchases">
+        <div class="heading-wrapper">
+          <div class="line"></div>
+          <h1>Sales Overview</h1>
         </div>
-      </div>
+
+        <div
+          class="chart-container-user"
+          *ngIf="lineChartData.length > 0; else noDataTemplate"
+        >
+          <ngx-charts-line-chart
+            [view]="view"
+            [scheme]="colorScheme"
+            [results]="lineChartData"
+            [gradient]="false"
+            [xAxis]="xAxis"
+            [yAxis]="yAxis"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [timeline]="timeline"
+            [animations]="false"
+          >
+          </ngx-charts-line-chart>
+        </div>
+
+        <ng-template #noDataTemplate>
+          <div class="no-data">
+            <p>The user has not recorded any sales yet.</p>
+          </div>
+        </ng-template>
+      </mat-card>
     </div>
 
-
-
-    <div class="edit-container">
-      <button
-        mat-icon-button
-        class="custom-edit-icon"
-        (click)="editUserDetails()"
-      >
-        <mat-icon>edit_square</mat-icon>
-      </button>
-    </div>
-  </mat-card>
-
-
-
-
-
-
-
-
-  <mat-card class="user-detail-purchases">
-   
+    <mat-card class="user-events">
       <div class="heading-wrapper">
-        <div class="line"></div>
-      <h1> Sales Overview </h1>
-    </div>
- 
-    <div class="chart-container-user" *ngIf="lineChartData.length > 0; else noDataTemplate">
-      <ngx-charts-line-chart
-        [view]="view"
-        [scheme]="colorScheme"
-        [results]="lineChartData"
-        [gradient]="false"
-        [xAxis]="xAxis"
-        [yAxis]="yAxis"
-       
-        [showXAxisLabel]="showXAxisLabel"
-        [showYAxisLabel]="showYAxisLabel"
-        [xAxisLabel]="xAxisLabel"
-        [yAxisLabel]="yAxisLabel"
-        [timeline]="timeline"
-        [animations]="false"
-
-     
- >
-        
-      </ngx-charts-line-chart>
-    </div>
-  
-    <ng-template #noDataTemplate>
-      <div class="no-data">
-        <p>The user has not recorded any sales yet.</p>
-      </div>
-    </ng-template>
-  </mat-card>
-  
-
-</div>
-
-
-
-
-
-
-
-
-
-  <mat-card class="user-events">
-
-    <div class="heading-wrapper">
-       
-        <h1>
-         Upcoming  Events for {{ user.firstName }}
-        </h1>
+        <h1 class="upcoming-h1">Upcoming Events for {{ user.firstName }}</h1>
       </div>
       <div class="events-wrapper-user" *ngIf="userEvents.length > 0">
-        <div *ngFor="let event of userEvents" class="event-item-user ">
+        <div *ngFor="let event of userEvents" class="event-item-user">
           <h3>{{ event.type }}</h3>
-          <p><strong>Date:</strong> {{ event.date | date: 'MMMM d, y' }}</p>
+          <p><strong>Date:</strong> {{ event.date | date : "MMMM d, y" }}</p>
           <p><strong>Time:</strong> {{ event.time }}</p>
-          
         </div>
       </div>
       <div *ngIf="userEvents.length === 0" class="no-events">
         <p>No events found for this user.</p>
       </div>
-   
-
-
-
-  </mat-card>
-  
-
-</div>
-
-
-   
+    </mat-card>
+  </div>
 </div>

@@ -87,18 +87,20 @@ export class UserDetailComponent implements OnInit {
     const screenWidth = window.innerWidth;
   
     // Breakpoints für die Chart-Breite
-    if (screenWidth <= 380) {
+    if (screenWidth <= 390) {
       this.view = [260, 400]; // Maximale Breite für kleine Geräte
+    } else if (screenWidth <= 490) {
+      this.view = [340, 400]; // Etwas größere Breite für Tablets
     } else if (screenWidth <= 600) {
-      this.view = [300, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 680) {
       this.view = [400, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 820) {
+    } else if (screenWidth <= 740) {
       this.view = [450, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 930) {
+    } else if (screenWidth <= 830) {
       this.view = [550, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 1020) {
+    } else if (screenWidth <= 930) {
       this.view = [650, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 1020) {
+      this.view = [700, 400]; // Etwas größere Breite für Tablets
     } else if (screenWidth <= 1200) {
       this.view = [750, 400]; // Etwas größere Breite für Tablets
     } else if (screenWidth <= 1550) {
