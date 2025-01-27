@@ -7,6 +7,7 @@
     animation: fadeIn 0.5s ease-out;
     animation-fill-mode: forwards;
     will-change: transform, opacity;
+   max-width: 1920px;
     h3 {
       border-top: 1px solid rgb(170, 168, 168, 0.3);
         color: white;
@@ -22,9 +23,19 @@
 
     small {
         color: white;
+        white-space: nowrap;
     }
   }
 
+
+  .createdat-span {
+    color: white;
+    white-space: nowrap;
+    position: absolute;
+    right: 10px;
+    font-size: 16px;
+    top: 10px;
+  }
 
  
   
@@ -81,9 +92,10 @@
   .creater-thread {
    
     .announcement-textarea {
+      max-height: 500px;
         color: rgb(169, 169, 169);
-        overflow-y: hidden;
-        min-height: 50px;
+        overflow-y: auto;
+        min-height: 150px;
         background-color: transparent;
         width: 100%; /* Füllt den verfügbaren Platz */
         resize: none; /* Entfernt den Resize-Griff */
@@ -168,9 +180,6 @@
   }
   
  
-  .thread-item:hover {
-   
-  }
   
 
   h1 {
@@ -243,9 +252,7 @@ small {
 }
 
 
- .thread-image {
-
- }
+ 
   
 
  
@@ -298,10 +305,13 @@ small {
     background-color: rgba(18, 18, 18, 0.3);
     border-radius: 10px;
     padding: 10px;
-    height: fit-content;
+    max-height: 350px;
+    width: 100%;
     margin-right: 20px;
     overflow-y: auto;
-    
+    word-break: break-word; /* Lange Wörter umbrechen */
+    white-space: normal;
+   
 
   }
 
@@ -359,3 +369,103 @@ cursor: pointer;
   }
   
 
+
+
+  @media (max-width: 1700px) { 
+    .create-thread {
+      width: 820px;
+    }
+  }
+
+
+  @media (max-width: 870px) {  
+    .create-thread {
+      width: 100%;
+    }
+
+    .thread-item {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 760px) {  
+    .create-thread {
+      width: 100%;
+    }
+
+   
+  }
+
+
+  @media (max-width: 640px) {  
+   
+
+    .user {
+      margin-top: 30px;
+    }
+
+   
+
+    .file-preview {
+      width: 100px;
+    }
+
+    .preview-image {
+      width: 100px;
+      height: 200px;
+    }
+
+    .thread-descrip {
+
+    }
+
+    .uploaded-image {
+      width: 100px;
+      height: 100px;
+    }
+
+.thread-header {
+  small {
+    font-size: 16px;
+    color: white;
+    white-space: nowrap;
+}
+
+.image-wrapper{
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+    }
+}
+
+  }
+
+
+  @media (max-width: 440px) {  
+   
+   .preview-image {
+    width: 80px;
+   }
+
+    h2 {
+      font-size: 16px;
+    }
+
+    .creater-thread {
+      .announcement-textarea {
+        font-size: 16px;
+      }
+    }
+
+    .create-thread {
+      padding: 10px;
+    }
+
+
+    .thread-container {
+      padding: 15px;
+    }
+   
+
+
+  }
