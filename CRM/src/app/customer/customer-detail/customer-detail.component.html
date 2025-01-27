@@ -63,14 +63,14 @@
 
 
       <div class="left-customer">
-    <div class="role-container">
+    <div class="role-container-customer">
       <span class="thin-role">Customer Since</span>
 
       <span class="since"> {{ customer.createdAt | date: 'MMMM d, y' }}</span>
     </div>
 
 
-    <div class="role-container">
+    <div class="role-container-customer">
       <div class="status-container">
         <label class="thin-role-select" for="status-select">Status</label>
         <select class = "selectbar"
@@ -95,7 +95,7 @@
 
 
     <div class="middle-customer">
-    <div class="role-container">
+    <div class="role-container-customer">
     <span class="thin-role">E-mail </span>
      <a 
       href="mailto:{{ customer.email }}" 
@@ -105,7 +105,7 @@
     </div>
 
 
-    <div class="role-container">
+    <div class="role-container-customer">
       <span class="thin-role"> City </span>
       <span class="since"> {{ customer.address.zipCode  }} {{ customer.address.city || 'No city provided' }} </span>
        </div>
@@ -117,9 +117,9 @@
 
 
 
-      <div class="middle-customer">
+      <div class="right-customer">
 
-    <div class="role-container">
+    <div class="role-container-customer-phone">
     <span  class="thin-role">Phone </span>
      <a 
       href="tel:{{ customer.phone.toString() }}" 
@@ -128,7 +128,7 @@
     </a>
     </div>
 
-    <div class="role-container">
+    <div class="role-container-customer">
       <span class="thin-role"> Street </span>
       <span class="since">{{ customer.address.street || 'No street provided' }}</span>
     </div>
@@ -180,8 +180,14 @@
 
 
     <div class="inside-card"> 
+
     <div class="add-pchase-sec">
+
+
     <div class="form-group-wrapper">
+
+      
+      <div class="form-group-top">
     <div class="form-group">
       <!-- Auswahl für Produkte -->
       <label for="product-select">Select Product</label>
@@ -203,7 +209,12 @@
         class="input-field-number"
       />
     </div>
+  </div>
 
+
+
+
+ <div class="form-group-bottom">
     <div class="form-group">
       <label for="purchase-type">Purchase Type</label>
       <select id="purchase-type" [(ngModel)]="purchaseType" class="input-field">
@@ -212,16 +223,20 @@
         <option value="Subscription">Subscription</option>
       </select>
     </div>
+
+
+    <button class="add-purch-button" (click)="addPurchase(selectedProduct, purchaseQuantity, purchaseType)">
+      Add Purchase
+    </button>
+  </div>
+
     
   </div>
 
 
   
    
-    <button class="add-button" (click)="addPurchase(selectedProduct, purchaseQuantity, purchaseType)">
-      Add Purchase
-    </button>
-
+    
 
   </div>
 
@@ -230,22 +245,27 @@
   
 
 
-
+<div class="rev-section">
    
     <div class="dashboard-grid">
-     
+
+     <div class="dashboard-item-top">
+
       <div class="dashboard-item">
         <label>Total Purchases</label>
         <p>{{ customer.purchases.length || 0 }}</p>
       </div>
   
      
-      <div class="dashboard-item">
+      <div class="dashboard-item-spent">
         <label>Total Spent</label>
         <p>${{ getTotalSpent() }}</p>
       </div>
-  
-      
+    </div>
+
+
+
+       <div class="dashboard-item-bottom">
       <div class="dashboard-item">
         <label>Avg. Purchase Value</label>
         <p>${{ getAveragePurchaseValue() }}</p>
@@ -253,10 +273,10 @@
   
      
       <div class="dashboard-item">
-        <label>Most Purchased Product</label>
+        <label>Most Purchased</label>
         <p>{{ getMostPurchasedProduct() || 'N/A' }}</p>
       </div>
-
+    </div>
 
       
     
@@ -274,9 +294,10 @@
       <div #chartContainer class="chart-container">
         <ngx-charts-bar-vertical
         
-        [view]="[width, height]"
+        [view]="view"
           [scheme]="colorScheme"
           [results]="barChartData"
+          [barPadding]="50"
           [gradient]="true"
           [xAxis]="true"
           [yAxis]="true"
@@ -289,6 +310,10 @@
       </div>
       
     </div>
+
+
+
+  </div>
 
 
 

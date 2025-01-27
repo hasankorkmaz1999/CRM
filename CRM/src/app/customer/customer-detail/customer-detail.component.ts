@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
 import { Firestore, doc, docData, updateDoc } from '@angular/fire/firestore';
@@ -32,7 +32,7 @@ export class CustomerDetailComponent implements OnInit {
     private firestore: Firestore,
     public dialog: MatDialog,
     private location: Location
-  ) {}
+  ) { this.updateChartDimensions();}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap) => {
@@ -271,10 +271,52 @@ export class CustomerDetailComponent implements OnInit {
     );
   }
   
- 
 
-  width: number = 700;
-  height: number = 410;
+  @HostListener('window:resize', ['$event']) // Überwache die Fenstergröße
+  onResize(): void {
+    this.updateChartDimensions();
+  }
+
+  updateChartDimensions(): void {
+    const screenWidth = window.innerWidth;
+  
+    // Breakpoints für die Chart-Breite
+    if (screenWidth <= 420) {
+      this.view = [260, 400]; // Maximale Breite für kleine Geräte
+    } else if (screenWidth <= 490) {
+      this.view = [340, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 600) {
+      this.view = [400, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 740) {
+      this.view = [450, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 830) {
+      this.view = [550, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 930) {
+      this.view = [650, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 1020) {
+      this.view = [700, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 1200) {
+      this.view = [750, 400]; // Etwas größere Breite für Tablets
+    } else if (screenWidth <= 1600) {
+      this.view = [1000, 400]; // Standardbreite für Desktops bis 1770px
+    } else if (screenWidth <= 1800) {
+      this.view = [1200, 400]; // Große Desktops bis 1920px
+    } else if (screenWidth <= 1890) {
+      this.view = [1400, 400]; // Sehr große Desktops bis 2070px
+    } else {
+      this.view = [1000, 400]; // Extra große Geräte (über 2070px)
+    }
+  }
+
+
+
+  updateChartView(): void {
+  
+  }
+  
+ 
+  view: [number, number] = [1000, 400]; 
+  
   barChartData: any[] = [];
   colorScheme = {
     name: 'customScheme',

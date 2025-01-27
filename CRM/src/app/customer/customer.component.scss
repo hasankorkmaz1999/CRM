@@ -67,13 +67,15 @@
 
 
 .customer-list {
-  padding: 20px;
-  border-radius: 20px;
-  background-color: #101010;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+ 
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #101010;
+    
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  
 }
 
 .header-row {
