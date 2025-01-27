@@ -1,11 +1,11 @@
 
 
-<div class="comment-dialog">
+<mat-dialog-content  class="comment-dialog">
 
 
     <h1 >Comments for "{{ data.threadDescription | slice:0:50 }}{{ data.threadDescription.length > 50 ? '...' : '' }}"</h1>
 
-    <div mat-dialog-content>
+    <div class="comments-list" >
         <div *ngFor="let comment of comments" class="comment-item">
           <div class="comment-header">
 
@@ -24,7 +24,7 @@
           
         </div>
         
-        <small>{{ comment.createdAt |  date: 'MMM d, y, h:mm a'  }}</small>
+        <small class="createdat-span">{{ comment.createdAt |  date: 'MMM d, y, h:mm a'  }}</small>
 
          
           </div>
@@ -47,5 +47,5 @@
   </form>
 
 
-</div>
+</mat-dialog-content>
 
