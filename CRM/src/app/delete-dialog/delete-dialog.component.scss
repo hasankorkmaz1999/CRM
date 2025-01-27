@@ -1,9 +1,14 @@
 .mat-mdc-dialog-container .mdc-dialog__surface {
-    background-color: rgba(84, 82, 82, 0.06) !important;
+    background-color: rgba(49, 49, 49, 0.6) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     backdrop-filter: blur(20px) !important;
     box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
-height: 300px !important;
+height: 250px !important;
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+padding: 20px !important;
+
     h2 {
         color: white;
     }
