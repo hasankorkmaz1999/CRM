@@ -73,7 +73,7 @@
               mat-icon-button
               mat-icon-button
         [matMenuTriggerFor]="userMenu"
-        matMenuTriggerData="{ positionX: 'before', positionY: 'below' }"
+      
         aria-label="User Options"
         class="user-options-button"
       >
@@ -95,6 +95,9 @@
 
 
         <mat-menu #burgerMenu="matMenu">
+
+          <div class="burger-top">
+
           <button mat-menu-item routerLink="/dashboard">
             <mat-icon>fact_check</mat-icon> Dashboard
           </button>
@@ -110,9 +113,13 @@
           <button mat-menu-item routerLink="/threads">
             <mat-icon>forum</mat-icon> InfoDesk
           </button>
+        </div>
+
+        <div class="burger-bottom">
         
-          <button mat-menu-item routerLink="/privacy-policy">Privacy Policy</button>
-          <button mat-menu-item routerLink="/legal-notice">Legal Notice</button>
+          <li class="links-privacy-burger" routerLink="/privacy-policy">Privacy Policy</li>
+          <li class="links-privacy-burger" routerLink="/legal-notice">Legal Notice</li>
+        </div>
         </mat-menu>
     
 

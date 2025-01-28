@@ -7,40 +7,41 @@
     <img src="/assets/img/crm_logo.png" alt="">
   </div>
 
-  <mat-card class="login-card">
-    <mat-card-title class="title">Login</mat-card-title>
-    <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-        <!-- Email Input -->
-        <mat-form-field class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" required />
-          <button mat-icon-button matSuffix type="button" aria-hidden="true">
-            <mat-icon>email</mat-icon>
-          </button>
-        </mat-form-field>
+  <div class="login-card">
+    <span class="title">Login</span>
+    <div>
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+            <!-- Email Input -->
+            <div class="full-width">
+                <input class="inputer" placeholder="Email" matInput type="email" formControlName="email" required />
+                <span class="input-icon">
+                    <mat-icon>email</mat-icon>
+                </span>
+            </div>
 
-        <!-- Password Input -->
-        <mat-form-field class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required />
-          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" [attr.aria-label]="'Show password'" [attr.aria-pressed]="!hidePassword">
-            <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
-          </button>
-        </mat-form-field>
+            <!-- Password Input -->
+            <div class="full-width">
+                <input class="inputer" placeholder="Password" matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required />
+                <span class="input-icon">
+                    <button type="button" (click)="hidePassword = !hidePassword">
+                        <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                    </button>
+                </span>
+            </div>
 
-        <!-- Error Message -->
-        <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
-        </div>
+            <!-- Error Message -->
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
 
-        <!-- Submit Button -->
-        <button mat-raised-button color="primary" class="login-button" [disabled]="loginForm.invalid">
-          Login
-        </button>
-      </form>
-    </mat-card-content>
-  </mat-card>
+            <!-- Submit Button -->
+            <button mat-raised-button color="primary" class="login-button" [disabled]="loginForm.invalid">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
+
 
   <div class="privacy-container">
     <p>Privacy Policy</p>

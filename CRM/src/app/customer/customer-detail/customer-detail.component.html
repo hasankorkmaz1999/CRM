@@ -105,10 +105,17 @@
     </div>
 
 
-    <div class="role-container-customer">
-      <span class="thin-role"> City </span>
-      <span class="since"> {{ customer.address.zipCode  }} {{ customer.address.city || 'No city provided' }} </span>
-       </div>
+    <div class="role-container-customer-phone">
+      <span  class="thin-role">Phone </span>
+       <a 
+        href="tel:{{ customer.phone.toString() }}" 
+        class="phone-link">
+        {{ customer.phone || 'No phone number provided' }}
+      </a>
+      </div>
+
+
+   
     
       </div>
 
@@ -119,14 +126,10 @@
 
       <div class="right-customer">
 
-    <div class="role-container-customer-phone">
-    <span  class="thin-role">Phone </span>
-     <a 
-      href="tel:{{ customer.phone.toString() }}" 
-      class="phone-link">
-      {{ customer.phone || 'No phone number provided' }}
-    </a>
-    </div>
+        <div class="role-container-customer">
+          <span class="thin-role"> City </span>
+          <span class="since"> {{ customer.address.zipCode  }} {{ customer.address.city || 'No city provided' }} </span>
+           </div>
 
     <div class="role-container-customer">
       <span class="thin-role"> Street </span>

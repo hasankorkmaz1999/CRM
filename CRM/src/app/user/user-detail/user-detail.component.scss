@@ -69,7 +69,7 @@ width: 100%;
   height: 200px;
 }
 
-.left-section {
+.left-section-user {
   
  display: flex;
  align-items: center;
@@ -112,8 +112,16 @@ width: 100%;
 h1 {
   text-align: center;
   color: white;
- margin-bottom: 0 !important;
+ margin-bottom: 0px !important;
  
+}
+
+
+.mat-typography h5 {
+  font: 400 calc(34px* .83) / 20px Roboto, sans-serif;
+  margin: 0 0 12px;
+  text-align: center;
+  color: white;
 }
 
 .heading-wrapper {
@@ -143,9 +151,11 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+   
     font-size: 20px;
     white-space: nowrap;
+    word-break: break-all;
+    width: 200px;
   
 }
 
@@ -454,6 +464,7 @@ align-items: center;
       }
   
       p {
+        
         font-size: 18px;
         margin: 5px 0;
         color: #cccccc;
@@ -468,12 +479,14 @@ align-items: center;
       text-align: center;
       color: #999999;
       p {
+        margin-top: 20px;
         font-size: 18px;
       }
     }
   }
 
   .events-wrapper-user {
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
 align-items: center;
@@ -808,13 +821,25 @@ justify-content: flex-end;
     padding-top: 30px;
   }
 
-  
+  .user-content {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
 
-}
+ 
+  .mat-typography h2 {
+    font: 500 24px / 32px Roboto, sans-serif;
+    letter-spacing: .0125em;
+    margin: 0 0 16px;
+    
+  }
 
 
-@media (max-width: 530px)   {
+
+
+
   .user-details-under {
+    justify-content: flex-start;
     flex-direction: column;
     
   }

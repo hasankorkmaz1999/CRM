@@ -13,7 +13,7 @@
           <h1>Details User</h1>
         </div>
         <div class="user-content">
-          <div class="left-section">
+          <div class="left-section-user">
             <div class="profile-picture-container">
               <div class="image-wrapper">
                 <img
@@ -170,9 +170,9 @@
     </div>
 
     <mat-card class="user-events">
-      <div class="heading-wrapper">
+    
         <h1 class="upcoming-h1">Upcoming Events for {{ user.firstName }}</h1>
-      </div>
+      
       <div class="events-wrapper-user" *ngIf="userEvents.length > 0">
         <div *ngFor="let event of userEvents" class="event-item-user">
           <h3>{{ event.type }}</h3>

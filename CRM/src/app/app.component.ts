@@ -60,12 +60,12 @@ export class AppComponent implements OnInit {
       if (user) {
         this.userName = user.name || 'Unknown User';
         this.userRole = user.role || '';
-        this.userProfilePicture = user.profilePicture || '/assets/img/default-profile.png'; // Fallback für Standardbild
+        this.userProfilePicture = user.profilePicture || '/assets/img/user.png'; // Fallback für Standardbild
        
       } else {
         this.userName = 'Unknown User';
         this.userRole = '';
-        this.userProfilePicture = '/assets/img/default-profile.png'; // Fallback für Standardbild
+        this.userProfilePicture = '/assets/img/user.png'; // Fallback für Standardbild
       }
     });
   
@@ -82,6 +82,8 @@ changeMenuPosition(): void {
   this.menuPositionX = 'before';
   this.menuPositionY = 'above';
 }
+
+
 
   
   navigateToHelp(): void {

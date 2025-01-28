@@ -282,7 +282,7 @@ export class CustomerDetailComponent implements OnInit {
   
     // Breakpoints für die Chart-Breite
     if (screenWidth <= 420) {
-      this.view = [260, 400]; // Maximale Breite für kleine Geräte
+      this.view = [250, 400]; // Maximale Breite für kleine Geräte
     } else if (screenWidth <= 490) {
       this.view = [340, 400]; // Etwas größere Breite für Tablets
     } else if (screenWidth <= 600) {
