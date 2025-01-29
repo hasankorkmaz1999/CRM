@@ -9,23 +9,24 @@
     <div class="header-top">
       <h3>All Activity Logs</h3>
       <div class="sort-options">
-        <label for="sort" class="form-label">Sort by</label>
-        <select
-          id="sort"
-          class="custom-select"
-          [(ngModel)]="selectedSort"
-          (change)="onSortChange()"
-        >
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="users">Users</option>
-          <option value="customers">Customers</option>
-          <option value="events">Events</option>
-          <option value="purchases">Purchase</option>
-        </select>
+       
+
+        <mat-form-field>
+        <mat-select [(ngModel)]="selectedSort" (selectionChange)="onSortChange()">
+          <mat-option value="newest">Newest</mat-option>
+          <mat-option value="oldest">Oldest</mat-option>
+          <mat-option value="users">Users</mat-option>
+          <mat-option value="customers">Customers</mat-option>
+          <mat-option value="events">Events</mat-option>
+          <mat-option value="purchases">Purchase</mat-option>
+        </mat-select>
+      </mat-form-field>
       </div>
     </div>
 
+
+
+   
     <ul>
       <li
         class="list-elements"

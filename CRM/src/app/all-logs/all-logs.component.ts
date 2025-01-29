@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Router, RouterModule } from '@angular/router';
@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
   imports: [SharedModule, RouterModule],
   templateUrl: './all-logs.component.html',
   styleUrl: './all-logs.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class AllLogsComponent implements OnInit {
   logs: any[] = [];

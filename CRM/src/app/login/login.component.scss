@@ -219,7 +219,7 @@
   }
 
   ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
-    margin-bottom: 140px !important;
+   
     background-color: rgba(0, 0, 0, 1.9) !important;
     height: 500px !important;
     border-radius: 10px !important;
@@ -411,6 +411,7 @@ height: 570px;
 }
 
 .title {
+  font-size: 24px;
   margin-bottom: 10px;
 }
   }
