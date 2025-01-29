@@ -1,0 +1,118 @@
+.slideshow-container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.feature-slider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Notwendig für absolut positionierte Karten */
+    width: 100%;
+    max-width: 400px;
+    height: 400px; /* Einheitliche Höhe */
+    overflow: hidden; 
+    text-align: center;
+    overflow: hidden;
+    
+   
+  }
+  
+  .feature-card {
+    padding: 20px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: none; /* Entfernt Verzögerungen für keyframes */
+    position: absolute; /* Karten übereinander stapeln */
+    bottom: 100px;
+    left: 0px;
+    width: 100%;
+
+    
+
+    mat-icon {
+        font-size: 104px; 
+        margin-bottom: 20px;/* Standardgröße des Icons */
+        color: white;
+        display: inline-flex;
+        align-items: center; /* Zentrierung des Inhalts */
+        justify-content: center; /* Zentrierung des Inhalts */
+        height: 100%; /* Füllt den Elterncontainer aus */
+        width: 100%; /* Füllt den Elterncontainer aus */
+        
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+/* Aktive Karte mit Animation */
+.feature-card.active {
+    animation: slideIn 0.6s ease-in-out forwards;
+    z-index: 2; /* Über die anderen Karten legen */
+}
+
+/* Karte, die verschwindet */
+.feature-card.previous {
+    animation: slideOut 0.6s ease-in-out forwards;
+    z-index: 1; 
+
+}
+  
+
+  
+  .feature-card p {
+    color: white; /* Falls Hintergrund dunkel ist */
+    font-size: 16px;
+    font-weight: bold;
+}
+
+  .feature-card i {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: #3BADEB;
+  }
+  
+  /* Dots */
+  .feature-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .dot {
+    height: 10px;
+    width: 10px;
+    margin: 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .dot.active {
+    background-color: white;
+    transform: scale(1.2);
+  }

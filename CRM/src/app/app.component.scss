@@ -272,7 +272,9 @@ height: 102px;
 
 
 .user-name {
-   
+   position: absolute;
+   top: 30px;
+   left: 50px;
     margin-left: 10px;
     display: flex;
     align-items: center;
@@ -318,7 +320,7 @@ height: 102px;
   }
 
   ::ng-deep .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
-    opacity: 1 !important;
+   
     background: rgba(0, 0, 0, 0.32) !important;
     backdrop-filter: blur(10px) !important; /* Unscharf machen */
     -webkit-backdrop-filter: blur(10px) !important; /* Unterstützung für WebKit-Browser */

@@ -46,7 +46,7 @@
 
 
 
-h1 {
+.h1-user {
   font-family: "DM Sans", serif;
     color: white;
     font-size: 36px;
@@ -256,13 +256,13 @@ margin-top: 10px;
 
   .header-row {
     display: grid;
-    grid-template-columns: 1fr  0.5fr 0fr 0.1fr; /* Passe die Spaltenbreite an */
+    grid-template-columns: 1fr  1fr  0.1fr; /* Passe die Spaltenbreite an */
   }
 
 
   .under-tr {
     display: grid;
-    grid-template-columns:  1fr  0.55fr 0fr  0.1fr ; /* Passe die Spaltenbreite an */
+    grid-template-columns:  1fr  1fr   0.1fr ; /* Passe die Spaltenbreite an */
   }
 
 }
@@ -288,7 +288,7 @@ margin-top: 10px;
     font-size: 16px;
      }
 
-     h1 {
+     .h1-user {
       font-size: 24px;
      }
 

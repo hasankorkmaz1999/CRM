@@ -8,13 +8,22 @@ bootstrapApplication(AppComponent, appConfig)
 
 
  
-const originalConsoleWarn = console.warn;
+  const originalConsoleWarn = console.warn;
 
-console.warn = (message?: any, ...optionalParams: any[]) => {
- 
-  if (typeof message === 'string' && message.includes('strokeDashoffset')) {
-    return; 
-  }
+  console.warn = (message?: any, ...optionalParams: any[]) => {
+    // Falls die Nachricht ein String ist und "BloomFilterError" oder "strokeDashoffset" enthält, unterdrücken
+    if (typeof message === 'string' && (message.includes('strokeDashoffset') || message.includes('BloomFilterError'))) {
+      return;
+    }
   
-  originalConsoleWarn(message, ...optionalParams);
-};
+    // Falls die Nachricht ein Objekt ist und den Fehler enthält, unterdrücken
+   
+
+    if (typeof message === 'string' && (message.includes('BloomFilterError') || message.includes('BloomFilterError'))) {
+      return;
+    }
+  
+    // Alle anderen Warnungen normal anzeigen
+    originalConsoleWarn(message, ...optionalParams);
+  };
+  

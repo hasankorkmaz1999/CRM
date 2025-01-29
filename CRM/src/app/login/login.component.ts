@@ -6,13 +6,14 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 import { SharedModule } from '../shared/shared.module';
 import { UserService } from '../shared/user.service';
+import { SlideshowComponent } from "./slideshow/slideshow.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [MatProgressSpinner, SharedModule],
+  imports: [MatProgressSpinner, SharedModule, SlideshowComponent],
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -67,11 +68,11 @@ export class LoginComponent {
       };
   
       this.userService.setCurrentUser(loggedInUser); // Benutzer im Service setzen
-      console.log('User logged in successfully:', loggedInUser);
+     
   
       this.router.navigate(['/dashboard']);
     } catch (error) {
-      console.error('Login error:', error);
+      
       if (error instanceof Error) {
         this.errorMessage = error.message || 'An error occurred during login.';
       } else {
@@ -80,5 +81,32 @@ export class LoginComponent {
     } finally {
       this.isLoading = false;
     }
+  }
+
+
+
+
+
+  guestLogin(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    // Dummy Guest-User-Daten
+    const guestUser = {
+      uid: 'guest-user',
+      name: 'Guest User',
+      role: 'guest',
+      email: 'guest@demo.com',
+      profilePicture: '/assets/img/user.png',
+    };
+
+    // Guest-User wird im Service gespeichert
+    this.userService.setCurrentUser(guestUser);
+    console.log('Guest logged in successfully:', guestUser);
+
+    setTimeout(() => {
+      this.isLoading = false;
+      this.router.navigate(['/dashboard']); // Weiterleitung ins Dashboard
+    }, 1000);
   }
 }  

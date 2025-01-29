@@ -304,3 +304,41 @@ width: 100%;
 }
 
 
+@media (max-height: 850px) {
+
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    padding: 20px !important;
+    padding-left: 40px !important;
+    background-color: rgba(23, 23, 23, 0.9);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+  border-radius: 10px;
+  width: 300px;
+  max-height: 90vh;
+  display: flex !important;
+  justify-content: center !important;
+  overflow-x: hidden !important;
+ overflow-y: auto !important;
+  align-items: center;
+
+  }
+
+  .event-container {
+    padding-top: 30px !important;
+    position: relative;
+    padding: 0px;
+  width: 100%;
+    color: #fff;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    overflow-y: auto ;
+    overflow-x: hidden;
+  }
+
+
+
+ }
+
+

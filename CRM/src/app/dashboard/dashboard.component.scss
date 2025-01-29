@@ -949,10 +949,14 @@ width: 500px;
     margin-bottom: 20px;
   }
 
+  .threads {
+    margin-bottom: 0;
+  }
+
 
   .threads-container { 
     width: 400px;
-    height: 470px;
+    height: 480px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -966,7 +970,17 @@ width: 500px;
   .logs-section {
     background-color: #161616;
     width: 310px;
-    height: 470px;
+    height: 480px;
+
+    ul {
+      height: 100%;
+      margin-bottom: 0px;
+      li {
+        margin-bottom: 30px;
+      }
+    }
+
+    
   }
 
   .left-wrapper {
