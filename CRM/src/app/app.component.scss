@@ -274,7 +274,7 @@ height: 102px;
 .user-name {
    position: absolute;
    top: 30px;
-   left: 50px;
+   left: 40px;
     margin-left: 10px;
     display: flex;
     align-items: center;
@@ -328,7 +328,8 @@ height: 102px;
 
 
   ::ng-deep .mat-mdc-menu-panel {
-    margin-top: 30px !important;
+    margin-left: 15px !important;
+    margin-top:-10px !important;
     min-width: 112px;
     max-width: 280px;
 
@@ -337,14 +338,19 @@ height: 102px;
     box-sizing: border-box;
     outline: 0;
     border-radius: var(--mat-menu-container-shape);
-    background-color: #161616 !important;
+    background-color: #3c3c3c !important;
     will-change: transform, opacity;
 }
 
 ::ng-deep .mat-mdc-menu-item{
     color: #f8f9fa !important;
-    padding-bottom: 20px !important;
+    padding-bottom: 10px !important;
     padding-top: 10px !important;
+    transition:  0.3s ease;
+
+    &:hover {
+        background-color: #808080 !important;
+    }
 }
 
 ::ng-deep .mat-mdc-menu-item .mat-icon-no-color {
@@ -397,6 +403,15 @@ height: 102px;
         width: calc(100% - 0px); 
     }
 
+    .user-name {
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%); /* Zentriert das Element exakt */
+        display: flex;
+        align-items: center;
+    }
+    
   }
 
 

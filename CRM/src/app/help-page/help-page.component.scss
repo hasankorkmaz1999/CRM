@@ -1,9 +1,12 @@
-.privacy-container {
+.help-container {
+ 
+    
     padding: 46px;
+  
+    line-height: 1.6;
     animation: fadeIn 0.5s ease-out;
     animation-fill-mode: forwards;
     will-change: transform, opacity;
-    font-family: Arial, sans-serif;
     
   }
   
@@ -20,35 +23,16 @@
     }
   }
 
-.header-pol {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-h1 {
-    font-size: 36px;
+h1  {
+font-size: 36px;
     color: #ffffff;
 }
 
+
 h2 {
-    margin-top: 30px;
-   
     font-size: 24px;
-    color: white;
-}
 
-h3 {
-
-    font-size: 16px;
-    color: white;
-}
-
-.spann {
-    font-size: 18px;
-    color: rgb(211, 211, 211);
-    margin-bottom: 30px !important;
+    color: #ffffff;
 }
 
 p {
@@ -56,17 +40,25 @@ p {
     color: #bbbbbb;
 }
 
-
 li {
-    margin-bottom: 10px;
     font-size: 16px;
-    color: rgb(211, 211, 211);
+    color: white;
 }
+
+ul {
+    padding-left: 20px;
+}
+
+h3 {
+    margin-top: 20px;
+    color: #ffffff;
+}
+
 
 .back-button-privacy {
    
     height: 70px;
-   
+  
    margin-right: 30px;
     color: #ffffff;
 
@@ -83,3 +75,10 @@ li {
     }
   }
   
+
+  .header-pol {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

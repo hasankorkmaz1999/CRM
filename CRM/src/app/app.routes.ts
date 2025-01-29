@@ -14,6 +14,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { AngularCalendarComponent } from './calendar/angular-calendar/angular-calendar.component';
 import { ThreadsComponent } from './threads/threads.component';
+import { HelpPageComponent } from './help-page/help-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Standardroute zur Login-Seite
@@ -33,4 +34,5 @@ export const routes: Routes = [
   { path: 'legal-notice', component: LegalNoticeComponent },
   { path: 'calendar-angular', component: AngularCalendarComponent },
   { path: 'threads', component: ThreadsComponent },
+  { path: 'help', component: HelpPageComponent },
 ];
