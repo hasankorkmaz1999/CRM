@@ -7,6 +7,9 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { SharedModule } from '../shared/shared.module';
 import { UserService } from '../shared/user.service';
 import { SlideshowComponent } from "./slideshow/slideshow.component";
+import { PrivacyPolicyComponent } from '../privacy-policy/privacy-policy.component';
+import { LegalNoticeComponent } from '../legal-notice/legal-notice.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +25,7 @@ export class LoginComponent {
   hidePassword: boolean = true;
 
   constructor(
+    private dialog: MatDialog,
     private firestore: Firestore,
     private router: Router,
     private fb: FormBuilder,
@@ -108,5 +112,17 @@ export class LoginComponent {
       this.isLoading = false;
       this.router.navigate(['/dashboard']); // Weiterleitung ins Dashboard
     }, 1000);
+  }
+
+  openPrivacyPolicy(): void {
+    this.dialog.open(PrivacyPolicyComponent, {
+      
+    });
+  }
+
+  openLegalNotice(): void {
+    this.dialog.open(LegalNoticeComponent, {
+     
+    });
   }
 }  

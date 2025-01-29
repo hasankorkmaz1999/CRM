@@ -9,7 +9,7 @@
         
         
         <div class="back-button-privacy">
-            <button mat-icon-button (click)="goBack()">
+            <button mat-icon-button (click)="goBack()" *ngIf="showBackButton">
                 <mat-icon class="large-icon">arrow_back</mat-icon>
               </button>
             </div>  

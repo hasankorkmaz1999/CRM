@@ -11,8 +11,13 @@ import { Location } from '@angular/common';
   styleUrl: './privacy-policy.component.scss'
 })
 export class PrivacyPolicyComponent {
+  showBackButton = false;
 
-  constructor( private location: Location,  private route: ActivatedRoute,) {}
+  constructor( private location: Location,  private route: ActivatedRoute,) {
+    this.route.queryParams.subscribe(params => {
+      this.showBackButton = !!params['from']; // Falls "from" existiert → Button anzeigen
+    });
+  }
 
 
   goBack() {

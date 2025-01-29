@@ -26,14 +26,14 @@
     transform: translateX(100%);
     transition: none; /* Entfernt Verzögerungen für keyframes */
     position: absolute; /* Karten übereinander stapeln */
-    bottom: 100px;
+    bottom: 70px;
     left: 0px;
     width: 100%;
 
     
 
     mat-icon {
-        font-size: 104px; 
+        font-size: 144px; 
         margin-bottom: 20px;/* Standardgröße des Icons */
         color: white;
         display: inline-flex;
@@ -84,35 +84,75 @@
   
   .feature-card p {
     color: white; /* Falls Hintergrund dunkel ist */
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
+   
 }
 
-  .feature-card i {
-    font-size: 40px;
-    margin-bottom: 10px;
-    color: #3BADEB;
+ 
+ 
+
+
+  @media (max-width: 920px){  
+    .feature-card {
+        padding: 20px;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: none; /* Entfernt Verzögerungen für keyframes */
+        position: absolute; /* Karten übereinander stapeln */
+        bottom: 90px;
+        left: 0px;
+        width: 100%; 
+    }
   }
-  
-  /* Dots */
-  .feature-dots {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
-  .dot {
-    height: 10px;
-    width: 10px;
-    margin: 5px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .dot.active {
-    background-color: white;
-    transform: scale(1.2);
-  }
+
+
+  @media (max-width: 530px){ 
+    .feature-card {
+        padding: 20px;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: none; /* Entfernt Verzögerungen für keyframes */
+        position: absolute; /* Karten übereinander stapeln */
+        bottom: 90px;
+        left: 0px;
+        width: 100%; 
+    }
+     }
+
+     @media (max-width: 920px) and (max-height: 1100px) { 
+        .feature-card {
+            padding: 20px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: none; /* Entfernt Verzögerungen für keyframes */
+            position: absolute; /* Karten übereinander stapeln */
+            bottom: 90px;
+            left: 0px;
+            width: 100%; 
+        
+            
+        
+            mat-icon {
+                font-size: 24px; 
+                margin-bottom: 20px;/* Standardgröße des Icons */
+                color: white;
+                display: inline-flex;
+                align-items: center; /* Zentrierung des Inhalts */
+                justify-content: center; /* Zentrierung des Inhalts */
+                height: 10%; /* Füllt den Elterncontainer aus */
+                width: 10%; /* Füllt den Elterncontainer aus */
+                
+            }
+          }
+
+          .feature-slider {
+            height: 250px;
+          }
+     }
+
+
+   
+
+
+

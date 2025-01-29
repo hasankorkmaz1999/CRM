@@ -12,7 +12,14 @@ import { Location } from '@angular/common';
   styleUrl: './legal-notice.component.scss'
 })
 export class LegalNoticeComponent {
-  constructor( private location: Location,  private route: ActivatedRoute,) {}
+
+  showBackButton = false;
+
+  constructor( private location: Location,  private route: ActivatedRoute,) {
+    this.route.queryParams.subscribe(params => {
+      this.showBackButton = !!params['from']; // Falls "from" existiert → Button anzeigen
+    });
+  }
 
 
   goBack() {
