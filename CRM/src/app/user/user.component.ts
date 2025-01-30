@@ -1,21 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog,MatDialogModule,} from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.component';
 import { SharedModule } from '../shared/shared.module';
-import {
-  Firestore,
-  collection,
-  collectionData,
-  doc,
-  deleteDoc,
-} from '@angular/fire/firestore';
+import { Firestore,collection,collectionData, doc,deleteDoc,} from '@angular/fire/firestore';
 import { User } from '../../models/user.class';
 import { LoggingService } from '../shared/logging.service';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
@@ -127,7 +117,6 @@ export class UserComponent implements OnInit {
       })
       .catch(() => {});
   }
-  
 
   filterUsers() {
     const query = this.searchQuery.toLowerCase();

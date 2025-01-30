@@ -40,97 +40,86 @@
             </div>
           </div>
 
-          
-            <div class="user-details">
-              <h2 class="name">{{ user.firstName }} {{ user.lastName }}</h2>
+          <div class="user-details">
+            <h2 class="name">{{ user.firstName }} {{ user.lastName }}</h2>
 
-              <div class="user-details-under">
-                <div class="user-left">
-                  <div class="role-container">
-                    <span class="thin-role">Role</span>
+            <div class="user-details-under">
+              <div class="user-left">
+                <div class="role-container">
+                  <span class="thin-role">Role</span>
 
-                    <span class="user-role">
-                      {{ user.role }}
+                  <span class="user-role">
+                    {{ user.role }}
 
-                      <mat-icon
-                        *ngIf="user.role === 'Admin'"
-                        class="icon admin-icon"
-                        >admin_panel_settings</mat-icon
-                      >
-                      <mat-icon
-                        *ngIf="user.role === 'Employee'"
-                        class="icon employee-icon"
-                        >work</mat-icon
-                      >
-                      <mat-icon
-                        *ngIf="user.role === 'Guest'"
-                        class="icon guest-icon"
-                        >person_outline</mat-icon
-                      >
-                      <mat-icon *ngIf="!user.role" class="icon default-icon"
-                        >help_outline</mat-icon
-                      >
-                    </span>
-                  </div>
-
-                  <div class="role-container">
-                    <span class="thin-role">Birth Date</span>
-
-                    <span class="birthdate"
-                      >{{ user.birthDate ? (user.birthDate | date : "MMMM d, y") : "No birth date provided" }}
-                    </span>
-                  </div>
+                    <mat-icon
+                      *ngIf="user.role === 'Admin'"
+                      class="icon admin-icon"
+                      >admin_panel_settings</mat-icon
+                    >
+                    <mat-icon
+                      *ngIf="user.role === 'Employee'"
+                      class="icon employee-icon"
+                      >work</mat-icon
+                    >
+                    <mat-icon
+                      *ngIf="user.role === 'Guest'"
+                      class="icon guest-icon"
+                      >person_outline</mat-icon
+                    >
+                    <mat-icon *ngIf="!user.role" class="icon default-icon"
+                      >help_outline</mat-icon
+                    >
+                  </span>
                 </div>
 
-                <div class="user-right">
-                  <div class="role-container-address">
-                    <span class="thin-role">Street </span>
-                    <span class="birthdate">
-                      {{ user.street || "No street provided" }}</span
-                    >
-                  </div>
+                <div class="role-container">
+                  <span class="thin-role">Birth Date</span>
 
-                  <div class="role-container-address">
-                    <span class="thin-role">City </span>
-                    <span class="birthdate">
-                      {{ user.zipCode }}
-                      {{ user.city || "No city provided" }}</span
-                    >
-                  </div>
+                  <span class="birthdate"
+                    >{{
+                      user.birthDate
+                        ? (user.birthDate | date : "MMMM d, y")
+                        : "No birth date provided"
+                    }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="user-right">
+                <div class="role-container-address">
+                  <span class="thin-role">Street </span>
+                  <span class="birthdate">
+                    {{ user.street || "No street provided" }}</span
+                  >
                 </div>
 
-                <div class="user-rightest">
+                <div class="role-container-address">
+                  <span class="thin-role">City </span>
+                  <span class="birthdate">
+                    {{ user.zipCode }}
+                    {{ user.city || "No city provided" }}</span
+                  >
+                </div>
+              </div>
 
+              <div class="user-rightest">
+                <div class="role-container">
+                  <span class="thin-role"> E-mail </span>
 
-                  <div class="role-container">
-                    <span class="thin-role"> E-mail </span>
-
-                    <a href="mailto:{{ user.email }}" class="email-link">
-                      {{ user.email }}
-                    </a>
-                  </div>
-
-                  <div class="role-container">
-                    <span class="thin-role">Phone </span>
-                    <a
-                      href="tel:{{ user.phone.toString() }}"
-                      class="email-link"
-                    >
-                      {{ user.phone || "No phone number provided" }}
-                    </a>
-                  </div>
-
-
-
-
-                 
+                  <a href="mailto:{{ user.email }}" class="email-link">
+                    {{ user.email }}
+                  </a>
                 </div>
 
-
-
+                <div class="role-container">
+                  <span class="thin-role">Phone </span>
+                  <a href="tel:{{ user.phone.toString() }}" class="email-link">
+                    {{ user.phone || "No phone number provided" }}
+                  </a>
+                </div>
               </div>
             </div>
-        
+          </div>
         </div>
 
         <div class="edit-container">
@@ -180,9 +169,8 @@
     </div>
 
     <mat-card class="user-events">
-    
-        <h1 class="upcoming-h1">Upcoming Events for {{ user.firstName }}</h1>
-      
+      <h1 class="upcoming-h1">Upcoming Events for {{ user.firstName }}</h1>
+
       <div class="events-wrapper-user" *ngIf="userEvents.length > 0">
         <div *ngFor="let event of userEvents" class="event-item-user">
           <h3>{{ event.type }}</h3>

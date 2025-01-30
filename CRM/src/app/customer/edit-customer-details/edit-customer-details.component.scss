@@ -246,3 +246,19 @@ textarea {
 .mat-mdc-text-field-wrapper { 
   color: white !important;
 }
+
+
+@media (max-width: 550px) {  
+  .zip-city {
+    flex-direction: column;
+  }
+  
+  .half-width-margin {
+    margin-right: 0px;
+    width: 100%;
+  }
+  
+  .half-width {
+    width: 100%;
+  }
+  }
