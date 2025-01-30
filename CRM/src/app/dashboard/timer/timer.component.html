@@ -1,60 +1,58 @@
 <div class="world-clock">
-    <div class="time-zone" [class]="animationState">
-      <h3>{{ currentZoneName }}</h3>
-      <div class="time-display">
-        <p class="time">
-          <span class="hours">{{ hours }}</span>:
-          <span class="minutes">{{ minutes }}</span>:
-          <span class="seconds">{{ seconds }}</span>
-          
-        </p>
+  <div class="time-zone" [class]="animationState">
+    <h3>{{ currentZoneName }}</h3>
+    <div class="time-display">
+      <p class="time">
+        <span class="hours">{{ hours }}</span
+        >: <span class="minutes">{{ minutes }}</span
+        >:
+        <span class="seconds">{{ seconds }}</span>
+      </p>
 
-        <span class="period">{{ period }}</span>
-        
-      </div>
-      <p class="date">{{ currentDate }}</p>
+      <span class="period">{{ period }}</span>
     </div>
+    <p class="date">{{ currentDate }}</p>
   </div>
-  
-  <div class="arrows-container">
-    <button (click)="previousZone()" class="arrow">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="40"
-        height="40"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-    </button>
-  
-    <div class="indicator">
-      <span
-        *ngFor="let zone of timeZones; let i = index"
-        [class.active]="i === currentIndex"
-        class="dot"
-      ></span>
-    </div>
-  
-    <button (click)="nextZone()" class="arrow">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="40"
-        height="40"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-    </button>
+</div>
+
+<div class="arrows-container">
+  <button (click)="previousZone()" class="arrow">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="40"
+      height="40"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="white"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
+
+  <div class="indicator">
+    <span
+      *ngFor="let zone of timeZones; let i = index"
+      [class.active]="i === currentIndex"
+      class="dot"
+    ></span>
   </div>
-  
+
+  <button (click)="nextZone()" class="arrow">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="40"
+      height="40"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="white"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </button>
+</div>

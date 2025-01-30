@@ -1,75 +1,73 @@
 .mat-mdc-dialog-container .mdc-dialog__surface {
-    background-color: rgba(49, 49, 49, 0.6) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    backdrop-filter: blur(20px) !important;
-    box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
-height: 250px !important;
-display: flex !important;
-justify-content: center !important;
-align-items: center !important;
-padding: 20px !important;
+  background-color: rgba(49, 49, 49, 0.6) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
+  height: 250px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 20px !important;
 
-    h2 {
-        color: white;
-    }
-
-    p {
-        color: white;
-        text-align: center;
-    }
-
-    strong {
-        color: white;
-        text-align: center;
-    }
+  h2 {
+    color: white;
   }
 
+  p {
+    color: white;
+    text-align: center;
+  }
 
-  .cdk-overlay-dark-backdrop {
-    background: rgba(0, 0, 0, 0.32);
-    backdrop-filter: blur(10px); /* Unscharf machen */
-    -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+  strong {
+    color: white;
+    text-align: center;
+  }
 }
 
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(10px); /* Unscharf machen */
+  -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+}
 
 .delete-dialog {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
-    h2 {
-        color: white;
-    }
+  h2 {
+    color: white;
+  }
 }
-
-
 
 /* Standard-Stile */
 .no-button {
-    background-color: transparent; /* Kein Hintergrund */
-    color: white;
-  
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2); /* Heller Hintergrund beim Hover */
-    }
-  }
-  
-  .yes-button {
-   
-    background-color: transparent; /* Kein Hintergrund */
-    color: white;
-  
-    &:hover {
-        background-color: rgba(202, 94, 94, 0.2);/* Helleres Rot beim Hover */
-    }
-  }
-  
-  /* Allgemeiner Button-Stil */
-  .mat-mdc-button {
-    .mdc-button__label {
-      color: white; /* Textfarbe weiß */
-    }
-  }
-  
+  background-color: transparent; /* Kein Hintergrund */
+  color: white;
 
+  &:hover {
+    background-color: rgba(
+      255,
+      255,
+      255,
+      0.2
+    ); /* Heller Hintergrund beim Hover */
+  }
+}
+
+.yes-button {
+  background-color: transparent; /* Kein Hintergrund */
+  color: white;
+
+  &:hover {
+    background-color: rgba(202, 94, 94, 0.2); /* Helleres Rot beim Hover */
+  }
+}
+
+/* Allgemeiner Button-Stil */
+.mat-mdc-button {
+  .mdc-button__label {
+    color: white; /* Textfarbe weiß */
+  }
+}

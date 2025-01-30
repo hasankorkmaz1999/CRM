@@ -1,127 +1,104 @@
 .upload-container {
-    margin-top: 24px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 20px !important;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px !important;
 }
-
-
 
 .mat-dialog-content {
-    padding: 0 0 !important;
-    position: relative;
-  
+  padding: 0 0 !important;
+  position: relative;
+
   margin-top: 48px;
-
- 
-
 }
 
-
 mat-mdc-dialog-content {
-    padding: 0 0 !important;
+  padding: 0 0 !important;
 }
 
 .progress-bar-container {
-    position: absolute;
-    top: -20px; /* Direkt oben */
-    left: 0;
-    width: 100%; /* Fülle die gesamte Breite */
-    z-index: 100; /* Stelle sicher, dass es über allem liegt */
-    height: 4px; /* Schlankere Höhe */
-    background: none; /* Debugging-Farbe entfernen */
-    border: none; /* Rahmen entfernen */
+  position: absolute;
+  top: -20px; /* Direkt oben */
+  left: 0;
+  width: 100%; /* Fülle die gesamte Breite */
+  z-index: 100; /* Stelle sicher, dass es über allem liegt */
+  height: 4px; /* Schlankere Höhe */
+  background: none; /* Debugging-Farbe entfernen */
+  border: none; /* Rahmen entfernen */
 }
 
-
-
 .mdc-dialog__surface {
-    background-color: rgba(84, 82, 82, 0.06) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    backdrop-filter: blur(20px) !important;
-    box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
+  background-color: rgba(84, 82, 82, 0.06) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: 20px 20px 22px rgba(0, 0, 0, 0.2) !important;
 }
 
 .file-button {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
-
 
 .ng-star-inserted {
-    margin-bottom: 20px;
-    margin-top: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
-
 
 .image-wrapper {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
-    overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
-    background-color: #f0f0f0; /* Hintergrundfarbe */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
+  overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
+  background-color: #f0f0f0; /* Hintergrundfarbe */
 }
-
 
 .uploaded-picture {
-    /* Verschiebt den Fokus nach oben */
+  /* Verschiebt den Fokus nach oben */
 }
-
-
-
 
 .preview-image {
-  
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
 }
 
 h3 {
-    text-align: center;
+  text-align: center;
 }
-
 
 .mat-dialog-content {
-  
 }
-
 
 .mat-mdc-dialog-container .mdc-dialog__title {
-    color: white !important;
+  color: white !important;
 }
-
 
 .cdk-overlay-dark-backdrop {
-    background: rgba(0, 0, 0, 0.32);
-    backdrop-filter: blur(10px); /* Unscharf machen */
-    -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(10px); /* Unscharf machen */
+  -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
 }
 
-
 .cancel-button {
-
-    .mdc-button__label{
-      color: red;
-      font-size: 20px; 
-    }
-   
+  .mdc-button__label {
+    color: red;
+    font-size: 20px;
   }
+}
 
 h3 {
-    color: white;
+  color: white;
 }
 
 .filename {
-    color: white;
+  color: white;
 }
 
-
 .buttonis {
-    .mdc-button__label{
-        color: rgb(255, 255, 255);
-        font-size: 16px; 
-      }
+  .mdc-button__label {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+  }
 }

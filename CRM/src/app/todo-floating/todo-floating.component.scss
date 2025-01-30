@@ -1,43 +1,419 @@
 .todo-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-todo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.floating-todo-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+
+  .floating-icon {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    overflow: visible;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 9px 5px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+
+    mat-icon {
+      font-size: 34px; /* Standardgröße des Icons */
+      color: white;
+      display: inline-flex;
+      align-items: center; /* Zentrierung des Inhalts */
+      justify-content: center; /* Zentrierung des Inhalts */
+      height: 100%; /* Füllt den Elterncontainer aus */
+      width: 100%; /* Füllt den Elterncontainer aus */
+      transition: font-size 0.2s ease; /* Animation für die Vergrößerung */
+    }
+
+    /* Hover-Effekt auf das mat-icon */
+    &:hover mat-icon {
+      font-size: 40px; /* Größe beim Hovern */
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(10px); /* Unscharf machen */
+  -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+  z-index: 150; /* Direkt unter der To-Do-Sektion */
+}
+
+.todos-section {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  width: 650px;
+  height: 880px;
+  z-index: 1001;
+  background-color: rgb(24, 24, 24);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+  border-radius: 30px;
+  overflow-x: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  opacity: 0; /* Unsichtbar */
+  transform: translateY(-100%); /* Start außerhalb des Viewports */
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  visibility: hidden; /* Unsichtbar, verhindert jedoch Interaktionen */
+}
+
+.todos-section.visible {
+  transform: translateY(0); /* In den Viewport gleiten */
+  opacity: 1;
+  visibility: visible; /* Sichtbar machen */
+}
+
+.todos-section.hidden {
+  transform: translateY(-100%); /* Aus dem Viewport gleiten */
+  opacity: 0;
+  visibility: hidden; /* Unsichtbar nach dem Herausgleiten */
+}
+
+.todo-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  h3 {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 0;
+    text-align: start;
+    font-family: "DM Sans", serif;
+  }
+}
+
+.textarea-container {
+  position: relative;
+  width: 100%;
+}
+
+.todo-textarea {
+  padding-right: 60px;
+  padding-left: 15px;
+  padding-top: 15px;
+  color: rgb(169, 169, 169);
+  overflow-y: auto;
+  height: 200px !important;
+  background-color: rgba(14, 14, 14, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
+  width: 100%; /* Füllt den verfügbaren Platz */
+  resize: none; /* Entfernt den Resize-Griff */
+  font-size: 18px;
+
+  line-height: 1.5; /* Verbessert die Lesbarkeit */
+  border: none;
+  border-radius: 14px; /* Optional: Abgerundete Ecken */
+  margin-bottom: 20px;
+  caret-color: white;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: rgba(14, 14, 14, 0.4);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.todo-item.new-todo {
+  animation: fadeIn 1s ease-in-out;
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.header-wrap {
+  display: flex;
+  margin-bottom: 30px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.description-wrapper {
+  padding: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 250px;
+  max-width: 400px;
+}
+
+.todo-descrip {
+  color: white;
+  font-size: 16px;
+  white-space: normal; /* Standard-Zeilenumbruch aktivieren */
+  word-break: break-word; /* Lange Wörter umbrechen */
+  overflow-wrap: break-word; /* Alternative für alte Browser */
+}
+
+.add-button-todo {
+  height: 30px;
+  width: 30px;
+  color: white;
+  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+}
+
+.add-todo-btn {
+  background-color: transparent; /* Primärfarbe */
+  border: none;
+  position: absolute;
+  right: 10px; /* Position des Buttons innerhalb der Textarea */
+  bottom: 30px;
+  transform: translateY(-50%);
+
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Sanfter Übergang */
+  box-shadow: none; /* Standardzustand ohne Schatten */
+}
+
+.add-todo-btn:disabled {
+  opacity: 0.1;
+}
+
+.add-button {
+  font-size: 24px;
+  color: white;
+  transition: transform 0.3s ease; /* Sanfter Übergang beim Skalieren */
+}
+
+.add-todo-btn:hover .add-button {
+  transform: scale(1.1); /* Vergrößert das Plus-Zeichen beim Hover */
+}
+
+.todo-list {
+  height: 100%;
+  width: 100%;
+
+  margin: 0;
+
+  .custom-checkbox {
+    width: 20px; /* Größe der Checkbox */
+    height: 20px;
+    appearance: none; /* Entfernt das standardmäßige Browser-Styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin-right: 20px;
+    border: 2px solid #ffffff; /* Standardfarbe */
+    border-radius: 4px; /* Abgerundete Ecken */
+    background-color: transparent; /* Transparenter Hintergrund */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    vertical-align: middle;
   }
 
+  .custom-checkbox:checked {
+    border-color: #68d391; /* Farbe der Checkbox bei Auswahl */
+  }
+}
+.todo-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 830px;
+  margin-bottom: 40px;
+  overflow-y: auto;
+  padding: 10px;
+}
 
- 
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  
-  
-  .header-todo {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+.custom-checkbox:checked::after {
+  content: "✔"; /* Haken-Symbol */
+  display: block;
+  font-size: 18px;
+  color: white; /* Farbe des Haken-Symbols */
+  text-align: center;
+  line-height: 18px; /* Vertikale Zentrierung des Haken-Symbols */
+}
+
+.delete-btn {
+  background-color: transparent;
+  border: none;
+  color: white;
+  transition: color 0.3s ease;
+  &:hover {
+    color: rgb(255, 0, 0);
+  }
+}
+
+.li-right {
+  width: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Für WebKit-basierte Browser */
+
+.progress-div {
+  width: 100%;
+  .progress-text {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 0;
+    color: white;
+    font-size: 18px;
+  }
+}
+
+.priority-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  h2 {
+    margin-bottom: 0;
+    color: white;
+  }
+}
+
+.priority-button {
+  border: none;
+  padding: 10px;
+
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.priority-button:hover {
+  transform: scale(1.2);
+}
+
+.priority-button.selected {
+  /* Green for selected */
+  border: none;
+}
+
+.priority-button.low.selected {
+  border-color: #98de4c; /* Green for high priority */
+  filter: drop-shadow(0 0 15px #98de4c) drop-shadow(0 0 15px #98de4c);
+}
+
+.priority-button.medium.selected {
+  border-color: #ff9800;
+  filter: drop-shadow(0 0 15px #ff9800) drop-shadow(0 0 15px #ff9800);
+}
+
+.priority-button.high.selected {
+  border-color: #f44336;
+  filter: drop-shadow(0 0 18px #f44336) drop-shadow(0 0 18px #f44336); /* Red for low priority */
+}
+
+.task-div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.close-button {
+  color: white;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  transition: 250ms ease-in-out;
+
+  &:hover {
+    transform: scale(1.2);
+    color: red;
+  }
+}
+
+@media (max-width: 690px) {
+  .todos-section {
+    width: 300px;
+    right: 10px;
   }
 
+  .priority-buttons {
+    h2 {
+      font-size: 16px;
+    }
+  }
+}
 
-
+@media (max-width: 460px) {
   .floating-todo-container {
     position: fixed;
-    top: 20px;
+    top: 30px;
     right: 20px;
     z-index: 1000;
-  
+
     .floating-icon {
-      
       background-color: transparent;
       border: none;
       border-radius: 50%;
-      width: 60px;
-      height: 60px;
+      width: 40px;
+      height: 40px;
       overflow: visible;
       display: flex;
       justify-content: center;
       align-items: center;
       box-shadow: 0px 0px 9px 5px rgba(255, 255, 255, 0.2);
       cursor: pointer;
-  
+
       mat-icon {
-        font-size: 34px; /* Standardgröße des Icons */
+        font-size: 24px; /* Standardgröße des Icons */
         color: white;
         display: inline-flex;
         align-items: center; /* Zentrierung des Inhalts */
@@ -46,477 +422,36 @@
         width: 100%; /* Füllt den Elterncontainer aus */
         transition: font-size 0.2s ease; /* Animation für die Vergrößerung */
       }
-    
+
       /* Hover-Effekt auf das mat-icon */
       &:hover mat-icon {
-        font-size: 40px; /* Größe beim Hovern */
+        font-size: 30px; /* Größe beim Hovern */
       }
     }
-
+  }
 }
 
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.32);
-    backdrop-filter: blur(10px); /* Unscharf machen */
-    -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
-    z-index: 150; /* Direkt unter der To-Do-Sektion */
-  }
-  
-  
+@media (max-height: 1000px) {
   .todos-section {
-    position: fixed;
-    top: 90px;
-    right: 20px;
-    width: 650px;
-    height: 880px;
-    z-index: 1001; 
-    background-color: rgb(24, 24, 24);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
-    border-radius: 30px;
-  overflow-x: hidden;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    
-    align-items: center;
-    opacity: 0; /* Unsichtbar */
-    transform: translateY(-100%); /* Start außerhalb des Viewports */
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    visibility: hidden; /* Unsichtbar, verhindert jedoch Interaktionen */
+    height: 80vh;
   }
-  
-  .todos-section.visible {
-    transform: translateY(0); /* In den Viewport gleiten */
-    opacity: 1;
-    visibility: visible; /* Sichtbar machen */
-  }
-  
-  .todos-section.hidden {
-    transform: translateY(-100%); /* Aus dem Viewport gleiten */
-    opacity: 0;
-    visibility: hidden; /* Unsichtbar nach dem Herausgleiten */
-  }
+}
 
-
-
-      .todo-header {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        
-    
-        
-        
-    
-        h3 {
-          color: white;
-          font-size: 24px;
-         margin-bottom: 0;
-          text-align: start;
-          font-family: "DM Sans", serif;
-        }
-      }
-  
-  
-  
-  .textarea-container {
-    position: relative;
-    width: 100%;
-  }
-  
+@media (max-height: 750px) {
   .todo-textarea {
-    padding-right: 60px;
-    padding-left: 15px;
-    padding-top: 15px;
-    color: rgb(169, 169, 169);
-    overflow-y: auto;
-    height: 200px !important;
-    background-color: rgba(14, 14, 14, 0.4);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
-    width: 100%; /* Füllt den verfügbaren Platz */
-    resize: none; /* Entfernt den Resize-Griff */
-    font-size: 18px;
-   
-    line-height: 1.5; /* Verbessert die Lesbarkeit */
-    border: none;
-    border-radius: 14px; /* Optional: Abgerundete Ecken */
-   margin-bottom: 20px;
-    caret-color: white;
-  
-    &:focus {
-      outline: none;
-    }
+    height: 150px !important;
+    margin-bottom: 10px;
   }
-  
-  
-  .todo-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;  
-    margin-bottom: 20px;
-    background-color: rgba(14, 14, 14, 0.4);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
-    padding: 10px;
-    border-radius: 10px;
-    width: 100%;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .todo-item.new-todo {
-    animation: fadeIn 1s ease-in-out;
-    animation-fill-mode: forwards;
-    will-change: transform, opacity;
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 1;
-     
-    }
-    50% {
-      opacity: 0.1;
-     
-    }
-    100% {
-      opacity: 1;
-     
-    }
-  }
-  
- 
 
   .header-wrap {
-    display: flex;
-  margin-bottom: 30px;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+    margin-bottom: 10px;
   }
-  
-  
-  
-  
-  .description-wrapper {
-    padding: 10px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: 250px;
-    max-width: 400px;
-  }
-  
-  .todo-descrip {
-    color: white;
-    font-size: 16px;
-    white-space: normal; /* Standard-Zeilenumbruch aktivieren */
-    word-break: break-word; /* Lange Wörter umbrechen */
-    overflow-wrap: break-word; /* Alternative für alte Browser */
-   
-  }
-  
-  
-  
-  .add-button-todo {
-    height: 30px;
-    width: 30px;
-    color: white;
-    border: 1px solid white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 30px;
-  }
-  
-  .add-todo-btn {
-    background-color: transparent; /* Primärfarbe */
-    border: none;
-    position: absolute;
-    right: 10px; /* Position des Buttons innerhalb der Textarea */
-    bottom: 30px;
-    transform: translateY(-50%);
-   
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease; /* Sanfter Übergang */
-    box-shadow: none; /* Standardzustand ohne Schatten */
-  }
-  
-  .add-todo-btn:disabled {
-    opacity: 0.1;
-  }
-  
-  .add-button {
-    font-size: 24px;
-    color: white;
-    transition: transform 0.3s ease; /* Sanfter Übergang beim Skalieren */
-  }
-  
-  .add-todo-btn:hover .add-button {
-    transform: scale(1.1); /* Vergrößert das Plus-Zeichen beim Hover */
-  }
-  
-  .todo-list {
-    height: 100%;
-    width: 100%;
-   
-    margin: 0;
-  
-    
-    
-  
-    .custom-checkbox {
-      width: 20px; /* Größe der Checkbox */
-      height: 20px;
-      appearance: none; /* Entfernt das standardmäßige Browser-Styling */
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      margin-right: 20px;
-      border: 2px solid #ffffff; /* Standardfarbe */
-      border-radius: 4px; /* Abgerundete Ecken */
-      background-color: transparent; /* Transparenter Hintergrund */
-      cursor: pointer;
-      transition: all 0.3s ease;
-      vertical-align: middle;
-    }
-  
-    .custom-checkbox:checked {
-      border-color: #68d391; /* Farbe der Checkbox bei Auswahl */
-    }
-  }
-  .todo-wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 830px;
-    margin-bottom: 40px;
-    overflow-y: auto;
-    padding: 10px;
-    }
-  
-  .wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .custom-checkbox:checked::after {
-    content: "✔"; /* Haken-Symbol */
-    display: block;
-    font-size: 18px;
-    color: white; /* Farbe des Haken-Symbols */
-    text-align: center;
-    line-height: 18px; /* Vertikale Zentrierung des Haken-Symbols */
-  }
-  
-  .delete-btn {
-    background-color: transparent;
-    border: none;
-    color: white;
-    transition: color 0.3s ease;
-    &:hover {
-      color: rgb(255, 0, 0);
-    }
-  }
-  
-  .li-right {
-    width: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
- 
-  
-  /* Für WebKit-basierte Browser */
- 
-  .progress-div {
-    width: 100%;
-    .progress-text {
-      text-align: center;
-      margin-top: 20px;
-      margin-bottom: 0;
-      color: white;
-      font-size: 18px;
-    }
-  }
-
-
 
   .priority-buttons {
     display: flex;
     flex-direction: column;
-  margin-left: 20px;
-    gap: 10px;
-    margin-bottom: 10px;
-  
-    h2 {
-      margin-bottom: 0;
-      color: white;
-    }
-  }
-  
-  .priority-button {
-   border: none;
-    padding: 10px;
-   
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: transparent;
-    color: white;
-    transition: all 0.3s ease;
-  }
-  
-  .priority-button:hover {
-   transform: scale(1.2);
-  }
-  
-  .priority-button.selected {
-    /* Green for selected */
-   border: none;
-  }
-  
-  .priority-button.low.selected {
-    border-color: #98DE4C; /* Green for high priority */
-    filter: drop-shadow(0 0 15px #98DE4C) drop-shadow(0 0 15px #98DE4C) ;
-  }
-  
-  .priority-button.medium.selected {
-    border-color: #ff9800;
-    filter: drop-shadow(0 0 15px #ff9800) drop-shadow(0 0 15px #ff9800);
-  }
-  
-  
-  .priority-button.high.selected {
-    border-color: #f44336;
-    filter: drop-shadow(0 0 18px #f44336)  drop-shadow(0 0 18px #f44336); /* Red for low priority */
-   
-  }
-  
-  
-  .task-div {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  
-  }
-  
-
-  .close-button {
-    color: white;
-     background-color: transparent;
-     border: none;
-     font-size: 20px;
-     transition: 250ms ease-in-out;
-    
-     &:hover {
-      transform: scale(1.2);
-      color: red;
-     }
-   }
-  
-  
-
-   @media (max-width: 690px) { 
-    .todos-section  {
-width: 300px;
-right: 10px;
-    }
-
-    .priority-buttons {
-        h2 {
-            font-size: 16px;
-        }
-    }
-   }
-
-
-   @media (max-width: 460px) {
-    .floating-todo-container {
-        position: fixed;
-        top: 30px;
-        right: 20px;
-        z-index: 1000;
-      
-        .floating-icon {
-          
-          background-color: transparent;
-          border: none;
-          border-radius: 50%;
-          width: 40px;
-          height: 40px;
-          overflow: visible;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          box-shadow: 0px 0px 9px 5px rgba(255, 255, 255, 0.2);
-          cursor: pointer;
-      
-          mat-icon {
-            font-size: 24px; /* Standardgröße des Icons */
-            color: white;
-            display: inline-flex;
-            align-items: center; /* Zentrierung des Inhalts */
-            justify-content: center; /* Zentrierung des Inhalts */
-            height: 100%; /* Füllt den Elterncontainer aus */
-            width: 100%; /* Füllt den Elterncontainer aus */
-            transition: font-size 0.2s ease; /* Animation für die Vergrößerung */
-          }
-        
-          /* Hover-Effekt auf das mat-icon */
-          &:hover mat-icon {
-            font-size: 30px; /* Größe beim Hovern */
-          }
-        }
-    
-    }
-   }
-
-
-   @media (max-height: 1000px) { 
-    .todos-section  {
-     height: 80vh;
-    }
-   }
-
-   @media (max-height: 750px) { 
-    .todo-textarea {
-    height: 150px !important;
-    margin-bottom: 10px;
-    }
-
-    .header-wrap {
-        margin-bottom: 10px;
-    }
-
-    .priority-buttons {
-        display: flex
-;
-    flex-direction: column;
     margin-left: 20px;
     gap: 0px;
     margin-bottom: 0px;
-    }
-   }
-
-
-
-  
-
-
-
-
-
-  
-  
-  
-  
-  
-  
-  
+  }
+}

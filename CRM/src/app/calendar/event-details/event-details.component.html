@@ -1,101 +1,103 @@
 <div class="event-container">
-
-
- 
   <div class="header">
-  <h1 class="h1-data-type">{{ data.type }}</h1>
-   <button class="close-button" (click)="close()">
-    &#10006;
-  </button> 
-</div>
-
-<div class="events-wrapper"> 
-
-<div class="event-details">
-  <div class="event-row">
-   
-    <div class="details">
-      <div class="icon-wrapper">
-        <mat-icon>event</mat-icon>
-      </div>
-      <p>{{ data.date | date: 'MMMM d, y' }}</p>
-    </div>
+    <h1 class="h1-data-type">{{ data.type }}</h1>
+    <button class="close-button" (click)="close()">&#10006;</button>
   </div>
 
-  <div class="event-row">
-   
-    <div class="details">
-      <div class="icon-wrapper">
-        <mat-icon>schedule</mat-icon>
+  <div class="events-wrapper">
+    <div class="event-details">
+      <div class="event-row">
+        <div class="details">
+          <div class="icon-wrapper">
+            <mat-icon>event</mat-icon>
+          </div>
+          <p>{{ data.date | date : "MMMM d, y" }}</p>
+        </div>
       </div>
-      <p>{{ data.time }}</p>
-    </div>
-  </div>
 
-  <div class="event-row">
-   
-    <div class="details-descrip">
-      <div class="icon-wrapper">
-        <mat-icon>description</mat-icon>
+      <div class="event-row">
+        <div class="details">
+          <div class="icon-wrapper">
+            <mat-icon>schedule</mat-icon>
+          </div>
+          <p>{{ data.time }}</p>
+        </div>
       </div>
-      <p class="descripi">{{ data.description || 'No description provided' }}</p>
-    </div>
-  </div>
 
-  <div class="event-row">
-   
-    <div class="details-user-participants">
-      <span class="label">Participants:</span>
-      <div *ngIf="data.users?.length > 0" class="participants-list">
-        <div *ngFor="let user of data.users" class="participant-item">
-          <div class="participant-details">
-            <div class="image-wrapper">
-              <img [src]="user.profilePicture" class="profile-picture" alt="Profile Picture" />
+      <div class="event-row">
+        <div class="details-descrip">
+          <div class="icon-wrapper">
+            <mat-icon>description</mat-icon>
+          </div>
+          <p class="descripi">
+            {{ data.description || "No description provided" }}
+          </p>
+        </div>
+      </div>
+
+      <div class="event-row">
+        <div class="details-user-participants">
+          <span class="label">Participants:</span>
+          <div *ngIf="data.users?.length > 0" class="participants-list">
+            <div *ngFor="let user of data.users" class="participant-item">
+              <div class="participant-details">
+                <div class="image-wrapper">
+                  <img
+                    [src]="user.profilePicture"
+                    class="profile-picture"
+                    alt="Profile Picture"
+                  />
+                </div>
+                <span class="participant-name">{{ user.name }}</span>
+              </div>
             </div>
-            <span class="participant-name">{{ user.name }}</span>
           </div>
         </div>
       </div>
-     
+
+      <div class="event-row">
+        <div class="details-user">
+          <span class="label">Created By:</span>
+
+          <div class="participant-details">
+            <div class="image-wrapper">
+              <img
+                [src]="data.createdBy.profilePicture"
+                class="profile-picture"
+                alt="Creator Profile Picture"
+              />
+            </div>
+            <span class="participant-name">{{ data.createdBy.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <div
+        class="two-buttons"
+        *ngIf="data.source !== 'dashboard' && data.source !== 'logs'"
+      >
+        <button
+          (click)="editEvent()"
+          mat-icon-button
+          color="primary"
+          matTooltip="Edit"
+          matTooltipPosition="above"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button
+          (click)="deleteEvent()"
+          mat-icon-button
+          color="warn"
+          matTooltip="Delete"
+          matTooltipPosition="above"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
-  
-  <div class="event-row">
-    <div class="details-user">
-      <span class="label">Created By:</span>
-
-
-      <div class="participant-details">
-
-      <div class="image-wrapper">
-      <img [src]="data.createdBy.profilePicture" class="profile-picture" alt="Creator Profile Picture" />
-    </div>
-    <span class="participant-name">{{ data.createdBy.name }}</span>
-  </div>
-      
-    </div>
-  </div>
-  
-</div>
-
-
-
-  <div class="buttons">
-   
-
-    <div class="two-buttons" *ngIf="data.source !== 'dashboard' && data.source !== 'logs'">
-      <button (click)="editEvent()" mat-icon-button color="primary" matTooltip="Edit" matTooltipPosition="above">
-        <mat-icon>edit</mat-icon>
-      </button>
-    
-      <button (click)="deleteEvent()" mat-icon-button color="warn" matTooltip="Delete" matTooltipPosition="above">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-    
-
-</div>
-
-
-  
 </div>

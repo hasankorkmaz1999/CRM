@@ -1,7 +1,5 @@
-import { Component, OnDestroy, OnInit} from '@angular/core';
-
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'app-timer',
@@ -9,7 +7,6 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss'],
-  
 })
 export class TimerComponent implements OnInit, OnDestroy {
   timeZones = [
@@ -25,8 +22,8 @@ export class TimerComponent implements OnInit, OnDestroy {
   seconds: string = '';
   period: string = '';
   currentDate: string = '';
-  animationState: string = ''; // Dynamisch festlegen, ob 'entering' oder 'exiting'
-  animationDirection: string = ''; // 'left' oder 'right'
+  animationState: string = '';
+  animationDirection: string = '';
   interval: any;
 
   ngOnInit() {
@@ -50,7 +47,6 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.minutes = minutes;
     this.seconds = secondsWithPeriod.split(' ')[0];
     this.period = secondsWithPeriod.split(' ')[1];
-
     this.currentDate = now.toLocaleDateString('en-US', {
       timeZone: this.timeZones[this.currentIndex].timeZone,
       weekday: 'long',
@@ -58,7 +54,6 @@ export class TimerComponent implements OnInit, OnDestroy {
       month: 'long',
       day: 'numeric',
     });
-
     this.currentZoneName = this.timeZones[this.currentIndex].name;
   }
 
@@ -74,7 +69,8 @@ export class TimerComponent implements OnInit, OnDestroy {
   previousZone() {
     this.triggerAnimation('exiting', 'left');
     setTimeout(() => {
-      this.currentIndex = (this.currentIndex - 1 + this.timeZones.length) % this.timeZones.length;
+      this.currentIndex =
+        (this.currentIndex - 1 + this.timeZones.length) % this.timeZones.length;
       this.triggerAnimation('entering', 'left');
       this.updateTime();
     }, 200);
@@ -83,7 +79,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   triggerAnimation(state: string, direction: string) {
     this.animationState = `${state} ${direction}`;
     setTimeout(() => {
-      this.animationState = ''; // Animation zurücksetzen
+      this.animationState = '';
     }, 200);
   }
 }

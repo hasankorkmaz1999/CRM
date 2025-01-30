@@ -1,40 +1,69 @@
-
-
-
 <div class="progress-bar-container">
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 </div>
 
-
-
 <mat-dialog-content class="upload-container">
- 
   <div class="upload-container">
     <h2 mat-dialog-title>Upload Profile Picture</h2>
 
-    <input class="input" type="file" (change)="onFileSelected($event)" #fileInput hidden />
+    <input
+      class="input"
+      type="file"
+      (change)="onFileSelected($event)"
+      #fileInput
+      hidden
+    />
 
     <!-- Benutzerdefinierte Datei-Auswahl -->
-    <button class="file-button" color="primary" mat-button (click)="fileInput.click()">Choose Picture</button>
-    <span class="filename" *ngIf="selectedFileName">{{ selectedFileName }}</span>
+    <button
+      class="file-button"
+      color="primary"
+      mat-button
+      (click)="fileInput.click()"
+    >
+      Choose Picture
+    </button>
+    <span class="filename" *ngIf="selectedFileName">{{
+      selectedFileName
+    }}</span>
 
     <!-- Reset-Button -->
-    <button *ngIf="selectedFileName" class="reset-button" mat-button color="warn" (click)="resetSelection()">Reset Selection</button>
+    <button
+      *ngIf="selectedFileName"
+      class="reset-button"
+      mat-button
+      color="warn"
+      (click)="resetSelection()"
+    >
+      Reset Selection
+    </button>
 
     <div *ngIf="previewUrl">
       <h3>Preview:</h3>
 
       <div class="image-wrapper">
-
-      <img class="preview-image" [src]="previewUrl" alt="Preview" width="200" />
-
-    </div>
+        <img
+          class="preview-image"
+          [src]="previewUrl"
+          alt="Preview"
+          width="200"
+        />
+      </div>
     </div>
 
     <mat-dialog-actions>
-      <button  class="buttonis" [disabled]="loading" mat-button mat-dialog-close>Cancel</button>
+      <button class="buttonis" [disabled]="loading" mat-button mat-dialog-close>
+        Cancel
+      </button>
 
-      <button class="buttonis" [disabled]="loading || !selectedFileName" mat-button (click)="uploadPicture()">Upload</button>
+      <button
+        class="buttonis"
+        [disabled]="loading || !selectedFileName"
+        mat-button
+        (click)="uploadPicture()"
+      >
+        Upload
+      </button>
     </mat-dialog-actions>
   </div>
 </mat-dialog-content>

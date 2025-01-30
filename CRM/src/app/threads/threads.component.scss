@@ -1,46 +1,39 @@
 .thread-container {
-    padding: 46px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #0f0f0f;
-    animation: fadeIn 0.5s ease-out;
-    animation-fill-mode: forwards;
-    will-change: transform, opacity;
-   max-width: 1920px;
-    h3 {
-      border-top: 1px solid rgb(170, 168, 168, 0.3);
-        color: white;
-        text-align: center;
-        padding-top: 20px;
-        font-size: 20px;
-
-    }
-
-    p {
-        color: white;
-    }
-
-    small {
-        color: white;
-        white-space: nowrap;
-    }
+  padding: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #0f0f0f;
+  animation: fadeIn 0.5s ease-out;
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+  max-width: 1920px;
+  h3 {
+    border-top: 1px solid rgb(170, 168, 168, 0.3);
+    color: white;
+    text-align: center;
+    padding-top: 20px;
+    font-size: 20px;
   }
 
+  p {
+    color: white;
+  }
 
-  .createdat-span {
+  small {
     color: white;
     white-space: nowrap;
-    position: absolute;
-    right: 10px;
-    font-size: 16px;
-    top: 10px;
   }
+}
 
- 
-  
-
-
+.createdat-span {
+  color: white;
+  white-space: nowrap;
+  position: absolute;
+  right: 10px;
+  font-size: 16px;
+  top: 10px;
+}
 
 @keyframes fadeIn {
   0% {
@@ -54,167 +47,135 @@
   }
 }
 
-
-
-
-
 .post-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-
-  
-  .create-thread {
-    position: relative;
-    overflow: hidden;
-    padding: 20px;
-   margin-top: 20px;
-    margin-bottom: 40px;
-    width: 60%;
+.create-thread {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(88, 88, 88, 0.06) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  border-radius: 20px;
+  form {
     display: flex;
     flex-direction: column;
-    background-color: rgba(88, 88, 88, 0.06) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    backdrop-filter: blur(20px) !important;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-     border-radius: 20px;
-    form {
-        display: flex;
-        flex-direction: column;
-    }
   }
-
- 
-
-
-  .creater-thread {
-   
-    .announcement-textarea {
-      max-height: 500px;
-        color: rgb(169, 169, 169);
-        overflow-y: auto;
-        min-height: 150px;
-        background-color: transparent;
-        width: 100%; /* Füllt den verfügbaren Platz */
-        resize: none; /* Entfernt den Resize-Griff */
-        font-size: 18px;
-        padding: 10px;
-        line-height: 1.5; /* Verbessert die Lesbarkeit */
-       border: none;
-        border-radius: 4px; /* Optional: Abgerundete Ecken */
-        box-sizing: border-box;
-        caret-color: white; /* Padding und Border in Breite/Höhe einrechnen */
-      }
-
-      .announcement-textarea:focus {
-        outline: none;
-       
-       
-      }
-
-   
-  }
-
-
-  .progress-bar-container {
-    position: absolute;
-    top: 0px; /* Direkt oben */
-    left: 0;
-    width: 100%; /* Fülle die gesamte Breite */
-    z-index: 100; /* Stelle sicher, dass es über allem liegt */
-    height: 4px; /* Schlankere Höhe */
-    background: none; /* Debugging-Farbe entfernen */
-    border: none; /* Rahmen entfernen */
 }
 
-
-
-
-
-  .user {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-
-    small {
-        margin-bottom: 15px;
-    }
+.creater-thread {
+  .announcement-textarea {
+    max-height: 500px;
+    color: rgb(169, 169, 169);
+    overflow-y: auto;
+    min-height: 150px;
+    background-color: transparent;
+    width: 100%; /* Füllt den verfügbaren Platz */
+    resize: none; /* Entfernt den Resize-Griff */
+    font-size: 18px;
+    padding: 10px;
+    line-height: 1.5; /* Verbessert die Lesbarkeit */
+    border: none;
+    border-radius: 4px; /* Optional: Abgerundete Ecken */
+    box-sizing: border-box;
+    caret-color: white; /* Padding und Border in Breite/Höhe einrechnen */
   }
 
+  .announcement-textarea:focus {
+    outline: none;
+  }
+}
+
+.progress-bar-container {
+  position: absolute;
+  top: 0px; /* Direkt oben */
+  left: 0;
+  width: 100%; /* Fülle die gesamte Breite */
+  z-index: 100; /* Stelle sicher, dass es über allem liegt */
+  height: 4px; /* Schlankere Höhe */
+  background: none; /* Debugging-Farbe entfernen */
+  border: none; /* Rahmen entfernen */
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  small {
+    margin-bottom: 15px;
+  }
+}
 
 .post-button {
-    float: right;
+  float: right;
 
-    width: 50px;
-    margin-right: 20px ;
+  width: 50px;
+  margin-right: 20px;
 }
 
+.upload-icon-container {
+  margin-left: 10px;
 
-  .upload-icon-container {
-    margin-left: 10px;
-   
-    margin-top: 20px;
+  margin-top: 20px;
   display: flex;
   width: 100%;
   justify-content: space-between;
-    .mat-icon {
-     color: white;
-    }
-  }
-
-
-  .add-picture-button-thread {
-    background-color: transparent;
-    border: none;
-    width: 30px;
-  }
-  
-  .thread-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  
- 
-  
-
-  h1 {
+  .mat-icon {
     color: white;
   }
-
-  h2 {
-    color: white;
-    margin-bottom: 10px;
-    margin-left: 10px;
-  }
-
-
-  .comments-icon {
-    color: white;
-cursor: pointer;
-  }
-
-
- 
-
-
-  .thread-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-
-
-
-small {
-    font-size: 20px;
-    margin-bottom: 15px;
 }
 
-.image-wrapper {
+.add-picture-button-thread {
+  background-color: transparent;
+  border: none;
+  width: 30px;
+}
+
+.thread-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+h1 {
+  color: white;
+}
+
+h2 {
+  color: white;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.comments-icon {
+  color: white;
+  cursor: pointer;
+}
+
+.thread-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  small {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .image-wrapper {
     height: 50px;
     width: 50px;
     border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
@@ -222,138 +183,114 @@ small {
     background-color: #f0f0f0; /* Hintergrundfarbe */
     margin-right: 20px;
     margin-bottom: 20px;
-}
+  }
 
-
-    .profile-picture {
-       
-        width: 100%;
+  .profile-picture {
+    width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top;
-      }
   }
-
-
-  .thread-meta {
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-
-  .preview-image {
-    height: 300px;
-    width: 300px;
-    object-fit: contain; /* Zeigt das gesamte Bild an, ohne es zuzuschneiden */
-   
-    border-radius: 4px; /* Optional: Abgerundete Ecken */
-    background-color: transparent; /* Optional: Hintergrundfarbe für leere Bereiche */
 }
 
+.thread-meta {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
 
- 
-  
+.preview-image {
+  height: 300px;
+  width: 300px;
+  object-fit: contain; /* Zeigt das gesamte Bild an, ohne es zuzuschneiden */
 
- 
-  
-  .thread-item {
-    background-color: rgba(160, 160, 160, 0.06) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    backdrop-filter: blur(20px) !important;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-    padding: 20px;
-    width: 800px;
-    border-radius: 15px;
-    margin-bottom: 30px;
-  
-    transition: all 0.3s ease-in-out; /* Für sanfte Übergänge */
+  border-radius: 4px; /* Optional: Abgerundete Ecken */
+  background-color: transparent; /* Optional: Hintergrundfarbe für leere Bereiche */
+}
+
+.thread-item {
+  background-color: rgba(160, 160, 160, 0.06) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  padding: 20px;
+  width: 800px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+
+  transition: all 0.3s ease-in-out; /* Für sanfte Übergänge */
+}
+
+.thread-item.new-thread {
+  animation: slideInFromTop 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  animation-fill-mode: forwards; /* Bleibt im Endzustand */
+  will-change: transform, opacity;
+}
+
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-200px) scale(0.5); /* Start weit oben und kleiner */
+    opacity: 0;
   }
-  
-  
-  
-  
-  .thread-item.new-thread {
-    animation: slideInFromTop 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-    animation-fill-mode: forwards; /* Bleibt im Endzustand */
-    will-change: transform, opacity;
+  60% {
+    transform: translateY(-20px) scale(1.1); /* Kurz nach vorne (überziehen) */
+    opacity: 0.5;
   }
-  
-  @keyframes slideInFromTop {
-    0% {
-      transform: translateY(-200px) scale(0.5); /* Start weit oben und kleiner */
-      opacity: 0;
-    }
-    60% {
-      transform: translateY(-20px) scale(1.1); /* Kurz nach vorne (überziehen) */
-      opacity: 0.5;
-    }
-    100% {
-      transform: translateY(0) scale(1); /* Endzustand */
-      opacity: 1;
-    }
+  100% {
+    transform: translateY(0) scale(1); /* Endzustand */
+    opacity: 1;
   }
-  
-  
-  
-  
-  
+}
 
+.thread-descrip {
+  text-shadow: 0px 0px 10px rgba(200, 200, 200, 0.8);
+  font-size: 18px;
+  background-color: transparent;
+  border-radius: 10px;
+  padding: 10px;
+  max-height: 350px;
+  width: 100%;
+  margin-right: 20px;
+  overflow-y: auto;
+  word-break: break-word; /* Lange Wörter umbrechen */
+  white-space: normal;
+}
 
-  .thread-descrip {
-    text-shadow: 0px 0px 10px  rgba(200, 200, 200, 0.8);
-    font-size: 18px;
-    background-color: transparent;
-    border-radius: 10px;
-    padding: 10px;
-    max-height: 350px;
-    width: 100%;
-    margin-right: 20px;
-    overflow-y: auto;
-    word-break: break-word; /* Lange Wörter umbrechen */
-    white-space: normal;
-   
+.thread-inhalt {
+  background-color: rgba(15, 15, 15, 0.5);
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.8);
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 20px;
+}
 
+.uploaded-image {
+  height: 300px;
+  width: 300px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
   }
+}
 
+.file-preview {
+  padding: 10px;
+}
 
-  .thread-inhalt {
-    background-color: rgba(15, 15, 15, 0.5);
-    box-shadow: 0px 0px 5px 1px  rgba(0, 0, 0, 0.8);
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    padding: 20px;
-  }
-
-
-
-  .uploaded-image {
-    height: 300px;
-    width: 300px;
-    object-fit: contain;
-    cursor: pointer;
-    transition: 0.3s ease-in-out; 
-
-    &:hover {
-      transform: scale(1.0.5);
-    }
-  }
-
-
-  .file-preview {
-    padding: 10px;
-  }
-
-  .load-more-button {
-    padding: 15px;
+.load-more-button {
+  padding: 15px;
   background-color: rgba(255, 255, 255, 0.06);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-cursor: pointer;
+  cursor: pointer;
   border-radius: 8px;
   -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
   box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
@@ -361,141 +298,119 @@ cursor: pointer;
   color: white;
   border: none;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-  
-  .load-more-button:hover {
-    -webkit-box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8); /* Größerer & heller Schatten */
-    box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8);
-    transform: translateY(-3px); /* Leichtes Anheben */
-  }
-  
-
-
-
-  @media (max-width: 1700px) { 
-    .create-thread {
-      width: 820px;
-    }
-  }
-
-
-  @media (max-width: 870px) {  
-    .create-thread {
-      width: 100%;
-    }
-
-    .thread-item {
-      width: 100%;
-    }
-  }
-
-  @media (max-width: 780px) {  
-   
-    .uploaded-image {
-      width: 200px;
-      height: 200px;
-    }
-   
-  }
-
-
-  @media (max-width: 640px) {  
-   
-
-    .user {
-      margin-top: 30px;
-    }
-
-   
-
-    .file-preview {
-      width: 100px;
-    }
-
-    .preview-image {
-      width: 100px;
-      height: 200px;
-    }
-
-    .thread-descrip {
-
-    }
-
-    .uploaded-image {
-      width: 150px;
-      height: 200px;
-    }
-
-.thread-header {
-  small {
-    font-size: 16px;
-    color: white;
-    white-space: nowrap;
 }
 
-.image-wrapper{
-  width: 40px;
-  height: 40px;
-  margin-right: 5px;
-    }
+.load-more-button:hover {
+  -webkit-box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8); /* Größerer & heller Schatten */
+  box-shadow: 0px 0px 20px rgba(200, 200, 200, 0.8);
+  transform: translateY(-3px); /* Leichtes Anheben */
 }
 
+@media (max-width: 1700px) {
+  .create-thread {
+    width: 820px;
+  }
+}
+
+@media (max-width: 870px) {
+  .create-thread {
+    width: 100%;
   }
 
-  @media (max-width: 580px) {
-    .uploaded-image {
-      width: 100%;
-      height: 200px;
-    }
+  .thread-item {
+    width: 100%;
+  }
+}
 
-    .thread-descrip {
-      margin-right: 0;
-      margin-bottom: 20px;
-      width: 100%;
-    }
+@media (max-width: 780px) {
+  .uploaded-image {
+    width: 200px;
+    height: 200px;
+  }
+}
 
-    .thread-inhalt {
-      justify-content: center;
-      flex-direction: column;
-    } 
-
-    .create-thread {
-      padding: 10px;
-    }
-
-
-    .thread-container {
-      padding: 15px;
-    }
-
-    .thread-item {
-      padding: 10px;
-    }
-   
+@media (max-width: 640px) {
+  .user {
+    margin-top: 30px;
   }
 
+  .file-preview {
+    width: 100px;
+  }
 
-  @media (max-width: 440px) {  
+  .preview-image {
+    width: 100px;
+    height: 200px;
+  }
 
-    .thread-inhalt {
-      flex-direction: column;
-    } 
-   
-   .preview-image {
+  
+
+  .uploaded-image {
+    width: 150px;
+    height: 200px;
+  }
+
+  .thread-header {
+    small {
+      font-size: 16px;
+      color: white;
+      white-space: nowrap;
+    }
+
+    .image-wrapper {
+      width: 40px;
+      height: 40px;
+      margin-right: 5px;
+    }
+  }
+}
+
+@media (max-width: 580px) {
+  .uploaded-image {
+    width: 100%;
+    height: 200px;
+  }
+
+  .thread-descrip {
+    margin-right: 0;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .thread-inhalt {
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .create-thread {
+    padding: 10px;
+  }
+
+  .thread-container {
+    padding: 15px;
+  }
+
+  .thread-item {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 440px) {
+  .thread-inhalt {
+    flex-direction: column;
+  }
+
+  .preview-image {
     width: 80px;
-   }
+  }
 
-    h2 {
+  h2 {
+    font-size: 16px;
+  }
+
+  .creater-thread {
+    .announcement-textarea {
       font-size: 16px;
     }
-
-    .creater-thread {
-      .announcement-textarea {
-        font-size: 16px;
-      }
-    }
-
-    
-
-
   }
+}

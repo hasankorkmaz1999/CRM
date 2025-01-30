@@ -1,85 +1,77 @@
 .privacy-container {
-    padding: 46px;
-    animation: fadeIn 0.5s ease-out;
-    animation-fill-mode: forwards;
-    will-change: transform, opacity;
-    font-family: Arial, sans-serif;
-    
+  padding: 46px;
+  animation: fadeIn 0.5s ease-out;
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+  font-family: Arial, sans-serif;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0; /* Start völlig transparent */
   }
-  
-  
-  @keyframes fadeIn {
-    0% {
-      opacity: 0; /* Start völlig transparent */
-    }
-    50% {
-      opacity: 0.5; /* Halbtransparent in der Mitte */
-    }
-    100% {
-      opacity: 1; /* Vollständig sichtbar */
-    }
+  50% {
+    opacity: 0.5; /* Halbtransparent in der Mitte */
   }
+  100% {
+    opacity: 1; /* Vollständig sichtbar */
+  }
+}
 
 .header-pol {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 h1 {
-    font-size: 36px;
-    color: #ffffff;
+  font-size: 36px;
+  color: #ffffff;
 }
 
 h2 {
-    margin-top: 30px;
-   
-    font-size: 24px;
-    color: white;
+  margin-top: 30px;
+
+  font-size: 24px;
+  color: white;
 }
 
 h3 {
-
-    font-size: 16px;
-    color: white;
+  font-size: 16px;
+  color: white;
 }
 
 .spann {
-    font-size: 18px;
-    color: rgb(211, 211, 211);
-    margin-bottom: 30px !important;
+  font-size: 18px;
+  color: rgb(211, 211, 211);
+  margin-bottom: 30px !important;
 }
 
 p {
-    font-size: 16px;
-    color: #bbbbbb;
+  font-size: 16px;
+  color: #bbbbbb;
 }
 
-
 li {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: rgb(211, 211, 211);
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: rgb(211, 211, 211);
 }
 
 .back-button-privacy {
-   
-    height: 70px;
-   
-   margin-right: 30px;
-    color: #ffffff;
+  height: 70px;
 
-  
-    .large-icon {
-        
-        overflow: visible;
-      font-size: 40px; /* Standardgröße */
-      transition: transform 0.3s ease; /* Animierter Übergang */
-    }
-  
-    button:hover .large-icon {
-      transform: scale(1.5); /* Vergrößert das Icon beim Hover */
-    }
+  margin-right: 30px;
+  color: #ffffff;
+
+  .large-icon {
+    overflow: visible;
+    font-size: 40px; /* Standardgröße */
+    transition: transform 0.3s ease; /* Animierter Übergang */
   }
-  
+
+  button:hover .large-icon {
+    transform: scale(1.5); /* Vergrößert das Icon beim Hover */
+  }
+}

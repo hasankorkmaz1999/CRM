@@ -1,49 +1,42 @@
 <div class="customer-component">
-<div class="headercontainer">
-  <div class="button-margin">
-<div class="h1-customer">Customers</div>
+  <div class="headercontainer">
+    <div class="button-margin">
+      <div class="h1-customer">Customers</div>
 
-  <button
-    (click)="openAddDialog()"
-    class="add-customer-button"
-    mat-fab
-    color="primary"
-    matTooltip="Add customer"
-    matTooltipPosition="above"
-  >
-    <mat-icon>add</mat-icon>
-  </button>
-</div>
+      <button
+        (click)="openAddDialog()"
+        class="add-customer-button"
+        mat-fab
+        color="primary"
+        matTooltip="Add customer"
+        matTooltipPosition="above"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
 
-<div class="search-container">
- 
-    <input
-      id="search-input"
-      type="text"
-      class="search-input"
-      [(ngModel)]="searchQuery"
-      placeholder="Search customers by name"
-      (input)="filterCustomers()"
-    />
+    <div class="search-container">
+      <input
+        id="search-input"
+        type="text"
+        class="search-input"
+        [(ngModel)]="searchQuery"
+        placeholder="Search customers by name"
+        (input)="filterCustomers()"
+      />
+    </div>
   </div>
 
-</div>
-
-  
-
-  <!-- Kunden-Liste -->
   <div class="customer-list">
-    <!-- Kopfzeile -->
     <div class="header-row">
       <div class="status">Status</div>
-      <div> Name</div>
-  
+      <div>Name</div>
+
       <div class="email-c">E-mail</div>
       <div class="phone">Phone</div>
       <div>Actions</div>
     </div>
 
-    <!-- Kundenzeilen -->
     <div
       class="under-tr"
       *ngFor="let customer of filteredCustomers"
@@ -52,24 +45,21 @@
       <div class="status-column">
         <span class="status-circle status-{{ customer.status }}"></span>
       </div>
-      <div class="customer-stats">{{ customer.firstName }} {{ customer.lastName }}</div>
-    
+      <div class="customer-stats">
+        {{ customer.firstName }} {{ customer.lastName }}
+      </div>
+
       <div class="customer-stats-email-c">{{ customer.email }}</div>
       <div class="customer-stats-phone">{{ customer.phone }}</div>
       <div>
-        <!-- Stop Event-Bubbling hier -->
-        <button mat-icon-button color="warn" (click)="openDeleteDialog($event, customer)">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="openDeleteDialog($event, customer)"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </div>
   </div>
-
-
-  
-  <!-- Add Customer Button -->
-  
-
-
-
 </div>

@@ -1,142 +1,129 @@
 <div class="thread-container">
-    <h1>Infodesk</h1>
-  
-    <div class="create-thread">
+  <h1>Infodesk</h1>
 
-        <div class="progress-bar-container">
-            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-          </div>
-          
+  <div class="create-thread">
+    <div class="progress-bar-container">
+      <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    </div>
 
+    <!-- Thread-Erstellung -->
+    <div class="creater-thread">
+      <h2>Create a New Announcement</h2>
+      <form (ngSubmit)="createThread()" enctype="multipart/form-data">
+        <!-- Thread Description -->
 
-
-      <!-- Thread-Erstellung -->
-      <div class="creater-thread">
-        <h2>Create a New Announcement</h2>
-        <form (ngSubmit)="createThread()" enctype="multipart/form-data">
-          <!-- Thread Description -->
-
-          <div class="post-wrapper">
+        <div class="post-wrapper">
           <textarea
-          placeholder="Write your announcement here..."
-          [(ngModel)]="newThread.description"
-          name="description"
-          required
-          cdkTextareaAutosize
-          matInput
-          #autosize="cdkTextareaAutosize"
-          (input)="autosize.resizeToFitContent(true)"
-          class="announcement-textarea"
-        ></textarea>
+            placeholder="Write your announcement here..."
+            [(ngModel)]="newThread.description"
+            name="description"
+            required
+            cdkTextareaAutosize
+            matInput
+            #autosize="cdkTextareaAutosize"
+            (input)="autosize.resizeToFitContent(true)"
+            class="announcement-textarea"
+          ></textarea>
 
-
-
-
-
-        <span *ngIf="selectedFilePreview" class="file-preview">
-            <img [src]="selectedFilePreview" alt="Preview" class="preview-image" />
+          <span *ngIf="selectedFilePreview" class="file-preview">
+            <img
+              [src]="selectedFilePreview"
+              alt="Preview"
+              class="preview-image"
+            />
           </span>
-
         </div>
 
+        <!-- Datei hochladen -->
+        <div class="upload-icon-container">
+          <!-- Foto-Upload-Button -->
+          <button
+            type="button"
+            class="add-picture-button-thread"
+            (click)="triggerFileInputClick()"
+          >
+            <mat-icon>add_a_photo</mat-icon>
+          </button>
+          <input
+            type="file"
+            #fileInput
+            (change)="onFileSelected($event)"
+            name="file"
+            accept="image/*"
+            style="display: none"
+          />
 
-
-          
-          <!-- Datei hochladen -->
-          <div class="upload-icon-container">
-            <!-- Foto-Upload-Button -->
-            <button 
-              type="button" 
-              class="add-picture-button-thread" 
-              (click)="triggerFileInputClick()"
-            >
-              <mat-icon>add_a_photo</mat-icon>
-            </button>
-            <input
-              type="file"
-              #fileInput
-              (change)="onFileSelected($event)"
-              name="file"
-              accept="image/*"
-              style="display: none;"
-            />
-           
-          
-            <!-- Post-Button -->
-            <button 
-            class="post-button" 
-            type="submit" 
-            mat-raised-button 
+          <!-- Post-Button -->
+          <button
+            class="post-button"
+            type="submit"
+            mat-raised-button
             color="primary"
             [disabled]="loading || !newThread.description?.trim()"
           >
             Post
           </button>
-          
-          
-          </div>
-          
-         
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
-  
-    <!-- Liste der Threads -->
-    <div class="thread-list">
-      <h2>All Announcements</h2>
-      
-      <div *ngFor="let groupKey of getGroupKeys()">
-        <!-- Gruppentitel (Today, Yesterday, etc.) -->
-        <h3>{{ groupKey }}</h3>
-        
-        <div
+  </div>
+
+  <!-- Liste der Threads -->
+  <div class="thread-list">
+    <h2>All Announcements</h2>
+
+    <div *ngFor="let groupKey of getGroupKeys()">
+      <!-- Gruppentitel (Today, Yesterday, etc.) -->
+      <h3>{{ groupKey }}</h3>
+
+      <div
         *ngFor="let thread of groupedThreads[groupKey]; let i = index"
         [ngClass]="{ 'new-thread': thread.threadId === newThreadId }"
         class="thread-item"
       >
-      
-
-          <div class="thread-header">
-            <div class="user">
-              <div class="image-wrapper">
-                <img
-                  [src]="thread.profilePicture || '/assets/img/user.png'"
-                  class="profile-picture"
-                  alt="Profile Picture"
-                />
-              </div>
-              <small>{{ thread.createdBy }}</small>
-            </div>
-            <span class="createdat-span">{{ thread.createdAt | date: 'MMM d, y, h:mm a' }}</span>
-          </div>
-    
-          <div class="thread-inhalt">
-            <p class="thread-descrip">{{ thread.description }}</p>
-            <div *ngIf="thread.imageUrl" class="thread-image">
-              <img 
-                (click)="openImageDialog(thread.imageUrl)" 
-                [src]="thread.imageUrl" 
-                alt="Uploaded Thread Image" 
-                class="uploaded-image" 
+        <div class="thread-header">
+          <div class="user">
+            <div class="image-wrapper">
+              <img
+                [src]="thread.profilePicture || '/assets/img/user.png'"
+                class="profile-picture"
+                alt="Profile Picture"
               />
             </div>
+            <small>{{ thread.createdBy }}</small>
           </div>
-    
-          <div class="thread-meta">
-            <div class="comments-icon" (click)="openThread(thread, $event)">
-              <mat-icon>chat_bubble</mat-icon>
-              <span>{{ thread.commentCount || 0 }}</span>
-            </div>
+          <span class="createdat-span">{{
+            thread.createdAt | date : "MMM d, y, h:mm a"
+          }}</span>
+        </div>
+
+        <div class="thread-inhalt">
+          <p class="thread-descrip">{{ thread.description }}</p>
+          <div *ngIf="thread.imageUrl" class="thread-image">
+            <img
+              (click)="openImageDialog(thread.imageUrl)"
+              [src]="thread.imageUrl"
+              alt="Uploaded Thread Image"
+              class="uploaded-image"
+            />
+          </div>
+        </div>
+
+        <div class="thread-meta">
+          <div class="comments-icon" (click)="openThread(thread, $event)">
+            <mat-icon>chat_bubble</mat-icon>
+            <span>{{ thread.commentCount || 0 }}</span>
           </div>
         </div>
       </div>
-
-      <button *ngIf="lastVisible" (click)="loadMoreThreads()" class="load-more-button">
-        Load More Threads
-      </button>
     </div>
-    
-    
-      
+
+    <button
+      *ngIf="lastVisible"
+      (click)="loadMoreThreads()"
+      class="load-more-button"
+    >
+      Load More Threads
+    </button>
   </div>
-  
+</div>

@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserComponent } from './user/user.component';
 
 import { CustomerComponent } from './customer/customer.component';
-import { StatisticsComponent } from './statistics/statistics.component';
+
 import { CustomerDetailComponent } from './customer/customer-detail/customer-detail.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { AllLogsComponent } from './all-logs/all-logs.component';
@@ -22,9 +22,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'user', component: UserComponent },
   {path: 'user/:id', component: UserDetailComponent},
- 
   { path: 'customer', component: CustomerComponent },
-  { path: 'statistics', component: StatisticsComponent },
   {path: 'user/:id', component: UserDetailComponent},
   { path: 'customer-details/:id', component: CustomerDetailComponent },
   {path: 'customer/:id', component: CustomerDetailComponent},

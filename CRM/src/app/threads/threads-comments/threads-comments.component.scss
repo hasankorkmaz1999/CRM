@@ -1,164 +1,139 @@
 .comment-dialog {
- 
-    padding: 15px;
+  padding: 15px;
 }
-
 
 .mat-mdc-dialog-container .mdc-dialog__surface {
   background-color: rgba(25, 25, 25, 0.9);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
 }
 
 h1 {
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #0f0f0f;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9);
-    color: white;
-    word-break: break-all;
-    margin-bottom: 10px;
-
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #0f0f0f;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9);
+  color: white;
+  word-break: break-all;
+  margin-bottom: 10px;
 }
 
-
-
 .announcement-textarea {
-    color: rgb(169, 169, 169);
-    background-color: #0f0f0f;
-    overflow-y: hidden;
-    min-height: 50px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9);
-    width: 100%; /* Füllt den verfügbaren Platz */
-    resize: none; /* Entfernt den Resize-Griff */
-    font-size: 18px;
-    padding: 10px;
-    line-height: 1.5; /* Verbessert die Lesbarkeit */
-   border: none;
-    border-radius: 14px; /* Optional: Abgerundete Ecken */
-    box-sizing: border-box;
-    caret-color: white; /* Padding und Border in Breite/Höhe einrechnen */
+  color: rgb(169, 169, 169);
+  background-color: #0f0f0f;
+  overflow-y: hidden;
+  min-height: 50px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9);
+  width: 100%; /* Füllt den verfügbaren Platz */
+  resize: none; /* Entfernt den Resize-Griff */
+  font-size: 18px;
+  padding: 10px;
+  line-height: 1.5; /* Verbessert die Lesbarkeit */
+  border: none;
+  border-radius: 14px; /* Optional: Abgerundete Ecken */
+  box-sizing: border-box;
+  caret-color: white; /* Padding und Border in Breite/Höhe einrechnen */
+}
+
+.announcement-textarea:focus {
+  outline: none;
+}
+
+.comments-list {
+  overflow-y: auto;
+  width: 100%;
+  max-height: 500px;
+  margin-bottom: 20px;
+}
+
+.createdat-span {
+  color: white;
+  white-space: nowrap;
+  position: absolute;
+  right: 5px;
+  font-size: 16px;
+  bottom: 5px;
+}
+
+.comment-item {
+  position: relative;
+  padding: 10px;
+
+  margin-bottom: 20px;
+  background-color: #272727;
+
+  border-radius: 10px;
+
+  p {
+    white-space: wrap;
+    margin-bottom: 30px;
+    color: white;
+    word-break: break-all;
   }
 
-  .announcement-textarea:focus {
-    outline: none;
-   
-   
+  small {
+    color: white;
   }
+}
 
-  .comments-list {
-   
-    overflow-y: auto;
-    width: 100%;
-    max-height: 500px;
+.image-wrapper {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
+  overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
+  background-color: #f0f0f0; /* Hintergrundfarbe */
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+
+  p {
     margin-bottom: 20px;
+    color: white;
+  }
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .cancel {
+    margin-right: 15px;
+  }
+}
+
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(10px); /* Unscharf machen */
+  -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+}
+
+@media (max-width: 760px) {
+}
+
+@media (max-width: 560px) {
+  .image-wrapper {
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
   }
 
   .createdat-span {
-    color: white;
-    white-space: nowrap;
-    position: absolute;
-    right: 5px;
-    font-size: 16px;
-    bottom: 5px;
+    font-size: 14px;
   }
-
-  .comment-item  {
-    position: relative;
-    padding: 10px;
-  
-    margin-bottom: 20px;
-    background-color: #272727;
-   
-    border-radius: 10px;
-
-    p {
-      white-space: wrap;
-      margin-bottom: 30px;
-        color: white;
-        word-break: break-all;
-    }
-
-    small {
-        color: white;
-    }
-  }
-
-
-  .image-wrapper {
-    height: 40px;
-    width: 40px;
-    border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
-    overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
-    background-color: #f0f0f0; /* Hintergrundfarbe */
-    margin-right: 10px;
-    margin-bottom: 20px;
 }
-
-
-    .profile-picture {
-       
-        width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
-      }
-  
-      .user {
-        display: flex;
-        align-items: center;
-
-
-        p {
-            margin-bottom: 20px;
-            color: white;
-        }
-      }
-
-
-      .comment-header {
-        display: flex;
-        justify-content: space-between;
-        
-      }
-
-      .buttons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .cancel {
-            margin-right: 15px;
-        }
-        
-      }
-
-
-      .cdk-overlay-dark-backdrop {
-        background: rgba(0, 0, 0, 0.32);
-        backdrop-filter: blur(10px); /* Unscharf machen */
-        -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
-    }
-
-
-    @media (max-width: 760px) { 
-
-    }  
-
-
-    @media (max-width: 560px) { 
-      .image-wrapper {
-        height: 30px;
-        width: 30px;
-        margin-right: 5px; 
-
-      }
-
-      .createdat-span {
-        font-size: 14px;
-      }
-
-    
-
-
-
-    }

@@ -8,15 +8,12 @@ import { Location } from '@angular/common';
   standalone: true,
   imports: [SharedModule],
   templateUrl: './help-page.component.html',
-  styleUrl: './help-page.component.scss'
+  styleUrl: './help-page.component.scss',
 })
 export class HelpPageComponent {
+  constructor(private location: Location, private route: ActivatedRoute) {}
 
-  constructor( private location: Location,  private route: ActivatedRoute,) {}
-  
-  
   goBack() {
     this.location.back();
   }
-
 }

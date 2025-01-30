@@ -1,214 +1,210 @@
 /* Tag und Nacht Hintergrund */
 .world-clock {
-    overflow: hidden; /* Verhindert, dass Inhalte den Container verlassen */
-    position: relative; /* Erforderlich für absolut positionierte Inhalte */
-    width: 600px;
+  overflow: hidden; /* Verhindert, dass Inhalte den Container verlassen */
+  position: relative; /* Erforderlich für absolut positionierte Inhalte */
+  width: 600px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  color: #fff;
+  transition: background-color 0.5s, color 0.5s;
+  background-color: rgba(35, 59, 86, 0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Dunkelblau mit 80% Deckkraft */
+}
+
+.world-clock.day {
+  background-color: rgba(135, 206, 235, 0.4); /* Hellblau mit 80% Deckkraft */
+  color: #333; /* Dunkle Schrift für besseren Kontrast */
+}
+
+.world-clock.night {
+  background-color: rgba(44, 62, 80, 0.4); /* Dunkelblau mit 80% Deckkraft */
+  color: #f1c40f; /* Gelbe Schrift für Mondlicht-Effekt */
+}
+
+.time-display {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.time-zone {
+  position: absolute; /* Absolut positioniert, um Animationen zu ermöglichen */
+  top: 50%; /* Vertikal zentriert */
+  left: 50%; /* Horizontal zentriert */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Standardposition: vollständig zentriert */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.time-zone.exiting.right {
+  opacity: 0;
+  transform: translate(
+    100%,
+    -50%
+  ); /* Nach rechts raus, vertikal bleibt zentriert */
+}
+
+.time-zone.exiting.left {
+  opacity: 0;
+  transform: translate(
+    -100%,
+    -50%
+  ); /* Nach links raus, vertikal bleibt zentriert */
+}
+
+.time-zone.entering.right {
+  opacity: 0;
+  transform: translate(
+    -100%,
+    -50%
+  ); /* Von links rein, vertikal bleibt zentriert */
+}
+
+.time-zone.entering.left {
+  opacity: 0;
+  transform: translate(
+    100%,
+    -50%
+  ); /* Von rechts rein, vertikal bleibt zentriert */
+}
+
+.time-zone.active {
+  opacity: 1;
+  transform: translate(-50%, -50%); /* In der Mitte bleiben */
+}
+
+h3 {
+  height: 70px;
+  text-align: center;
+  font-size: 24px;
+}
+
+.time-block {
+  text-align: center;
+  margin: 0 10px;
+}
+
+.time {
+  display: flex;
+  justify-content: space-between;
+  width: 390px;
+  height: 50px;
+  font-size: 56px;
+  font-weight: bold;
+  margin: 0;
+  background-color: transparent;
+}
+
+.time-block span {
+  font-size: 0.9em;
+  color: #bbb;
+}
+
+.seconds {
+  width: 90px;
+}
+
+.period {
+  padding-left: 10px;
+
+  margin-left: 10px;
+}
+
+.date {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+button {
+  background: none;
+  border: none;
+}
+
+.arrows-container {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow svg {
+  transition: transform 0.1s ease-in-out, stroke 0.3s ease-in-out;
+}
+
+.arrow:hover svg {
+  transform: scale(1.1);
+  stroke: #ddd; /* Leuchtender Effekt beim Hover */
+}
+
+.indicator {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background: #555;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.active {
+  background: #fff;
+}
+
+@media (max-width: 2000px) {
+  .world-clock {
+    width: 450px;
     height: 280px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border-radius: 10px;
-    color: #fff;
-    transition: background-color 0.5s, color 0.5s;
-    background-color: rgba(35, 59, 86, 0.1);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Dunkelblau mit 80% Deckkraft */
-   
-  }
-  
-  .world-clock.day {
-    background-color: rgba(135, 206, 235, 0.4); /* Hellblau mit 80% Deckkraft */
-    color: #333; /* Dunkle Schrift für besseren Kontrast */
-  }
-  
-  .world-clock.night {
-    background-color: rgba(44, 62, 80, 0.4); /* Dunkelblau mit 80% Deckkraft */
-    color: #f1c40f; /* Gelbe Schrift für Mondlicht-Effekt */
-  }
-  
-  
-  .time-display {
-   position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 10px;
   }
 
-  .time-zone {
-    position: absolute; /* Absolut positioniert, um Animationen zu ermöglichen */
-    top: 50%; /* Vertikal zentriert */
-    left: 50%; /* Horizontal zentriert */
-    transform: translate(-50%, -50%); /* Standardposition: vollständig zentriert */
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  
-  .time-zone.exiting.right {
-    opacity: 0;
-    transform: translate(100%, -50%); /* Nach rechts raus, vertikal bleibt zentriert */
-  }
-  
-  .time-zone.exiting.left {
-    opacity: 0;
-    transform: translate(-100%, -50%); /* Nach links raus, vertikal bleibt zentriert */
-  }
-  
-  .time-zone.entering.right {
-    opacity: 0;
-    transform: translate(-100%, -50%); /* Von links rein, vertikal bleibt zentriert */
-  }
-  
-  .time-zone.entering.left {
-    opacity: 0;
-    transform: translate(100%, -50%); /* Von rechts rein, vertikal bleibt zentriert */
-  }
-  
-  .time-zone.active {
-    opacity: 1;
-    transform: translate(-50%, -50%); /* In der Mitte bleiben */
-  }
-  
-
-
-
-
-
-
-  h3 {
-    height: 70px;
-    text-align: center;
-    font-size: 24px;
-  }
-  
-  .time-block {
-    text-align: center;
-    margin: 0 10px;
-  }
-  
   .time {
     display: flex;
     justify-content: space-between;
-    width: 390px;
+    width: 320px;
     height: 50px;
     font-size: 56px;
     font-weight: bold;
     margin: 0;
     background-color: transparent;
   }
-  
-  .time-block span {
-    font-size: 0.9em;
-    color: #bbb;
+
+  .seconds {
+    width: 70px;
+  }
+}
+
+@media (max-width: 1750px) {
+  .world-clock {
+    width: 280px;
+    height: 280px;
+  }
+
+  .time {
+    display: flex;
+    justify-content: space-between;
+    width: 180px;
+    height: 50px;
+    font-size: 36px;
+    font-weight: bold;
+    margin: 0;
+    background-color: transparent;
   }
 
   .seconds {
-    width: 90px;
-
+    width: 50px;
   }
-
-  .period {
-    padding-left: 10px;
-   
-margin-left: 10px;
-  }
-
-  .date {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 16px;
-  }
-  
-  button {
-    background: none;
-    border: none;
 }
-
-.arrows-container {
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.arrow svg {
-    transition: transform 0.1s ease-in-out, stroke 0.3s ease-in-out;
-}
-
-.arrow:hover svg {
-    transform: scale(1.1);
-    stroke: #ddd; /* Leuchtender Effekt beim Hover */
-}
-
-  
-  
-  
-  .indicator {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
-  .dot {
-    width: 10px;
-    height: 10px;
-    margin: 0 5px;
-    background: #555;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  
-  .dot.active {
-    background: #fff;
-  }
-  
-
-
-  @media (max-width: 2000px){
-    .world-clock {
-        width: 450px;
-        height: 280px;
-      }
-
-       .time {
-        display: flex;
-        justify-content: space-between;
-        width: 320px;
-        height: 50px;
-        font-size: 56px;
-        font-weight: bold;
-        margin: 0;
-        background-color: transparent;
-      }
-
-      .seconds {
-        width: 70px;
-    
-      }
-  }
-
-
-  @media (max-width: 1750px){
-    .world-clock {
-        width: 280px;
-        height: 280px;
-      }
-
-       .time {
-        display: flex;
-        justify-content: space-between;
-        width: 180px;
-        height: 50px;
-        font-size: 36px;
-        font-weight: bold;
-        margin: 0;
-        background-color: transparent;
-      }
-
-      .seconds {
-        width: 50px;
-    
-      }
-
-     
-  }

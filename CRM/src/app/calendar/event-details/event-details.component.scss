@@ -1,18 +1,11 @@
 .buttons {
   margin-top: 50px;
-    display: flex;
-    justify-content: flex-end;
-
-    
+  display: flex;
+  justify-content: flex-end;
 }
 
-
-
-
-
-
 .close-button {
- color: white;
+  color: white;
   background-color: transparent;
   border: none;
   font-size: 20px;
@@ -21,28 +14,23 @@
   top: 15px;
   right: 15px;
   &:hover {
-   transform: scale(1.2);
-   color: red;
+    transform: scale(1.2);
+    color: red;
   }
 }
 
+.delete {
+  box-shadow: none;
+}
 
-  .delete {
-    box-shadow: none;
-  }
+.h1-data-type {
+  margin-bottom: 0 !important;
+}
 
-
-  .h1-data-type{
-    margin-bottom: 0 !important;
-  }
-
-  
-
-
-  .mat-mdc-dialog-container .mdc-dialog__surface {
-    padding: 20px !important;
-    padding-left: 40px !important;
-    background-color: rgba(23, 23, 23, 0.9);
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  padding: 20px !important;
+  padding-left: 40px !important;
+  background-color: rgba(23, 23, 23, 0.9);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
   border-radius: 10px;
   width: 300px !important;
@@ -50,16 +38,14 @@
   display: flex !important;
   justify-content: center !important;
   overflow-x: hidden !important;
- overflow-y: hidden !important;
+  overflow-y: hidden !important;
   align-items: center;
+}
 
-  }
-
-
-  .cdk-overlay-dark-backdrop {
-    background: rgba(0, 0, 0, 0.32);
-    backdrop-filter: blur(10px); /* Unscharf machen */
-    -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(10px); /* Unscharf machen */
+  -webkit-backdrop-filter: blur(10px); /* Unterstützung für WebKit-Browser */
 }
 
 .events-wrapper {
@@ -69,21 +55,17 @@
   height: 100%;
 }
 
-
 .event-container {
   padding: 0px;
-width: 100%;
+  width: 100%;
   color: #fff;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
-  overflow-y: auto ;
+  overflow-y: auto;
   overflow-x: hidden;
- 
-
-
 
   p {
     max-height: 50px;
@@ -98,7 +80,6 @@ width: 100%;
     overflow-wrap: break-word; /* Alternative für alte Browser */
   }
 }
-
 
 .descripi {
   padding-right: 5px;
@@ -121,9 +102,6 @@ width: 100%;
   margin-bottom: 20px;
 }
 
-
-
-
 .event-details {
   display: flex;
   flex-direction: column;
@@ -133,16 +111,13 @@ width: 100%;
 }
 
 .event-row {
- 
   display: flex;
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
-
 }
 
-
-.details-user-participants{
+.details-user-participants {
   height: 210px;
   width: 100%;
   overflow-y: auto;
@@ -150,7 +125,7 @@ width: 100%;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
- 
+
   margin-bottom: 20px;
 }
 
@@ -166,10 +141,7 @@ width: 100%;
 .icon-wrapper mat-icon {
   color: #ffffff; /* Gold */
   font-size: 1.5rem;
- 
 }
-
-
 
 .label {
   margin-left: 10px;
@@ -182,13 +154,12 @@ width: 100%;
 .participant-details {
   border-radius: 10px;
   padding: 10px;
- 
+
   display: flex;
   align-items: center;
   justify-content: flex-start;
   background-color: transparent;
   overflow-y: auto;
- 
 }
 
 .details {
@@ -197,20 +168,17 @@ width: 100%;
   align-items: center;
 }
 
-
-
 .image-wrapper {
   height: 30px;
   width: 30px;
   border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
   overflow: hidden; /* Schneidet das Bild auf den Kreis zu */
   background-color: #f0f0f0; /* Hintergrundfarbe */
- margin-right: 15px;
+  margin-right: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 
 .details-descrip {
   overflow-y: auto;
@@ -219,46 +187,35 @@ width: 100%;
   align-items: center;
 }
 
-
-
-
-
-  .profile-picture {
-    
-      width: 100%;
+.profile-picture {
+  width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top;
-    }
+}
 .participant-name {
- font-size: 16px;
+  font-size: 16px;
 }
 
-
-@media (max-width: 1840px) { 
+@media (max-width: 1840px) {
   .buttons {
     margin-right: 10px;
-      display: flex;
-      justify-content: flex-end;
-  
-      
+    display: flex;
+    justify-content: flex-end;
   }
 
   .event-container {
     padding: 0px;
-  width: 100%;
+    width: 100%;
     color: #fff;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
-    overflow-y: auto ;
+    overflow-y: auto;
     overflow-x: hidden;
-   
-  
-  
-  
+
     p {
       max-height: 50px;
       width: 170px;
@@ -272,8 +229,7 @@ width: 100%;
       overflow-wrap: break-word; /* Alternative für alte Browser */
     }
   }
-  
-  
+
   .descripi {
     padding-right: 5px;
     max-height: 50px;
@@ -288,7 +244,7 @@ width: 100%;
     overflow-wrap: break-word; /* Alternative für alte Browser */
   }
 
-  .details-user-participants{
+  .details-user-participants {
     height: 190px;
     width: 210px;
     overflow-y: auto;
@@ -296,49 +252,39 @@ width: 100%;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-   
+
     margin-bottom: 20px;
   }
-  
-  
 }
 
-
 @media (max-height: 850px) {
-
   .mat-mdc-dialog-container .mdc-dialog__surface {
     padding: 20px !important;
     padding-left: 40px !important;
     background-color: rgba(23, 23, 23, 0.9);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
-  border-radius: 10px;
-  width: 300px;
-  max-height: 90vh;
-  display: flex !important;
-  justify-content: center !important;
-  overflow-x: hidden !important;
- overflow-y: auto !important;
-  align-items: center;
-
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+    width: 300px;
+    max-height: 90vh;
+    display: flex !important;
+    justify-content: center !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    align-items: center;
   }
 
   .event-container {
     padding-top: 30px !important;
     position: relative;
     padding: 0px;
-  width: 100%;
+    width: 100%;
     color: #fff;
     height: 90vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
-    overflow-y: auto ;
+    overflow-y: auto;
     overflow-x: hidden;
   }
-
-
-
- }
-
-
+}

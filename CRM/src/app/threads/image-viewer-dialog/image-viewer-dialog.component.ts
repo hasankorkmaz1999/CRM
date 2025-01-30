@@ -12,10 +12,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class ImageViewerDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { imageUrl: string },
-    private dialogRef: MatDialogRef<ImageViewerDialogComponent> // MatDialogRef verwenden
+    private dialogRef: MatDialogRef<ImageViewerDialogComponent> 
   ) {}
 
   closeDialog(): void {
-    this.dialogRef.close(); // Schließt den Dialog
+    this.dialogRef.close();
   }
 }

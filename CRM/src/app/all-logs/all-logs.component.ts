@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { SharedModule } from '../shared/shared.module';
 import { Router, RouterModule } from '@angular/router';
@@ -33,8 +38,7 @@ export class AllLogsComponent implements OnInit {
   loadAllLogs() {
     const logsCollection = collection(this.firestore, 'logs');
     collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
-      console.log('Raw log data:', data); // Debugging
-
+      console.log('Raw log data:', data); 
       this.logs = data.map((log) => ({
         ...log,
         timestamp: log['timestamp'] ? new Date(log['timestamp']) : null,
@@ -50,12 +54,14 @@ export class AllLogsComponent implements OnInit {
     switch (this.selectedSort) {
       case 'newest':
         sortedLogs.sort(
-          (a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
+          (a, b) =>
+            (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
         );
         break;
       case 'oldest':
         sortedLogs.sort(
-          (a, b) => (a.timestamp?.getTime() || 0) - (b.timestamp?.getTime() || 0)
+          (a, b) =>
+            (a.timestamp?.getTime() || 0) - (b.timestamp?.getTime() || 0)
         );
         break;
       case 'users':
@@ -73,7 +79,7 @@ export class AllLogsComponent implements OnInit {
           (log) => log.entityType?.toLowerCase() === 'event'
         );
         break;
-      case 'purchases': // Added filter for "purchase" entity type
+      case 'purchases': 
         sortedLogs = sortedLogs.filter(
           (log) => log.entityType?.toLowerCase() === 'purchase'
         );

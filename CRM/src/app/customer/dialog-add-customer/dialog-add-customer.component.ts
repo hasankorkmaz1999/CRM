@@ -1,7 +1,17 @@
 import { Component, NgModule, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  updateDoc,
+} from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LoggingService } from '../../shared/logging.service';
 import { SnackbarService } from '../../shared/snackbar.service';
@@ -22,72 +32,60 @@ export class DialogAddCustomerComponent {
     private fb: FormBuilder,
     private firestore: Firestore,
     private dialogRef: MatDialogRef<DialogAddCustomerComponent>,
-    private snackbarService: SnackbarService,
-   
+    private snackbarService: SnackbarService
   ) {
     this.customerForm = this.fb.group({
-      firstName: [''], // Vorname
-      lastName: [''], // Nachname
-      email: [''], // E-Mail
-      phone: [''], // Telefonnummer
-      street: [''], // Adresse: Straße
-      city: [''], // Adresse: Stadt
-      zipCode: [''], // Adresse: Postleitzahl
-     
-     
+      firstName: [''],
+      lastName: [''],
+      email: [''],
+      phone: [''],
+      street: [''],
+      city: [''],
+      zipCode: [''],
     });
   }
 
   async saveCustomer() {
-    if (this.customerForm.valid) {
-      const formData = this.customerForm.value;
-  
-      // Struktur des Kundenobjekts für Firestore
-      const customerData = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        address: {
-          street: formData.street,
-          city: formData.city,
-          zipCode: formData.zipCode,
-         
-        },
-       
-        createdAt: new Date().toISOString(),
-        status: 'new',
-      };
-  
-      try {
-        const customerCollection = collection(this.firestore, 'customers');
-        const customerDocRef = await addDoc(customerCollection, customerData); // Kunde in Firestore speichern
-  
-        // Die generierte ID zum gespeicherten Dokument hinzufügen
-        await updateDoc(customerDocRef, { id: customerDocRef.id });
-
-        console.log('Customer successfully saved with ID:', customerDocRef.id);
-  
-        // Logge die Aktion mit der hinzugefügten ID
-        await this.loggingService.logCustomerAction('add', {
-          id: customerDocRef.id,
-          name: `${customerData.firstName} ${customerData.lastName}`,
-        });
-  
-        // Snackbar anzeigen
-        this.snackbarService.showActionSnackbar('customer', 'add');
-  
-        // Schließe den Dialog und signalisiere dem Aufrufer, dass der Kunde hinzugefügt wurde
-        this.dialogRef.close(true);
-      } catch (error) {
-        console.error('Error saving customer:', error);
-      }
-    } else {
-      console.warn('Customer form is invalid.');
+    if (!this.customerForm.valid) return;
+    try {
+      const customerData = this.createCustomerData();
+      const customerId = await this.addCustomerToFirestore(customerData);
+      await this.handlePostSaveActions(customerData, customerId);
+      this.dialogRef.close(true);
+    } catch (error) {
+      console.error('Error saving customer:', error);
     }
   }
+
+  private createCustomerData() {
+    const formData = this.customerForm.value;
+    return {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      address: {
+        street: formData.street,
+        city: formData.city,
+        zipCode: formData.zipCode,
+      },
+      createdAt: new Date().toISOString(),
+      status: 'new',
+    };
+  }
+
+  private async addCustomerToFirestore(customerData: any): Promise<string> {
+    const customerCollection = collection(this.firestore, 'customers');
+    const customerDocRef = await addDoc(customerCollection, customerData);
+    await updateDoc(customerDocRef, { id: customerDocRef.id });
+    return customerDocRef.id;
+  }
   
-
-
- 
+  private async handlePostSaveActions(customerData: any, customerId: string) {
+    await this.loggingService.logCustomerAction('add', {
+      id: customerId,
+      name: `${customerData.firstName} ${customerData.lastName}`,
+    });
+    this.snackbarService.showActionSnackbar('customer', 'add');
+  }
 }

@@ -1,4 +1,4 @@
-import {Component,OnInit, ViewEncapsulation,} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {
   Firestore,
   addDoc,
@@ -24,14 +24,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Todo } from '../../models/todo.class';
 import { Thread } from '../../models/thread.class';
 import { TodoService } from '../shared/todo.service';
-import { NgxChartsModule,  Color, ScaleType } from '@swimlane/ngx-charts';
-import { TimerComponent } from "./timer/timer.component";
+import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
+import { TimerComponent } from './timer/timer.component';
+import { User } from '../../models/user.class';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SharedModule, EventDetailsComponent,
-     RouterModule, NgxChartsModule, TimerComponent],
+  imports: [
+    SharedModule,
+    EventDetailsComponent,
+    RouterModule,
+    NgxChartsModule,
+    TimerComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -42,33 +48,24 @@ export class DashboardComponent implements OnInit {
   totalEvents: number = 0;
   eventsThisWeek: number = 0;
   eventsToday: number = 0;
-  countdowns: { [eventId: string]: string } = {};
+  user: User = new User();
+  userEvents: any[] = [];
   logs: any[] = [];
-  visibleLogs: any[] = []; // Logs, die aktuell angezeigt werden
-  maxVisibleLogs: number = 0; // Maximale Logs, die in den Bereich passen
-
- 
-  userId: string = ''; // ID des aktuellen Benutzers
- 
- 
-  currentUserName: string = 'Unknown User'; // Name des aktuellen Benutzers
-  currentUserRole: string = 'Unknown Role'; // Rolle des aktuellen Benutzers
-  currentUserProfilePicture: string = '/assets/img/user.png'; // Profilbild des aktuellen Benutzers
-
- 
+  visibleLogs: any[] = [];
+  maxVisibleLogs: number = 0;
+  userId: string = '';
+  currentUserName: string = 'Unknown User';
+  currentUserRole: string = 'Unknown Role';
+  currentUserProfilePicture: string = '/assets/img/user.png';
   threads: Thread[] = [];
-
   customColorScheme: Color = {
     name: 'custom',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: ['#E6511E', '#EFAB35', '#98DE4C'], // Beispiel-Farben
+    domain: ['#E6511E', '#EFAB35', '#98DE4C'],
   };
-  
-  
   chartData: any[] = [];
 
-  
   constructor(
     private firestore: Firestore,
     private dialog: MatDialog,
@@ -78,7 +75,6 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Lade Benutzerinformationen
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (currentUser) {
       this.userId = currentUser.uid;
@@ -86,27 +82,16 @@ export class DashboardComponent implements OnInit {
       this.currentUserRole = currentUser.role;
       this.currentUserProfilePicture = currentUser.profilePicture;
     }
-  
     this.updateCurrentUser();
     this.loadThreads();
-    this.loadEvents();
-    this.startLiveCountdown();
+    this.loadUserEvents();
     this.loadRecentLogs();
     this.updateKPICards();
     this.loadLogsForDashboard();
-  
-    // Abonniere die Chart-Daten
     this.todoService.chartData$.subscribe((data) => {
       this.chartData = data;
     });
   }
-  
-
-  
- 
-
-
-
 
   updateCurrentUser(): void {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -115,20 +100,15 @@ export class DashboardComponent implements OnInit {
       this.currentUserName = currentUser.name;
       this.currentUserRole = currentUser.role;
       this.currentUserProfilePicture = currentUser.profilePicture;
-  
-    
     } else {
       console.warn('Kein Benutzer in localStorage gefunden.');
     }
   }
-  
-  
 
   loadThreads() {
     const threadCollection = collection(this.firestore, 'threads');
     collectionData(threadCollection, { idField: 'threadId' }).subscribe(
       (data) => {
-        // Sortiere die Threads nach Erstellungsdatum
         this.threads = (data as Thread[]).sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -144,18 +124,12 @@ export class DashboardComponent implements OnInit {
         ...log,
         timestamp: log.timestamp ? new Date(log.timestamp) : null,
       }));
-
-      // Sortiere nach Timestamp (neueste zuerst)
       const sortedLogs = allLogs.sort(
         (a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0)
       );
-
-      this.logs = sortedLogs; // Speichere alle Logs
+      this.logs = sortedLogs;
     });
   }
-
- 
- 
 
   navigateToAllLogs() {
     this.router.navigate(['/logs']);
@@ -163,7 +137,11 @@ export class DashboardComponent implements OnInit {
 
   loadLogsForDashboard(): void {
     const logsCollection = collection(this.firestore, 'logs');
-    const logsQuery = query(logsCollection, orderBy('timestamp', 'desc'), limit(4)); // Neuesten 5 Logs abrufen
+    const logsQuery = query(
+      logsCollection,
+      orderBy('timestamp', 'desc'),
+      limit(4)
+    );
 
     collectionData(logsQuery, { idField: 'id' }).subscribe((data) => {
       this.logs = data.map((log) => ({
@@ -173,111 +151,69 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  async loadEvents(): Promise<void> {
-    const eventCollection = collection(this.firestore, 'events');
-    const userCollection = collection(this.firestore, 'users');
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-  
-    if (!currentUser.uid) {
-      console.warn('Kein Benutzer gefunden, Events werden nicht geladen.');
-      return;
-    }
-  
-    collectionData(eventCollection, { idField: 'id' }).subscribe(async (data) => {
-      const now = new Date(); // Aktuelles Datum und Uhrzeit
-  
-      const eventsWithDetails = await Promise.all(
-        data.map(async (eventData: any) => {
-          const parsedDate = this.combineDateTime(eventData.date, eventData.time);
-  
-          // Nur Events in der Zukunft
-          if (parsedDate < now) return null;
-  
-          const formattedUsers = await Promise.all(
-            (eventData.users || []).map(async (userName: string) => {
-              try {
-                const userQuery = query(
-                  userCollection,
-                  where('firstName', '==', userName.split(' ')[0]),
-                  where('lastName', '==', userName.split(' ')[1])
-                );
-                const userSnapshot = await getDocs(userQuery);
-  
-                if (!userSnapshot.empty) {
-                  const userData = userSnapshot.docs[0].data();
-                  return {
-                    name: `${userData['firstName']} ${userData['lastName']}`.trim(),
-                    profilePicture: userData['profilePicture'] || '/assets/img/user.png',
-                  };
-                } else {
-                  return { name: userName, profilePicture: '/assets/img/user.png' };
-                }
-              } catch (error) {
-                console.error(`Error fetching user with name ${userName}:`, error);
-                return { name: userName, profilePicture: '/assets/img/user.png' };
-              }
-            })
-          );
-  
-          const creatorQuery = query(
-            userCollection,
-            where('firstName', '==', eventData.createdBy.split(' ')[0]),
-            where('lastName', '==', eventData.createdBy.split(' ')[1])
-          );
-          const creatorSnapshot = await getDocs(creatorQuery);
-          const creatorDetails = !creatorSnapshot.empty
-            ? creatorSnapshot.docs[0].data()
-            : { profilePicture: '/assets/img/user.png' };
-  
-          return {
-            ...eventData,
-            date: parsedDate,
-            users: formattedUsers,
-            createdBy: {
-              name: eventData.createdBy || 'Unknown',
-              profilePicture: creatorDetails['profilePicture'] || '/assets/img/user.png',
-            },
-          };
-        })
+  loadUserEvents(): void {
+    const eventsCollection = collection(this.firestore, 'events');
+    const now = new Date();
+    collectionData(eventsCollection, { idField: 'id' }).subscribe(
+      (events: any[]) => {
+        this.userEvents = this.filterAndSortEvents(
+          events,
+          now,
+          this.currentUserName
+        );
+      }
+    );
+  }
+
+  private filterAndSortEvents(events: any[],now: Date,userName: string): any[] {
+    return events
+      .filter(
+        (event) =>
+          event.users &&
+          Array.isArray(event.users) &&
+          event.users.includes(userName) &&
+          this.parseAndCombineDateTime(event.date, event.time) > now)
+      .sort(
+        (a, b) =>
+          this.parseAndCombineDateTime(a.date, a.time).getTime() -
+          this.parseAndCombineDateTime(b.date, b.time).getTime()
       );
-  
-      // Filtere ungültige Events heraus
-      const validEvents = eventsWithDetails.filter((event) => event !== null);
-  
-      // Sortiere nach dem nächstgelegenen Datum
-      const sortedEvents = validEvents.sort((a, b) => {
-        const dateA = new Date(a.date).getTime();
-        const dateB = new Date(b.date).getTime();
-        return dateA - dateB;
-      });
-  
-      // Beschränke auf die ersten 6 Events
-      this.upcomingEvents = sortedEvents.slice(0, 6);
-  
-     
-    });
+  }
+
+  parseAndCombineDateTime(dateString: string, timeString: string): Date {
+    try {
+      const [time, meridiem] = timeString.split(' ');
+      const [hours, minutes] = time.split(':').map(Number);
+      const isPM = meridiem === 'PM';
+      const parsedDate = new Date(dateString);
+      parsedDate.setHours(isPM && hours !== 12 ? hours + 12 : hours === 12 ? 0 : hours);
+      parsedDate.setMinutes(minutes || 0);
+      parsedDate.setSeconds(0);
+      parsedDate.setMilliseconds(0);
+      return parsedDate;
+    } catch (error) {
+      console.error('Error parsing and combining date and time:', error);
+      return new Date(NaN);
+    }
   }
 
   updateKPICards(): void {
     const eventCollection = collection(this.firestore, 'events');
-    const now = new Date(); // Aktuelles Datum und Uhrzeit
-  
-    collectionData(eventCollection, { idField: 'id' }).subscribe((events: any[]) => {
-      // Filtere Events basierend auf ihren Daten
-      const validEvents = events.map((event) => ({
-        ...event,
-        date: this.combineDateTime(event.date, event.time),
-      })).filter((event) => event.date instanceof Date && !isNaN(event.date.getTime()));
-  
-      // Aktualisiere die KPI-Variablen
-      this.totalEvents = validEvents.length;
-  
-      this.eventsToday = validEvents.filter((event) => this.isEventToday(event.date)).length;
-  
-      this.eventsThisWeek = validEvents.filter((event) => this.isEventInThisWeek(event.date)).length;
-  
-     
-    });
+    const now = new Date();
+    collectionData(eventCollection, { idField: 'id' }).subscribe(
+      (events: any[]) => {
+        const validEvents = events
+          .map((event) => ({...event, date: this.combineDateTime(event.date, event.time),
+          }))
+          .filter((event) =>event.date instanceof Date && !isNaN(event.date.getTime()));
+        this.totalEvents = validEvents.length;
+        this.eventsToday = validEvents.filter((event) =>this.isEventToday(event.date)
+        ).length;
+        this.eventsThisWeek = validEvents.filter((event) =>
+          this.isEventInThisWeek(event.date)
+        ).length;
+      }
+    );
   }
 
   isEventToday(eventDate: Date): boolean {
@@ -288,7 +224,6 @@ export class DashboardComponent implements OnInit {
       eventDate.getDate() === today.getDate()
     );
   }
-  
 
   isEventInThisWeek(eventDate: Date): boolean {
     const today = new Date();
@@ -296,12 +231,8 @@ export class DashboardComponent implements OnInit {
     startOfWeek.setDate(today.getDate() - today.getDay());
     const endOfWeek = new Date(today);
     endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
-  
     return eventDate >= startOfWeek && eventDate <= endOfWeek;
   }
-  
-  
-  
 
   combineDateTime(dateString: string, timeString: string): Date {
     try {
@@ -315,38 +246,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  
-  
-
-  startLiveCountdown() {
-    interval(1000)
-      .pipe(
-        map(() => {
-          const now = new Date().getTime();
-          this.upcomingEvents.forEach((event) => {
-            if (!event.id) {
-              console.warn('Event without ID:', event);
-              return;
-            }
-
-            const eventTime = new Date(event.date).getTime();
-            const timeDiff = eventTime - now;
-
-            if (timeDiff > 0) {
-              const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
-              const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
-              const seconds = Math.floor((timeDiff / 1000) % 60);
-
-              this.countdowns[event.id] = `${hours}h ${minutes}m ${seconds}s`;
-            } else {
-              this.countdowns[event.id] = 'Started';
-            }
-          });
-        })
-      )
-      .subscribe();
-  }
-
   openEventDetails(event: Event) {
     this.dialog.open(EventDetailsComponent, {
       data: {
@@ -354,18 +253,28 @@ export class DashboardComponent implements OnInit {
         type: event.type,
         description: event.description,
         date: event.date,
-        users: event.users, // Benutzerinformationen mit Profilbildern
         time: event.time,
-        createdBy: event.createdBy, // Creator mit Profilbild
+        users: this.formatUsers(event.users),
+        createdBy: this.formatCreatedBy(event.createdBy),
         source: 'dashboard',
       },
-     
       autoFocus: false,
     });
   }
-  
 
- 
+  private formatUsers(users: string[]): any[] {
+    return users.map((userName: string) => ({
+      name: userName || 'Unknown User',
+      profilePicture: '/assets/img/user.png', 
+    }));
+  }
+
+  private formatCreatedBy(createdBy: string | undefined): any {
+    return {
+      name: createdBy ?? 'Unknown', 
+      profilePicture: '/assets/img/user.png',
+    };
+  }
 
   getEventClass(eventType: string): string {
     switch (eventType?.toLowerCase()) {
@@ -390,17 +299,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Methode für Add New Event
   goToEventAndOpenDialog(): void {
     this.router.navigate(['/calendar-angular'], {
       queryParams: { addEvent: 'true' },
     });
   }
-
-
-
-
-
-
-  
 }

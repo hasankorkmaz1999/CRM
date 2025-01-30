@@ -15,7 +15,7 @@ import { Comment } from '../../../models/comment.class';
   encapsulation: ViewEncapsulation.None,
 })
 export class ThreadsCommentsComponent implements OnInit {
-  @Output() commentAdded = new EventEmitter<void>(); // EventEmitter für Kommentar-Updates
+  @Output() commentAdded = new EventEmitter<void>(); 
 
   comments: Comment[] = [];
   commentForm: FormGroup;
@@ -37,67 +37,70 @@ export class ThreadsCommentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Benutzerinformationen aus localStorage abrufen
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.currentUserName = currentUser.name || 'Unknown User';
     this.currentUserProfilePicture = currentUser.profilePicture || '/assets/img/user.png';
-
     this.loadComments();
   }
 
   loadComments(): void {
     const commentsCollection = collection(this.firestore, `threads/${this.data.threadId}/comments`);
-
     collectionData(commentsCollection, { idField: 'commentId' }).subscribe(
       (data: any[]) => {
-        this.comments = data
-          .map((commentData: any) => {
-            return new Comment({
-              commentId: commentData.commentId || '',
-              threadId: this.data.threadId,
-              message: commentData.message || '',
-              createdBy: commentData.createdBy || 'Unknown',
-              createdAt: commentData.createdAt ? new Date(commentData.createdAt) : new Date(),
-              profilePicture: commentData.profilePicture || '/assets/img/user.png',
-            });
-          })
-          .sort((a, b) => {
-            const dateA = new Date(a.createdAt).getTime();
-            const dateB = new Date(b.createdAt).getTime();
-            return dateB - dateA; // Neueste zuerst
-          });
-      },
-      (error) => {
-        console.error('Error loading comments:', error);
+        this.comments = this.mapComments(data);
       }
     );
   }
-
+  
+  private mapComments(data: any[]): Comment[] {
+    return data
+      .map((commentData: any) => {
+        return new Comment({
+          commentId: commentData.commentId || '',
+          threadId: this.data.threadId,
+          message: commentData.message || '',
+          createdBy: commentData.createdBy || 'Unknown',
+          createdAt: commentData.createdAt ? new Date(commentData.createdAt) : new Date(),
+          profilePicture: commentData.profilePicture || '/assets/img/user.png',
+        });
+      })
+      .sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime();
+        const dateB = new Date(b.createdAt).getTime();
+        return dateB - dateA;
+      });
+  }
+  
   addComment(): void {
     if (this.commentForm.valid) {
       const commentsCollection = collection(this.firestore, `threads/${this.data.threadId}/comments`);
-
-      const newComment = {
-        threadId: this.data.threadId,
-        message: this.commentForm.value.message,
-        createdBy: this.currentUserName,
-        createdAt: new Date().toISOString(),
-        profilePicture: this.currentUserProfilePicture,
-      };
-
-      addDoc(commentsCollection, newComment).then(() => {
-        // Kommentar erfolgreich hinzugefügt, jetzt den commentCount aktualisieren
-        const threadDoc = doc(this.firestore, `threads/${this.data.threadId}`);
-        updateDoc(threadDoc, {
-          commentCount: increment(1),
-        }).then(() => {
-          console.log('Thread commentCount updated successfully');
-
-          // Löst das Event aus, um die Hauptkomponente zu benachrichtigen
-          this.commentAdded.emit();
-        });
-        this.commentForm.reset(); // Formular zurücksetzen
-      });
+      const newComment = this.createNewComment();
+      this.saveComment(commentsCollection, newComment);
     }
   }
+  
+  private createNewComment() {
+    return {
+      threadId: this.data.threadId,
+      message: this.commentForm.value.message,
+      createdBy: this.currentUserName,
+      createdAt: new Date().toISOString(),
+      profilePicture: this.currentUserProfilePicture,
+    };
+  }
+  
+  private saveComment(commentsCollection: any, newComment: any): void {
+    addDoc(commentsCollection, newComment).then(() => {
+      this.updateThreadCommentCount();
+      this.commentForm.reset();
+    });
+  }
+  
+  private updateThreadCommentCount(): void {
+    const threadDoc = doc(this.firestore, `threads/${this.data.threadId}`);
+    updateDoc(threadDoc, { commentCount: increment(1) }).then(() => {
+      this.commentAdded.emit();
+    });
+  }
+  
 }

@@ -12,11 +12,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class DeleteDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { type: string; name: string }, // Daten vom Aufrufer
-    private dialogRef: MatDialogRef<DeleteDialogComponent> // Referenz auf den Dialog
+    @Inject(MAT_DIALOG_DATA) public data: { type: string; name: string },
+    private dialogRef: MatDialogRef<DeleteDialogComponent> 
   ) {}
 
   closeDialog(result: boolean) {
-    this.dialogRef.close(result); // Dialog schließen und Ergebnis zurückgeben
+    this.dialogRef.close(result); 
   }
 }
