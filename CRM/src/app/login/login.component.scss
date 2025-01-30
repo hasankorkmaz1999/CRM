@@ -19,6 +19,23 @@
     width: 900px;
     height: 500px;
    
+    animation: fadeIn 0.5s ease-out;
+    animation-fill-mode: forwards;
+    will-change: transform, opacity;
+    
+  }
+  
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0; /* Start völlig transparent */
+    }
+    50% {
+      opacity: 0.5; /* Halbtransparent in der Mitte */
+    }
+    100% {
+      opacity: 1; /* Vollständig sichtbar */
+    }
   }
 
 
@@ -218,10 +235,12 @@
    
   }
 
-  ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
-   
-    background-color: rgba(0, 0, 0, 1.9) !important;
-    height: 500px !important;
+  
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+height: 600px !important;
+    background-color: rgba(25, 25, 25, 1.0) !important;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
     border-radius: 10px !important;
 }
 

@@ -31,7 +31,7 @@ max-width: 1920px;
 
  
  .user-detail-header {
-  min-height: 430px !important;
+  height: auto !important;
     background-color: rgba(39, 39, 39, 0.2);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
  width: 100%;
@@ -66,8 +66,11 @@ width: 100%;
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  height: 200px;
+  height: 100%;
 }
+
+
+
 
 .left-section-user {
   
@@ -75,19 +78,14 @@ width: 100%;
  align-items: center;
 }
 
-.middle-section {
- 
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  
-}
+
 
 .user-details-under {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .user-top {
@@ -169,6 +167,7 @@ h1 {
   align-items: center;
   font-size: 20px;
   text-decoration: none;
+  white-space: wrap;
 
   &:hover {
     color:#4250A9 ;
@@ -182,7 +181,7 @@ h1 {
    padding: 16px;
   border-radius: 20px;
   height: 105px;
-  margin-right: 70px;
+ 
    display: flex;
    flex-direction: column;
    align-items: flex-start;
@@ -301,7 +300,8 @@ h1 {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    height: 100px;
+    height: 100%;
+    width: 100%;
 
 
 
@@ -343,7 +343,7 @@ height: 460px;
   padding: 16px;
   border-radius: 20px;
   height: 105px;
-  margin-right: 70px;
+  width: 100%;
    display: flex;
    flex-direction: column;
    align-items: flex-start;
@@ -443,7 +443,7 @@ height: 460px;
      flex-direction: column;
 align-items: center;
 
-   height: 810px;
+   height: 900px;
     width: 500px;
     overflow-y: auto;
   
@@ -574,13 +574,14 @@ align-items: center;
 @media (max-width: 2010px) { 
  
 .user-detail-header{
-  width: 90%;
+ width: 90%;
 }
 
 .user-detail-purchases{
   width: 90%;
 }
   .mat-cards-wrapper-left {
+    width: 100%;
     justify-content: center;
     align-items: center;
     margin-right: 0;
@@ -646,18 +647,18 @@ align-items: center;
 
 @media (max-width: 1550px) { 
 
-.user-left {
-  width: 210px;
-}
+  .user-detail-header {
+    width: 100%;
+    flex-wrap: wrap;
+  }
 
+  .user-detail-purchases{
+    width: 100%;
+  }
 
-.user-right {
-  width: 210px;
-}
-
-.user-rightest {
-  width: 250px;
-}
+  .user-events {
+    width: 100%;
+  }
 
  
 
@@ -725,45 +726,8 @@ margin-right: 10px;
 }
 
 
-@media (max-width: 1065px) {
+
  
-
-  .user-detail-purchases{
-    width: 100%; 
-   }
- 
-   .user-detail-header{
-   width: 100%; 
-  
-   }
- 
- 
-   .user-events {
-   
-    width: 100%;
-   }
-
-
- }
-
- @media (max-width: 968px) { 
-  .user-detail-header{
-    width: 100%; 
-   height: 500px;
-    }
-
-    .user-rightest {
-      width: 100%;
-      display: flex;
-justify-content: flex-end;
-      flex-direction: row-reverse;
-    }
-
-    .role-container-address {
-      padding-left: 0;
-      width: 140px;
-    }
- }
 
 
  @media (max-width: 770px) { 
@@ -774,7 +738,7 @@ justify-content: flex-end;
   
   .user-detail-header{
     width: 100%; 
-   height: 600px;
+   
     }
 
     .user-content {
@@ -799,77 +763,19 @@ justify-content: flex-end;
   }
 } 
 
-@media (max-width: 560px)   {
-.user-left {
-  width: 180px;
+@media (max-width: 560px) { 
+.role-container{
+padding: 5px;
+}
+.role-container-address {
+  padding: 5px;
+}
 }
 
-.role-container-address{
-  margin-right: 40px;
-}
-}
-
-
-
-@media (max-width: 530px) { 
-  .user-detail-purchases{
-    padding: 15px;
-    padding-top: 30px;
-  }
-  .user-detail-header{
-    padding: 15px;
-    padding-top: 30px;
-  }
-
-  .user-content {
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-
- 
-  .mat-typography h2 {
-    font: 500 24px / 32px Roboto, sans-serif;
-    letter-spacing: .0125em;
-    margin: 0 0 16px;
-    
-  }
 
 
 
 
-
-  .user-details-under {
-    justify-content: flex-start;
-    flex-direction: column;
-    
-  }
-
-  .user-detail-header {
-    height: 850px;
-    
-    
-  }
-
-  .user-rightest {
-    flex-direction: column;
-  }
-
-  .role-container {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    height: 90px;
-    justify-content: flex-start;
-  }
-
-  .role-container-address {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    height: 90px;
-    justify-content: flex-start;
-  }
-
-  
-}
 
 
 @media (max-width: 440px) {  
@@ -877,19 +783,20 @@ justify-content: flex-end;
     padding: 14px;
   }
 
-  .user-detail-purchases{
-   width: 100%; 
+  .email-link {
+    white-space: wrap;
+    word-break: break-all;
+  }
+  .user-detail-header {
+    padding: 16px;
   }
 
-  .user-detail-header{
-  width: 100%; 
+  .user-detail-purchases {
+padding: 16px;
   }
-
 
   .user-events {
-  
-   width: 100%;
+    padding: 16px;
   }
-  
  
 }

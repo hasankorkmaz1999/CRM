@@ -58,31 +58,29 @@ width: 100%;
       backdrop-filter: blur(20px);
 
       border-radius: 8px;
-      -webkit-box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5); /* Gleichmäßiger Schatten */
-      box-shadow: 0px 0px 12px rgba(139, 139, 139, 0.5);
-
+      
     
 
 
 
       &.entity-user {
         border-left: 5px solid #ffffff; /* Neutral Slate Blue */
-        box-shadow: -8px 0 8px -2px rgba(255, 255, 255, 0.4);
+      
       }
       
       &.entity-customer {
         border-left: 5px solid #BBA8FF; /* Soft Lavender */
-        box-shadow: -8px 0 8px -2px rgba(187, 168, 255, 0.4);
+       
       }
       
       &.entity-event {
         border-left: 5px solid #55b0f6; /* Modern Pastel Orange */
-        box-shadow: -8px 0 8px -2px rgba(85, 176, 246, 0.4);
+       
       }
       
       &.entity-purchase {
         border-left: 5px solid #68D391; /* Soft Mint Green */
-        box-shadow: -8px 0 8px -2px rgba(104, 211, 145, 0.4);
+       
       }
       
     }
@@ -239,13 +237,14 @@ right: 5px;
 }
 
 strong {
+  padding: 10px;
   margin-top: 10px;
 }
 }
 
 
 
-@media (max-width: 920px) {
+@media (max-width: 590px) {
  
   .header-top {
     flex-direction: column;
@@ -254,6 +253,15 @@ strong {
       margin-bottom: 30px;
       text-align: center;
     }
+  }
+
+  .all-logs-comp {
+    padding: 20px;
+  }
+
+  .back-button {
+    left: 0px;
+    top: 5px;
   }
  }
 

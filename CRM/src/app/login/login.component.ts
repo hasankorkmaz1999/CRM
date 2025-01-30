@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   imports: [MatProgressSpinner, SharedModule, SlideshowComponent],
+ 
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -116,7 +117,7 @@ export class LoginComponent {
 
   openPrivacyPolicy(): void {
     this.dialog.open(PrivacyPolicyComponent, {
-      
+    
     });
   }
 

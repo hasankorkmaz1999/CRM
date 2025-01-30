@@ -40,7 +40,7 @@
             </div>
           </div>
 
-          <div class="middle-section">
+          
             <div class="user-details">
               <h2 class="name">{{ user.firstName }} {{ user.lastName }}</h2>
 
@@ -77,12 +77,31 @@
                     <span class="thin-role">Birth Date</span>
 
                     <span class="birthdate"
-                      >{{ user.birthDate | date : "MMMM d, y" }}
+                      >{{ user.birthDate ? (user.birthDate | date : "MMMM d, y") : "No birth date provided" }}
                     </span>
                   </div>
                 </div>
 
                 <div class="user-right">
+                  <div class="role-container-address">
+                    <span class="thin-role">Street </span>
+                    <span class="birthdate">
+                      {{ user.street || "No street provided" }}</span
+                    >
+                  </div>
+
+                  <div class="role-container-address">
+                    <span class="thin-role">City </span>
+                    <span class="birthdate">
+                      {{ user.zipCode }}
+                      {{ user.city || "No city provided" }}</span
+                    >
+                  </div>
+                </div>
+
+                <div class="user-rightest">
+
+
                   <div class="role-container">
                     <span class="thin-role"> E-mail </span>
 
@@ -100,27 +119,18 @@
                       {{ user.phone || "No phone number provided" }}
                     </a>
                   </div>
+
+
+
+
+                 
                 </div>
 
-                <div class="user-rightest">
-                  <div class="role-container-address">
-                    <span class="thin-role">Street </span>
-                    <span class="birthdate">
-                      {{ user.street || "No street provided" }}</span
-                    >
-                  </div>
 
-                  <div class="role-container-address">
-                    <span class="thin-role">City </span>
-                    <span class="birthdate">
-                      {{ user.zipCode }}
-                      {{ user.city || "No city provided" }}</span
-                    >
-                  </div>
-                </div>
+
               </div>
             </div>
-          </div>
+        
         </div>
 
         <div class="edit-container">

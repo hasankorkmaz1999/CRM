@@ -1,53 +1,55 @@
 <ng-container *ngIf="!isLoginRoute">
- 
-    <div class="main-container">
+  <div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo-container">
+        <img src="/assets/img/crm_logo.png" alt="Logo" />
+      </div>
+      <div class="links-container">
+        <ul class="menu-items">
+          <li class="links" routerLink="/dashboard">
+            <mat-icon>fact_check</mat-icon> Dashboard
+          </li>
+          <li class="links" routerLink="/user">
+            <mat-icon>perm_identity</mat-icon> User
+          </li>
+          <li class="links" routerLink="/customer">
+            <mat-icon>people</mat-icon> Customer
+          </li>
 
-     
-     
-  
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <div class="logo-container">
-          <img src="/assets/img/crm_logo.png" alt="Logo">
-        </div>
-        <div class="links-container">
-          <ul class="menu-items">
-            <li class="links" routerLink="/dashboard">
-              <mat-icon>fact_check</mat-icon> Dashboard
+          <li class="links" routerLink="/calendar-angular">
+            <mat-icon>calendar_today</mat-icon> Calendar
+          </li>
+          <li class="links" routerLink="/threads">
+            <mat-icon>forum</mat-icon> InfoDesk
+          </li>
+        </ul>
+        <div class="privacy-links">
+          <ul>
+            <li
+              [queryParams]="{ from: 'menu' }"
+              class="links-privacy"
+              routerLink="/privacy-policy"
+            >
+              Privacy Policy
             </li>
-            <li class="links" routerLink="/user">
-              <mat-icon>perm_identity</mat-icon> User
-            </li>
-            <li class="links" routerLink="/customer">
-              <mat-icon>people</mat-icon> Customer
-            </li>
-           
-            <li class="links" routerLink="/calendar-angular">
-              <mat-icon>calendar_today</mat-icon> Calendar
-            </li>
-            <li class="links" routerLink="/threads">
-              <mat-icon>forum</mat-icon> InfoDesk
+            <li
+              [queryParams]="{ from: 'menu' }"
+              class="links-privacy"
+              routerLink="/legal-notice"
+            >
+              Legal Notice
             </li>
           </ul>
-          <div class="privacy-links">
-            <ul>
-              <li [queryParams]="{ from: 'menu' }" class="links-privacy" routerLink="/privacy-policy">Privacy Policy</li>
-              <li [queryParams]="{ from: 'menu' }" class="links-privacy" routerLink="/legal-notice">Legal Notice</li>
-            </ul>
-          </div>
         </div>
-      </div> 
+      </div>
+    </div>
 
-
-
-
-      <!-- Hauptinhalt -->
-      <div class="content-wrapper">
-        <!-- Header -->
-        <mat-toolbar class="header">
-
-
-          <button
+    <!-- Hauptinhalt -->
+    <div class="content-wrapper">
+      <!-- Header -->
+      <mat-toolbar class="header">
+        <button
           mat-icon-button
           class="burger-menu"
           [matMenuTriggerFor]="burgerMenu"
@@ -56,48 +58,31 @@
           <mat-icon>menu</mat-icon>
         </button>
 
-
-
-
-          <div class="user-status">
-            <div class="user-name">
-              <div class="image-wrapper-header">
-                <img
-                  [src]="userProfilePicture || '/assets/img/user.png'"
-                  class="profile-picture-header"
-                  alt="Profile Picture"
-                />
-              </div>
-              <span class="username">{{ userName }}</span>
-              <button
-              mat-icon-button
-              mat-icon-button
-        [matMenuTriggerFor]="userMenu"
-      
-        aria-label="User Options"
-        class="user-options-button"
-      >
-                <mat-icon>arrow_drop_down</mat-icon>
-              </button>
+        <div class="user-status">
+          <div class="user-name">
+            <div class="image-wrapper-header">
+              <img
+                [src]="userProfilePicture || '/assets/img/user.png'"
+                class="profile-picture-header"
+                alt="Profile Picture"
+              />
             </div>
+            <span class="username">{{ userName }}</span>
+            <button
+              mat-icon-button
+              mat-icon-button
+              [matMenuTriggerFor]="userMenu"
+              aria-label="User Options"
+              class="user-options-button"
+            >
+              <mat-icon>arrow_drop_down</mat-icon>
+            </button>
           </div>
-        
-         
-        </mat-toolbar>
+        </div>
+      </mat-toolbar>
 
-
-
-
-
-
-
-
-
-
-        <mat-menu #burgerMenu="matMenu">
-
-          <div class="burger-top">
-
+      <mat-menu #burgerMenu="matMenu">
+        <div class="burger-top">
           <button mat-menu-item routerLink="/dashboard">
             <mat-icon>fact_check</mat-icon> Dashboard
           </button>
@@ -116,39 +101,41 @@
         </div>
 
         <div class="burger-bottom">
-        
-          <li class="links-privacy-burger" routerLink="/privacy-policy" [queryParams]="{ from: 'menu' }">Privacy Policy</li>
-          <li class="links-privacy-burger" routerLink="/legal-notice" [queryParams]="{ from: 'menu' }">Legal Notice</li>
+          <li
+            class="links-privacy-burger"
+            routerLink="/privacy-policy"
+            [queryParams]="{ from: 'menu' }"
+          >
+            Privacy Policy
+          </li>
+          <li
+            class="links-privacy-burger"
+            routerLink="/legal-notice"
+            [queryParams]="{ from: 'menu' }"
+          >
+            Legal Notice
+          </li>
         </div>
-        </mat-menu>
-    
+      </mat-menu>
 
+      <!-- Dropdown Menü -->
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="logout()" *ngIf="!isLoginRoute">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+        <button mat-menu-item (click)="navigateToHelp()">
+          <mat-icon>help_outline</mat-icon>
+          <span>Help</span>
+        </button>
+      </mat-menu>
 
-
-
-
-
-        
-        <!-- Dropdown Menü -->
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item (click)="logout()"  *ngIf="!isLoginRoute">
-            <mat-icon>logout</mat-icon>
-            <span>Logout</span>
-          </button>
-          <button mat-menu-item (click)="navigateToHelp()">
-            <mat-icon>help_outline</mat-icon>
-            <span>Help</span>
-          </button>
-        </mat-menu>
-        
-
-        <!-- Seiteninhalt -->
-        <div class="page-content">
-          <router-outlet></router-outlet>
-        </div>
+      <!-- Seiteninhalt -->
+      <div class="page-content">
+        <router-outlet></router-outlet>
       </div>
     </div>
-
+  </div>
 
   <app-todo-floating></app-todo-floating>
 </ng-container>

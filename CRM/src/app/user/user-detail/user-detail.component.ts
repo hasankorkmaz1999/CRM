@@ -25,7 +25,7 @@ export class UserDetailComponent implements OnInit {
 
   userId = '';
   user: User = new User ;
-  userEvents: any[] = []; // Liste aller Events des aktuellen Benutzers
+  userEvents: any[] = []; 
 
 
 
@@ -78,41 +78,30 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  @HostListener('window:resize', ['$event']) // Überwache die Fenstergröße
+  @HostListener('window:resize', ['$event']) 
   onResize(): void {
     this.updateChartView();
   }
 
   updateChartView(): void {
     const screenWidth = window.innerWidth;
-  
-    // Breakpoints für die Chart-Breite
-    if (screenWidth <= 390) {
-      this.view = [260, 400]; // Maximale Breite für kleine Geräte
-    } else if (screenWidth <= 490) {
-      this.view = [340, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 600) {
-      this.view = [400, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 740) {
-      this.view = [450, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 830) {
-      this.view = [550, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 930) {
-      this.view = [650, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 1020) {
-      this.view = [700, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 1200) {
-      this.view = [750, 400]; // Etwas größere Breite für Tablets
-    } else if (screenWidth <= 1550) {
-      this.view = [900, 400]; // Standardbreite für Desktops bis 1770px
-    } else if (screenWidth <= 1700) {
-      this.view = [1000, 400]; // Große Desktops bis 1920px
-    } else if (screenWidth <= 2040) {
-      this.view = [1150, 400]; // Sehr große Desktops bis 2070px
+    let widthPercentage = 0.9; // Standardmäßig 60% der Bildschirmbreite
+
+    if (screenWidth < 1380) {
+      widthPercentage = 0.75; // Kleinere Bildschirme: 60%
+    } else if (screenWidth < 2010) {
+      widthPercentage = 0.65; // Mittlere Bildschirme: 70%
     } else {
-      this.view = [1200, 400]; // Extra große Geräte (über 2070px)
+      widthPercentage = 0.6; // Große Bildschirme: 80%
     }
+  
+    const maxChartWidth = Math.min(screenWidth * widthPercentage, 1300); // Max. 1300px Begrenzung
+    const chartHeight = 400; // Feste Höhe beibehalten
+  
+    this.view = [maxChartWidth, chartHeight];
   }
+  
+  
   
  
   

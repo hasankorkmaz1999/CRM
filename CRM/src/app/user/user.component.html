@@ -1,85 +1,68 @@
-
 <div class="user-component">
+  <div class="header-top">
+    <div class="button-margin">
+      <div class="h1-user">Users</div>
+      <button
+        (click)="openDialog()"
+        class="add-user-button"
+        mat-fab
+        color="primary"
+        matTooltip="Add user"
+        matTooltipPosition="above"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
 
-<div class="header-top">
-  <div class="button-margin">
-  <div class="h1-user"> Users </div>
-  <button (click)="openDialog()" class="add-user-button" mat-fab color="primary" matTooltip="Add user" matTooltipPosition="above">
-    <mat-icon>add</mat-icon>
-  </button>
-</div>
+    <div class="search-container">
+      <input
+        id="search-input"
+        type="text"
+        class="search-input"
+        [(ngModel)]="searchQuery"
+        placeholder="Search users by name"
+        (input)="filterUsers()"
+      />
+    </div>
+  </div>
 
-<div class="search-container">
- 
-  <input
-    id="search-input"
-    type="text"
-    class="search-input"
-    [(ngModel)]="searchQuery"
-    placeholder="Search users by name"
-    (input)="filterUsers()"
-  />
-</div>
-
-
-
-</div>
-
-
-  <!-- Benutzer-Liste -->
   <div class="user-list">
-    <!-- Kopfzeile -->
     <div class="header-row">
-     
       <div>Name</div>
-     
+
       <div class="over-email">E-mail</div>
       <div class="over-phone">Phone</div>
       <div>Action</div>
-     
     </div>
 
-    <!-- Benutzerzeilen -->
-    <div class="under-tr" *ngFor="let user of filteredUsers" (click)="navigateToUser(user.uid)">
-     
-
-     <div class="user-pic">
-      <div class="image-wrapper-user">
-        <img
-          [src]="user.profilePicture || '/assets/img/user.png'"
-          class="profile-picture-user"
-          alt="Profile Picture"
-        />
-      </div>
-      <div class="user-stats">{{ user.firstName }} {{ user.lastName }}
+    <div
+      class="under-tr"
+      *ngFor="let user of filteredUsers"
+      (click)="navigateToUser(user.uid)"
+    >
+      <div class="user-pic">
+        <div class="image-wrapper-user">
+          <img
+            [src]="user.profilePicture || '/assets/img/user.png'"
+            class="profile-picture-user"
+            alt="Profile Picture"
+          />
         </div>
-    </div>
-
-   
-
+        <div class="user-stats">{{ user.firstName }} {{ user.lastName }}</div>
+      </div>
 
       <div class="user-stats-email">{{ user.email }}</div>
       <div class="user-stats-phone">{{ user.phone }}</div>
 
       <div>
-        <button mat-icon-button color="warn" (click)="openDeleteDialog($event, user)">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="openDeleteDialog($event, user)"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </div>
-
-
     </div>
-    
   </div>
-
-
-
-
-<!-- Hinzufügen-Button -->
-
-
-
-
-
-
 </div>

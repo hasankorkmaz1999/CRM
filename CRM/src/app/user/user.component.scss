@@ -1,65 +1,56 @@
 .user-component {
-    padding: 46px;
-    background-color: #0f0f0f;
-    animation: fadeIn 0.5s ease-out;
-    animation-fill-mode: forwards;
-    will-change: transform, opacity;
-    max-width: 1920px;
-    
-  }
-  
-  
-  @keyframes fadeIn {
-    0% {
-      opacity: 0; /* Start völlig transparent */
-    }
-    50% {
-      opacity: 0.5; /* Halbtransparent in der Mitte */
-    }
-    100% {
-      opacity: 1; /* Vollständig sichtbar */
-    }
-  }
+  padding: 46px;
+  background-color: #0f0f0f;
+  animation: fadeIn 0.5s ease-out;
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+  max-width: 1920px;
+}
 
- 
-  
-  .button-margin {
-   display: flex;
-   align-items: center;
+@keyframes fadeIn {
+  0% {
+    opacity: 0; /* Start völlig transparent */
   }
+  50% {
+    opacity: 0.5; /* Halbtransparent in der Mitte */
+  }
+  100% {
+    opacity: 1; /* Vollständig sichtbar */
+  }
+}
 
+.button-margin {
+  display: flex;
+  align-items: center;
+}
 
 .mat-mdc-card {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 .header-top {
-    display: flex;
-    justify-content: space-between;
-   
-    width: 100%;
-    margin-bottom: 40px;
-    padding-left: 16px;
-    padding-right: 16px;
+  display: flex;
+  justify-content: space-between;
 
+  width: 100%;
+  margin-bottom: 40px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
-
-
 
 .h1-user {
   font-family: "DM Sans", serif;
-    color: white;
-    font-size: 36px;
-    margin-right: 20px;
-    margin-bottom: 0;
+  color: white;
+  font-size: 36px;
+  margin-right: 20px;
+  margin-bottom: 0;
 }
-
 
 .user-list {
   padding: 20px;
   border-radius: 20px;
   background-color: #101010;
-  
+
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -67,10 +58,10 @@
 
 .header-row {
   display: grid;
-  grid-template-columns: 1fr  1fr 1fr 0.3fr; /* Passe die Spaltenbreite an */
+  grid-template-columns: 1fr 1fr 1fr 0.3fr; /* Passe die Spaltenbreite an */
   align-items: center;
   background-color: #161616;
-  border-bottom: 1px solid #000000;/* Kopfzeilenfarbe */
+  border-bottom: 1px solid #000000; /* Kopfzeilenfarbe */
   color: white;
   padding: 20px; /* Innenabstand */
   font-size: 20px;
@@ -80,7 +71,7 @@
 
 .under-tr {
   display: grid;
-  grid-template-columns:  1fr  1fr 1fr  0.3fr ; /* Passe die Spaltenbreite an */
+  grid-template-columns: 1fr 1fr 1fr 0.3fr; /* Passe die Spaltenbreite an */
   align-items: center;
   background-color: #161616;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
@@ -97,33 +88,27 @@
   box-shadow: rgba(0, 0, 0, 0.6) 0px 35px 30px -20px; /* Intensiverer Schatten beim Hover */
 }
 
-
-
 .user-stats {
   display: flex;
   align-items: center;
-color: #d2d2d2;
-font-size: 20px;
-width: 160px;
+  color: #d2d2d2;
+  font-size: 20px;
+  width: 160px;
 }
-
 
 .user-stats-email {
   display: flex;
   align-items: center;
-color: #d2d2d2;
-font-size: 20px;
+  color: #d2d2d2;
+  font-size: 20px;
 }
-
 
 .user-stats-phone {
   display: flex;
   align-items: center;
-color: #d2d2d2;
-font-size: 20px;
+  color: #d2d2d2;
+  font-size: 20px;
 }
-
-
 
 .user-pic {
   width: 100%;
@@ -133,7 +118,7 @@ font-size: 20px;
 
 .image-wrapper-user {
   flex-shrink: 0;
-  
+
   height: 40px;
   width: 40px;
   border-radius: 50%; /* Macht den Wrapper zu einem Kreis */
@@ -142,50 +127,43 @@ font-size: 20px;
   margin-right: 10px;
 }
 
-
-  .profile-picture-user {
-    
-     margin-right: 20px;
-      width: 100%;
+.profile-picture-user {
+  margin-right: 20px;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top;
-    }
+}
 
+.search-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Passe die Breite nach Bedarf an */
+  max-width: 300px;
+  margin-bottom: 10px;
+}
 
+.search-label {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #4c5ab3; /* Label-Farbe */
+}
 
+.search-input {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  transition: border-color 0.3s ease;
+}
 
-
-    .search-container {
-      display: flex;
-      flex-direction: column;
-      width: 100%; /* Passe die Breite nach Bedarf an */
-      max-width: 300px;
-      margin-bottom: 10px;
-     
-    }
-    
-    .search-label {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: #4c5ab3; /* Label-Farbe */
-    }
-    
-    .search-input {
-      width: 100%;
-      padding: 8px 10px;
-      font-size: 20px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      outline: none;
-      background-color: transparent;
-      color: white;
-      transition: border-color 0.3s ease;
-    }
-    
-    .search-input:focus {
-      border-color: #4c5ab3; /* Farbe für den Fokuszustand */
-    }
+.search-input:focus {
+  border-color: #4c5ab3; /* Farbe für den Fokuszustand */
+}
 
 .mat-mdc-card {
   width: 100%;
@@ -199,12 +177,8 @@ font-size: 20px;
 .icon-container {
   margin-left: 20px;
   display: flex;
-align-items: flex-start;
- 
+  align-items: flex-start;
 }
-
-
-
 
 @media (max-width: 1150px) {
   .user-component {
@@ -216,23 +190,19 @@ align-items: flex-start;
   display: flex;
   flex-direction: column;
   width: 100%; /* Passe die Breite nach Bedarf an */
-margin-top: 10px;
+  margin-top: 10px;
   margin-bottom: 0px;
- 
 }
-
-
 
 @media (max-width: 1150px) {
   .header-row {
     display: grid;
-    grid-template-columns: 1fr  1fr 0fr 0.1fr; /* Passe die Spaltenbreite an */
+    grid-template-columns: 1fr 1fr 0fr 0.1fr; /* Passe die Spaltenbreite an */
   }
-
 
   .under-tr {
     display: grid;
-    grid-template-columns:  1fr  1fr 0fr  0.1fr ; /* Passe die Spaltenbreite an */
+    grid-template-columns: 1fr 1fr 0fr 0.1fr; /* Passe die Spaltenbreite an */
   }
 
   .user-stats-phone {
@@ -243,7 +213,6 @@ margin-top: 10px;
     display: none;
   }
 }
-
 
 @media (max-width: 800px) {
   .user-stats {
@@ -256,15 +225,13 @@ margin-top: 10px;
 
   .header-row {
     display: grid;
-    grid-template-columns: 1fr  1fr  0.1fr; /* Passe die Spaltenbreite an */
+    grid-template-columns: 1fr 1fr 0.1fr; /* Passe die Spaltenbreite an */
   }
-
 
   .under-tr {
     display: grid;
-    grid-template-columns:  1fr  1fr   0.1fr ; /* Passe die Spaltenbreite an */
+    grid-template-columns: 1fr 1fr 0.1fr; /* Passe die Spaltenbreite an */
   }
-
 }
 
 @media (max-width: 600px) {
@@ -274,9 +241,8 @@ margin-top: 10px;
     width: 100%; /* Passe die Breite nach Bedarf an */
     max-width: 200px;
     margin-bottom: 10px;
-   
   }
-  
+
   .search-label {
     font-size: 16px;
     margin-bottom: 10px;
@@ -284,83 +250,64 @@ margin-top: 10px;
   }
 
   .search-input {
-   
     font-size: 16px;
-     }
+  }
 
-     .h1-user {
-      font-size: 24px;
-     }
+  .h1-user {
+    font-size: 24px;
+  }
 
+  .add-user-button {
+    width: 50px;
+    height: 50px;
 
-     .add-user-button {
-      
-      width: 50px;
-      height: 50px;
-    
-    
-      
-  
-      mat-icon {
-        font-size: 24px; /* Standardgröße des Icons */
-       
-      }
+    mat-icon {
+      font-size: 24px; /* Standardgröße des Icons */
+    }
+  }
+
+  .user-stats-email {
+    display: none;
+  }
+
+  .over-email {
+    display: none;
+  }
+
+  .header-row {
+    display: grid;
+    grid-template-columns: 8fr 0fr 0fr 0.1fr; /* Passe die Spaltenbreite an */
+  }
+
+  .under-tr {
+    display: grid;
+    grid-template-columns: 5fr 0fr 0fr 0.1fr; /* Passe die Spaltenbreite an */
+  }
 }
 
-.user-stats-email {
-  display: none;
+@media (max-width: 460px) {
+  .header-top {
+    align-items: center;
+    flex-direction: column;
+    height: 110px;
+    margin-bottom: 10px;
+  }
+
+  .add-user-button {
+    width: 40px;
+    height: 40px;
+
+    mat-icon {
+      font-size: 24px; /* Standardgröße des Icons */
+    }
+  }
+
+  .user-component {
+    padding: 10px;
+  }
+
+  .under-tr {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
-
-.over-email {
-  display: none;
-}
-
-.header-row {
-  display: grid;
-  grid-template-columns: 8fr  0fr 0fr 0.1fr; /* Passe die Spaltenbreite an */
-}
-
-
-.under-tr {
-  display: grid;
-  grid-template-columns:  5fr  0fr 0fr  0.1fr ; /* Passe die Spaltenbreite an */
-}
-
-}
-
-
-@media (max-width: 460px) { 
-.header-top {
-  align-items: center;
-flex-direction: column;
-height: 110px;
-margin-bottom: 10px;
-}
-
-.add-user-button {
-      
-  width: 40px;
-  height: 40px;
- 
-
-  mat-icon {
-    font-size: 24px; /* Standardgröße des Icons */
-}
-
-}
-
-.user-component {
-  padding: 10px;
-}
-
-.under-tr {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-
-}
-
-
-
- 

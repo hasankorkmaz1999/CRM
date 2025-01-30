@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -12,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { CalendarModule } from 'angular-calendar';
 import { UserService } from './shared/user.service';
-import { TodoFloatingComponent } from "./todo-floating/todo-floating.component";
+import { TodoFloatingComponent } from './todo-floating/todo-floating.component';
 
 @Component({
   selector: 'app-root',
@@ -30,23 +37,22 @@ import { TodoFloatingComponent } from "./todo-floating/todo-floating.component";
     HttpClientModule,
     SharedModule,
     CalendarModule,
-    TodoFloatingComponent
-],
+    TodoFloatingComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   isLoginRoute: boolean = false;
-  userName: string = 'Unknown User'; // Benutzername für den Header
-  userRole: string = ''; // Benutzerrolle
-  userProfilePicture: string = ''; // Profilbild des Benutzers
+  userName: string = 'Unknown User';
+  userRole: string = '';
+  userProfilePicture: string = '';
+  menuPositionX: 'before' | 'after' = 'after';
+  menuPositionY: 'above' | 'below' = 'below';
 
-
-  
-   constructor(
+  constructor(
     private router: Router,
     private userService: UserService,
-  
     private dialog: MatDialog
   ) {
     this.router.events.subscribe(() => {
@@ -55,52 +61,31 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Benutzer aus dem Service abonnieren
     this.userService.currentUser$.subscribe((user) => {
       if (user) {
         this.userName = user.name || 'Unknown User';
         this.userRole = user.role || '';
-        this.userProfilePicture = user.profilePicture || '/assets/img/user.png'; // Fallback für Standardbild
-       
+        this.userProfilePicture = user.profilePicture || '/assets/img/user.png';
       } else {
         this.userName = 'Unknown User';
         this.userRole = '';
-        this.userProfilePicture = '/assets/img/user.png'; // Fallback für Standardbild
+        this.userProfilePicture = '/assets/img/user.png';
       }
     });
-  
-    // Benutzer aus localStorage laden (nur beim Initialisieren)
     this.userService.loadUserFromStorage();
   }
 
-
-  menuPositionX: 'before' | 'after' = 'after'; // Standardposition: rechts
-menuPositionY: 'above' | 'below' = 'below'; // Standardposition: unten
-
-changeMenuPosition(): void {
-  // Beispiel: Position basierend auf einer Bedingung ändern
-  this.menuPositionX = 'before';
-  this.menuPositionY = 'above';
-}
-
-
-
-  
-  navigateToHelp(): void {
-    this.router.navigate(['/help']); // Navigation zur Hilfeseite
+  changeMenuPosition(): void {
+    this.menuPositionX = 'before';
+    this.menuPositionY = 'above';
   }
 
+  navigateToHelp(): void {
+    this.router.navigate(['/help']);
+  }
 
-  
-  // Logout-Funktion
   logout() {
-    this.userService.clearCurrentUser(); // Benutzer im Service löschen
-    console.log('Benutzer wurde erfolgreich ausgeloggt.');
+    this.userService.clearCurrentUser();
     this.router.navigate(['/login']);
   }
-
- 
-
-  
-
 }

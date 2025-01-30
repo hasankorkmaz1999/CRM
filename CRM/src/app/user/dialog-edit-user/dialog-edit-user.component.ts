@@ -23,7 +23,7 @@ export class DialogEditUserComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { user: User; userId: string },
     private fb: FormBuilder,
     private firestore: Firestore,
-    private snackbarService: SnackbarService,
+    private snackbarService: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -32,53 +32,40 @@ export class DialogEditUserComponent implements OnInit {
 
   initForm() {
     const user = this.data.user;
-
-    // Falls das Geburtsdatum als String gespeichert ist, in ein Date-Objekt umwandeln
     let birthDate: Date | null = null;
     if (user.birthDate) {
-      birthDate = new Date(user.birthDate); // Konvertieren
+      birthDate = new Date(user.birthDate);
       if (isNaN(birthDate.getTime())) {
-        birthDate = null; // Wenn ungültig, setze null
-      }
-    }
-
+        birthDate = null;
+      }}
     this.userForm = this.fb.group({
       firstName: [user.firstName],
       lastName: [user.lastName],
       email: [user.email],
       phone: [user.phone],
-      birthDate: [birthDate], // Hier wird ein `Date`-Objekt erwartet
+      birthDate: [birthDate],
       street: [user.street],
       city: [user.city],
       zipCode: [user.zipCode],
-      role: [user.role] // Neue Rolle hinzugefügt
+      role: [user.role],
     });
   }
 
   async saveUser() {
     const updatedUser = this.userForm.value;
-  
-    // Formatieren des Geburtsdatums als MM/DD/YYYY
     if (updatedUser.birthDate) {
       const birthDate = new Date(updatedUser.birthDate);
-      updatedUser.birthDate = birthDate.toLocaleDateString('en-US'); // Formatieren in MM/DD/YYYY
+      updatedUser.birthDate = birthDate.toLocaleDateString('en-US');
     } else {
-      updatedUser.birthDate = ''; // Fallback, falls kein Datum ausgewählt wurde
+      updatedUser.birthDate = '';
     }
-  
     try {
       const userDocRef = doc(this.firestore, `users/${this.data.userId}`);
       await updateDoc(userDocRef, updatedUser);
-     
       this.snackbarService.showActionSnackbar('user', 'update');
       this.dialogRef.close(true);
     } catch (error) {
       console.error('Error updating user:', error);
     }
   }
-
-
-
-
- 
-}  
+}

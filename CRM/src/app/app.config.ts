@@ -26,7 +26,7 @@ export const appConfig: ApplicationConfig = {
       })
     ),
     provideFirestore((injector) => {
-      const app = injector.get(FirebaseApp); // FirebaseApp aus dem Injector abrufen
+      const app = injector.get(FirebaseApp); 
       return initializeFirestore(app, {
         localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
       });
