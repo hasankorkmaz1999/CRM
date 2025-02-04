@@ -9,13 +9,26 @@ export class AuthService {
   private currentUserDetailsSubject = new BehaviorSubject<{
     uid: string;
     name: string;
-    profilePicture: string;}>(
-    JSON.parse(localStorage.getItem('currentUserDetails') || `{
-      "uid": "",
-      "name": "Unknown User",
-      "profilePicture": "/assets/img/user.png",
-    }`)
-  );
+    profilePicture: string;
+  }>(this.getStoredUserDetails());
+  
+  private getStoredUserDetails() {
+    try {
+      return JSON.parse(localStorage.getItem('currentUserDetails')!) || {
+        uid: '',
+        name: 'Unknown User',
+        profilePicture: '/assets/img/user.png',
+      };
+    } catch (error) {
+      console.error('Error parsing user details from localStorage:', error);
+      return {
+        uid: '',
+        name: 'Unknown User',
+        profilePicture: '/assets/img/user.png',
+      };
+    }
+  }
+  
   currentUserDetails$ = this.currentUserDetailsSubject.asObservable();
 
   constructor(private firestore: Firestore) {}

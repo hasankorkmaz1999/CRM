@@ -5,6 +5,7 @@
 .mat-mdc-dialog-container .mdc-dialog__surface {
   background-color: rgba(25, 25, 25, 0.9);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+  height: auto !important;
 }
 
 h1 {

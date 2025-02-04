@@ -62,15 +62,12 @@ export class ThreadsComponent implements OnInit {
   }
 
   loadCurrentUser(): void {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser) {
-      this.currentUserName = currentUser.name || 'Unknown User';
-      this.currentUserProfilePicture =
-        currentUser.profilePicture || '/assets/img/user.png';
-    } else {
-      console.warn('Kein Benutzer in localStorage gefunden.');
-    }
+    this.authService.currentUserDetails$.subscribe(user => {
+      this.currentUserName = user.name || 'Unknown User';
+      this.currentUserProfilePicture = user.profilePicture || '/assets/img/user.png';
+    });
   }
+  
 
   async loadThreads() {
     this.loading = true;
