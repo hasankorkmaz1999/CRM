@@ -180,7 +180,7 @@ export class AngularCalendarComponent implements OnInit {
       case 'Workshop':
         return { primary: '#3BADEB' };
       case 'Other':
-        return { primary: '#53504f' };
+        return { primary: '#999695' };
       default:
         return { primary: '#3f51b5' };
     }

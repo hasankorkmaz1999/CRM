@@ -13,7 +13,8 @@ h1 {
   background-color: #0f0f0f;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.9);
   color: white;
-  word-break: break-all;
+  word-wrap: break-word; /* Unterstützt ältere Browser */
+  overflow-wrap: break-word; /* Moderner Standard */
   margin-bottom: 10px;
 }
 
@@ -64,10 +65,11 @@ h1 {
   border-radius: 10px;
 
   p {
-    white-space: wrap;
+  
     margin-bottom: 30px;
     color: white;
-    word-break: break-all;
+    word-wrap: break-word; /* Unterstützt ältere Browser */
+    overflow-wrap: break-word; /* Moderner Standard */
   }
 
   small {

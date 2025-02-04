@@ -46,7 +46,6 @@
 
         <div class="events-container">
           <div class="kpi-cards">
-            
             <div class="kpi-card">
               <p>Events Today</p>
               <p class="p1">{{ eventsToday }}</p>
@@ -60,7 +59,6 @@
           <div class="upcoming-events">
             <div class="chart-h1">Upcoming Events</div>
 
-           
             <div
               *ngIf="!userEvents || userEvents.length === 0"
               class="no-events-div"
@@ -68,7 +66,6 @@
               <p class="no-events-placeholder">No upcoming events</p>
             </div>
 
-          
             <div
               *ngIf="userEvents && userEvents.length > 0"
               class="events-wrapper"
@@ -145,7 +142,6 @@
             >
               <div class="log-message">
                 <strong>{{ log.details?.message }}</strong>
-               
               </div>
             </li>
           </ul>
@@ -158,8 +154,6 @@
           </button>
         </div>
       </div>
-
-    
     </div>
   </div>
 </div>

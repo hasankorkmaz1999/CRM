@@ -3,6 +3,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  overflow-y: auto;
+
 }
 
 .details-section {
@@ -23,10 +25,11 @@
   background-color: rgba(25, 25, 25, 0.9);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
   height: auto !important;
+
 }
 
 .selection-list {
-  max-height: 300px;
+  max-height: 200px;
   overflow-y: auto;
 }
 

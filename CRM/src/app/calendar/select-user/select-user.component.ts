@@ -85,10 +85,6 @@ export class SelectUserComponent implements OnInit {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (currentUser && currentUser.name) {
       this.currentUserName = currentUser.name;
-      console.log(
-        'Aktueller Benutzername aus localStorage:',
-        this.currentUserName
-      );
     } else {
       console.warn('Kein aktueller Benutzer in localStorage gefunden.');
     }

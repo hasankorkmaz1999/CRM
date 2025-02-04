@@ -38,7 +38,6 @@ export class AllLogsComponent implements OnInit {
   loadAllLogs() {
     const logsCollection = collection(this.firestore, 'logs');
     collectionData(logsCollection, { idField: 'id' }).subscribe((data) => {
-      console.log('Raw log data:', data); 
       this.logs = data.map((log) => ({
         ...log,
         timestamp: log['timestamp'] ? new Date(log['timestamp']) : null,
@@ -50,7 +49,6 @@ export class AllLogsComponent implements OnInit {
 
   applySortAndFilter() {
     let sortedLogs = [...this.logs];
-
     switch (this.selectedSort) {
       case 'newest':
         sortedLogs.sort(

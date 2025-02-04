@@ -151,17 +151,18 @@
   }
 
   .guest-login-button {
-  
+   
+  height: 33px;
     width: 170px;
-    background-color: transparent;
-    border: none;
-    color: rgb(72, 72, 72);
+    background-color: white ;
+    border: none ;
+    color: rgb(72, 72, 72) ;
     transition: all 0.3s ease-in-out;
 
     &:hover {
 
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
+      background-color: rgba(255, 255, 255, 0.1) ;
+      color: white ;
 
     }
   }

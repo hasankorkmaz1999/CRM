@@ -2,110 +2,85 @@
   <mat-spinner></mat-spinner>
 </div>
 
-
-
-
-
-
-
 <div *ngIf="!isLoading" class="login-container">
   <div class="logo-container">
-    <img src="/assets/img/crm_logo.png" alt="">
+    <img src="/assets/img/crm_logo.png" alt="" />
   </div>
 
-
-
-
-
-
   <div class="login-card">
+    <div class="left-show">
+      <app-slideshow></app-slideshow>
+    </div>
 
-<div class="left-show">
- <app-slideshow></app-slideshow>
-</div>
+    <div class="login-side">
+      <span class="title">Login</span>
+      <div class="form">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <!-- Email Input -->
+          <div class="full-width">
+            <input
+              class="inputer"
+              placeholder="Email"
+              matInput
+              type="email"
+              formControlName="email"
+              required
+            />
+            <span class="input-icon">
+              <mat-icon>email</mat-icon>
+            </span>
+          </div>
 
+          <!-- Password Input -->
+          <div class="full-width">
+            <input
+              class="inputer"
+              placeholder="Password"
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              required
+            />
+            <span class="input-icon">
+              <button type="button" (click)="hidePassword = !hidePassword">
+                <mat-icon>{{
+                  hidePassword ? "visibility" : "visibility_off"
+                }}</mat-icon>
+              </button>
+            </span>
+          </div>
 
+          <div class="login-buttons">
+            <button
+              mat-raised-button
+              color="primary"
+              class="login-button"
+              [class.disabled-button]="loginForm.invalid"
+              type="submit"
+            >
+              Log in
+            </button>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="login-side">
-    <span class="title">Login</span>
-    <div class="form">
-        <form  [formGroup]="loginForm" (ngSubmit)="onLogin()">
-            <!-- Email Input -->
-            <div class="full-width">
-                <input class="inputer" placeholder="Email" matInput type="email" formControlName="email" required />
-                <span class="input-icon">
-                    <mat-icon>email</mat-icon>
-                </span>
-            </div>
-
-            <!-- Password Input -->
-            <div class="full-width">
-                <input class="inputer" placeholder="Password" matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required />
-                <span class="input-icon">
-                    <button type="button" (click)="hidePassword = !hidePassword">
-                        <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
-                    </button>
-                </span>
-
-              
-  
-            </div>
-
-            <!-- Error Message -->
-            
-            <!-- Submit Button -->
-
-            <div class="login-buttons">
-              <button mat-raised-button color="primary" class="login-button"
-              [class.disabled-button]="loginForm.invalid"  type="submit">
-          Log in
-      </button>
-      
-
-            <button  type="button" mat-raised-button class="guest-login-button" (click)="guestLogin()">
-           Log in as Guest
-          </button>
-        </div>
-
-
+            <button
+              type="button"
+              mat-raised-button
+              class="guest-login-button"
+              (click)="guestLogin()"
+            >
+              Log in as Guest
+            </button>
+          </div>
         </form>
-
 
         <div *ngIf="errorMessage" class="error-message">
           {{ errorMessage }}
+        </div>
       </div>
     </div>
-
   </div>
-</div>
 
-
-
-
-
-
-
-
-
-
-<div class="privacy-container">
-  <p class="links-privacy" (click)="openPrivacyPolicy()">Privacy Policy</p>
-  <p class="links-privacy" (click)="openLegalNotice()">Legal Notice</p>
-</div>
-
+  <div class="privacy-container">
+    <p class="links-privacy" (click)="openPrivacyPolicy()">Privacy Policy</p>
+    <p class="links-privacy" (click)="openLegalNotice()">Legal Notice</p>
+  </div>
 </div>

@@ -154,32 +154,34 @@ export class DashboardComponent implements OnInit {
   loadUserEvents(): void {
     const eventsCollection = collection(this.firestore, 'events');
     const now = new Date();
-    collectionData(eventsCollection, { idField: 'id' }).subscribe(
-      (events: any[]) => {
-        this.userEvents = this.filterAndSortEvents(
-          events,
-          now,
-          this.currentUserName
-        );
+    collectionData(eventsCollection, { idField: 'id' }).subscribe((events: any[]) => {
+      if (this.currentUserRole === 'guest') {
+        this.userEvents = this.sortAndLimitEvents(events, now);
+      } else {
+        this.userEvents = this.filterSortAndLimitEvents(events, now, this.currentUserName);
       }
-    );
+    });
   }
-
-  private filterAndSortEvents(events: any[],now: Date,userName: string): any[] {
+  
+  private sortAndLimitEvents(events: any[], now: Date): any[] {
     return events
-      .filter(
-        (event) =>
-          event.users &&
-          Array.isArray(event.users) &&
-          event.users.includes(userName) &&
-          this.parseAndCombineDateTime(event.date, event.time) > now)
-      .sort(
-        (a, b) =>
-          this.parseAndCombineDateTime(a.date, a.time).getTime() -
-          this.parseAndCombineDateTime(b.date, b.time).getTime()
-      );
+      .filter(event => this.parseAndCombineDateTime(event.date, event.time) > now)
+      .sort((a, b) => this.parseAndCombineDateTime(a.date, a.time).getTime() - this.parseAndCombineDateTime(b.date, b.time).getTime())
+      .slice(0, 6); 
   }
-
+  
+  private filterSortAndLimitEvents(events: any[], now: Date, userName: string): any[] {
+    return events
+      .filter(event =>
+        event.users &&
+        Array.isArray(event.users) &&
+        event.users.includes(userName) &&
+        this.parseAndCombineDateTime(event.date, event.time) > now
+      )
+      .sort((a, b) => this.parseAndCombineDateTime(a.date, a.time).getTime() - this.parseAndCombineDateTime(b.date, b.time).getTime())
+      .slice(0, 6); 
+  }
+  
   parseAndCombineDateTime(dateString: string, timeString: string): Date {
     try {
       const [time, meridiem] = timeString.split(' ');
@@ -247,35 +249,57 @@ export class DashboardComponent implements OnInit {
   }
 
   openEventDetails(event: Event) {
-    this.dialog.open(EventDetailsComponent, {
-      data: {
-        id: event.id,
-        type: event.type,
-        description: event.description,
-        date: event.date,
-        time: event.time,
-        users: this.formatUsers(event.users),
-        createdBy: this.formatCreatedBy(event.createdBy),
-        source: 'dashboard',
-      },
-      autoFocus: false,
+    const userNames = [...event.users, event.createdBy].filter(name => name !== undefined) as string[];
+  
+    this.loadUserProfilePictures(userNames).then((userProfileMap) => {
+      this.dialog.open(EventDetailsComponent, {
+        data: {
+          id: event.id,
+          type: event.type,
+          description: event.description,
+          date: event.date,
+          time: event.time,
+          users: this.formatUsers(event.users, userProfileMap),
+          createdBy: this.formatCreatedBy(event.createdBy ?? 'Unknown', userProfileMap),
+          source: 'dashboard',
+        },
+        autoFocus: false,
+      });
     });
   }
-
-  private formatUsers(users: string[]): any[] {
-    return users.map((userName: string) => ({
-      name: userName || 'Unknown User',
-      profilePicture: '/assets/img/user.png', 
+  
+  private async loadUserProfilePictures(userNames: string[]): Promise<Map<string, string>> {
+    const usersFromFirestore = await this.getUsersFromFirestore();
+    const userProfileMap = new Map<string, string>();
+  
+    userNames.forEach((name) => {
+      const user = usersFromFirestore.find((u) => `${u.firstName} ${u.lastName}` === name);
+      userProfileMap.set(name, user?.profilePicture || '/assets/img/user.png');
+    });
+  
+    return userProfileMap;
+  }
+  
+  private async getUsersFromFirestore(): Promise<any[]> {
+    const userCollection = collection(this.firestore, 'users');
+    const querySnapshot = await getDocs(userCollection);
+    return querySnapshot.docs.map((doc) => doc.data());
+  }
+  
+  private formatUsers(userNames: string[], userProfiles: Map<string, string>): any[] {
+    return userNames.map((name) => ({
+      name: name || 'Unknown User',
+      profilePicture: userProfiles.get(name) || '/assets/img/user.png',
     }));
   }
-
-  private formatCreatedBy(createdBy: string | undefined): any {
+  
+  private formatCreatedBy(createdBy: string, userProfiles: Map<string, string>): any {
     return {
-      name: createdBy ?? 'Unknown', 
-      profilePicture: '/assets/img/user.png',
+      name: createdBy,
+      profilePicture: userProfiles.get(createdBy) || '/assets/img/user.png',
     };
   }
-
+  
   getEventClass(eventType: string): string {
     switch (eventType?.toLowerCase()) {
       case 'webinar':

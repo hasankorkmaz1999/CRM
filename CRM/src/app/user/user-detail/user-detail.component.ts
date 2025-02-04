@@ -31,7 +31,7 @@ export class UserDetailComponent implements OnInit {
     name: 'customScheme',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: ['#3BADEB', '#fff', '#F0365F'],
+    domain: ['#3BADEB' ,'#F0365F' ,  '#fff'],
   };
 
   showLabels: boolean = true;
@@ -231,15 +231,14 @@ export class UserDetailComponent implements OnInit {
   }
   
   private createChartSeries(productName: string, productMap: { [key: string]: { [key: string]: number } }) {
-    let cumulativeTotal = 0;
     const series = Object.keys(productMap[productName])
       .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
       .map((date) => {
-        cumulativeTotal += productMap[productName][date];
-        return { name: date, value: cumulativeTotal };
+        return { name: date, value: productMap[productName][date] }; 
       });
-  
+
     return { name: productName, series };
-  }
+}
+
   
 }
