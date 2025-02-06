@@ -31,7 +31,7 @@ export class UserDetailComponent implements OnInit {
     name: 'customScheme',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: ['#3BADEB' ,'#F0365F' ,  '#fff'],
+    domain: ['#F0365F' ,'#3BADEB' ,  '#fff'],
   };
 
   showLabels: boolean = true;

@@ -16,14 +16,14 @@ export class AuthService {
     try {
       return JSON.parse(localStorage.getItem('currentUserDetails')!) || {
         uid: '',
-        name: 'Unknown User',
+        name: 'Guest User',
         profilePicture: '/assets/img/user.png',
       };
     } catch (error) {
       console.error('Error parsing user details from localStorage:', error);
       return {
         uid: '',
-        name: 'Unknown User',
+        name: 'Guest User',
         profilePicture: '/assets/img/user.png',
       };
     }
@@ -33,13 +33,10 @@ export class AuthService {
 
   constructor(private firestore: Firestore) {}
 
-  public async fetchUserDetails(email: string): Promise<{
-    uid: string;
-    name: string;
-    profilePicture: string;
-  } | null> {
+  public async fetchUserDetails(email: string): Promise<void> {
     const userCollection = collection(this.firestore, 'users');
     const userQuery = query(userCollection, where('email', '==', email));
+  
     try {
       const querySnapshot = await getDocs(userQuery);
       if (!querySnapshot.empty) {
@@ -50,21 +47,35 @@ export class AuthService {
           name: `${userData['firstName']} ${userData['lastName']}`.trim(),
           profilePicture: userData['profilePicture'] || '/assets/img/user.png',
         };
+  
         this.currentUserDetailsSubject.next(userDetails);
         localStorage.setItem('currentUserDetails', JSON.stringify(userDetails));
-        return userDetails;
       }
-      return null;
     } catch (error) {
       console.error('Error fetching user details:', error);
-      return null;
     }
   }
+  
+
+  getStoredUser(): { uid: string; name: string; profilePicture: string } {
+    const storedData = localStorage.getItem('currentUserDetails');
+    if (storedData) {
+      try {
+        return JSON.parse(storedData);
+      } catch (error) {
+        console.error('Fehler beim Parsen von localStorage:', error);
+      }
+    }
+    return { uid: '', name: 'Guest User', profilePicture: '/assets/img/user.png' };
+  }
+  
+  
+  
 
   resetCurrentUserDetails() {
     const defaultDetails = {
       uid: '',
-      name: 'Unknown User',
+      name: 'Guest User',
       profilePicture: '/assets/img/user.png',
     };
     this.currentUserDetailsSubject.next(defaultDetails);

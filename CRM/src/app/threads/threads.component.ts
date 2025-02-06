@@ -19,6 +19,7 @@ import { ThreadsCommentsComponent } from './threads-comments/threads-comments.co
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { ImageViewerDialogComponent } from './image-viewer-dialog/image-viewer-dialog.component';
+import { UserService } from '../shared/user.service';
 
 @Component({
   selector: 'app-threads',
@@ -43,7 +44,7 @@ export class ThreadsComponent implements OnInit {
   lastVisible: any = null;
   loading = false;
   isNewThread = false;
-  currentUserName: string = 'Unknown User';
+  currentUserName: string = 'Guest User';
   currentUserProfilePicture: string = '/assets/img/user.png';
   selectedFile: File | null = null;
   selectedFilePreview: string | null = null;
@@ -53,7 +54,8 @@ export class ThreadsComponent implements OnInit {
     private authService: AuthService,
     private dialog: MatDialog,
     private http: HttpClient,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+     private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -62,12 +64,17 @@ export class ThreadsComponent implements OnInit {
   }
 
   loadCurrentUser(): void {
-    this.authService.currentUserDetails$.subscribe(user => {
-      this.currentUserName = user.name || 'Unknown User';
-      this.currentUserProfilePicture = user.profilePicture || '/assets/img/user.png';
+    this.userService.currentUser$.subscribe((user) => {
+      if (user) {
+        this.currentUserName = user.name || 'Unknown User';
+        this.currentUserProfilePicture = user.profilePicture || '/assets/img/user.png';
+      } else {
+        this.currentUserName = 'Unknown User';
+        this.currentUserProfilePicture = '/assets/img/user.png';
+      }
     });
+    this.userService.loadUserFromStorage();
   }
-  
 
   async loadThreads() {
     this.loading = true;
